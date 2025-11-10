@@ -1,0 +1,160 @@
+/**
+ * SidebarNavigation - Navegação lateral do sistema
+ * Sistema REVIS
+ */
+
+'use client';
+
+import { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import {
+  Package,
+  ShoppingCart,
+  Factory,
+  BarChart3,
+  Home,
+  AlertCircle,
+  Calendar,
+  TrendingUp,
+} from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+
+interface NavItem {
+  label: string;
+  href: string;
+  icon: React.ReactNode;
+  badge?: number;
+}
+
+const navigationItems: NavItem[] = [
+  {
+    label: 'Dashboard',
+    href: '/',
+    icon: <Home className="h-5 w-5" />,
+  },
+  {
+    label: 'Gestão de Estoque',
+    href: '/estoque',
+    icon: <Package className="h-5 w-5" />,
+  },
+  {
+    label: 'Pedidos',
+    href: '/pedidos',
+    icon: <ShoppingCart className="h-5 w-5" />,
+  },
+  {
+    label: 'Produção',
+    href: '/producao',
+    icon: <Factory className="h-5 w-5" />,
+  },
+  {
+    label: 'Eventos',
+    href: '/eventos',
+    icon: <Calendar className="h-5 w-5" />,
+  },
+  {
+    label: 'Vendas',
+    href: '/vendas',
+    icon: <TrendingUp className="h-5 w-5" />,
+  },
+  {
+    label: 'Relatórios',
+    href: '/relatorios',
+    icon: <BarChart3 className="h-5 w-5" />,
+  },
+  {
+    label: 'Alertas',
+    href: '/alertas',
+    icon: <AlertCircle className="h-5 w-5" />,
+    badge: 5,
+  },
+];
+
+interface SidebarNavigationProps {
+  isOpen?: boolean;
+  onClose?: () => void;
+}
+
+/**
+ * Sidebar com navegação principal do sistema
+ * Responsivo com suporte a mobile
+ */
+export function SidebarNavigation({ isOpen = true, onClose }: SidebarNavigationProps) {
+  const pathname = usePathname();
+
+  return (
+    <>
+      {/* Overlay para mobile */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-background/80 backdrop-blur-sm md:hidden"
+          onClick={onClose}
+          aria-hidden="true"
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside
+        className={cn(
+          'fixed left-0 top-0 z-50 h-screen w-64 border-r border-border bg-surface transition-transform duration-300 md:sticky md:translate-x-0',
+          isOpen ? 'translate-x-0' : '-translate-x-full'
+        )}
+      >
+        {/* Logo */}
+        <div className="flex h-16 items-center border-b border-border px-6">
+          <Link href="/" className="flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
+              <span className="text-lg font-bold text-primary-foreground">R</span>
+            </div>
+            <span className="text-xl font-bold text-foreground">REVIS</span>
+          </Link>
+        </div>
+
+        {/* Navegação */}
+        <nav className="flex flex-col gap-2 p-4">
+          {navigationItems.map((item) => {
+            const isActive = pathname === item.href;
+
+            return (
+              <Link key={item.href} href={item.href} onClick={onClose}>
+                <Button
+                  variant={isActive ? 'default' : 'ghost'}
+                  className={cn(
+                    'w-full justify-start gap-3 transition-all duration-200',
+                    isActive && 'bg-primary text-primary-foreground hover:bg-primary/90'
+                  )}
+                  aria-current={isActive ? 'page' : undefined}
+                >
+                  {item.icon}
+                  <span className="flex-1 text-left">{item.label}</span>
+                  {item.badge && (
+                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-accent text-xs font-medium text-accent-foreground">
+                      {item.badge}
+                    </span>
+                  )}
+                </Button>
+              </Link>
+            );
+          })}
+        </nav>
+
+        <Separator className="mx-4" />
+
+        {/* Informações adicionais */}
+        <div className="p-4">
+          <div className="rounded-lg border border-border bg-card p-3">
+            <p className="text-xs font-medium text-card-foreground">
+              Sistema de Gestão
+            </p>
+            <p className="text-xs text-muted-foreground">
+              REVIS © 2025
+            </p>
+          </div>
+        </div>
+      </aside>
+    </>
+  );
+}

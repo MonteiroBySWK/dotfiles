@@ -1,0 +1,120 @@
+2025-11-09 13:45:54.049 [info] Extension host with pid 92918 started
+2025-11-09 13:45:54.049 [info] Skipping acquiring lock for /home/monteiro/.config/Code/User/workspaceStorage/80ea0fdd921cdbb7924e493df1b9637f.
+2025-11-09 13:45:54.133 [info] ExtensionService#_doActivateExtension vscode.github-authentication, startup: false, activationEvent: 'onAuthenticationRequest:github'
+2025-11-09 13:45:54.173 [info] ExtensionService#_doActivateExtension mechatroner.rainbow-csv, startup: false, activationEvent: 'onLanguage:plaintext'
+2025-11-09 13:45:54.189 [info] ExtensionService#_doActivateExtension vscode.emmet, startup: false, activationEvent: 'onLanguage'
+2025-11-09 13:45:54.215 [info] ExtensionService#_doActivateExtension GitHub.copilot-chat, startup: false, activationEvent: 'onChatParticipant:github.copilot.editsAgent'
+2025-11-09 13:45:55.556 [info] ExtensionService#_doActivateExtension vscode.git-base, startup: true, activationEvent: '*', root cause: vscode.git
+2025-11-09 13:45:55.579 [info] ExtensionService#_doActivateExtension vscode.npm, startup: true, activationEvent: 'workspaceContains:package.json'
+2025-11-09 13:45:55.730 [info] ExtensionService#_doActivateExtension vscode.microsoft-authentication, startup: false, activationEvent: 'onAuthenticationRequest:microsoft'
+2025-11-09 13:45:56.030 [info] ExtensionService#_doActivateExtension vscode.git, startup: true, activationEvent: '*'
+2025-11-09 13:45:56.180 [info] ExtensionService#_doActivateExtension vscode.github, startup: true, activationEvent: '*'
+2025-11-09 13:45:56.578 [info] ExtensionService#_doActivateExtension fill-labs.dependi, startup: true, activationEvent: 'workspaceContains:**/Cargo.toml,**/go.mod,**/package.json,**/composer.json,**/requirements.txt,**/requirements.in,**/pixi.toml,**/pyproject.toml'
+2025-11-09 13:45:56.733 [info] Eager extensions activated
+2025-11-09 13:45:57.199 [info] ExtensionService#_doActivateExtension vscode.debug-auto-launch, startup: false, activationEvent: 'onStartupFinished'
+2025-11-09 13:45:57.203 [info] ExtensionService#_doActivateExtension vscode.merge-conflict, startup: false, activationEvent: 'onStartupFinished'
+2025-11-09 13:45:57.227 [info] ExtensionService#_doActivateExtension bradlc.vscode-tailwindcss, startup: false, activationEvent: 'onStartupFinished'
+2025-11-09 13:45:57.272 [info] ExtensionService#_doActivateExtension esbenp.prettier-vscode, startup: false, activationEvent: 'onStartupFinished'
+2025-11-09 13:45:57.363 [info] ExtensionService#_doActivateExtension ms-vscode.js-debug, startup: false, activationEvent: 'onStartupFinished', root cause: expo.vscode-expo-tools
+2025-11-09 13:45:57.499 [info] ExtensionService#_doActivateExtension redhat.vscode-yaml, startup: false, activationEvent: 'onStartupFinished', root cause: expo.vscode-expo-tools
+2025-11-09 13:45:57.601 [info] ExtensionService#_doActivateExtension GitHub.copilot, startup: false, activationEvent: 'onStartupFinished'
+2025-11-09 13:45:59.505 [info] ExtensionService#_doActivateExtension ms-vscode-remote.remote-containers, startup: false, activationEvent: 'onStartupFinished'
+2025-11-09 13:45:59.627 [info] ExtensionService#_doActivateExtension PKief.material-icon-theme, startup: false, activationEvent: 'onStartupFinished'
+2025-11-09 13:45:59.640 [info] ExtensionService#_doActivateExtension ritwickdey.LiveServer, startup: false, activationEvent: 'onStartupFinished'
+2025-11-09 13:45:59.664 [info] ExtensionService#_doActivateExtension sainnhe.gruvbox-material, startup: false, activationEvent: 'onStartupFinished'
+2025-11-09 13:45:59.687 [info] ExtensionService#_doActivateExtension zhuangtongfa.material-theme, startup: false, activationEvent: 'onStartupFinished'
+2025-11-09 13:45:59.774 [error] Error: chatParticipant must be declared in package.json: claude-code
+    at sqt.$registerAgent (vscode-file://vscode-app/opt/visual-studio-code/resources/app/out/vs/workbench/workbench.desktop.main.js:509:5906)
+2025-11-09 13:46:00.089 [info] ExtensionService#_doActivateExtension expo.vscode-expo-tools, startup: false, activationEvent: 'onStartupFinished'
+2025-11-09 13:46:00.636 [warning] [redhat.vscode-yaml] Accessing a resource scoped configuration without providing a resource is not expected. To get the effective value for '[yaml]', provide the URI of a resource or 'null' for any resource.
+2025-11-09 13:46:00.643 [warning] [redhat.vscode-yaml] Accessing a resource scoped configuration without providing a resource is not expected. To get the effective value for '[yaml]', provide the URI of a resource or 'null' for any resource.
+2025-11-09 13:46:01.374 [info] ExtensionService#_doActivateExtension vscode.configuration-editing, startup: false, activationEvent: 'onLanguage:json'
+2025-11-09 13:46:01.384 [info] ExtensionService#_doActivateExtension vscode.extension-editing, startup: false, activationEvent: 'onLanguage:json'
+2025-11-09 13:46:01.420 [info] ExtensionService#_doActivateExtension vscode.json-language-features, startup: false, activationEvent: 'onLanguage:json'
+2025-11-09 13:48:17.861 [info] ExtensionService#_doActivateExtension vscjava.vscode-java-upgrade, startup: false, activationEvent: 'onView:migrate.java.quickStartWelcomeView', root cause: vscjava.migrate-java-to-azure
+2025-11-09 13:48:19.094 [info] ExtensionService#_doActivateExtension vscjava.migrate-java-to-azure, startup: false, activationEvent: 'onView:migrate.java.quickStartWelcomeView'
+2025-11-09 14:01:41.119 [info] ExtensionService#_doActivateExtension vscode.markdown-language-features, startup: false, activationEvent: 'onLanguage:instructions'
+2025-11-09 14:01:42.029 [info] ExtensionService#_doActivateExtension vscode.markdown-math, startup: false, activationEvent: 'api', root cause: vscode.markdown-language-features
+2025-11-09 14:01:42.047 [info] ExtensionService#_doActivateExtension jebbs.plantuml, startup: false, activationEvent: 'api', root cause: vscode.markdown-language-features
+2025-11-09 14:08:13.698 [info] Extension host terminating: renderer closed the MessagePort
+2025-11-09 14:08:13.749 [error] An error occurred when disposing the subscriptions for extension 'jebbs.plantuml':
+2025-11-09 14:08:13.750 [error] TypeError: Cannot read properties of undefined (reading 'dispose')
+    at UI.dispose (/home/monteiro/.vscode/extensions/jebbs.plantuml-2.18.1/out/src/ui/ui.js:24:21)
+    at /home/monteiro/.vscode/extensions/jebbs.plantuml-2.18.1/out/src/providers/previewer.js:38:87
+    at Array.map (<anonymous>)
+    at Previewer.dispose (/home/monteiro/.vscode/extensions/jebbs.plantuml-2.18.1/out/src/providers/previewer.js:38:76)
+    at Hi (file:///opt/visual-studio-code/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:25:746)
+    at E2.b (file:///opt/visual-studio-code/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:118:15119)
+    at E2.dispose (file:///opt/visual-studio-code/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:25:1227)
+    at SZ.eb (file:///opt/visual-studio-code/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:118:11992)
+    at file:///opt/visual-studio-code/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:118:9947
+    at Array.map (<anonymous>)
+    at SZ.$ (file:///opt/visual-studio-code/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:118:9935)
+    at SZ.terminate (file:///opt/visual-studio-code/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:118:10178)
+    at H3.terminate (file:///opt/visual-studio-code/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:120:914)
+    at Ss (file:///opt/visual-studio-code/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:393:10409)
+    at MessagePortMain.<anonymous> (file:///opt/visual-studio-code/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:393:6948)
+    at MessagePortMain.emit (node:events:519:28)
+    at Object.MessagePortMain._internalPort.emit (node:electron/js2c/utility_init:2:2949)
+2025-11-09 14:08:13.769 [error] Unable to refresh tree view azureJavaMigrationAssessmentWebView: Canceled
+2025-11-09 14:08:13.775 [info] Extension host with pid 92918 exiting with code 0
+2025-11-09 14:08:14.740 [info] Extension host with pid 105563 started
+2025-11-09 14:08:14.740 [info] Skipping acquiring lock for /home/monteiro/.config/Code/User/workspaceStorage/80ea0fdd921cdbb7924e493df1b9637f.
+2025-11-09 14:08:14.764 [info] ExtensionService#_doActivateExtension vscode.github-authentication, startup: false, activationEvent: 'onAuthenticationRequest:github'
+2025-11-09 14:08:14.799 [info] ExtensionService#_doActivateExtension mechatroner.rainbow-csv, startup: false, activationEvent: 'onLanguage:plaintext'
+2025-11-09 14:08:14.805 [info] ExtensionService#_doActivateExtension vscode.emmet, startup: false, activationEvent: 'onLanguage'
+2025-11-09 14:08:14.826 [info] ExtensionService#_doActivateExtension vscode.microsoft-authentication, startup: false, activationEvent: 'onAuthenticationRequest:microsoft'
+2025-11-09 14:08:14.885 [info] ExtensionService#_doActivateExtension GitHub.copilot-chat, startup: false, activationEvent: 'onLanguageModelChatProvider:copilot'
+2025-11-09 14:08:15.693 [info] ExtensionService#_doActivateExtension vscode.configuration-editing, startup: false, activationEvent: 'onLanguage:json'
+2025-11-09 14:08:15.706 [info] ExtensionService#_doActivateExtension vscode.extension-editing, startup: false, activationEvent: 'onLanguage:json'
+2025-11-09 14:08:15.722 [info] ExtensionService#_doActivateExtension vscode.json-language-features, startup: false, activationEvent: 'onLanguage:json'
+2025-11-09 14:08:15.790 [info] ExtensionService#_doActivateExtension vscode.npm, startup: false, activationEvent: 'onLanguage:json'
+2025-11-09 14:08:15.827 [info] ExtensionService#_doActivateExtension vscode.markdown-language-features, startup: false, activationEvent: 'onLanguage:instructions'
+2025-11-09 14:08:15.956 [info] ExtensionService#_doActivateExtension vscode.git-base, startup: false, activationEvent: 'onFileSystem:git', root cause: vscode.git
+2025-11-09 14:08:16.485 [info] ExtensionService#_doActivateExtension vscode.git, startup: false, activationEvent: 'onFileSystem:git'
+2025-11-09 14:08:16.557 [info] ExtensionService#_doActivateExtension vscode.github, startup: true, activationEvent: '*'
+2025-11-09 14:08:16.849 [info] ExtensionService#_doActivateExtension fill-labs.dependi, startup: false, activationEvent: 'workspaceContains:**/Cargo.toml,**/go.mod,**/package.json,**/composer.json,**/requirements.txt,**/requirements.in,**/pixi.toml,**/pyproject.toml,**/pubspec.yaml'
+2025-11-09 14:08:16.871 [info] ExtensionService#_doActivateExtension vscode.markdown-math, startup: false, activationEvent: 'api', root cause: vscode.markdown-language-features
+2025-11-09 14:08:16.881 [info] ExtensionService#_doActivateExtension jebbs.plantuml, startup: false, activationEvent: 'api', root cause: vscode.markdown-language-features
+2025-11-09 14:08:16.980 [info] Eager extensions activated
+2025-11-09 14:08:17.055 [info] ExtensionService#_doActivateExtension vscode.debug-auto-launch, startup: false, activationEvent: 'onStartupFinished'
+2025-11-09 14:08:17.058 [info] ExtensionService#_doActivateExtension vscode.merge-conflict, startup: false, activationEvent: 'onStartupFinished'
+2025-11-09 14:08:17.090 [info] ExtensionService#_doActivateExtension bradlc.vscode-tailwindcss, startup: false, activationEvent: 'onStartupFinished'
+2025-11-09 14:08:17.207 [info] ExtensionService#_doActivateExtension esbenp.prettier-vscode, startup: false, activationEvent: 'onStartupFinished'
+2025-11-09 14:08:17.367 [info] ExtensionService#_doActivateExtension ms-vscode.js-debug, startup: false, activationEvent: 'onStartupFinished', root cause: expo.vscode-expo-tools
+2025-11-09 14:08:17.554 [info] ExtensionService#_doActivateExtension redhat.vscode-yaml, startup: false, activationEvent: 'onStartupFinished', root cause: expo.vscode-expo-tools
+2025-11-09 14:08:17.649 [info] ExtensionService#_doActivateExtension GitHub.copilot, startup: false, activationEvent: 'onStartupFinished'
+2025-11-09 14:08:20.169 [info] ExtensionService#_doActivateExtension ms-vscode-remote.remote-containers, startup: false, activationEvent: 'onStartupFinished'
+2025-11-09 14:08:20.360 [info] ExtensionService#_doActivateExtension PKief.material-icon-theme, startup: false, activationEvent: 'onStartupFinished'
+2025-11-09 14:08:20.380 [info] ExtensionService#_doActivateExtension ritwickdey.LiveServer, startup: false, activationEvent: 'onStartupFinished'
+2025-11-09 14:08:20.403 [info] ExtensionService#_doActivateExtension sainnhe.gruvbox-material, startup: false, activationEvent: 'onStartupFinished'
+2025-11-09 14:08:20.419 [info] ExtensionService#_doActivateExtension zhuangtongfa.material-theme, startup: false, activationEvent: 'onStartupFinished'
+2025-11-09 14:08:21.140 [error] Error: chatParticipant must be declared in package.json: claude-code
+    at sqt.$registerAgent (vscode-file://vscode-app/opt/visual-studio-code/resources/app/out/vs/workbench/workbench.desktop.main.js:509:5906)
+2025-11-09 14:08:21.997 [info] ExtensionService#_doActivateExtension expo.vscode-expo-tools, startup: false, activationEvent: 'onStartupFinished'
+2025-11-09 14:08:22.379 [warning] [redhat.vscode-yaml] Accessing a resource scoped configuration without providing a resource is not expected. To get the effective value for '[yaml]', provide the URI of a resource or 'null' for any resource.
+2025-11-09 14:08:22.390 [warning] [redhat.vscode-yaml] Accessing a resource scoped configuration without providing a resource is not expected. To get the effective value for '[yaml]', provide the URI of a resource or 'null' for any resource.
+2025-11-09 14:08:22.735 [info] ExtensionService#_doActivateExtension vscjava.vscode-java-upgrade, startup: false, activationEvent: 'onView:migrate.java.quickStartWelcomeView', root cause: vscjava.migrate-java-to-azure
+2025-11-09 14:08:23.770 [info] ExtensionService#_doActivateExtension vscjava.migrate-java-to-azure, startup: false, activationEvent: 'onView:migrate.java.quickStartWelcomeView'
+2025-11-09 15:04:47.099 [info] Extension host terminating: renderer closed the MessagePort
+2025-11-09 15:04:47.137 [error] An error occurred when disposing the subscriptions for extension 'jebbs.plantuml':
+2025-11-09 15:04:47.138 [error] TypeError: Cannot read properties of undefined (reading 'dispose')
+    at UI.dispose (/home/monteiro/.vscode/extensions/jebbs.plantuml-2.18.1/out/src/ui/ui.js:24:21)
+    at /home/monteiro/.vscode/extensions/jebbs.plantuml-2.18.1/out/src/providers/previewer.js:38:87
+    at Array.map (<anonymous>)
+    at Previewer.dispose (/home/monteiro/.vscode/extensions/jebbs.plantuml-2.18.1/out/src/providers/previewer.js:38:76)
+    at Hi (file:///opt/visual-studio-code/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:25:746)
+    at E2.b (file:///opt/visual-studio-code/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:118:15119)
+    at E2.dispose (file:///opt/visual-studio-code/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:25:1227)
+    at SZ.eb (file:///opt/visual-studio-code/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:118:11992)
+    at file:///opt/visual-studio-code/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:118:9947
+    at Array.map (<anonymous>)
+    at SZ.$ (file:///opt/visual-studio-code/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:118:9935)
+    at SZ.terminate (file:///opt/visual-studio-code/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:118:10178)
+    at H3.terminate (file:///opt/visual-studio-code/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:120:914)
+    at Ss (file:///opt/visual-studio-code/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:393:10409)
+    at MessagePortMain.<anonymous> (file:///opt/visual-studio-code/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:393:6948)
+    at MessagePortMain.emit (node:events:519:28)
+    at Object.MessagePortMain._internalPort.emit (node:electron/js2c/utility_init:2:2949)
+2025-11-09 15:04:47.158 [error] Unable to refresh tree view azureJavaMigrationAssessmentWebView: Canceled
+2025-11-09 15:04:47.166 [info] Extension host with pid 105563 exiting with code 0

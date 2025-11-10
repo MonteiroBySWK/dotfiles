@@ -1,0 +1,20 @@
+export default function Skills() {
+  return (
+    <section>
+      <div>
+        <h1>Backend</h1>
+        <p>lista</p>
+      </div>
+
+      <div>
+        <h1>Infra/DevOps</h1>
+        <p>lista</p>
+      </div>
+
+      <div>
+        <h1>Segurança</h1>
+        <p>lista</p>
+      </div>
+    </section>
+  );
+}

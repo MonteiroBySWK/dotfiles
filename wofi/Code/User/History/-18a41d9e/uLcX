@@ -1,0 +1,54 @@
+# ignorar arquivos desnecessários no build docker
+
+# diretórios de build
+target/
+build/
+
+# ide
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# sistema operacional
+.DS_Store
+Thumbs.db
+
+# git
+.git/
+.gitignore
+
+# documentação
+docs/
+*.md
+!README.md
+
+# logs
+*.log
+logs/
+
+# arquivos temporários
+*.tmp
+*.temp
+*.bak
+*.swp
+*~
+
+# maven wrapper (mantemos para o build)
+# .mvn/
+# mvnw
+# mvnw.cmd
+
+# arquivos de dados locais
+*.dat
+data/
+uploads/
+
+# variáveis de ambiente locais
+.env
+.env.local
+
+# cache
+.cache/
+node_modules/

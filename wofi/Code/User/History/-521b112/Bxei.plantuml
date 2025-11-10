@@ -1,0 +1,18 @@
+@startuml
+title "UC-03: Gerenciar Pessoas"
+actor Administrador
+participant Sistema
+
+Administrador -> Sistema : 1. Acessa módulo de gerenciamento de pessoas [cite: 155]
+Sistema --> Administrador : 2. Exibe lista de membros cadastrados [cite: 155]
+Administrador -> Sistema : 3. Seleciona ação (cadastrar novo, editar, visualizar) [cite: 155]
+
+alt Ação == "Cadastrar" ou "Editar"
+    Sistema --> Administrador : 4. Exibe formulário [cite: 155]
+    Administrador -> Sistema : 5. Preenche/edita informações [cite: 155]
+    Sistema -> Sistema : 6. Valida e salva dados [cite: 155]
+    Sistema --> Administrador : 7. Atualiza listagem e confirma operação [cite: 155]
+else Ação == "Visualizar"
+    Sistema --> Administrador : 4. Exibe detalhes conforme ação [cite: 155]
+end
+@enduml

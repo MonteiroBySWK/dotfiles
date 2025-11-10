@@ -1,0 +1,15 @@
+(node:169686) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `code --trace-deprecation ...` to show where the warning was created)
+Logger Init
+Initialization complete.
+Loaded supported calls (Version 1.17)
+Batch of 21 Total time: 661ms (Avg. Per Call: 31ms)
+Loaded supported calls (Version 1.17)
+Batch of 1 Total time: 613ms (Avg. Per Call: 613ms)
+Loaded supported calls (Version 1.17)
+Batch of 1 Total time: 899ms (Avg. Per Call: 899ms)
+Batch of 1 Total time: 568ms (Avg. Per Call: 568ms)
+Batch of 1 Total time: 713ms (Avg. Per Call: 713ms)
+Batch of 2 Total time: 700ms (Avg. Per Call: 350ms)
+Batch of 2 Total time: 678ms (Avg. Per Call: 339ms)
+Batch of 1 Total time: 470ms (Avg. Per Call: 470ms)

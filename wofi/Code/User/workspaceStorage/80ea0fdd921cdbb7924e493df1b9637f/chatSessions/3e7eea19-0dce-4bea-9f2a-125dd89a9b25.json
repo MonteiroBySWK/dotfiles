@@ -1,0 +1,307 @@
+{
+  "version": 3,
+  "requesterUsername": "MonteiroBySWK",
+  "requesterAvatarIconUri": {
+    "$mid": 1,
+    "path": "/u/129693679",
+    "scheme": "https",
+    "authority": "avatars.githubusercontent.com",
+    "query": "v=4"
+  },
+  "responderUsername": "GitHub Copilot",
+  "responderAvatarIconUri": {
+    "id": "copilot"
+  },
+  "initialLocation": "editor",
+  "requests": [
+    {
+      "requestId": "request_0ee2e94b-ea2c-4641-b84e-4f0371e02492",
+      "message": {
+        "parts": [
+          {
+            "range": {
+              "start": 0,
+              "endExclusive": 23
+            },
+            "editorRange": {
+              "startLineNumber": 1,
+              "startColumn": 1,
+              "endLineNumber": 1,
+              "endColumn": 24
+            },
+            "text": "deixa tudo em maisuculo",
+            "kind": "text"
+          }
+        ],
+        "text": "deixa tudo em maisuculo"
+      },
+      "variableData": {
+        "variables": [
+          {
+            "id": "vscode.prompt.instructions.root__file:///home/monteiro/codes/revis/.github/instructions/design.instructions.md",
+            "name": "prompt:design.instructions.md",
+            "value": {
+              "$mid": 1,
+              "external": "file:///home/monteiro/codes/revis/.github/instructions/design.instructions.md",
+              "path": "/home/monteiro/codes/revis/.github/instructions/design.instructions.md",
+              "scheme": "file"
+            },
+            "kind": "promptFile",
+            "modelDescription": "Prompt instructions file",
+            "isRoot": true,
+            "originLabel": "Automatically attached as pattern is **",
+            "automaticallyAdded": true
+          },
+          {
+            "id": "vscode.prompt.instructions.root__file:///home/monteiro/codes/revis/.github/instructions/general.instructions.md",
+            "name": "prompt:general.instructions.md",
+            "value": {
+              "$mid": 1,
+              "external": "file:///home/monteiro/codes/revis/.github/instructions/general.instructions.md",
+              "path": "/home/monteiro/codes/revis/.github/instructions/general.instructions.md",
+              "scheme": "file"
+            },
+            "kind": "promptFile",
+            "modelDescription": "Prompt instructions file",
+            "isRoot": true,
+            "originLabel": "Automatically attached as pattern is **",
+            "automaticallyAdded": true
+          },
+          {
+            "id": "vscode.prompt.instructions.root__file:///home/monteiro/codes/revis/.github/instructions/requirements.instructions.md",
+            "name": "prompt:requirements.instructions.md",
+            "value": {
+              "$mid": 1,
+              "external": "file:///home/monteiro/codes/revis/.github/instructions/requirements.instructions.md",
+              "path": "/home/monteiro/codes/revis/.github/instructions/requirements.instructions.md",
+              "scheme": "file"
+            },
+            "kind": "promptFile",
+            "modelDescription": "Prompt instructions file",
+            "isRoot": true,
+            "originLabel": "Automatically attached as pattern is **",
+            "automaticallyAdded": true
+          }
+        ]
+      },
+      "response": [
+        {
+          "kind": "textEditGroup",
+          "uri": {
+            "$mid": 1,
+            "fsPath": "/home/monteiro/codes/revis/.env.example",
+            "external": "file:///home/monteiro/codes/revis/.env.example",
+            "path": "/home/monteiro/codes/revis/.env.example",
+            "scheme": "file"
+          },
+          "edits": [
+            [
+              {
+                "text": "NEXT_PUBLIC_MEASUREMENTID",
+                "range": {
+                  "startLineNumber": 8,
+                  "startColumn": 1,
+                  "endLineNumber": 8,
+                  "endColumn": 26
+                }
+              }
+            ],
+            []
+          ],
+          "state": {
+            "sha1": "770703679b5875e947b7b8eb1646fbac919d220b",
+            "applied": 1
+          }
+        }
+      ],
+      "responseId": "response_8769e6ad-5e7d-4fe9-af10-500a64bc5eeb",
+      "result": {
+        "timings": {
+          "totalElapsed": 4785
+        },
+        "metadata": {
+          "codeBlocks": [],
+          "toolCallRounds": [
+            {
+              "response": "```bash\nNEXT_PUBLIC_MEASUREMENTID\n```",
+              "toolCalls": [],
+              "toolInputRetry": 0,
+              "id": "5d98ebeb-37e2-41d2-8ccc-0c3eb1a93cde",
+              "statefulMarker": "/PXDnqy832Y/ORw6J3jXT6V1ZRG8BcmSvHbOUuIejwnFblVL1m4rh/rE2zIlepe8GSVIpD7KuZeWYobtcykC9M8M6TPdB7VKQOwGEqychB7O5S2IO5DtFuFXzdDOiieVewqdWc51QD9QvuNV1kEANml9ybywIuD2pYyNYw2QSk0MT+YJFT/eEoTiPP0gJeZtEIgUFyHVdHKB2+SvG22iN2aAm3aIcF7kTOFlIUWDCpcXXsPtj8b3qXZFMa1uHf3HNKUkRgCyWfDNDxsEvvSSxmg8QekFJ9n7ZQ7QBqYbGDXqiRnQXzget6zy4XH9FJehcdo6IpqotZfkgxI3nTyW3xlcuRjxwc40xxXMEpIM1s7uUeb5LAuZMhAtzhrPxHHEMDvsb1qVsPvJOITFXxvuLWh18+zO",
+              "thinking": {
+                "id": "4EV5NKATegOokzv447gvNbs9yWTcdLgVm4k1T/lKc2NbQmGuzcHWyv5dogNA8m0kj2W7i4fJ88F56ku6DD2T+BmFhQMyRL7TBdocFy4hiMEsYc1twUJDciYxz53GYpRHkJK7/nGd1EiKZAwYvhLHFhGZftEMzpabNZ2tY2wlazBXENbxWd4T6qYT05JSKi4+7UF+lvzahQY1g3U2bCFH2HzTcAkDxWw5iupOum9aqpN61vpdGcHMI7Ga/kcTao3K11B6kaY2zaIN0okiY8HlOkePwgTDbfDzntN64IiOzdcRD6TcEzMXRMENWc/2lb73oKg60QHhVELRxgVE70reb2wK/Idu0Ht1IiuAx2VbUIDFjv1XWRB63zO3FNOndvMxFMy7KUxtKqm3Ex9YWDpqaOa/7A==",
+                "text": [],
+                "encrypted": "u3Gk0HK381IuSGBweISRk5smc+ixwM8Gjs9pCzS5KT5uB7f7GQLj+BNarizuyDs9QC71Pf0P+r7k7VhMSDjVXmlA9iZoCaIqBwQDxpM163YmJsXJ2e3pYAj2BVa/9Vplk4nteyS5PT1VE4VoZjpxklLKCPKRvKCAMr3jwaDaxyBJIuX2Ufkxa5WUUu0d01TWXhj/cLvp5Werw70v/thGtzEw7O0UcItrRMgKKRYh+S2reFqG3ti+7/bwwe5rf/xO/FhP2c2xK25zJYFARkSt1Nk69C1SQZFyvGiQRNvw9MylJwKYiaMkDWkLnx343T9BWUKkpl7tr6k9Jqr//a3cMTF58VPIHwTKGbZiB4fi+Kn6Qy+wHpKDyf0ahn6aU87dx75VLoT6iVhmdwSaTcUNXTZoPN5FRDGBZ3k6p4A2odS0SejN6ju6s56dz1sCW0egkK9vGkBLUf6WqQfn1alc3jioPWf7T/0URHBEMvCYws9CcntoR3AKjC2svqhgdJMBzmVbXFpsWnkUJPJYoaLT8lJtx+WAMVy7YrR34wxlCPITa2LrrKEVSeLyYtAZsotZYPT5ngkJ/f6IgRNA2AuWil20kew/CIKBYv6f4ZQ1m80Th/yCSkuWIrWc3ZTp0IHvQZyAdoRRpv9FmVpDZwPXCpgvI9FUdrk9Y3rsR/1DhtHnIY8BSrv7tMc7h5p4ucwkhzisuPdUUemTrq6mFvNv6d6jZUcvCfn7FTlQ9jSX1Nm5OlSd/ewobhTkjzgJEglFSwyM6AaC7wZReHWVyPH2av6ua3SjZvf0t+cJzLg1aSJ2DDay2XDxDeeJTvtApRTspaLLtjyaoql+mpnpnr9mtMgF53oDifeOGsbQPujQXVgOJVXHjtcp5tl4rW6cVACol8q6fuywcSCGIe2ddNvDfFzkZjSULGwmyMx7251h64M3tkd4B+QZVsSsZYoBvjasBWeYUiUSXO8ARVocoOMQvI69/LcdObvg77ZNHxKlZzcVFpbfwVHoiziu3jqU5doNDyD+f5NUWw6p2xBmBr8AIIS9+H7vGJt3eG7yYQuvFBc9XxoHSITOUmmz808MRk4G2vGlFKii+xfNTB6QP9XTsp2qH3eMI+b6ifS1ojJyI2BFuwF4rMq/l14/dslnTKwFO4MVpeWtqgQTYnDDjTkK7nqaXjS1xJFQ9nlGiKNxr6VAAb6e9Z6BhTIu+dTtgT7wOt4E7hFNYtTUT93dx5y8tflIP6tWzq91uauvYjoOk/PQvvqn4d9/sp3wnNxVNQn7/7vboGdlqKn285lVXDwefRaf5CiSBUyhxi1mCVFQl4aFoOCJZFFBKhQtNBZVp27iq5qNVV5Ta3/iHEz5xhSQV379od8Q0MF7xNHEGeZnZnzeHN22mlw9McxtLZ1WOw9RM/dO23FMMI4CCcDLsNNUsAr3jfpYK2i6jJqZHnHKXiTYLcVTKfds1dZWmbPkUJwsXBze5QvWzZJ3F8vjNVeV2dVKmmTG4Km96on296mMwfnk1EWYHg7JqYllnvU/SbxpbuNXaVchCUlLm9e7/BQaLoIKFgKVLvBO7ySb0ODm347nkdvCuuPkecsayOFpLvkP4qLtvfm45ozqUejFTxGmFIQo1Qi4i2SVdYEdLFGeLl+RGPKVcqdSXxcpffHnjisRTphCtGh/qPgbtM9ZKQ/d38PylN1qTu6HDeZbCTwrnGSscNA/x3Uq7s8FzY2fFq/CoI7uUPq+soVcUHaTswrAAhZOZMR0U7TtVxcmcj34Fg1OmOKgO5p2Yv+kR+ocsZHWJtC9zeC9STTj9wszaB7tJCFbOKgTBM1ZlTXedsYLp+o1e+MUacbzJKjXkdGyRHYlgGFBMAhO3NGv1IYZT+4VltpF4aPoMINL+MowI80rAa5mAE0K8qOIl8zhD1M6LK8YinSeQR6QrvsxxUWSYnL04giIkU5aasYnxicP8MmKpLL3YM+NUqxgSzA2aEFvWn/gSmmXLrdRJwdeQZ/RYkFdpQxwPDm+on5jC62K+1OVaAdTl6oczXCL4Z6zoT4xaxWEjx6dxIVKlqaCrCvqmfOUuJ0Kk7g3VshPLRpEHMrvS58HmULQHyZOLs3xvO6gxCKs44Elcz4TfnOFnlunDWWjFrJFxHhuNeywdKMfjWY0o5tudZ3oG1iiu2dba1biiLhvoqfJ8FWEgUVStrVnbJiF5nd249uwJg2iajJhGm/H20sOqFiGuhBz5baxHW8PH/2XN12XFWXYI70VxXk5wG4TqdgMTqmNdPGY8ueNFeti022fHF2VEe2H8M8iUSiCmehPurxvjUaE+md0yy6GJj9NyxQvOQNibjMWou2QwZMzO45IfMs+eUP+hyalMESfGq/x5nPcztEFIa4xS+jmmkCx6py5TKPKopBdLOiiKhBnXy5Bj4IgQEnxgIv+YQqwE3SUOAbR5NhRaRAC6SdCTIq9J9eyaKWzWU8QK2C2Xs5mfS3spCEc7ISKb6npSaJSW7J1kQGjgZiAWo9378o8Qweej2noZsl0gV3keJcLMIJDwx8IrZ3XIikXfR6O5lD5ZkI7OqNHotQugCnoRRb9zBPDiO3EiOfUva/LCouZlUIwB/FJZxcp+q1bU8SFHyBuEAJ9N9isdfeqbUeh6jxMBKdSWf7fC/pNvUlJD7yikJwPfVnhTxlrKcvgMPZdwiZZ/qyL8cC6f05SUsbtPE3qRJFwQ7xkmWvaPBG3l3IXM7AC4Y84xstO1yVjHIRa72L9K+mR4bxNSRQAe0kh1FzBR+Y2RLLp7IKfzNnFMaXwXKeL1G4RMm/d2ybmowY+bcg4LS6J65yivlHDQDsdh3iXSiSabgCGU3FctQ4gC3xjy69WrmtX/PkI/X737ioR1GDqNN2NXLopbOJUgRvG7scZtDD8asNQ8iy+tprk6tpvi7KVnW382hYP8Kc4OfVvTwnF5RWCkE6/EJxc2PMXAxpkoGRHsJCJs7tgyYMf75OjiCKkHyujSXGJjFBynWNxgipBMbXZ5Tf6QkFW7W2h0g5dw+IoZgeGP3SWpwpMr4T6ITZnFa0K6IpmXVAftfU/luDeabEmjgSnXPW5xbWzW+F3ldnnokZR4CyTkHjFiLZu/vrD54oBYFszBOYXXsVkVg6wKqRjUhq8wWmDvGH8FxEVybz8ISzrUfPikQFYxxzd4d4DODIhLYXoY3Hdkay28UJsq0Owi0Tjjrtqi+FVi3lvT/luMA/ER1JRYMHXG0eIfTFAiMrfKYVKzKqYb+n6Z1DCjJRO1wdEa6R2tFf21hbzTYKPfzAxmkJfGytyYcwHy+gv1pWKpdy9LtXR3WC3iINKkbU+s+Jz3N6vKCISd79SAHXg+dikNj/l7A6DtkpB3sA/SUXLKponYZviRPWI9sv8a6ixngjRU1SNN+yRF4zF5cGH5UpwBcZaSTUZ+lDlYmaHrbnj6G3HHc02KVsYsn/AeA/YNWEy/6hvZTOAq3rMuRkmCZabLQn+mIHovxE/PFgyn8l3WLsj4S0mhzmokJbQOpl4IXZ6VK9it/IpISxpQ0vOGha55GOTg9C2WGMLSLqfdcQu8djoL6UT2cnt/COs8qym+8iLDEO5G5ZqqyY4P5400qpzdXjlpquKm4VjOpkLzrlVrejHtoUx6m3JcImdqfGmthUgKazgSwP20KQE40QHJAOqruvOYi5O7CKnngHO1iHrJ5L0CkwacbyMGqXbJwDcW0RWh/7EHMejvBHS9e1fjZBQJ7L4Spw/smawuStjupLdYJBCF7ASlWZn2wcZGhx5JN95EmMuseXPZAFjQ73DgqI9BsmNEfUB8CYvEpqNnwtLu99rmDdAnwUSqoi5FjztIxTDdljKmXBhCm+o02ghvamIpLu+rCw94Hi7YtXbBI3RuxauHJt0Jbp03a0jQTc58prln7iP6UxwCCRhalDoW+OZdMl1b9H0nSXFwXck3ZEUnyyax3VcUg7qrXhIJl3Oh9IqfwpWR5nFOCpeA6MI/fB4jnATFLY0imNe8+T6LDkoxlQ6fX2GoG71VvlyExthEsaX43WyZ4FoDLbGmpV9dW/tqNkCeZEk76oaBBvevDOhVdPgXtodMHI1h1CcGjtTC8I1RNjn9dvFp6pEOr6duS3MS41ivOP0KjMQ0sioGcv8X8BO694Cb8kq5JliprSitpg36wepg3N1m+EElK7Mu8GPXeeHuGUjoc4TxTM6fcQOBgOrNB7T+LrAc+VEtHOoAJ6YlfqJTXnplKHVvdG/Xi1YnrCAUFeuv+4BP/tjYNoFtkZQrEBMCPSTu24zBMuIFS+4ZgMk8LIX/WHEC52AUGRv80PUirYngpENJMdHSH6eIttqPAHTWjlNq6kicLlkPrKzwJKDeIijJ+FPInzoUGhWNll510uZn6DnmnxFw3CY+d36DgSa50Bu0FGlbf48Ww==",
+                "tokens": 320
+              }
+            }
+          ],
+          "modelMessageId": "6141a62e-6c0b-448d-bfbb-31318c65d6fc",
+          "responseId": "cf3d7253-2544-49bf-9232-aec4ad78b5b5",
+          "sessionId": "b27010d9-9f61-4262-a75d-9c97e1529ae1",
+          "agentId": "github.copilot.editor"
+        },
+        "details": "GPT-5 mini • 0x"
+      },
+      "followups": [],
+      "isCanceled": false,
+      "agent": {
+        "extensionId": {
+          "value": "GitHub.copilot-chat",
+          "_lower": "github.copilot-chat"
+        },
+        "extensionVersion": "0.32.4",
+        "publisherDisplayName": "GitHub",
+        "extensionPublisherId": "GitHub",
+        "extensionDisplayName": "GitHub Copilot Chat",
+        "id": "github.copilot.editor",
+        "description": "Ask or edit in context",
+        "when": "!config.inlineChat.enableV2 && !config.github.copilot.chat.advanced.inlineChat2",
+        "metadata": {
+          "themeIcon": {
+            "id": "copilot"
+          },
+          "hasFollowups": false,
+          "supportIssueReporting": false
+        },
+        "name": "Copilot",
+        "fullName": "GitHub Copilot",
+        "isDefault": true,
+        "locations": [
+          "editor"
+        ],
+        "modes": [
+          "ask"
+        ],
+        "slashCommands": [
+          {
+            "name": "generate",
+            "description": "Generate new code",
+            "disambiguation": [
+              {
+                "category": "generate",
+                "description": "Generate new code",
+                "examples": [
+                  "Add a function that returns the sum of two numbers"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "edit",
+            "description": "Edit the selected code in your active editor",
+            "disambiguation": [
+              {
+                "category": "edit",
+                "description": "Make changes to existing code",
+                "examples": [
+                  "Change this method to use async/await"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "doc",
+            "description": "Add documentation comment for this symbol",
+            "disambiguation": [
+              {
+                "category": "doc",
+                "description": "Add documentation comment for this symbol",
+                "examples": [
+                  "Add jsdoc to this method"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "fix",
+            "description": "Propose a fix for the problems in the selected code",
+            "disambiguation": [
+              {
+                "category": "fix",
+                "description": "Propose a fix for the problems in the selected code",
+                "examples": [
+                  "There is a problem in this code. Rewrite the code to show it with the bug fixed."
+                ]
+              }
+            ]
+          },
+          {
+            "name": "explain",
+            "description": "Explain how the code in your active editor works",
+            "disambiguation": [
+              {
+                "category": "explain",
+                "description": "Explain how the code in your active editor works",
+                "examples": [
+                  "Write an explanation for the code above as paragraphs of text."
+                ]
+              }
+            ]
+          },
+          {
+            "name": "tests",
+            "description": "Generate unit tests for the selected code",
+            "disambiguation": [
+              {
+                "category": "tests",
+                "description": "Generate unit tests for the selected code. The user does not want to fix their existing tests.",
+                "examples": [
+                  "Write a set of detailed unit test functions for the code above."
+                ]
+              }
+            ]
+          }
+        ],
+        "disambiguation": [
+          {
+            "category": "unknown",
+            "description": "Intent of this command is unclear or is not related to information technologies",
+            "examples": [
+              "Add a dog to this comment."
+            ]
+          }
+        ]
+      },
+      "contentReferences": [
+        {
+          "kind": "reference",
+          "reference": {
+            "$mid": 1,
+            "fsPath": "/home/monteiro/codes/revis/.github/instructions/design.instructions.md",
+            "external": "file:///home/monteiro/codes/revis/.github/instructions/design.instructions.md",
+            "path": "/home/monteiro/codes/revis/.github/instructions/design.instructions.md",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "reference",
+          "reference": {
+            "$mid": 1,
+            "fsPath": "/home/monteiro/codes/revis/.github/instructions/general.instructions.md",
+            "external": "file:///home/monteiro/codes/revis/.github/instructions/general.instructions.md",
+            "path": "/home/monteiro/codes/revis/.github/instructions/general.instructions.md",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "reference",
+          "reference": {
+            "$mid": 1,
+            "fsPath": "/home/monteiro/codes/revis/.github/instructions/requirements.instructions.md",
+            "external": "file:///home/monteiro/codes/revis/.github/instructions/requirements.instructions.md",
+            "path": "/home/monteiro/codes/revis/.github/instructions/requirements.instructions.md",
+            "scheme": "file"
+          }
+        }
+      ],
+      "codeCitations": [],
+      "timestamp": 1762724281692,
+      "modelId": "copilot/gpt-5-mini"
+    }
+  ],
+  "sessionId": "3e7eea19-0dce-4bea-9f2a-125dd89a9b25",
+  "creationDate": 1762724275535,
+  "isImported": false,
+  "lastMessageDate": 1762724281692
+}

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>JTCheck Manager – Registro</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* ======================= */
+    /* === CABEÇALHO DRAG === */
+    .card-header {
+      background-color: #1976d2;
+      color: white;
+      padding: 20px;
+      -webkit-app-region: drag; /* permite arrastar a janela frameless */
+    }
+
+    .card-header h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .card-header p {
+      margin: 5px 0 0;
+      font-size: 13px;
+    }
+
+    /* ======================= */
+    .card-body {
+      padding: 20px;
+      -webkit-app-region: no-drag; /* evita arrastar ao clicar nos formulários */
+    }
+
+    .input-group {
+      margin-bottom: 16px;
+    }
+
+    .input-group label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      background-color: #2196f3;
+      color: white;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .btn:hover {
+      background-color: #1976d2;
+    }
+
+    .footer-note {
+      margin-top: 12px;
+      font-size: 13px;
+      color: #555;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="card" id="card-container">
+    <div class="card-header">
+      <h2>JTCheck Manager</h2>
+      <p>Registro de Usuário</p>
+    </div>
+    <div class="card-body">
+      <form id="formRegistro">
+        <div class="input-group">
+          <label for="fullname">Nome completo</label>
+          <input type="text" id="fullname" placeholder="Digite seu nome completo" required />
+        </div>
+        <div class="input-group">
+          <label for="enrollid">Matrícula</label>
+          <input type="text" id="enrollid" placeholder="Formato: JT00XXXXX" required />
+        </div>
+        <button type="submit" class="btn">Registrar</button>
+      </form>
+      <p class="footer-note" id="statusMsg"></p>
+    </div>
+  </div>
+
+  <script>
+    const { ipcRenderer, remote } = require('electron');
+    const { dialog } = require('electron');
+    const path = require('path');
+
+    // Regex para validar matrícula no formato JT00 + 5 dígitos
+    const MATRICULA_REGEX = /^JT00\d{5}$/;
+
+    window.addEventListener('DOMContentLoaded', async () => {
+      // 1) Verifica se já existe arquivo JT-Info.json
+      const result = await ipcRenderer.invoke('check-registration');
+      if (result.exists) {
+        // Se já existe, pergunta ao usuário se quer visualizar ou reconfigurar
+        const dados = result.data;
+        const resposta = confirm(
+          `Já existe um registro:\n\n` +
+          `Nome: ${dados.nomeCompleto}\nMatrícula: ${dados.matricula}\n\n` +
+          `Deseja reconfigurar os dados? (Cancelar = Manter dados atuais)`
+        );
+        if (!resposta) {
+          // Se o usuário escolheu "Cancelar" (não reconfigurar), podemos só exibir os dados e
+          // fechar a janela após alguns segundos ou dar a opção de fechar manualmente.
+          document.getElementById('statusMsg').innerText =
+            `Registro já configurado: ${dados.nomeCompleto} (${dados.matricula}).`;
+          // Opcional: fecha automaticamente em 5 segundos
+          setTimeout(() => {
+            const w = remote.getCurrentWindow();
+            w.hide();
+          }, 5000);
+          return;
+        }
+        // Se chegou aqui, o usuário quer reconfigurar: limpa os campos e permite novo registro
+        document.getElementById('fullname').value = '';
+        document.getElementById('enrollid').value = '';
+        document.getElementById('statusMsg').innerText =
+          'Preencha abaixo para reconfigurar seu registro.';
+      }
+    });
+
+    // 2) Manipula o envio do formulário de registro
+    document.getElementById('formRegistro').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const nome = document.getElementById('fullname').value.trim();
+      const matricula = document.getElementById('enrollid').value.trim();
+
+      // 2.1) Validação de campos não vazios
+      if (!nome || !matricula) {
+        alert('Por favor, preencha nome completo e matrícula.');
+        return;
+      }
+
+      // 2.2) Validação do formato da matrícula
+      if (!MATRICULA_REGEX.test(matricula)) {
+        alert('Formato de matrícula inválido. Deve ser JT00 + 5 dígitos (ex: JT0012345).');
+        return;
+      }
+
+      // 2.3) Envia para o main process para salvar no arquivo e criar atalho
+      const resposta = await ipcRenderer.invoke('register-user', { nome, matricula });
+      if (resposta.success) {
+        alert('Registro concluído com sucesso!\nO CheckSender será executado automaticamente no próximo login.');
+        // Depois de salvar, fecha a janela:
+        const w = remote.getCurrentWindow();
+        w.hide();
+      } else {
+        alert('Erro ao registrar usuário:\n' + (resposta.error || 'Erro desconhecido.'));
+      }
+    });
+  </script>
+</body>
+</html>

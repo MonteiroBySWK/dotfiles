@@ -1,0 +1,66 @@
+@startuml Visão Geral do Sistema NeoLab
+left to right direction
+skinparam packageStyle rectangle
+
+actor Visitante as visitante
+actor "Usuário Não Autenticado" as usuario
+actor "Membro do Laboratório" as membro
+actor "Estagiário/Auxiliar" as estagiario
+actor Administrador as admin
+
+rectangle "Sistema NeoLab" {
+  
+  package "Área Pública - LAICOPI" {
+    (Visualizar Landing Page) as landing
+    (Visualizar Portfólio) as portfolio
+    (Visualizar Equipamentos) as equipamentos
+    (Visualizar Equipe) as equipe
+    (Entrar em Contato) as contato
+  }
+  
+  package "Autenticação" {
+    (Fazer Login) as login
+    (Cadastrar-se) as cadastro
+    (Recuperar Senha) as recuperar
+  }
+  
+  package "Área Restrita - NeoLab" {
+    (Gerenciar Pessoas) as ger_pessoas
+    (Controlar Patrimônio) as ger_patrimonio
+    (Gerenciar Conteúdo Acadêmico) as ger_conteudo
+    (Acessar Materiais) as acessar_materiais
+  }
+}
+
+visitante --> landing
+visitante --> portfolio
+visitante --> equipamentos
+visitante --> equipe
+visitante --> contato
+
+usuario --> login
+usuario --> cadastro
+usuario --> recuperar
+
+membro --|> usuario
+estagiario --|> membro
+admin --|> membro
+
+membro --> acessar_materiais
+
+estagiario --> ger_patrimonio
+
+admin --> ger_pessoas
+admin --> ger_patrimonio
+admin --> ger_conteudo
+
+legend right
+  |= Módulo |= Requisitos |
+  | Landing Page Pública (LAICOPI) | REQ-01 a REQ-10 |
+  | Autenticação e Controle de Acesso | REQ-11 a REQ-20 |
+  | Gerenciamento de Pessoas | REQ-21 a REQ-30 |
+  | Controle de Patrimônio | REQ-31 a REQ-42 |
+  | Gestão de Conteúdo Acadêmico | REQ-43 a REQ-54 |
+endlegend
+
+@enduml

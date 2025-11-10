@@ -1,0 +1,28 @@
+[
+  {
+    "data_venda": "02/10/2025",
+    "qtd_vendida": 2,
+    "produto": {
+      "id": 1001,
+      "nome_produto": "Produto Exemplo 1",
+      "valor_unit": 25.50
+    },
+    "cliente": {
+      "id_cliente": 2001,
+      "nome_cliente": "João Silva Santos"
+    }
+  },
+  {
+    "data_venda": "02/10/2025",
+    "qtd_vendida": 1,
+    "produto": {
+      "id": 1002,
+      "nome_produto": "Produto Exemplo 2",
+      "valor_unit": 15.75
+    },
+    "cliente": {
+      "id_cliente": 2002,
+      "nome_cliente": "Maria dos Santos"
+    }
+  }
+]

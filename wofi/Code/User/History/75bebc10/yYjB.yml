@@ -1,0 +1,8 @@
+spring:
+  profiles:
+    active: dev
+
+  security:
+    jwt:
+      secret-key: ''
+      expiration: 360000

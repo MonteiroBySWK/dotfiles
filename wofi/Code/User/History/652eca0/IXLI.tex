@@ -1,0 +1,112 @@
+\documentclass[11pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage[margin=1.5cm]{geometry}
+\usepackage{xcolor}
+\usepackage{fontawesome}
+\usepackage{hyperref}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{setspace}
+
+% Cores
+\definecolor{primary}{RGB}{25,55,109}
+\definecolor{secondary}{RGB}{100,140,200}
+
+% Estilos
+\setlength{\parindent}{0pt}
+\setlist[itemize]{leftmargin=*, nosep}
+\titleformat{\section}{\large\bfseries\color{primary}}{}{0pt}{}[{\titlerule[0.8pt]}]
+\titlespacing*{\section}{0pt}{10pt}{5pt}
+
+% Dados pessoais
+\newcommand{\nome}{Seu Nome Completo}
+\newcommand{\profissao}{Profissão}
+\newcommand{\email}{seu.email@provedor.com}
+\newcommand{\telefone}{(00) 98765-4321}
+\newcommand{\github}{github.com/seuusuario}
+\newcommand{\linkedin}{linkedin.com/in/seuusuario}
+
+\begin{document}
+
+% Cabeçalho
+\begin{minipage}{0.7\textwidth}
+    {\Huge\bfseries\color{primary}\nome}\\
+    {\large\color{secondary}\profissao}
+\end{minipage}
+\begin{minipage}{0.3\textwidth}
+    \raggedleft
+    \includegraphics[width=2.5cm]{foto-perfil.jpg} % Substitua pela sua foto
+\end{minipage}
+
+\vspace{0.5cm}
+\hrule
+\vspace{0.5cm}
+
+% Contato
+\begin{minipage}{0.5\textwidth}
+    \begin{itemize}
+        \item \faEnvelope\ \href{mailto:\email}{\email}
+        \item \faPhone\ \telefone
+    \end{itemize}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{itemize}
+        \item \faGithub\ \href{https://\github}{\github}
+        \item \faLinkedin\ \href{https://\linkedin}{\linkedin}
+    \end{itemize}
+\end{minipage}
+
+% Seções
+\section*{Resumo Profissional}
+Engenheiro de Software com 5 anos de experiência em desenvolvimento de sistemas escaláveis. Especializado em arquitetura de microsserviços e soluções cloud. Certificado AWS Solutions Architect com experiência em liderança técnica de equipes ágeis.
+
+\section*{Experiência Profissional}
+\textbf{Desenvolvedor Sênior} \hfill Jan 2020 - Presente\\
+\textit{Empresa XYZ, São Paulo}
+\begin{itemize}
+    \item Liderança técnica de equipe de 8 desenvolvedores
+    \item Migração de arquitetura monolítica para microsserviços (redução de 40\% em custos de infra)
+    \item Implementação de CI/CD com Jenkins e Docker
+    \item Stack: Java, Spring Boot, AWS, Kubernetes
+\end{itemize}
+
+\textbf{Desenvolvedor Pleno} \hfill Mar 2018 - Dez 2019\\
+\textit{Empresa ABC, Rio de Janeiro}
+\begin{itemize}
+    \item Desenvolvimento de APIs REST para sistema de pagamentos
+    \item Otimização de desempenho (redução de 300ms no tempo de resposta)
+    \item Integração com gateways de pagamento
+\end{itemize}
+
+\section*{Formação Acadêmica}
+\textbf{Bacharelado em Ciência da Computação} \hfill 2014 - 2017\\
+Universidade Federal, Rio Grande do Sul\\
+\textbf{TCC}: "Otimização de Algoritmos de Machine Learning para Dispositivos Móveis"
+
+\section*{Habilidades Técnicas}
+\begin{itemize}
+    \item \textbf{Linguagens}: Java, Python, JavaScript
+    \item \textbf{Frameworks}: Spring Boot, React, Node.js
+    \item \textbf{Banco de Dados}: PostgreSQL, MongoDB, Redis
+    \item \textbf{Cloud}: AWS (EC2, S3, Lambda), Docker, Kubernetes
+    \item \textbf{Ferramentas}: Git, Jenkins, Grafana
+\end{itemize}
+
+\section*{Projetos Relevantes}
+\textbf{Sistema de Recomendação em Tempo Real} \hfill \href{https://github.com/seuusuario/projeto}{\faGithub}\\
+Plataforma de e-commerce usando Apache Kafka e machine learning (Python) para recomendações personalizadas.
+
+\textbf{Aplicativo de Gestão Financeira} \hfill \href{https://github.com/seuusuario/finapp}{\faGithub}\\
+Solução mobile-first (React Native) com análise preditiva de gastos e integração bancária.
+
+\section*{Certificações}
+\begin{itemize}
+    \item AWS Certified Solutions Architect - Associate
+    \item Scrum Master Professional Certificate (SMPC)
+    \item Google Cloud Professional Data Engineer
+\end{itemize}
+
+\end{document}

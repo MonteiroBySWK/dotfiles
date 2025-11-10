@@ -1,0 +1,14 @@
+Minha jornada na programação começou em 2019, comecei a ver python por recomendação de alguns professores e comecei a estudar sozinho desde então
+Durando meu ensino médio (2020-22) mantive estudos de forma recreativa, fazia uma coisa ali uma coisa aqui, não sái muito de python e algumas automatizações de arquivos dentro do meu computador
+em março 23 entrei no curso de engenharia de computação na uema, antes de entrar reforçei os meus estudos em logica de programação em algoritmos
+em abril de 23 entrei pro LAPS (Laboratorio de Aquisição e Processamento de sinais) para trbalahr com processamento digital de imagens com python e varias libs que tive aprender
+em maio de 23 fundei um Laboratorio de desenvolvimento de sistemas com alguns colegas do meu periodo
+durou um ano até que ficassesmos bons tecnicamente para realizar grandes prpjetos, até então só faziamos pequenos projetos
+em 24 formalizamos o Laboratorio e criamos a marca Thera para nós e começamos a prestar serviço para a empresa júnior de computação TechnosJr
+durante 24 implementei boas práticas dentro da Thera e comecei a formalizar equipes de desenvolvimento, atuei na parte de desenvolvimento e gestão tecnica de projetos
+começamos a implmeentar Scrum e Kanban no final de 24 e começamos a formalizar equipes para segurnaça de aplicação, infraestrura e testagem
+no começo de 25 fundei de fato a Thera como uma Startup e Software House
+no meio de 25 eu finalzei o ERP da technos e inicei uma migração para microserviços
+em maio de 25 entrei para o programa do Jovem Tech e lá desenvolvi um sistema de ponto embarcado com sistema web para o proprio programa, sistema de previsão de frangos em prateleria e um Loadin Plan automatizado para a Suzano
+Atualemnte nos estamos em projetos com a Uema, Ufma, Força Area Brasileira, Empresas pequenas e média
+No começo de 25 apresentei meu emulador web feito em Rust para eventos dentro a uema promovendo a Thera

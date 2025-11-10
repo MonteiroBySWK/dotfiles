@@ -1,0 +1,14 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@layer base {
+  :root {
+    --color-primary: #4ade80;
+    --color-txt-primary: #f1f5f9;
+    --color-body: #0d0126;
+    --color-card: #1e293b;
+    --color-border: #334155;
+    --color-error: #f87171;
+  }
+}

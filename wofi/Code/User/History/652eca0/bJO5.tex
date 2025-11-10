@@ -1,0 +1,109 @@
+\documentclass[11pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage[margin=1.5cm]{geometry}
+\usepackage{xcolor}
+\usepackage{fontawesome}
+\usepackage{hyperref}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{setspace}
+
+% Cores
+\definecolor{primary}{RGB}{41, 128, 185}  % Azul profissional
+\definecolor{secondary}{RGB}{50, 50, 50}   % Cinza escuro
+
+% Estilos
+\setlength{\parindent}{0pt}
+\setlist[itemize]{leftmargin=*, nosep}
+\titleformat{\section}{\large\bfseries\color{primary}}{}{0pt}{}[{\titlerule[0.8pt]}]
+\titlespacing*{\section}{0pt}{12pt}{6pt}
+\renewcommand{\labelitemi}{\color{primary}\textbullet}
+
+% Dados pessoais
+\newcommand{\nome}{Gabriel Silva Monteiro}
+\newcommand{\email}{eumonteiro.ofc@gmail.com}
+\newcommand{\linkedin}{linkedin.com/in/g-monteiro-bb0b28265/}
+\newcommand{\github}{github.com/seuusuario} % Adicione seu GitHub se tiver
+
+\begin{document}
+
+% Cabeçalho
+{\centering
+{\Huge\bfseries\color{primary}\nome}\\[5pt]
+{\large
+    \faEnvelope\ \href{mailto:\email}{\email} \hspace{10pt} 
+    \faLinkedin\ \href{https://\linkedin}{\linkedin} \hspace{10pt}
+    \faGithub\ \href{https://\github}{\github}
+}\\[10pt]
+}
+
+% Seções
+\section*{Educação}
+\textbf{Universidade Estadual do Maranhão} \hfill \textit{Expectativa de Graduação: Dezembro 2027}\\
+Engenharia de Computação - Bacharelado \hfill \textit{Quinto período}
+
+\section*{Experiência Profissional}
+\textbf{Embrosa Júnior de Engenharia de Computação} \hfill Março 2023 - Presente\\
+\textit{Desenvolvedor Full Stack}, São Luís, Maranhão
+\begin{itemize}
+    \item Desenvolvimento de aplicações web com React (frontend) e Django/Spring (backend)
+    \item Criação de aplicação de gerenciamento interno para otimização de processos
+    \item Manutenções corretivas e evolutivas com deploy contínuo na Railway
+    \item Desenvolvimento de soluções personalizadas para clientes externos
+\end{itemize}
+
+\textbf{Technos JR} \hfill Agosto 2024 - Presente\\
+\textit{Desenvolvedor Full Stack}, São Luís, Maranhão
+\begin{itemize}
+    \item (Adicione detalhes específicos desta experiência)
+\end{itemize}
+
+\section*{Projetos e Experiências Voluntárias}
+\textbf{Laboratório de Análise Desenvolvimento de Sistemas Thera} \hfill (Datas relevantes)\\
+\textit{Co-coordenador e Bolsista Voluntário}
+\begin{itemize}
+    \item Gestão de equipes no desenvolvimento de soluções multiplataforma
+    \item Planejamento, criação e deploy de sistemas com integrações
+    \item Desenvolvimento de soluções personalizadas para PMEs
+    \item Garantia de organização e cumprimento de prazos
+\end{itemize}
+
+\section*{Habilidades Técnicas}
+\begin{minipage}[t]{0.5\textwidth}
+    \textbf{Tecnologias:}
+    \begin{itemize}
+        \item ReactJS, React Native/Expo, NextJS
+        \item TailwindCSS, Framer Motion
+        \item PostgreSQL, Django, Spring
+        \item Linux, Docker, Git/Github
+        \item MatPlotLib, Selenium, Pandas, Numpy
+    \end{itemize}
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}
+    \textbf{Linguagens de Programação:}
+    \begin{itemize}
+        \item \textbf{2 Anos:} C/C++, JavaScript, Python
+        \item \textbf{1 Ano:} Java
+        \item \textbf{6 Meses:} Rust
+    \end{itemize}
+    
+    \textbf{Idiomas:}
+    \begin{itemize}
+        \item Português - Nativo
+        \item Inglês - Intermediário
+    \end{itemize}
+\end{minipage}
+
+\section*{Sobre Mim}
+Estudante de Engenharia de Computação (5º período) e co-coordenador do Laboratório de Desenvolvimento de Sistemas vinculado ao LEA/UEMA. Minha atuação concentra-se em:
+
+\begin{itemize}
+    \item Gestão de equipes de desenvolvimento
+    \item Construção e manutenção de aplicações
+    \item Desenvolvimento backend para empresas e organizações
+    \item Transformação de ideias de projetos em soluções reais
+\end{itemize}
+
+\end{document}

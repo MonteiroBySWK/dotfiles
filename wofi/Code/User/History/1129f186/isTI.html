@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+  </head>
+  <body>
+    <form>
+      <input type="file" name="file" accept=".csv,.xlsx" />
+      <button type="submit">Enviar</button>
+    </form>
+
+    <p id="result"></p>
+
+    <script>
+      const input = document.querySelector('input[type="file"]');
+      const btn = document.querySelector("button");
+      const result = document.querySelector("#result");
+
+      btn.addEventListener("click", async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData();
+        formData.append("file", input.files[0]);
+
+        let res = await fetch("http://localhost:8080/predict", {
+          method: "POST",
+          body: formData,
+        });
+
+        res = res.json()
+
+        console.log(res)
+
+        result.innerHTML = res.colunas;
+      });
+    </script>
+  </body>
+</html>

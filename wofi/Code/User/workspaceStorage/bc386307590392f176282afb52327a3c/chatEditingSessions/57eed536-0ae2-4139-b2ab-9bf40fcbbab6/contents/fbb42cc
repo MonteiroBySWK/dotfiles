@@ -1,0 +1,372 @@
+import axios from "axios";
+import { toast } from "sonner";
+
+// API Base Configuration
+const API_BASE_URL = "http://localhost:8081";
+
+// Types based on API documentation
+export interface RegisterUserDTO {
+  name: string;
+  email: string;
+  password: string;
+  role: "employee" | "data_analyst" | "system_manager";
+}
+
+export interface CreatedUserDTO {
+  id: string;
+  name: string;
+  email: string;
+}
+
+export interface LoginUserDTO {
+  email: string;
+  password: string;
+}
+
+export interface TokenDTO {
+  tokenJWT: string;
+  tokenJWT: string;
+}
+
+export interface ReadUserDTO {
+  id: string;
+  name: string;
+  email: string;
+  userRole: "EMPLOYEE" | "DATA_ANALYST" | "SYSTEM_MANAGER";
+  active: boolean;
+}
+
+export interface RegisterEmployeeDTO {
+  user_id: string;
+  registrationNumber: string;
+  cpf: string;
+  fullName: string;
+  socialName: string;
+}
+
+export interface CreatedEmployeeDTO {
+  id: string;
+  user_id: string;
+  registrationNumber: string;
+  cpf: string;
+  fullName: string;
+  socialName: string;
+}
+
+export interface ReadEmployeeDTO {
+  id: string;
+  user: ReadUserDTO;
+  registrationNumber: string;
+  cpf: string;
+  fullName: string;
+  socialName: string;
+  healthCarePages: ReadHealthDataDTO[];
+}
+
+export interface RegisterHealthDataDTO {
+  employee_id: string;
+  bpm: number;
+  spo2?: number;
+  ecgSignal?: string;
+  sleepDuration?: number;
+  sleepQuality?: string;
+  stressLevel?: number;
+  steps?: number;
+  distanceM?: number;
+  calories?: number;
+  bpSystolic?: number;
+  bpDiastolic?: number;
+  skinTemp?: number;
+  timestamp: string;
+}
+
+export interface ReadHealthDataDTO {
+  healthdata_id: string;
+  employee_id: string;
+  bpm: number;
+  spo2?: number;
+  ecgSignal?: string;
+  sleepDuration?: number;
+  sleepQuality?: "POOR" | "AVERAGE" | "GOOD" | "EXCEPTIONAL";
+  stressLevel?: number;
+  steps?: number;
+  distanceM?: number;
+  calories?: number;
+  bpSystolic?: number;
+  bpDiastolic?: number;
+  skinTemp?: number;
+  timestamp: string;
+}
+
+export interface CreatedHealthDataDTO extends ReadHealthDataDTO {}
+
+// API Error types
+export interface APIError {
+  message: string;
+  status: number;
+  details?: any;
+}
+
+class APIClient {
+  private baseURL: string;
+  private token: string | null = null;
+
+  constructor(baseURL: string = API_BASE_URL) {
+    this.baseURL = baseURL;
+    this.loadToken();
+  }
+
+  private loadToken(): void {
+    if (typeof window !== "undefined") {
+      this.token = localStorage.getItem("jwt_token");
+    }
+  }
+
+  private saveToken(token: string): void {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("jwt_token", token);
+      this.token = token;
+    }
+  }
+
+  private removeToken(): void {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("jwt_token");
+      this.token = null;
+    }
+  }
+
+  private isPublicEndpoint(endpoint: string): boolean {
+    const publicPaths = ["/user/register", "/user/login"];
+    return publicPaths.some((publicPath) => endpoint.startsWith(publicPath));
+  }
+
+  private getHeaders() {
+    return {
+      Authorization: this.token ? `Bearer ${this.token}` : "",
+      "Content-Type": "application/json",
+    };
+  }
+
+  setToken(token: string) {
+    this.token = token;
+    if (typeof window !== "undefined") {
+      localStorage.setItem("token", token);
+    }
+  }
+
+  clearToken() {
+    this.token = null;
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("token");
+    }
+  }
+
+  async get<T>(path: string): Promise<{ data: T }> {
+    const response = await axios.get(`${this.baseURL}${path}`, {
+      headers: this.getHeaders(),
+    });
+    return { data: response.data };
+  }
+
+  async post<T>(path: string, data: any): Promise<{ data: T }> {
+    const response = await axios.post(`${this.baseURL}${path}`, data, {
+      headers: this.getHeaders(),
+    });
+    return { data: response.data };
+  }
+
+  private async makeRequest<T>(
+    endpoint: string,
+    options: RequestInit = {}
+  ): Promise<T> {
+    const url = `${this.baseURL}${endpoint}`;
+
+    const headers: HeadersInit = {
+      "Content-Type": "application/json",
+      ...options.headers,
+    };
+
+    if (this.token && !this.isPublicEndpoint(endpoint)) {
+      headers.Authorization = `Bearer ${this.token}`;
+    }
+
+    try {
+      const finalOptions: RequestInit = {
+        ...options,
+        headers,
+        mode: "cors" as RequestMode,
+        credentials: "include" as RequestCredentials,
+      };
+      console.log("Request options:", {
+        url,
+        ...finalOptions,
+        body: options.body ? JSON.parse(options.body as string) : undefined,
+      });
+      const response = await fetch(url, finalOptions);
+
+      if (!response.ok) {
+        let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
+
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.message || errorMessage;
+        } catch {
+          // If response is not JSON, use the default error message
+        }
+
+        // Handle authentication errors
+        if (response.status === 401 || response.status === 403) {
+          this.removeToken();
+          if (typeof window !== "undefined") {
+            window.location.href = "/login";
+          }
+        }
+
+        throw new APIError(errorMessage, response.status);
+      }
+
+      // Handle empty responses
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        return await response.json();
+      } else {
+        return {} as T;
+      }
+    } catch (error) {
+      if (error instanceof APIError) {
+        throw error;
+      }
+
+      // Network or other errors
+      console.error("API Request failed:", error);
+      throw new APIError(
+        "Network error. Please check your connection and try again.",
+        0
+      );
+    }
+  }
+
+  // Authentication methods
+  async register(userData: RegisterUserDTO): Promise<CreatedUserDTO> {
+    return this.makeRequest<CreatedUserDTO>("/user/register", {
+      method: "POST",
+      body: JSON.stringify(userData),
+    });
+  }
+
+  async login(credentials: LoginUserDTO): Promise<TokenDTO> {
+    const response = await this.makeRequest<TokenDTO>("/user/login", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+
+    if (response.tokenJWT) {
+      this.saveToken(response.tokenJWT);
+    }
+
+    return response;
+  }
+
+  async logout(): Promise<void> {
+    this.removeToken();
+  }
+
+  // User methods
+  async getUser(id: string): Promise<ReadUserDTO> {
+    return this.makeRequest<ReadUserDTO>(`/user/${id}`);
+  }
+
+  async getUserByEmail(email: string): Promise<ReadUserDTO> {
+    // A URL deve corresponder ao novo endpoint no backend
+    return this.makeRequest<ReadUserDTO>(
+      `/user/by-email/${encodeURIComponent(email)}`
+    );
+  }
+
+  // Employee methods
+  async registerEmployee(
+    employeeData: RegisterEmployeeDTO
+  ): Promise<CreatedEmployeeDTO> {
+    return this.makeRequest<CreatedEmployeeDTO>("/employee/register", {
+      method: "POST",
+      body: JSON.stringify(employeeData),
+    });
+  }
+
+  async getEmployee(id: string): Promise<ReadEmployeeDTO> {
+    return this.makeRequest<ReadEmployeeDTO>(`/employee/${id}`);
+  }
+
+  // Health data methods
+  async registerHealthData(
+    healthData: RegisterHealthDataDTO
+  ): Promise<CreatedHealthDataDTO> {
+    return this.makeRequest<CreatedHealthDataDTO>("/healthdata/register", {
+      method: "POST",
+      body: JSON.stringify(healthData),
+    });
+  }
+
+  async getHealthData(id: string): Promise<ReadHealthDataDTO> {
+    return this.makeRequest<ReadHealthDataDTO>(`/healthdata/${id}`);
+  }
+
+  // SSE connection for real-time health data
+  createSSEConnection(): EventSource {
+    const token = apiClient.getToken();
+    const url = `${this.baseURL}/healthdata/sse`;
+    const eventSource = new EventSourcePolyfill(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      withCredentials: true,
+    });
+
+    console.log(eventSource);
+
+    return eventSource;
+  }
+
+  // Utility methods
+  isAuthenticated(): boolean {
+    return !!this.token;
+  }
+
+  getToken(): string | null {
+    return this.token;
+  }
+}
+
+// Create singleton instance
+export const apiClient = new APIClient();
+
+// Custom error class
+export class APIError extends Error {
+  constructor(message: string, public status: number, public details?: any) {
+    super(message);
+    this.name = "APIError";
+  }
+}
+
+// Helper function to handle API errors with toast notifications
+export function handleAPIError(
+  error: unknown,
+  defaultMessage = "An error occurred"
+) {
+  console.error("API Error:", error);
+
+  if (error instanceof APIError) {
+    toast({
+      title: "Error",
+      description: error.message,
+      variant: "destructive",
+    });
+  } else {
+    toast({
+      title: "Error",
+      description: defaultMessage,
+      variant: "destructive",
+    });
+  }
+}

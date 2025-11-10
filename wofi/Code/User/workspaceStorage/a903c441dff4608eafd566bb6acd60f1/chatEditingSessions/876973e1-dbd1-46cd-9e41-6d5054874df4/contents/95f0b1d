@@ -1,0 +1,104 @@
+function TimelineItem({
+  title,
+  subtitle,
+  date,
+  children,
+}: {
+  title: string;
+  subtitle?: string;
+  date: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="relative pl-6 pb-10 border-l-2 border-gray-300">
+      <div className="absolute -left-3 top-1.5 w-5 h-5 bg-blue-500 rounded-full border-4 border-white"></div>
+      <div className="mb-1 text-sm text-gray-500">{date}</div>
+      <h3 className="text-lg font-semibold">{title}</h3>
+      {subtitle && <h4 className="text-md font-medium text-gray-600">{subtitle}</h4>}
+      <ul className="list-disc pl-5 mt-2 text-gray-800 text-sm space-y-1">{children}</ul>
+    </div>
+  );
+}
+
+
+export default function Projects() {
+  return (
+    <section>
+      <h2 className="text-xl font-bold mb-3 text-slate-900 tracking-tight">Projetos e Experiências</h2>
+
+      <div className="space-y-6">
+        <article className="bg-white/80 rounded-lg space-y-2">
+          <h3 className="text-lg font-semibold text-slate-800 mb-1">TheraLabs - Software House</h3>
+          <p className="text-sm text-slate-600 mb-2"><strong>Cargo:</strong> Fundador & Coordenador | <strong>Período:</strong> Maio/2023 – Presente</p>
+          <ul className="list-disc list-inside ml-4 text-slate-700 text-sm space-y-1">
+            <li>Coordenei um laboratório de desenvolvimento atuando como Product Owner e líder técnico.</li>
+            <li>Gerenciei equipes multidisciplinares em projetos para PMEs e instituições públicas.</li>
+            <li>Implementei infraestrutura de hospedagem, pipelines de deploy e práticas de segurança.</li>
+          </ul>
+        </article>
+
+        <article className="bg-white/80 rounded-lg space-y-2">
+          <h3 className="text-lg font-semibold text-slate-800 mb-1">TechnosJR - Empresa Júnior de Engenharia de Computação</h3>
+          <p className="text-sm text-slate-600 mb-2"><strong>Cargo:</strong> Desenvolvedor FullStack Voluntário | <strong>Período:</strong> Ago/2023 – Ago/2024</p>
+          <ul className="list-disc list-inside ml-4 text-slate-700 text-sm space-y-1">
+            <li>Desenvolvi um ERP modular em Django cobrindo atendimento, serviços e finanças.</li>
+            <li>Implementei dashboards, relatórios exportáveis e autenticação com segurança OWASP.</li>
+            <li>Participei do ciclo completo: requisitos, modelagem, desenvolvimento, testes e manutenção.</li>
+          </ul>
+        </article>
+
+        <article className="bg-white/80 rounded-lg space-y-2">
+          <h3 className="text-lg font-semibold text-slate-800 mb-1">Jovem Tech - Grupo Mateus</h3>
+          <p className="text-sm text-slate-600 mb-2"><strong>Projeto:</strong> Previsão de Demanda com Séries Temporais | <strong>Ano:</strong> 2025</p>
+          <ul className="list-disc list-inside ml-4 text-slate-700 text-sm space-y-1">
+            <li>Modelei previsões para retirada de SKUs congelados com base em séries temporais.</li>
+            <li>Automatizei geração de relatórios diários em CSV com documentação técnica completa.</li>
+            <li>Foquei na redução de perdas logísticas e melhora da eficiência de abastecimento.</li>
+          </ul>
+        </article>
+      </div>
+
+
+      <section className="my-12">
+      <h2 className="text-2xl font-bold mb-6">Projetos & Experiências</h2>
+
+      <TimelineItem
+        title="TheraLabs – Software House"
+        subtitle="Fundador & Coordenador"
+        date="Maio 2023 – Presente"
+      >
+        <>
+          <li>Coordenei um laboratório de desenvolvimento atuando como PO e líder técnico.</li>
+          <li>Gerenciei equipes em projetos para PMEs e instituições públicas.</li>
+          <li>Implementei infraestrutura, CI/CD e práticas de segurança.</li>
+        </>
+      </TimelineItem>
+
+      <TimelineItem
+        title="TechnosJR – Empresa Júnior de Engenharia de Computação"
+        subtitle="Dev FullStack Voluntário"
+        date="Ago 2023 – Ago 2024"
+      >
+        <>
+          <li>Desenvolvi um ERP modular em Django para atendimento, serviços e finanças.</li>
+          <li>Implementei dashboards, relatórios exportáveis e autenticação OWASP.</li>
+          <li>Participei de todo ciclo: requisitos, modelagem, desenvolvimento e manutenção.</li>
+        </>
+      </TimelineItem>
+
+      <TimelineItem
+        title="Grupo Mateus – Jovem Tech"
+        subtitle="Projeto: Previsão de Demanda"
+        date="Ano: 2025"
+      >
+        <>
+          <li>Modelei previsões de retirada de SKUs congelados com séries temporais.</li>
+          <li>Automatizei geração de relatórios técnicos em CSV.</li>
+          <li>Foquei em redução de perdas logísticas e eficiência.</li>
+        </>
+      </TimelineItem>
+    </section>
+
+    </section>
+  );
+}

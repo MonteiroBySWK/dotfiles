@@ -1,0 +1,205 @@
+/**
+ * SidebarNavigation - Navegação lateral do sistema
+ * Sistema REVIS
+ *
+ * Design baseado em design.instructions.md com cores da paleta oficial
+ */
+
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import {
+  Package,
+  ShoppingCart,
+  Factory,
+  BarChart3,
+  Home,
+  AlertCircle,
+  Calendar,
+  TrendingUp,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
+import Image from "next/image";
+
+interface NavItem {
+  label: string;
+  href: string;
+  icon: React.ReactNode;
+  badge?: number;
+}
+
+const navigationItems: NavItem[] = [
+  {
+    label: "Dashboard",
+    href: "/",
+    icon: <Home className="h-5 w-5" />,
+  },
+  {
+    label: "Gestão de Estoque",
+    href: "/estoque",
+    icon: <Package className="h-5 w-5" />,
+  },
+  {
+    label: "Pedidos",
+    href: "/pedidos",
+    icon: <ShoppingCart className="h-5 w-5" />,
+  },
+  {
+    label: "Produção",
+    href: "/producao",
+    icon: <Factory className="h-5 w-5" />,
+  },
+  {
+    label: "Eventos",
+    href: "/eventos",
+    icon: <Calendar className="h-5 w-5" />,
+  },
+  {
+    label: "Vendas",
+    href: "/vendas",
+    icon: <TrendingUp className="h-5 w-5" />,
+  },
+  {
+    label: "Relatórios",
+    href: "/relatorios",
+    icon: <BarChart3 className="h-5 w-5" />,
+  },
+  {
+    label: "Alertas",
+    href: "/alertas",
+    icon: <AlertCircle className="h-5 w-5" />,
+    badge: 5,
+  },
+];
+
+interface SidebarNavigationProps {
+  isOpen?: boolean;
+  onClose?: () => void;
+}
+
+/**
+ * Sidebar com navegação principal do sistema
+ * Design moderno com cores da paleta REVIS
+ * Responsivo com suporte a mobile
+ */
+export function SidebarNavigation({
+  isOpen = true,
+  onClose,
+}: SidebarNavigationProps) {
+  const pathname = usePathname();
+  return (
+    <>
+      {/* Overlay para mobile */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-background/80 backdrop-blur-sm md:hidden"
+          onClick={onClose}
+          aria-hidden="true"
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside
+        className={cn(
+          "fixed left-0 top-0 z-50 flex h-screen w-64 flex-col border-r border-border bg-card transition-transform duration-300 md:sticky md:translate-x-0",
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        )}
+      >
+        {/* Logo com gradiente */}
+        <div className="flex h-16 shrink-0 items-center border-b border-border px-6 bg-[#8666e3] overflow-hidden">
+          <Link
+            href="/"
+            className="relative w-full h-full shrink-0 transition-transform hover:scale-155"
+            onClick={onClose}
+            aria-label="Página inicial do REVIS"
+          >
+            <div className="relative h-full w-full">
+              <Image
+                src="/logo.png"
+                alt="logo"
+                fill
+                sizes="100vw"
+                className="object-contain object-center"
+              />
+            </div>
+          </Link>
+        </div>
+
+        {/* Navegação com scroll */}
+        <nav className="flex-1 space-y-1 overflow-y-auto p-4 scroll-smooth">
+          {navigationItems.map((item) => {
+            const isActive = pathname === item.href;
+
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={onClose}
+                className="block"
+              >
+                <Button
+                  variant={isActive ? "default" : "ghost"}
+                  className={cn(
+                    "w-full justify-start gap-3 transition-all duration-200",
+                    isActive
+                      ? "bg-primary text-primary-foreground shadow-md hover:bg-primary/90 hover:shadow-lg"
+                      : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                  )}
+                  aria-current={isActive ? "page" : undefined}
+                  aria-label={`Ir para ${item.label}`}
+                >
+                  <span
+                    className={cn(
+                      "transition-colors",
+                      isActive && "text-primary-foreground"
+                    )}
+                  >
+                    {item.icon}
+                  </span>
+                  <span className="flex-1 text-left text-sm font-medium">
+                    {item.label}
+                  </span>
+
+                  {/* Badge de alertas */}
+                  {item.badge && (
+                    <Badge
+                      variant="secondary"
+                      className={cn(
+                        "h-5 min-w-5 px-1.5 text-xs transition-all",
+                        isActive
+                          ? "bg-primary-foreground/20 text-primary-foreground"
+                          : "bg-accent text-accent-foreground"
+                      )}
+                      aria-label={`${item.badge} alertas`}
+                    >
+                      {item.badge}
+                    </Badge>
+                  )}
+                </Button>
+              </Link>
+            );
+          })}
+        </nav>
+
+        <Separator className="mx-4" />
+
+        {/* Rodapé com informações */}
+        <div className="shrink-0 p-4">
+          <div className="rounded-lg border border-border bg-muted/50 p-3 transition-colors hover:bg-muted">
+            <p className="text-xs font-semibold text-foreground">
+              Sistema de Gestão
+            </p>
+            <p className="mt-1 text-xs text-muted-foreground">
+              <span className="font-medium text-primary">REVIS</span> © 2025
+            </p>
+          </div>
+        </div>
+      </aside>
+    </>
+  );
+}

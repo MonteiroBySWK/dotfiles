@@ -1,0 +1,292 @@
+import { useState, useEffect, useRef, useCallback } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(useGSAP, ScrollTrigger);
+
+// Mock data para demonstração
+const dataProjectArr = [
+  {
+    name: "E-commerce Platform",
+    description: "Uma plataforma completa de e-commerce com sistema de pagamentos, gestão de produtos e dashboard administrativo. Desenvolvida com tecnologias modernas para garantir performance e escalabilidade.",
+    status: "FINISHED",
+    technologies: ["React", "Node.js", "MongoDB", "Stripe"],
+    url: "https://github.com/example/ecommerce"
+  },
+  {
+    name: "Task Management App",
+    description: "Aplicativo de gerenciamento de tarefas com interface intuitiva, colaboração em tempo real e sincronização entre dispositivos. Ideal para equipes produtivas.",
+    status: "IN_PROGRESS", 
+    technologies: ["React Native", "Firebase", "Redux"],
+    url: "https://github.com/example/taskapp"
+  },
+  {
+    name: "AI Chat Interface",
+    description: "Interface de chat inteligente com integração de IA, processamento de linguagem natural e respostas contextuais. Uma experiência conversacional moderna.",
+    status: "MODELING",
+    technologies: ["Next.js", "OpenAI API", "PostgreSQL"],
+    url: "https://github.com/example/aichat"
+  },
+  {
+    name: "Portfolio Website",
+    description: "Website portfolio responsivo com animações suaves, otimização SEO e performance. Showcase profissional para desenvolvedores e designers.",
+    status: "FINISHED",
+    technologies: ["React", "Tailwind", "Framer Motion"],
+    url: "https://github.com/example/portfolio"
+  }
+];
+
+const TitleSection = ({ children }) => {
+  return <h1 className="text-primary font-extrabold text-4xl sm:text-5xl mb-8 sm:mb-10 text-center">{children}</h1>;
+};
+
+const Section = (props) => {
+  useGSAP(() => {
+    gsap.fromTo(
+      `#${props.id}`,
+      { opacity: 0 },
+      {
+        opacity: 1,
+        duration: 1,
+        scrollTrigger: {
+          trigger: `#${props.id}`,
+          start: "top 80%",
+          end: "bottom 20%",
+          toggleActions: "play reverse play reverse",
+        },
+      }
+    );
+  }, []);
+
+  return (
+    <section
+      id={props.id}
+      className={`max-w-7xl min-h-screen mx-auto px-4 sm:px-6 lg:px-8 ${props.className}`}
+    >
+      {props.children}
+    </section>
+  );
+};
+
+const checkColorStatus = (status) => {
+  if (status === "FINISHED") {
+    return "text-green-800 bg-green-200 border-green-700";
+  }
+  if (status === "IN_PROGRESS") {
+    return "text-blue-800 bg-blue-200 border-blue-700";
+  }
+  if (status === "MODELING") {
+    return "text-purple-800 bg-purple-200 border-purple-700";
+  }
+};
+
+const ProjectItem = ({ data, isActive, onClick }) => {
+  return (
+    <div
+      onClick={onClick}
+      className={`flex flex-col md:flex-row border border-border p-4 text-txt-primary w-full h-full flex-shrink-0 transition-all duration-500 bg-body ${
+        isActive ? "opacity-100" : "opacity-50 hover:opacity-70"
+      } ${!isActive && "cursor-pointer"}`}
+    >
+      <div className="relative w-full md:w-1/3">
+        <div className="w-full h-48 md:h-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
+          <div className="text-white text-4xl font-bold">
+            {data.name.charAt(0)}
+          </div>
+        </div>
+        <span
+          className={`px-2 py-0.5 absolute top-0 left-0 z-1 text-xs sm:text-sm ${checkColorStatus(
+            data.status
+          )}`}
+        >
+          {data.status}
+        </span>
+      </div>
+      <div className="px-0 md:px-4 w-full md:w-2/3 mt-4 md:mt-0">
+        <h3 className="font-extrabold text-primary text-xl sm:text-2xl mb-2.5">
+          {data.name}
+        </h3>
+        <p className="mb-4 text-sm sm:text-base">{data.description}</p>
+        <div className="flex gap-2 flex-wrap mb-6">
+          {data.technologies.map((e, i) => (
+            <span
+              key={i}
+              className="px-2 sm:px-3 py-0.5 bg-card text-xs sm:text-sm"
+            >
+              {e}
+            </span>
+          ))}
+        </div>
+        <a
+          href={data.url}
+          className="flex w-fit justify-center items-center gap-x-1 bg-primary py-1 px-3 transition-all duration-200 hover:scale-105 text-sm sm:text-base"
+          onClick={(e) => e.stopPropagation()}
+        >
+          Ver Github
+        </a>
+      </div>
+    </div>
+  );
+};
+
+export default function ImprovedProjectsSlider() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const timeoutRef = useRef(null);
+  const touchStartX = useRef(0);
+  const touchStartY = useRef(0);
+  const lastTouchTime = useRef(0);
+  const containerRef = useRef(null);
+  const numProjects = dataProjectArr.length;
+
+  const nextSlide = useCallback(() => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % numProjects);
+    setTimeout(() => setIsTransitioning(false), 300);
+  }, [numProjects, isTransitioning]);
+
+  const prevSlide = useCallback(() => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + numProjects) % numProjects);
+    setTimeout(() => setIsTransitioning(false), 300);
+  }, [numProjects, isTransitioning]);
+
+  const resetTimeout = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+  };
+
+  useEffect(() => {
+    resetTimeout();
+    if (!isPaused && !isTransitioning) {
+      timeoutRef.current = setTimeout(nextSlide, 5000);
+    }
+    return () => {
+      resetTimeout();
+    };
+  }, [currentIndex, isPaused, nextSlide, isTransitioning]);
+
+  const goToSlide = (slideIndex) => {
+    if (slideIndex === currentIndex || isTransitioning) return;
+    setIsTransitioning(true);
+    setCurrentIndex(slideIndex);
+    setTimeout(() => setIsTransitioning(false), 300);
+  };
+
+  const handleTouchStart = (e) => {
+    const touch = e.touches[0];
+    touchStartX.current = touch.clientX;
+    touchStartY.current = touch.clientY;
+    lastTouchTime.current = Date.now();
+    setIsPaused(true);
+  };
+
+  const handleTouchMove = (e) => {
+    if (!touchStartX.current) return;
+    
+    const touch = e.touches[0];
+    const diffX = Math.abs(touchStartX.current - touch.clientX);
+    const diffY = Math.abs(touchStartY.current - touch.clientY);
+    
+    // Previne o scroll da página se o movimento for majoritariamente horizontal
+    if (diffX > diffY && diffX > 10) {
+      e.preventDefault();
+    }
+  };
+
+  const handleTouchEnd = (e) => {
+    if (!touchStartX.current) return;
+    
+    const touch = e.changedTouches[0];
+    const diffX = touchStartX.current - touch.clientX;
+    const diffY = touchStartY.current - touch.clientY;
+    const timeDiff = Date.now() - lastTouchTime.current;
+    
+    // Só processa como swipe se foi majoritariamente horizontal
+    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50 && timeDiff < 300) {
+      if (diffX > 0) {
+        nextSlide();
+      } else {
+        prevSlide();
+      }
+    }
+    
+    touchStartX.current = 0;
+    touchStartY.current = 0;
+    setTimeout(() => setIsPaused(false), 100);
+  };
+
+  return (
+    <Section
+      id="projects"
+      className="h-screen flex flex-col items-center justify-center"
+    >
+      <TitleSection>Projetos</TitleSection>
+      
+      {/* Container do slider - com overflow hidden fixo */}
+      <div
+        ref={containerRef}
+        className="w-full h-[450px] relative overflow-hidden"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        {dataProjectArr.map((project, index) => {
+          let offset = index - currentIndex;
+          if (offset > numProjects / 2) offset -= numProjects;
+          if (offset < -numProjects / 2) offset += numProjects;
+
+          const isVisible = Math.abs(offset) <= 1;
+
+          return (
+            <div
+              key={project.name}
+              className="absolute top-0 left-1/2 w-11/12 md:w-3/5 lg:w-1/2 h-full transition-all duration-500 ease-out"
+              style={{
+                transform: `translateX(calc(-50% + ${offset * 60}%)) scale(${
+                  index === currentIndex ? 1 : 0.8
+                })`,
+                opacity: isVisible ? 1 : 0,
+                zIndex: numProjects - Math.abs(offset),
+                pointerEvents: isVisible ? "auto" : "none",
+              }}
+            >
+              <ProjectItem
+                data={project}
+                isActive={index === currentIndex}
+                onClick={() => goToSlide(index)}
+              />
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Indicadores */}
+      <div className="flex justify-center gap-x-2 mt-6">
+        {dataProjectArr.map((_, index) => (
+          <div
+            key={index}
+            onClick={() => goToSlide(index)}
+            className={`size-3 cursor-pointer transition-all ${
+              currentIndex === index ? "bg-primary scale-125" : "bg-gray-500 hover:bg-gray-400"
+            }`}
+          ></div>
+        ))}
+      </div>
+      
+      {/* Instruções para mobile */}
+      <div className="md:hidden mt-4 text-center">
+        <p className="text-xs text-txt-primary opacity-70">
+          Deslize para navegar
+        </p>
+      </div>
+    </Section>
+  );
+}

@@ -1,0 +1,21 @@
+{
+  "version": 3,
+  "requesterUsername": "MonteiroBySWK",
+  "requesterAvatarIconUri": {
+    "$mid": 1,
+    "path": "/u/129693679",
+    "scheme": "https",
+    "authority": "avatars.githubusercontent.com",
+    "query": "v=4"
+  },
+  "responderUsername": "GitHub Copilot",
+  "responderAvatarIconUri": {
+    "id": "copilot"
+  },
+  "initialLocation": "panel",
+  "requests": [],
+  "sessionId": "099811d1-7a74-4c0e-8ea0-5a4d4bbbe7f4",
+  "creationDate": 1755180158030,
+  "isImported": false,
+  "lastMessageDate": 1755180158030
+}

@@ -1,0 +1,37 @@
+O sistema desenvolvido adota uma arquitetura monolítica, utilizando o framework Django e o banco de dados relacional PostgreSQL. Essa escolha foi motivada pela necessidade de um desenvolvimento ágil e pela possibilidade de reutilizar componentes robustos e seguros já consolidados na estrutura do Django, o que acelerou a implementação das funcionalidades essenciais. A interface do sistema foi construída com o Django Admin, customizado para atender às demandas específicas da empresa júnior. Isso permitiu que a equipe tivesse acesso imediato às funcionalidades, eliminando a necessidade de desenvolver uma interface gráfica do zero e reduzindo o tempo de adoção da plataforma.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figura1_dashboard.png} % Substitua por seu arquivo de imagem
+    \caption{Visão geral dos aplicativos no dashboard do sistema da Technos.}
+    \label{fig:dashboard}
+    \small Fonte: O Autor, 2025.
+\end{figure}
+
+Para a implementação do sistema, foram desenvolvidos três módulos principais:
+\begin{itemize}
+    \item \textbf{Gerenciamento de Clientes:} Responsável pelo armazenamento e gerenciamento de informações dos clientes atendidos pela empresa júnior;
+    \item \textbf{Serviços:} Módulo que controla os pedidos realizados, permitindo o acompanhamento do status (pendente, em andamento e concluído);
+\end{itemize}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figura2_pedidos.png} % Substitua por seu arquivo de imagem
+    \caption{Interface do sistema, demonstrando a tela de Pedidos, de serviços, com detalhes de cada solicitação.}
+    \label{fig:pedidos}
+    \small Fonte: O Autor, 2025.
+\end{figure}
+
+\begin{itemize}
+    \item \textbf{Finanças:} Responsável pelo registro das movimentações financeiras, incluindo entradas e saídas de capital, além da atualização automática do saldo do caixa com base nos pedidos concluídos.
+\end{itemize}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figura3_financas.png} % Substitua por seu arquivo de imagem
+    \caption{Interface do sistema com informações financeiras e de acesso.}
+    \label{fig:financas}
+    \small Fonte: O Autor, 2025.
+\end{figure}
+
+Cada um desses módulos foi implementado como um aplicativo separado dentro do Django, garantindo organização e modularidade. Para garantir a estabilidade do sistema, foram desenvolvidos testes unitários para cada um dos modelos para possíveis falhas e garantir maior confiabilidade. O sistema foi implantado para testes na plataforma Railway, utilizando um plano gratuito que disponibiliza US\$5,00 em recursos. Para a implantação, foi empregada a conteinerização com Docker, juntamente com a configuração do Gunicorn para o gerenciamento eficiente das requisições. Durante esse processo, foram necessários ajustes nos parâmetros de configuração do Django e do PostgreSQL para garantir o funcionamento adequado em ambiente de produção. Nos primeiros testes, o sistema apresentou um tempo médio de resposta de aproximadamente 2,8 segundos, com um consumo máximo de 200 MB de RAM, 0,3 vCPU e 100 MB de armazenamento. Esses valores indicam um funcionamento estável dentro dos limites do plano disponível. Atualmente, os membros da empresa júnior já utilizam o sistema para gerenciar clientes, pedidos e movimentações financeiras. A frequência de uso varia conforme a demanda por serviços e a necessidade de atualização dos dados administrativos.

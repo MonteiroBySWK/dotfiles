@@ -1,0 +1,398 @@
+"use client"
+
+import { 
+  Clock, 
+  Code, 
+  Users, 
+  TrendingUp, 
+  DollarSign, 
+  GitBranch, 
+  Bug, 
+  CheckCircle,
+  AlertTriangle,
+  Calendar,
+  Target,
+  Plus,
+  ArrowRight,
+  Eye,
+  Settings,
+  BarChart3
+} from "lucide-react";
+import { Button } from "../ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
+import { useProjectStore } from "@/stores/projectStore";
+import { useAuthStore } from "@/stores/authStore";
+import { useRouter } from "next/navigation";
+
+export default function MainDashboard() {
+  const { projects, tasks } = useProjectStore();
+  const { user } = useAuthStore();
+  const router = useRouter();
+
+  // Calcular métricas
+  const activeProjects = projects.filter(p => p.status === "in-progress").length;
+  const completedProjects = projects.filter(p => p.status === "completed").length;
+  const planningProjects = projects.filter(p => p.status === "planning").length;
+  const pausedProjects = projects.filter(p => p.status === "paused").length;
+
+  const totalTasks = tasks.length;
+  const todoTasks = tasks.filter(t => t.status === "todo").length;
+  const inProgressTasks = tasks.filter(t => t.status === "in-progress").length;
+  const doneTasks = tasks.filter(t => t.status === "done").length;
+
+  // Tarefas com prazo próximo (próximos 7 dias)
+  const upcomingTasks = tasks.filter(task => {
+    if (!task.dueDate) return false;
+    const today = new Date();
+    const nextWeek = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
+    const taskDate = new Date(task.dueDate);
+    return taskDate <= nextWeek && taskDate >= today;
+  });
+
+  const criticalTasks = tasks.filter(t => t.priority === "critical").length;
+  const highPriorityTasks = tasks.filter(t => t.priority === "high").length;
+
+  // Handlers para navegação e ações
+  const handleCreateProject = () => {
+    router.push("/dashboard/projects/new");
+  };
+
+  const handleViewProjects = () => {
+    router.push("/dashboard/projects");
+  };
+
+  const handleViewTasks = () => {
+    router.push("/dashboard/tasks");
+  };
+
+  const handleViewCalendar = () => {
+    router.push("/dashboard/calendar");
+  };
+
+  const handleViewReports = () => {
+    router.push("/dashboard/reports");
+  };
+
+  const handleViewTeam = () => {
+    router.push("/dashboard/team");
+  };
+
+  const handleViewSettings = () => {
+    router.push("/dashboard/settings");
+  };
+
+  const handleViewClients = () => {
+    router.push("/dashboard/clients");
+  };
+
+  return (
+    <div className="flex flex-1 flex-col gap-6 pt-0 bg-blue-600">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Dashboard Geral</h1>
+          <p className="text-muted-foreground">
+            Visão geral dos projetos e métricas da sua empresa
+          </p>
+        </div>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={handleViewReports}>
+            <BarChart3 className="h-4 w-4 mr-2" />
+            Relatórios
+          </Button>
+          <Button onClick={handleCreateProject}>
+            <Plus className="h-4 w-4 mr-2" />
+            Novo Projeto
+          </Button>
+        </div>
+      </div>
+
+      {/* Métricas Principais */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={handleViewProjects}>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Projetos Ativos
+            </CardTitle>
+            <Code className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{activeProjects}</div>
+            <p className="text-xs text-muted-foreground">
+              {projects.length} projetos totais
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={handleViewProjects}>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Projetos Concluídos
+            </CardTitle>
+            <CheckCircle className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{completedProjects}</div>
+            <p className="text-xs text-muted-foreground">
+              {projects.length > 0 ? Math.round((completedProjects / projects.length) * 100) : 0}% do total
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={handleViewTasks}>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Tarefas Pendentes
+            </CardTitle>
+            <Users className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{todoTasks}</div>
+            <p className="text-xs text-muted-foreground">
+              {totalTasks} tarefas totais
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={handleViewReports}>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Taxa de Conclusão
+            </CardTitle>
+            <DollarSign className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {totalTasks > 0 ? Math.round((doneTasks / totalTasks) * 100) : 0}%
+            </div>
+            <p className="text-xs text-muted-foreground">
+              {doneTasks} de {totalTasks} tarefas
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Cartões de Detalhes */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle className="flex items-center gap-2">
+              <Target className="h-5 w-5" />
+              Status dos Projetos
+            </CardTitle>
+            <Button variant="ghost" size="sm" onClick={handleViewProjects}>
+              <Eye className="h-4 w-4" />
+            </Button>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-sm">Em Desenvolvimento</span>
+              <span className="text-sm font-medium">{activeProjects}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm">Planejamento</span>
+              <span className="text-sm font-medium">{planningProjects}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm">Concluídos</span>
+              <span className="text-sm font-medium">{completedProjects}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm">Pausados</span>
+              <span className="text-sm font-medium">{pausedProjects}</span>
+            </div>
+            <Button size="sm" className="w-full mt-3" onClick={handleViewProjects}>
+              Ver Todos os Projetos
+              <ArrowRight className="h-4 w-4 ml-2" />
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle className="flex items-center gap-2">
+              <GitBranch className="h-5 w-5" />
+              Status das Tarefas
+            </CardTitle>
+            <Button variant="ghost" size="sm" onClick={handleViewTasks}>
+              <Eye className="h-4 w-4" />
+            </Button>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-sm">Para Fazer</span>
+              <span className="text-sm font-medium">{todoTasks}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm">Em Progresso</span>
+              <span className="text-sm font-medium">{inProgressTasks}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm">Concluídas</span>
+              <span className="text-sm font-medium">{doneTasks}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm">Prioridade Alta</span>
+              <span className="text-sm font-medium text-red-600">{criticalTasks + highPriorityTasks}</span>
+            </div>
+            <Button size="sm" className="w-full mt-3" onClick={handleViewTasks}>
+              Gerenciar Tarefas
+              <ArrowRight className="h-4 w-4 ml-2" />
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle className="flex items-center gap-2">
+              <Clock className="h-5 w-5" />
+              Prazos e Entregas
+            </CardTitle>
+            <Button variant="ghost" size="sm" onClick={handleViewCalendar}>
+              <Eye className="h-4 w-4" />
+            </Button>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-sm">Tarefas com prazo</span>
+              <span className="text-sm font-medium">
+                {tasks.filter(t => t.dueDate).length}
+              </span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm">Próximos 7 dias</span>
+              <span className="text-sm font-medium text-yellow-600">
+                {upcomingTasks.length}
+              </span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm">Críticas</span>
+              <span className="text-sm font-medium text-red-600">{criticalTasks}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm">Taxa de conclusão</span>
+              <span className="text-sm font-medium text-green-600">
+                {totalTasks > 0 ? Math.round((doneTasks / totalTasks) * 100) : 0}%
+              </span>
+            </div>
+            <Button size="sm" className="w-full mt-3" onClick={handleViewCalendar}>
+              Ver Calendário
+              <ArrowRight className="h-4 w-4 ml-2" />
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Alertas e Notificações */}
+      <div className="grid gap-4 md:grid-cols-2">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle className="flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-yellow-600" />
+              Alertas Importantes
+            </CardTitle>
+            <Button variant="ghost" size="sm" onClick={handleViewSettings}>
+              <Settings className="h-4 w-4" />
+            </Button>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {criticalTasks > 0 && (
+              <div className="flex items-start gap-3 p-3 bg-red-50 rounded-lg cursor-pointer hover:bg-red-100 transition-colors" onClick={handleViewTasks}>
+                <Bug className="h-4 w-4 text-red-600 mt-0.5" />
+                <div className="flex-1">
+                  <p className="text-sm font-medium">{criticalTasks} tarefas críticas</p>
+                  <p className="text-xs text-muted-foreground">
+                    Requerem atenção imediata
+                  </p>
+                </div>
+                <ArrowRight className="h-4 w-4 text-red-600" />
+              </div>
+            )}
+            {upcomingTasks.length > 0 && (
+              <div className="flex items-start gap-3 p-3 bg-yellow-50 rounded-lg cursor-pointer hover:bg-yellow-100 transition-colors" onClick={handleViewCalendar}>
+                <Calendar className="h-4 w-4 text-yellow-600 mt-0.5" />
+                <div className="flex-1">
+                  <p className="text-sm font-medium">{upcomingTasks.length} tarefas próximas</p>
+                  <p className="text-xs text-muted-foreground">
+                    Prazos nos próximos 7 dias
+                  </p>
+                </div>
+                <ArrowRight className="h-4 w-4 text-yellow-600" />
+              </div>
+            )}
+            {projects.length === 0 && (
+              <div className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg cursor-pointer hover:bg-blue-100 transition-colors" onClick={handleCreateProject}>
+                <Code className="h-4 w-4 text-blue-600 mt-0.5" />
+                <div className="flex-1">
+                  <p className="text-sm font-medium">Bem-vindo!</p>
+                  <p className="text-xs text-muted-foreground">
+                    Comece criando seu primeiro projeto
+                  </p>
+                </div>
+                <ArrowRight className="h-4 w-4 text-blue-600" />
+              </div>
+            )}
+            {criticalTasks === 0 && upcomingTasks.length === 0 && projects.length > 0 && (
+              <div className="flex items-start gap-3 p-3 bg-green-50 rounded-lg">
+                <CheckCircle className="h-4 w-4 text-green-600 mt-0.5" />
+                <div>
+                  <p className="text-sm font-medium">Tudo em ordem!</p>
+                  <p className="text-xs text-muted-foreground">
+                    Nenhuma tarefa crítica ou urgente
+                  </p>
+                </div>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle className="flex items-center gap-2">
+              <TrendingUp className="h-5 w-5 text-green-600" />
+              Resumo da Atividade
+            </CardTitle>
+            <Button variant="ghost" size="sm" onClick={handleViewTeam}>
+              <Users className="h-4 w-4" />
+            </Button>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-sm">Projetos ativos</span>
+              <span className="text-sm font-medium text-green-600">{activeProjects}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm">Tarefas concluídas</span>
+              <span className="text-sm font-medium text-green-600">{doneTasks}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm">Progresso geral</span>
+              <span className="text-sm font-medium">
+                {totalTasks > 0 ? Math.round((doneTasks / totalTasks) * 100) : 0}%
+              </span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm">Usuário ativo</span>
+              <span className="text-sm font-medium text-green-600">
+                {user?.displayName || user?.email || "Anônimo"}
+              </span>
+            </div>
+            <div className="flex gap-2 mt-4">
+              <Button size="sm" variant="outline" onClick={handleViewClients} className="flex-1">
+                Clientes
+              </Button>
+              <Button size="sm" variant="outline" onClick={handleViewTeam} className="flex-1">
+                Equipe
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}

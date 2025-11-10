@@ -1,0 +1,42 @@
+2025-11-09 13:45:55.577 [info] [GitExtensionServiceImpl] Initializing Git extension service.
+2025-11-09 13:45:56.341 [info] [GitExtensionServiceImpl] Successfully activated the vscode.git extension.
+2025-11-09 13:45:56.341 [info] [GitExtensionServiceImpl] Enablement state of the vscode.git extension: true.
+2025-11-09 13:45:56.341 [info] [GitExtensionServiceImpl] Successfully registered Git commit message provider.
+2025-11-09 13:45:59.879 [info] Logged in as MonteiroBySWK
+2025-11-09 13:45:59.881 [info] Using the Electron fetcher.
+2025-11-09 13:46:00.647 [info] Got Copilot token for MonteiroBySWK
+2025-11-09 13:46:00.648 [info] Copilot Chat: 0.32.4, VS Code: 1.105.1
+2025-11-09 13:46:00.662 [info] activationBlocker from 'languageModelAccess' took for 3715ms
+2025-11-09 13:46:00.808 [info] copilot token chat_enabled: true, sku: free_educational_quota
+2025-11-09 13:46:00.808 [info] GitHub.vscode-pull-request-github extension is not yet activated.
+2025-11-09 13:46:00.829 [info] Registering default platform agent...
+2025-11-09 13:46:00.830 [info] activationBlocker from 'conversationFeature' took for 3890ms
+2025-11-09 13:46:00.954 [info] BYOK: Copilot Chat known models list fetched successfully.
+2025-11-09 13:46:01.195 [info] Fetched model metadata in 577ms b80add7d-f46b-4492-8b71-172f135a4f7d
+2025-11-09 13:46:01.301 [info] Latest entry: ccreq:latest.copilotmd
+2025-11-09 13:46:01.303 [info] ccreq:5d8f5803.copilotmd | markdown
+2025-11-09 13:46:01.533 [info] Fetched auto model in 224ms.
+2025-11-09 13:46:02.153 [error] API key not valid. Please pass a valid API key.: Error fetching available Gemini models
+2025-11-09 13:46:07.013 [info] Refetch model metadata: Succeeded in 665ms ff20feb6-1458-4752-a129-3b249be50a93 (4054:3E507E:4B191C1:64EA4E8:6910C54E) using node-fetch with status 200.
+2025-11-09 13:46:07.612 [info] Refetch model metadata: Succeeded in 599ms 509c44eb-42fd-4d4e-a7c3-97498395924a (4170:328988:4CF5E51:66B84C5:6910C54F) using electron-fetch with status 200.
+2025-11-09 13:46:08.193 [info] Refetch model metadata: Succeeded in 581ms 3ea090b0-b269-45c0-baa3-a56cdb100ec0 (41F3:9DE23:4F7660A:693C9EF:6910C54F) using node-http with status 200.
+2025-11-09 14:08:16.779 [info] [GitExtensionServiceImpl] Initializing Git extension service.
+2025-11-09 14:08:16.779 [info] [GitExtensionServiceImpl] Successfully activated the vscode.git extension.
+2025-11-09 14:08:16.779 [info] [GitExtensionServiceImpl] Enablement state of the vscode.git extension: true.
+2025-11-09 14:08:16.779 [info] [GitExtensionServiceImpl] Successfully registered Git commit message provider.
+2025-11-09 14:08:16.998 [error] Error getting a session: Canceled: Canceled
+2025-11-09 14:08:21.747 [info] Logged in as MonteiroBySWK
+2025-11-09 14:08:21.751 [info] Using the Electron fetcher.
+2025-11-09 14:08:22.350 [info] Got Copilot token for MonteiroBySWK
+2025-11-09 14:08:22.351 [info] Copilot Chat: 0.32.4, VS Code: 1.105.1
+2025-11-09 14:08:22.370 [info] activationBlocker from 'languageModelAccess' took for 1625ms
+2025-11-09 14:08:22.696 [info] copilot token chat_enabled: true, sku: free_educational_quota
+2025-11-09 14:08:22.696 [info] GitHub.vscode-pull-request-github extension is not yet activated.
+2025-11-09 14:08:22.714 [info] Registering default platform agent...
+2025-11-09 14:08:22.716 [info] activationBlocker from 'conversationFeature' took for 1975ms
+2025-11-09 14:08:23.709 [info] Fetched model metadata in 2023ms 739b1f8d-3245-4ea9-81d0-0cc68f041ba8
+2025-11-09 14:08:23.730 [info] Latest entry: ccreq:latest.copilotmd
+2025-11-09 14:08:23.731 [info] ccreq:e7a5705d.copilotmd | markdown
+2025-11-09 14:08:23.741 [info] BYOK: Copilot Chat known models list fetched successfully.
+2025-11-09 14:08:24.441 [info] Fetched auto model in 707ms.
+2025-11-09 14:08:25.530 [error] API key not valid. Please pass a valid API key.: Error fetching available Gemini models

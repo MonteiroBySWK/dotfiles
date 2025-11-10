@@ -1,0 +1,1079 @@
+{
+  "version": 3,
+  "requesterUsername": "MonteiroBySWK",
+  "requesterAvatarIconUri": {
+    "$mid": 1,
+    "path": "/u/129693679",
+    "scheme": "https",
+    "authority": "avatars.githubusercontent.com",
+    "query": "v=4"
+  },
+  "responderUsername": "GitHub Copilot",
+  "responderAvatarIconUri": {
+    "id": "copilot"
+  },
+  "initialLocation": "editor",
+  "requests": [
+    {
+      "requestId": "request_4c06ab85-91a4-49d8-8571-56f383dca128",
+      "message": {
+        "parts": [
+          {
+            "range": {
+              "start": 0,
+              "endExclusive": 16
+            },
+            "editorRange": {
+              "startLineNumber": 1,
+              "startColumn": 1,
+              "endLineNumber": 1,
+              "endColumn": 17
+            },
+            "text": "use o TeamMenber",
+            "kind": "text"
+          }
+        ],
+        "text": "use o TeamMenber"
+      },
+      "variableData": {
+        "variables": []
+      },
+      "response": [
+        {
+          "kind": "textEditGroup",
+          "uri": {
+            "$mid": 1,
+            "fsPath": "/home/monteiro/codes/sonar/src/lib/db.ts",
+            "external": "file:///home/monteiro/codes/sonar/src/lib/db.ts",
+            "path": "/home/monteiro/codes/sonar/src/lib/db.ts",
+            "scheme": "file"
+          },
+          "edits": [
+            [
+              {
+                "text": "    teamMembers: [{ userId: \"u1\" }, { userId: \"u2\" }] as TeamMember[],",
+                "range": {
+                  "startLineNumber": 11,
+                  "startColumn": 1,
+                  "endLineNumber": 11,
+                  "endColumn": 55
+                }
+              }
+            ],
+            [
+              {
+                "text": "    teamMembers: [{ userId: \"u3\" }] as TeamMember[],",
+                "range": {
+                  "startLineNumber": 24,
+                  "startColumn": 1,
+                  "endLineNumber": 24,
+                  "endColumn": 37
+                }
+              }
+            ],
+            [
+              {
+                "text": "\nimport type { TeamMember } from \"@/types\";",
+                "range": {
+                  "startLineNumber": 1,
+                  "startColumn": 35,
+                  "endLineNumber": 1,
+                  "endColumn": 35
+                }
+              }
+            ]
+          ],
+          "state": {
+            "sha1": "7b726cf39afe95b922a79e1b44ceb70c4beff2bb",
+            "applied": 3
+          }
+        }
+      ],
+      "responseId": "response_75559701-59ec-4802-a47a-57f059a0d22f",
+      "result": {
+        "timings": {
+          "totalElapsed": 35302
+        },
+        "metadata": {
+          "codeBlocks": [],
+          "toolCallRounds": [
+            {
+              "response": "```typescript\nimport type { TeamMember } from \"@/types\";\n\nconst projects: Project[] = [\n  {\n    id: \"p1\",\n    name: \"Projeto Alpha\",\n    description: \"Desenvolvimento do novo sistema de e-commerce para a Thera.\",\n    status: \"active\",\n    progress: 75,\n    priority: \"high\",\n    teamMembers: [{ userId: \"u1\" }, { userId: \"u2\" }] as TeamMember[],\n    clientName: \"Thera Corp\",\n    budget: { estimated: 150000, actual: 125000 },\n    createdAt: new Date(\"2025-01-15T09:00:00Z\"),\n    deadline: new Date(\"2025-12-20T17:00:00Z\"),\n  },\n  {\n    id: \"p2\",\n    name: \"Aplicativo de Logística\",\n    description: \"App mobile para otimização de rotas de entrega.\",\n    status: \"planning\",\n    progress: 10,\n    priority: \"medium\",\n    teamMembers: [{ userId: \"u3\" }] as TeamMember[],\n    clientName: \"LogiFast\",\n    budget: { estimated: 80000 },\n    createdAt: new Date(\"2025-03-10T09:00:00Z\"),\n    deadline: new Date(\"2026-02-28T17:00:00Z\"),\n  },\n];\n```",
+              "toolCalls": [],
+              "toolInputRetry": 0,
+              "id": "0e940cf2-2d87-4f87-9b89-6edf57628549",
+              "statefulMarker": "U+5Fk9YEMLstrRgA7rPr547h6va2jjfI17c06G00fWzKlw4E70ip9e/lm0laSvu2WxzOYGMxIrr1OT3adfsjM1CQqDEsluKIgQKN3NyHrFf9f5dVC18byOnIns/NTOwi4qwYkumbfbxYYR0+n8/gOgo8yyBjFAcp7d6YcIVQHvmsc+bK9Knu7bs40uM4HcTPlkAy/XrZvyN0E67i6lIOv1bqiioepEPZujQ7ccogdoB5uvDhzBrnsI1QnHe4JIb6u+YsQkdbntVMrtLil6wvt8O0SOT+mFacWVqf+fFwkrrECeAjpRIlmsausK1W6rRZ5Hv7MFo2aRKQs/hQjnWJuPWKs54UmpTr3x9SL1bt6FT9OzJ77em7Glmwv5Ew9Vc1kuZbHUhnRWaAQMkzYXQCMw==",
+              "thinking": {
+                "id": "kVWHlx7ohi5AgTR3EAhaDRfeivcKBUWNUJadLczn4aF1fka6AkAkOctxisR+xDQiYRCseqUNI6wauj5jM3OPXF2bOnkXVtm5jXU3/v3bQMVFIrAUfjhPfcwVOkumiuA7vGeqRYOlxRM3qiZJeBE3+A3Dxp6sb5ZaT9R0jpMVwHr5RU/bRrhztMWPU1WAuBzjnEqEl2SXrPZG4xbwj/FL1vuHQ9QNeuUIKgZ/qxbppZkHBTaTUjEdNloQyMC1WcElAdbHFlioBGvDKvi+2RDbQBIsR/flOg08s+DI0e9rafCtQVYtzBRtVHC6bPl0rFfsxXsLuIXu01HP14JKAwZyKr5EYzmFTyzM05NzIOqNSf9/liEcr95Xd2qj6na5UfUvaHOas7EqN3EZED0svbU=",
+                "text": "**Considering TypeScript Modifications**\n\nI'm thinking about how to handle the TypeScript code modification. I notice that we can't change the import statements, which complicates things a bit. The instructions mention using a selection placeholder for code, but without importing TeamMember, I question if we can reference it. However, it's possible that the Project already includes teamMembers defined with a typo. If that's the case, I might not need to import it after all. Let's see how this plays out!**Analyzing Type Annotations for Team Members**\n\nI'm considering how to properly annotate the variable projects as Project[]. Inside that object, teamMembers should align with Project's type for teamMembers. The user wants to create fully typed TeamMember objects instead of just an object with a userId. I think TeamMember might require fields like id, name, role, and allocation, but I can't assume those specifics. We could use type assertion as a workaround, but it feels a bit off to guess. Let's clarify these requirements before moving forward!**Exploring Helper Function for Team Members**\n\nI'm thinking about creating a typed helper function to map user IDs to TeamMember, possibly using \"as unknown as TeamMember.\" While it feels a bit hacky, the user specifically wrote teamMembers: [{ userId: \"u1\" }]. They likely want to import and utilize the TeamMember type correctly, possibly by declaring a separate mock teamMembers list as TeamMember[]. \n\nHowever, I can't add import lines directly. Still, I could theoretically import in the same file below the initial import. Let's clarify the structure first!**Adding Import for Team Members**\n\nI realize I can add the import statement for TeamMember right inside the selection, and that it’ll be valid since it’s at the top level. I could modify the selection like this:\n\n```typescript\nimport { TeamMember } from \"@/types\";\nconst teamMembers: TeamMember[] = [{ id: \"u1\", name: \"...\", role: \"developer\" }, ...];\n```\n\nFrom there, I could define projects that reference these teamMembers. However, I'm unsure about the complete structure of TeamMember. I think it might just need a userId field, but I'm concerned TypeScript will flag issues if the actual definition differs. Let's proceed with caution!```typescript\nimport type { TeamMenber } from \"@/types\";\n\nconst projects: Project[] = [\n  {\n    id: \"p1\",\n    name: \"Projeto Alpha\",\n    description: \"Desenvolvimento do novo sistema de e-commerce para a Thera.\",\n    status: \"active\",\n    progress: 75,\n    priority: \"high\",\n    teamMembers: [{ userId: \"u1\" }, { userId: \"u2\" }] as TeamMenber[],\n    clientName: \"Thera Corp\",\n    budget: { estimated: 150000, actual: 125000 },\n    createdAt: new Date(\"2025-01-15T09:00:00Z\"),\n    deadline: new Date(\"2025-12-20T17:00:00Z\"),\n  },\n  {\n    id: \"p2\",\n    name: \"Aplicativo de Logística\",\n    description: \"App mobile para otimização de rotas de entrega.\",\n    status: \"planning\",\n    progress: 10,\n    priority: \"medium\",\n    teamMembers: [{ userId: \"u3\" }] as TeamMenber[],\n    clientName: \"LogiFast\",\n    budget: { estimated: 80000 },\n    createdAt: new Date(\"2025-03-10T09:00:00Z\"),\n    deadline: new Date(\"2026-02-28T17:00:00Z\"),\n  },\n];\n```",
+                "encrypted": "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",
+                "tokens": 2176
+              }
+            }
+          ],
+          "modelMessageId": "fc5574fe-9229-4aaa-ae99-d4ba1cb04ea7",
+          "responseId": "63a79e64-050f-450d-940d-8ae1bd37ddea",
+          "sessionId": "65fc6261-afcd-4199-969f-de88d4e08026",
+          "agentId": "github.copilot.editor"
+        },
+        "details": "GPT-5 • 0.9x"
+      },
+      "followups": [],
+      "isCanceled": false,
+      "agent": {
+        "extensionId": {
+          "value": "GitHub.copilot-chat",
+          "_lower": "github.copilot-chat"
+        },
+        "extensionVersion": "0.32.3",
+        "publisherDisplayName": "GitHub",
+        "extensionPublisherId": "GitHub",
+        "extensionDisplayName": "GitHub Copilot Chat",
+        "id": "github.copilot.editor",
+        "description": "Ask or edit in context",
+        "when": "!config.inlineChat.enableV2 && !config.github.copilot.chat.advanced.inlineChat2",
+        "metadata": {
+          "themeIcon": {
+            "id": "copilot"
+          },
+          "hasFollowups": false,
+          "supportIssueReporting": false
+        },
+        "name": "Copilot",
+        "fullName": "GitHub Copilot",
+        "isDefault": true,
+        "locations": [
+          "editor"
+        ],
+        "modes": [
+          "ask"
+        ],
+        "slashCommands": [
+          {
+            "name": "generate",
+            "description": "Generate new code",
+            "disambiguation": [
+              {
+                "category": "generate",
+                "description": "Generate new code",
+                "examples": [
+                  "Add a function that returns the sum of two numbers"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "edit",
+            "description": "Edit the selected code in your active editor",
+            "disambiguation": [
+              {
+                "category": "edit",
+                "description": "Make changes to existing code",
+                "examples": [
+                  "Change this method to use async/await"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "doc",
+            "description": "Add documentation comment for this symbol",
+            "disambiguation": [
+              {
+                "category": "doc",
+                "description": "Add documentation comment for this symbol",
+                "examples": [
+                  "Add jsdoc to this method"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "fix",
+            "description": "Propose a fix for the problems in the selected code",
+            "disambiguation": [
+              {
+                "category": "fix",
+                "description": "Propose a fix for the problems in the selected code",
+                "examples": [
+                  "There is a problem in this code. Rewrite the code to show it with the bug fixed."
+                ]
+              }
+            ]
+          },
+          {
+            "name": "explain",
+            "description": "Explain how the code in your active editor works",
+            "disambiguation": [
+              {
+                "category": "explain",
+                "description": "Explain how the code in your active editor works",
+                "examples": [
+                  "Write an explanation for the code above as paragraphs of text."
+                ]
+              }
+            ]
+          },
+          {
+            "name": "tests",
+            "description": "Generate unit tests for the selected code",
+            "disambiguation": [
+              {
+                "category": "tests",
+                "description": "Generate unit tests for the selected code. The user does not want to fix their existing tests.",
+                "examples": [
+                  "Write a set of detailed unit test functions for the code above."
+                ]
+              }
+            ]
+          }
+        ],
+        "disambiguation": [
+          {
+            "category": "unknown",
+            "description": "Intent of this command is unclear or is not related to information technologies",
+            "examples": [
+              "Add a dog to this comment."
+            ]
+          }
+        ]
+      },
+      "contentReferences": [],
+      "codeCitations": [],
+      "timestamp": 1761343529999,
+      "modelId": "copilot/auto"
+    },
+    {
+      "requestId": "request_f72f0f7c-b000-4457-aa8d-019d5abd42e1",
+      "message": {
+        "parts": [
+          {
+            "range": {
+              "start": 0,
+              "endExclusive": 30
+            },
+            "editorRange": {
+              "startLineNumber": 1,
+              "startColumn": 1,
+              "endLineNumber": 1,
+              "endColumn": 31
+            },
+            "text": "agora cria array de TeamMember",
+            "kind": "text"
+          }
+        ],
+        "text": "agora cria array de TeamMember"
+      },
+      "variableData": {
+        "variables": []
+      },
+      "response": [
+        {
+          "kind": "textEditGroup",
+          "uri": {
+            "$mid": 1,
+            "fsPath": "/home/monteiro/codes/sonar/src/lib/db.ts",
+            "external": "file:///home/monteiro/codes/sonar/src/lib/db.ts",
+            "path": "/home/monteiro/codes/sonar/src/lib/db.ts",
+            "scheme": "file"
+          },
+          "edits": [
+            [
+              {
+                "text": "const teamMembers: TeamMember[] = [",
+                "range": {
+                  "startLineNumber": 4,
+                  "startColumn": 1,
+                  "endLineNumber": 4,
+                  "endColumn": 30
+                }
+              }
+            ],
+            [
+              {
+                "text": "  { userId: \"u1\" },",
+                "range": {
+                  "startLineNumber": 5,
+                  "startColumn": 1,
+                  "endLineNumber": 5,
+                  "endColumn": 4
+                }
+              }
+            ],
+            [
+              {
+                "text": "  { userId: \"u2\" },",
+                "range": {
+                  "startLineNumber": 6,
+                  "startColumn": 1,
+                  "endLineNumber": 6,
+                  "endColumn": 14
+                }
+              }
+            ],
+            [
+              {
+                "text": "  { userId: \"u3\" },",
+                "range": {
+                  "startLineNumber": 7,
+                  "startColumn": 1,
+                  "endLineNumber": 7,
+                  "endColumn": 27
+                }
+              }
+            ],
+            [
+              {
+                "text": "];",
+                "range": {
+                  "startLineNumber": 8,
+                  "startColumn": 1,
+                  "endLineNumber": 8,
+                  "endColumn": 80
+                }
+              }
+            ],
+            [
+              {
+                "text": "",
+                "range": {
+                  "startLineNumber": 9,
+                  "startColumn": 1,
+                  "endLineNumber": 9,
+                  "endColumn": 22
+                }
+              }
+            ],
+            [
+              {
+                "text": "const projects: Project[] = [",
+                "range": {
+                  "startLineNumber": 10,
+                  "startColumn": 1,
+                  "endLineNumber": 10,
+                  "endColumn": 18
+                }
+              }
+            ],
+            [
+              {
+                "text": "  {",
+                "range": {
+                  "startLineNumber": 11,
+                  "startColumn": 1,
+                  "endLineNumber": 11,
+                  "endColumn": 22
+                }
+              }
+            ],
+            [
+              {
+                "text": "    id: \"p1\",",
+                "range": {
+                  "startLineNumber": 12,
+                  "startColumn": 1,
+                  "endLineNumber": 12,
+                  "endColumn": 71
+                }
+              }
+            ],
+            [
+              {
+                "text": "    name: \"Projeto Alpha\",",
+                "range": {
+                  "startLineNumber": 13,
+                  "startColumn": 1,
+                  "endLineNumber": 13,
+                  "endColumn": 30
+                }
+              }
+            ],
+            [
+              {
+                "text": "    description: \"Desenvolvimento do novo sistema de e-commerce para a Thera.\",",
+                "range": {
+                  "startLineNumber": 14,
+                  "startColumn": 1,
+                  "endLineNumber": 14,
+                  "endColumn": 51
+                }
+              }
+            ],
+            [
+              {
+                "text": "    status: \"active\",",
+                "range": {
+                  "startLineNumber": 15,
+                  "startColumn": 1,
+                  "endLineNumber": 15,
+                  "endColumn": 49
+                }
+              }
+            ],
+            [
+              {
+                "text": "    progress: 75,",
+                "range": {
+                  "startLineNumber": 16,
+                  "startColumn": 1,
+                  "endLineNumber": 16,
+                  "endColumn": 48
+                }
+              }
+            ],
+            [
+              {
+                "text": "    priority: \"high\",",
+                "range": {
+                  "startLineNumber": 17,
+                  "startColumn": 1,
+                  "endLineNumber": 17,
+                  "endColumn": 5
+                }
+              }
+            ],
+            [
+              {
+                "text": "    teamMembers: [{ userId: \"u1\" }, { userId: \"u2\" }] as TeamMember[],",
+                "range": {
+                  "startLineNumber": 18,
+                  "startColumn": 1,
+                  "endLineNumber": 18,
+                  "endColumn": 4
+                }
+              }
+            ],
+            [
+              {
+                "text": "    clientName: \"Thera Corp\",",
+                "range": {
+                  "startLineNumber": 19,
+                  "startColumn": 1,
+                  "endLineNumber": 19,
+                  "endColumn": 14
+                }
+              }
+            ],
+            [
+              {
+                "text": "    budget: { estimated: 150000, actual: 125000 },",
+                "range": {
+                  "startLineNumber": 20,
+                  "startColumn": 1,
+                  "endLineNumber": 20,
+                  "endColumn": 37
+                }
+              }
+            ],
+            [
+              {
+                "text": "    createdAt: new Date(\"2025-01-15T09:00:00Z\"),",
+                "range": {
+                  "startLineNumber": 21,
+                  "startColumn": 1,
+                  "endLineNumber": 21,
+                  "endColumn": 68
+                }
+              }
+            ],
+            [
+              {
+                "text": "    deadline: new Date(\"2025-12-20T17:00:00Z\"),",
+                "range": {
+                  "startLineNumber": 22,
+                  "startColumn": 1,
+                  "endLineNumber": 22,
+                  "endColumn": 24
+                }
+              }
+            ],
+            [
+              {
+                "text": "  },",
+                "range": {
+                  "startLineNumber": 23,
+                  "startColumn": 1,
+                  "endLineNumber": 23,
+                  "endColumn": 18
+                }
+              }
+            ],
+            [
+              {
+                "text": "  {",
+                "range": {
+                  "startLineNumber": 24,
+                  "startColumn": 1,
+                  "endLineNumber": 24,
+                  "endColumn": 24
+                }
+              }
+            ],
+            [
+              {
+                "text": "    id: \"p2\",",
+                "range": {
+                  "startLineNumber": 25,
+                  "startColumn": 1,
+                  "endLineNumber": 25,
+                  "endColumn": 53
+                }
+              }
+            ],
+            [
+              {
+                "text": "    name: \"Aplicativo de Logística\",",
+                "range": {
+                  "startLineNumber": 26,
+                  "startColumn": 1,
+                  "endLineNumber": 26,
+                  "endColumn": 28
+                }
+              }
+            ],
+            [
+              {
+                "text": "    description: \"App mobile para otimização de rotas de entrega.\",",
+                "range": {
+                  "startLineNumber": 27,
+                  "startColumn": 1,
+                  "endLineNumber": 27,
+                  "endColumn": 34
+                }
+              }
+            ],
+            [
+              {
+                "text": "    status: \"planning\",",
+                "range": {
+                  "startLineNumber": 28,
+                  "startColumn": 1,
+                  "endLineNumber": 28,
+                  "endColumn": 49
+                }
+              }
+            ],
+            [
+              {
+                "text": "    progress: 10,",
+                "range": {
+                  "startLineNumber": 29,
+                  "startColumn": 1,
+                  "endLineNumber": 29,
+                  "endColumn": 48
+                }
+              }
+            ],
+            [
+              {
+                "text": "    priority: \"medium\",",
+                "range": {
+                  "startLineNumber": 30,
+                  "startColumn": 1,
+                  "endLineNumber": 30,
+                  "endColumn": 5
+                }
+              }
+            ],
+            [
+              {
+                "text": "    teamMembers: [{ userId: \"u3\" }] as TeamMember[],",
+                "range": {
+                  "startLineNumber": 31,
+                  "startColumn": 1,
+                  "endLineNumber": 31,
+                  "endColumn": 3
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    clientName: \"LogiFast\",",
+                "range": {
+                  "startLineNumber": 31,
+                  "startColumn": 53,
+                  "endLineNumber": 31,
+                  "endColumn": 53
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    budget: { estimated: 80000 },",
+                "range": {
+                  "startLineNumber": 32,
+                  "startColumn": 28,
+                  "endLineNumber": 32,
+                  "endColumn": 28
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    createdAt: new Date(\"2025-03-10T09:00:00Z\"),",
+                "range": {
+                  "startLineNumber": 33,
+                  "startColumn": 34,
+                  "endLineNumber": 33,
+                  "endColumn": 34
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    deadline: new Date(\"2026-02-28T17:00:00Z\"),",
+                "range": {
+                  "startLineNumber": 34,
+                  "startColumn": 49,
+                  "endLineNumber": 34,
+                  "endColumn": 49
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  },",
+                "range": {
+                  "startLineNumber": 35,
+                  "startColumn": 48,
+                  "endLineNumber": 35,
+                  "endColumn": 48
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n];",
+                "range": {
+                  "startLineNumber": 36,
+                  "startColumn": 5,
+                  "endLineNumber": 36,
+                  "endColumn": 5
+                }
+              }
+            ],
+            []
+          ],
+          "state": {
+            "sha1": "7b726cf39afe95b922a79e1b44ceb70c4beff2bb",
+            "applied": 3
+          }
+        }
+      ],
+      "responseId": "response_4ca08717-6ef1-4f51-aff6-ea08b21ffaa2",
+      "result": {
+        "timings": {
+          "totalElapsed": 28407
+        },
+        "metadata": {
+          "codeBlocks": [],
+          "toolCallRounds": [
+            {
+              "response": "The modified $SELECTION_PLACEHOLDER$ code with ``` is:\n```typescript\nconst teamMembers: TeamMember[] = [\n  { userId: \"u1\" },\n  { userId: \"u2\" },\n  { userId: \"u3\" },\n];\n\nconst projects: Project[] = [\n  {\n    id: \"p1\",\n    name: \"Projeto Alpha\",\n    description: \"Desenvolvimento do novo sistema de e-commerce para a Thera.\",\n    status: \"active\",\n    progress: 75,\n    priority: \"high\",\n    teamMembers: [{ userId: \"u1\" }, { userId: \"u2\" }] as TeamMember[],\n    clientName: \"Thera Corp\",\n    budget: { estimated: 150000, actual: 125000 },\n    createdAt: new Date(\"2025-01-15T09:00:00Z\"),\n    deadline: new Date(\"2025-12-20T17:00:00Z\"),\n  },\n  {\n    id: \"p2\",\n    name: \"Aplicativo de Logística\",\n    description: \"App mobile para otimização de rotas de entrega.\",\n    status: \"planning\",\n    progress: 10,\n    priority: \"medium\",\n    teamMembers: [{ userId: \"u3\" }] as TeamMember[],\n    clientName: \"LogiFast\",\n    budget: { estimated: 80000 },\n    createdAt: new Date(\"2025-03-10T09:00:00Z\"),\n    deadline: new Date(\"2026-02-28T17:00:00Z\"),\n  },\n];\n```",
+              "toolCalls": [],
+              "toolInputRetry": 0,
+              "id": "2a2f7cb5-82ae-4168-aa4b-55763969cea5",
+              "statefulMarker": "KXyCsjwaZecaJs3i6VIol3H610cpfo8sSI1JDBG/Gt/x5J0C9/LMKo/K0wzV/qfW9evMYDTh0hx/5uAVRN8+6xpd80oMeO/9+TItitmJ6m1Mv2ljdaGg40uxbvW8ejO/8SmOXcOs6mUGHggtKAsDWon7TRi0hkFiNpFB1FMXtTe5A656tqnhTdWuS8/pfZDhFUzDF5n6YieNUOWvp4dil6DOeiuQtDO9j7x2+or9pMAH4l3MfOO9SAOffFArqi+/17XeiZHHhb/Vg4TYa+gndEqIdUkRMfRJ9aC6DzIpJW9FXY64IC65/iZZMKGInaJpTP0vl8iBGKXYLhWW/MNeTD5evlqrOhB/xqSTTXJK4i+o1u12z2SH8HnJNYJl8UhcG40KyN9quxQZxqCLBcCZSA==",
+              "thinking": {
+                "id": "7P61RO27IaV5FEUV2YYM+0R6fbm7XbV8iUmt7vVipVItmNvQtXGQVn2gEI9qIv13p6GOP5WCB/FhsxHluIBW1iHAb5sdCOM2Nfsw1t2LVz2OSmRqiKQVgk/aJQKfUzYe/DpzkULAAbu6Ie0XZYD+3YCXB04Gcn9Gg6wC/vdoq8N+Cc8+BTL/1q0F01+8+FpJHCSFtsulO3F7BSV4JSDySTmRVqWf/5+QUoIZ+lXLiZi47P8lIJSQqSwlM/cfvhLYP21vG6RL1oNgWXtLwh3JYPcmwos+kWL/tFjGNKC6O9547SG4jbQY0OZ9ibeWW//OkqDILgtyx77nimOAQhcsN7KNtB/LmYUqX7q43F2yCXnX02imlQt+C7sVK+OsKteMOKHCeixVfGR9F2ol3bQ=",
+                "text": "**Considering GitHub Copilot Response**\n\nI see that the user’s prompt in Portuguese translates to requesting to create an array of `TeamMember`. In the current context, there’s already an array for projects that references `TeamMember[]`. It’s a bit unclear whether they want to replace the existing selection or add to it. Since they've specifically mentioned creating a `TeamMember` array, I should prioritize that while being cautious about the existing project array. I need to clarify this before proceeding.**Evaluating Code Modifications**\n\nThe user provided existing code and indicated where to insert the modified code. I need to replace the selection while considering if both the `projects` and `teamMembers` arrays are necessary. Currently, the selection directly references the `projects` array, so if I replace it with a `teamMembers` array, the `projects` array would be lost. The user didn’t explicitly say to keep `projects`, but since it was previously referenced, they might want both arrays included in the final code solution. I need to clarify this to get it right.**Defining TeamMembers Array**\n\nI'm considering the standard approach of creating a `const teamMembers: TeamMember[] = [...]` while keeping the `projects` array that references userIds. To include both arrays, I should define `teamMembers` first. It looks right to replace the placeholder with both definitions, but I need to clarify the `TeamMember` type shape from \"@/types\". The previous code only included the userId, but a realistic `TeamMember` type may have more attributes like role or allocation. I think I should create the `teamMembers` array using a minimal shape that adheres to the `TeamMember` type.**Constructing TeamMembers Array**\n\nSince the previous code used `TeamMember[]` with objects that only had userIds, it seems the `TeamMember` type requires at least that property. To be safe and avoid errors, I could use type assertion again but keep the array minimal by just including `userId`. I could also guess at additional fields, like role, but that might lead to mismatches. \n\nI’ll define the `teamMembers` array as:\n\n```javascript\nconst teamMembers: TeamMember[] = [\n  { userId: \"u1\" },\n  { userId: \"u2\" },\n  { userId: \"u3\" },\n];\n```\n\nSince this is a database file, I should probably add an export for this array, even though previous code didn’t export projects.**Creating Final Code Snippet**\n\nThe user hasn’t exported any arrays in previous code, but since they asked me to create a `TeamMember` array, I need to include both `teamMembers` and `projects`. Their instruction also prompts for a specific format, stating: \"The modified $SELECTION_PLACEHOLDER$ code with ``` is:\". \n\nI’ll define `teamMembers` with just userIds for now to maintain minimal risk, and for `projects`, I’ll keep the previous structure but ensure to include the necessary references.\n\nHere’s the crafted code:\n\n```javascript\nconst teamMembers: TeamMember[] = [\n  { userId: \"u1\" },\n  { userId: \"u2\" },\n  { userId: \"u3\" },\n];\n\nconst projects: Project[] = [\n  {\n    id: \"p1\",\n    name: \"...\",\n    // ... same as earlier \n  },\n  {\n    id: \"p2\",\n    // ...\n  },\n];\n```\n\nThis keeps it clean and consistent!",
+                "encrypted": "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",
+                "tokens": 1728
+              }
+            }
+          ],
+          "modelMessageId": "619e8e37-12ad-4387-8393-7d230a9f5f58",
+          "responseId": "9698710c-9552-4693-9873-a6a7104c719f",
+          "sessionId": "65fc6261-afcd-4199-969f-de88d4e08026",
+          "agentId": "github.copilot.editor"
+        },
+        "details": "GPT-5 • 0.9x"
+      },
+      "followups": [],
+      "isCanceled": false,
+      "agent": {
+        "extensionId": {
+          "value": "GitHub.copilot-chat",
+          "_lower": "github.copilot-chat"
+        },
+        "extensionVersion": "0.32.3",
+        "publisherDisplayName": "GitHub",
+        "extensionPublisherId": "GitHub",
+        "extensionDisplayName": "GitHub Copilot Chat",
+        "id": "github.copilot.editor",
+        "description": "Ask or edit in context",
+        "when": "!config.inlineChat.enableV2 && !config.github.copilot.chat.advanced.inlineChat2",
+        "metadata": {
+          "themeIcon": {
+            "id": "copilot"
+          },
+          "hasFollowups": false,
+          "supportIssueReporting": false
+        },
+        "name": "Copilot",
+        "fullName": "GitHub Copilot",
+        "isDefault": true,
+        "locations": [
+          "editor"
+        ],
+        "modes": [
+          "ask"
+        ],
+        "slashCommands": [
+          {
+            "name": "generate",
+            "description": "Generate new code",
+            "disambiguation": [
+              {
+                "category": "generate",
+                "description": "Generate new code",
+                "examples": [
+                  "Add a function that returns the sum of two numbers"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "edit",
+            "description": "Edit the selected code in your active editor",
+            "disambiguation": [
+              {
+                "category": "edit",
+                "description": "Make changes to existing code",
+                "examples": [
+                  "Change this method to use async/await"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "doc",
+            "description": "Add documentation comment for this symbol",
+            "disambiguation": [
+              {
+                "category": "doc",
+                "description": "Add documentation comment for this symbol",
+                "examples": [
+                  "Add jsdoc to this method"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "fix",
+            "description": "Propose a fix for the problems in the selected code",
+            "disambiguation": [
+              {
+                "category": "fix",
+                "description": "Propose a fix for the problems in the selected code",
+                "examples": [
+                  "There is a problem in this code. Rewrite the code to show it with the bug fixed."
+                ]
+              }
+            ]
+          },
+          {
+            "name": "explain",
+            "description": "Explain how the code in your active editor works",
+            "disambiguation": [
+              {
+                "category": "explain",
+                "description": "Explain how the code in your active editor works",
+                "examples": [
+                  "Write an explanation for the code above as paragraphs of text."
+                ]
+              }
+            ]
+          },
+          {
+            "name": "tests",
+            "description": "Generate unit tests for the selected code",
+            "disambiguation": [
+              {
+                "category": "tests",
+                "description": "Generate unit tests for the selected code. The user does not want to fix their existing tests.",
+                "examples": [
+                  "Write a set of detailed unit test functions for the code above."
+                ]
+              }
+            ]
+          }
+        ],
+        "disambiguation": [
+          {
+            "category": "unknown",
+            "description": "Intent of this command is unclear or is not related to information technologies",
+            "examples": [
+              "Add a dog to this comment."
+            ]
+          }
+        ]
+      },
+      "contentReferences": [],
+      "codeCitations": [],
+      "timestamp": 1761343665893,
+      "modelId": "copilot/auto"
+    },
+    {
+      "requestId": "request_be789a61-60f0-4b8c-989e-3a248f84fdca",
+      "message": {
+        "parts": [
+          {
+            "range": {
+              "start": 0,
+              "endExclusive": 110
+            },
+            "editorRange": {
+              "startLineNumber": 1,
+              "startColumn": 1,
+              "endLineNumber": 2,
+              "endColumn": 1
+            },
+            "text": "Type '{ userId: string; }' is missing the following properties from type 'TeamMember': role, joinedAtts(2739)\n",
+            "kind": "text"
+          }
+        ],
+        "text": "Type '{ userId: string; }' is missing the following properties from type 'TeamMember': role, joinedAtts(2739)\n"
+      },
+      "variableData": {
+        "variables": []
+      },
+      "response": [
+        {
+          "value": "Add the missing required fields (role and joinedAt) to each TeamMember object and reuse the teamMembers array in projects to avoid incomplete literals.\n\n",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/monteiro/codes/sonar/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "progressMessage",
+          "content": {
+            "value": "Generating edits...",
+            "uris": {}
+          }
+        },
+        {
+          "kind": "textEditGroup",
+          "uri": {
+            "$mid": 1,
+            "fsPath": "/home/monteiro/codes/sonar/src/lib/db.ts",
+            "external": "file:///home/monteiro/codes/sonar/src/lib/db.ts",
+            "path": "/home/monteiro/codes/sonar/src/lib/db.ts",
+            "scheme": "file"
+          },
+          "edits": [
+            [
+              {
+                "text": "const teamMembers: TeamMember[] = [\n  { userId: \"u1\", role: \"developer\", joinedAt: new Date(\"2024-01-01T00:00:00Z\") },\n  { userId: \"u2\", role: \"designer\", joinedAt: new Date(\"2024-02-01T00:00:00Z\") },\n  { userId: \"u3\", role: \"manager\", joinedAt: new Date(\"2024-03-01T00:00:00Z\") },\n];\n",
+                "range": {
+                  "startLineNumber": 4,
+                  "startColumn": 1,
+                  "endLineNumber": 9,
+                  "endColumn": 1
+                }
+              },
+              {
+                "text": "    teamMembers: [teamMembers[0], teamMembers[1]],\n",
+                "range": {
+                  "startLineNumber": 18,
+                  "startColumn": 1,
+                  "endLineNumber": 19,
+                  "endColumn": 1
+                }
+              },
+              {
+                "text": "    teamMembers: [teamMembers[2]],\n",
+                "range": {
+                  "startLineNumber": 31,
+                  "startColumn": 1,
+                  "endLineNumber": 32,
+                  "endColumn": 1
+                }
+              }
+            ]
+          ],
+          "state": {
+            "sha1": "3f019ddaff6307a099adbce6f226340069072a68",
+            "applied": 2
+          }
+        }
+      ],
+      "responseId": "response_304f12dd-9542-4dcd-acfb-283b8a87e359",
+      "result": {
+        "timings": {
+          "firstProgress": 21446,
+          "totalElapsed": 22685
+        },
+        "metadata": {
+          "codeBlocks": [],
+          "toolCallRounds": [
+            {
+              "response": "Add the missing required fields (role and joinedAt) to each TeamMember object and reuse the teamMembers array in projects to avoid incomplete literals.\n\n---FILEPATH /home/monteiro/codes/sonar/src/lib/db.ts\n---FIND\n```typescript\nconst teamMembers: TeamMember[] = [\n  { userId: \"u1\" },\n  { userId: \"u2\" },\n  { userId: \"u3\" },\n];\n```\n---REPLACE\n```typescript\nconst teamMembers: TeamMember[] = [\n  { userId: \"u1\", role: \"developer\", joinedAt: new Date(\"2024-01-01T00:00:00Z\") },\n  { userId: \"u2\", role: \"designer\", joinedAt: new Date(\"2024-02-01T00:00:00Z\") },\n  { userId: \"u3\", role: \"manager\", joinedAt: new Date(\"2024-03-01T00:00:00Z\") },\n];\n```\n---FILEPATH /home/monteiro/codes/sonar/src/lib/db.ts\n---FIND\n```typescript\n    teamMembers: [{ userId: \"u1\" }, { userId: \"u2\" }] as TeamMember[],\n```\n---REPLACE\n```typescript\n    teamMembers: [teamMembers[0], teamMembers[1]],\n```\n---FILEPATH /home/monteiro/codes/sonar/src/lib/db.ts\n---FIND\n```typescript\n    teamMembers: [{ userId: \"u3\" }] as TeamMember[],\n```\n---REPLACE\n```typescript\n    teamMembers: [teamMembers[2]],\n```\n---COMPLETE",
+              "toolCalls": [],
+              "toolInputRetry": 0,
+              "id": "24dbd6ab-e30c-4e9f-8829-0e52acc9ffa6",
+              "statefulMarker": "fGLp6ZPnlB7f/t/A6rdAbQogsSzAcIHmrEHNV93Mza9mFBxbZkP1UFacPLSKJc3A7gOHmgjr0pevmdnXiuXCejUprG06NB2NtkG9eSHlVGmyUKBPuG0j4O1HIGEIID3WpdOq0oLoJP1apiuX0JQl8ZTq9je+Iw1GSobJi7Q9u/bXirvVlqAR2QPCMqyS8UfVpC2yup5Assgvorg8PxoN785+fqRgkFsK0qmJu7Cvm39aGkt1NRnnNTkjPn02quRo1IU+VDjE1TAAkv7fTCHSALMIzC6zKd0+jKUnpgO/UEvj0fdurdd6XTktFa5kE5EN9kQntL+9Ffes50i32yBwmLX3VTq8/xWenFWHURqMRdypt2/koBgBuSe41r0R09hK9M/t/rmCYUgovXUT03q17g==",
+              "thinking": {
+                "id": "mn7NhnKs35qzX0gLm7OarRCvUnU7/yvxCFCvL9eRyOQd2WSOTfDD+eNESuNHslAdR175QkiMIZaxx57dths9tPD97uo6hPf0wrS8VvTEHTQZ3IGbPADyQH34Vm9hZcUDZmwV1Xb3CLIgCLLHeXu3yLeGnbzNhwVBpF9Mwr7vfWzjYUifRDiXdjfkrspF1qHxte/pEZZ6QlC/YA/6FayGrKUF7wYGw2deFcPm2Sfd9fTmqHexPYpq+jstCHKM5ggXBe1US71M4izMvaGwqbHr1xZ0ovNBjqJTgkWfTQxasp3vdxYVSxbRaaAKdF9xPghmbi/M3Rhw1Nq93zcjHVAsmp1WYEVDA1AeMrtdcnvh0vGdpnQ1/v4Ac0DAReZUwhWOw5qCxJdJ1i74LcDwT0g=",
+                "text": "**Proposing a code fix**\n\nI see we need to propose a fix regarding the TypeScript error indicating that properties like role and joinedAt are missing from the TeamMember type. The TeamMember type is likely defined in \"@/types\" to include userId, role, and joinedAt. There might be a typo with \"joinedAtts.\" We need to ensure that when creating TeamMember objects in the teamMembers array, we include the required properties: role and joinedAt. I should suggest updating those objects accordingly.**Choosing correct types**\n\nI understand we need to work with at least two fields: role and joinedAt. The role could be something like \"manager\" or \"developer,\" but I can't be sure without knowing the exact type shape. I think it’s safer to import the TeamMember type if possible, but since it may not be, I could use generic strings. Making properties partial with type assertion doesn’t seem ideal, especially if the project already uses TeamMember[]. It seems I need to find a way to resolve these errors properly.**Updating TeamMember properties**\n\nI see I could either add the role and joinedAt fields to all TeamMember object literals or change the type to Partial<TeamMember>[] to allow missing properties. However, since the TeamMember type is used elsewhere, it makes sense to add the necessary fields directly. I'll include role and joinedAt for both teamMembers and the project arrays. For joinedAt, it’s likely a Date type, so I'll set it to something like new Date(\"2025-01-01T00:00:00Z\"). This should resolve the missing properties issue.**Updating team member details**\n\nIt looks like I've got a flag on the line where I'm defining team members. To fix this, I’ll update the array to include the role and joinedAt fields for each member. The updated array will look like this:\n\n```\nconst teamMembers: TeamMember[] = [\n  { userId: \"u1\", role: \"Developer\", joinedAt: new Date(\"2024-01-01T00:00:00Z\") },\n  { userId: \"u2\", role: \"Designer\", joinedAt: new Date(\"2024-02-01T00:00:00Z\") },\n  { userId: \"u3\", role: \"Project Manager\", joinedAt: new Date(\"2024-03-01T00:00:00Z\") },\n];\n```\n\nHowever, I’m uncertain about using specific role titles if the role is a union type, and I can't import the Role type. If 'role' is required, I need to provide a valid value, but I could also consider making it optional or using Pick to create a subset. I'll figure out a solid approach to ensure it works correctly!**Updating team members and projects**\n\nFor the top-level variable, I could type it as Pick<TeamMember, 'userId'>[] or use Partial, but that might break existing code that expects TeamMember[]. The intention is clear: create a proper array of TeamMember, which means I need to include the necessary fields. I’ll update the teamMembers array with the complete objects, ensuring I reference them correctly in the projects. I’ll maintain the coding style, ensuring proper quotes and semicolons are consistent. Finally, I might consider exporting these arrays for potential reuse. Let's finalize the modifications!",
+                "encrypted": "Lm2ZcEPMqrwjKdK5nM68Cc93lj21ym7he/v1hLcoDHKqPOUcnXJXOCBYGHXbByIL4ke0mKtXacyN1Zrp6O+9CR7bawlM0YmCKR4LHIfTqMoqa2aZ3gZw3k+8W3I1cNYBwI2HayFjfwnxPQFkfiO6398d1H0canDVVmzDh7Z4hVl9qMIF+JEeDgJa1zGqoY7YSagJ03UP58dBaD/ISPHXHwopF1NJmBc0NdTbJa8dTKH/Z3nbRR7T0RcdwJwOrNlmBKmzfiyOBvKMUmL196lEY2na0Gx4SwC0028Blkr4jBUhurga2S0Hncblvm1HEbHRfv2Gs6+Qhj+LhTP6D0dqY3jWauny++UR7hsAL91ZsY9xm0vC4nzvr/zhXUL3i5MOpM9oKVIbdKb/K+21qtuvy1Ivdaoe08bPzZt6o6pcc1dJh4/OhZldFiVIxe+Z/FNPWqRc3gmMBWNfqVrwEFMXhfC/aWZ4uEoNkUAtE/7WU3M7kQ+9DF7PxM8s+OKLuwOPQBiMTefK8cPhE3XkJF8pSdNA5gxCwtjNFu9mPgQf/vo3P2uumYM02Pk+Ws4yn5l3xJTzfOyLfhaRNteL28rpNLyERVaLYmiqzdZ/gG6KM3vBJZCZnK3oIB38QPchGVumtQ0euGKZFPUONd1IRHke+EA0ftuD6KwRmmSxWvuFkwcAzhpyW/D+ti3HG5yAC0ToHPb+JkzAkMcXppAbXonKbl3dxSJUMcVuOaa76Kf2YcqrP05I0pYX8bPIxv6oy66U8PwRlpkNv3xb/dlLVGY2gxfMXDHhluLH36TpOjHE/P1pm6F2wx6Bxbe1zUN9a7qdjTKmpmhNBg1SQh9C87JKxhdKJQFLlJ8/ydnB6XDmfkAflkiUIxV9Pw4UXyBqcKf0VLs6dNSVkh2QfF92madLcccDbwWbDhFnmIAmqS3oYQVoPlcoGCUiBTryVKjlFyfMrM/lBsGZJJ2sfvWwlpvq64a4TSkjS/vuACwZh5Axufi23fkzs+Q44inXNJEgBOaAZnZ+na0Kq7V/rBEQZQcZQzDk4HVq3mHlGr4EB8evIERUvO5iglzb8Bg+8giWJf4kZ55GxDBmFrShReR7Gd2d9hz4Ipyrfw7QvJ6MFFjcnupPf66KKdFkxPBlShG12XFHE/ZLOh8b7CSvV/DCBa5ZHblymvLmvCfkSBU+j0NyQvi4geKWkIVpgG9R/MW6B2DM8pZQ/PWUdvz1ir+mcqJhawnl557+Ux6Mzn2NAHlPej1uZTo/JEiWAHDvmYYYzthUlI2RE5qShJAjCeMejYVoNRDc6e+t3dIM2xyZn9LWkKw6yDi5oAaken7q2FPSmzLOhEfb+aGVGVrn9ecx5zrWpNAhlvb0Z+ldCpsN9RypaVqmVoA1u6NBKMoAYJoxhiR35S2Dpt8yttbY9PJiX3FfkO2qACXcNnNUAHzRDVccitSB5Xb86ncgiAPjDQMlTQqD6lcFO9Y2SWLfUXNo7Wlyl47uHn6WrEbn/yfy7qrJgDyTUoNu31gQZDcvJ5M6U0Oy2A8Cgp5ab+Ap02JYqfEkKIDjZ5AAWfqO9ubCHGMHvwyEdJDqyc0QTqlScLWFgVLUv+331jiYUinDKq3+WLy5gqToybeeuxVskshXQO2VNWo11gHgFWMoc4awXRfh2GPTRDFrcEiB5QgHTmxlxRJTaW1pZVCBAy6vohbKZ5kQmUYJTbc7qEJEtyn1oaEUZSQmyRU4jZwzvelnxmS0GTw1XeF3URx26uCV7q/6DSN0YrL4I2c9zPY8QHS7E1sL8ey9Bf8Tz2JWhqKP3k4Pz0bth5jQefRiKfGk72nwxS5r+LuZy7AXnMdu+Pygqcaj3cvvMPqBOU5vXiikwAZc84o7+zru72tfmKxfH8kfZdEULr/dNwQra7sRONp/fcxfmLS7UL2Bsz0g7k4h6L/D2mszOt9Ch58ClvvVoDkAfwSDK9mQKk7ZoQ4xf+6yvRZWU8337OuvITCTmswU7iaiAEB7DrrVE19FZTxSiiaGcZxae0RcuPMZuz9Paj4W7WRxqQY3yiYh5kKWff5RkoIC/9sYdEgv3w3YrSA/HB42Xm81fXuYQaLMRRRAum4M0JD1yYiMvkwCPOPlL4Pw3F1zl3zi/u8G+/IBAkhbwDEauit7c49vCEyRKovEPdSgielGVpFeFDwmvNAiUCwygrWQM1xVAJj6gmCaMY0GkVYqtM+z72x/KjSDwMpQxjZqCgL0ftlK4CkY9FcwEXjgIq2BhC+F0fVXMFk1XsPKWdVTol3O+uS9R91cA+djbyff2S/CMJNqkHhYcDW7/5dVeTCXg182CdX5kEo5S0mIEtlNw7Xy6LSUAcUaSzittaM1h0J1IE4GNpo2PpU/9DzMeNJsvkyAJBf+6eU3FiiEDaN1MlW1YspA4894EXzBHFlpZJueMjfduff9AhrHhLC9kRtI0xIGqmyHkO4pqq599VebAyuqjR4OIGveOdB6pJMyp/nH0X15C8pSQbA5ii7ZWI7uKxOZwXvgr5Ap0UHYM4+mjKw6A+Ygy3iR18aruOSEFz/uep6wGmjMawUEQ2QPGJHHMB2+dj1BTYAIWPpookwx7C8RSB7Qpa2hZdljStZ0JT0DUMf9aDdcZpLoXFa9O+IOkjQ8dVTcACmwuAtqMlXuyon6RUJ6F77jA4Ow20Ae19KsFj5JhV4iMJ+gZqwZtarKTozNG0ekhwQbNkJj9dE6M70pe59VEUKrkGm2jxkcfFxjYYr4v/esuviT3FTfOymmsRVmNZ6ml1NN28XH0RC0LINRcTPd/bX7fzcDR/uVp25GCPnuLPeJNorQ2mUHyzH8LbjZtcnApDiypmjJB//5HXO7VmO/MIscAs3lE2EITGH87c6q0JlpdycxZwBcC08aympxGWy7WS7Y+RnPdVDIsHjblRTyEj9JVydlQnNb0NePPty6eeB0OqmKDN8xggppEHjH8j98V7TIeVFh05ZvLGkhlBEWJq5vhO5xHLtcqtghHfurP9bi+x4osIS3bv9A55lJXc7PRceO1Y6Pq/L/m6eFEq1kZtq605liygE0R7aCd8XSxp++nKqIf4+pCtz2j8SgDCjGfS5SBc5ec7bHKuX0ZfBcaMPcHnH3XgQ3oAEgk6FqOmbjSz8dAyYE9FudZgToR75PVYQK6JpM/ck2uC+KnrfDLVK6zRXAG8PkKA4bggh532dymZz5PQ/fAW0yMnhT37C5ektoZjr1pwpUkpQHtMGBco4gRE2y3tosck7Kr+AxeUpCu4tYn9Yz7x9Xz8vFcWHrULRGCzcagMX6WebDt0V5oAsgQThJNDZobxfrqMBpVi51aUHWrUsixDbYJfYeSUoWEsOiQWsJCAcl7IfeT6AQClXbWHwRS8Df+9e7xV03GI+u8YFN3u8iXyqUDi0dD4bvPLekv1DqP4AzQCOUetTaz6lys/VmAY4/dm0OFguyqiCmeNZTIDk6yhMOBu6a5stjCaMJg0xSe9hl17KIaKJAuZ/SztqgmaEuuLwelTrDRqFuTzDmN/RozsFKLGz3uityy6gt3QXzf2XR3DCsoH58nI9qJm/ILZDIojJ1WaYVsSF3s50tssphiiRBPDZtw7qlS/FmpNA7nD/i/1ZIqrRX5B+gu2x9YPWYPzDon6s0xRs5yzruLbmcquTLo2Xf96Xu96SEgmj7AlAWLYLU+Mb827p1l9OwYcy0yBYm6RuOnOCH8FuzZgM0mPzVYxlMho27qYfBRUNwHDA0WzT4hoptRz1CD7v5S7rGWbiAcXyjzhZgCx2pi2DUf7dPbZy11Nv1IJP4HFrTiNsTNSuZspY1eSl0bYM9xjC+yvdQFhLxC/NlWYRrN52IosKk3OFVDjs2qedWVxqwmaxB1cjO8YBukqaavb9AWAM1qe1lZtZ4mKXF5hIZBcZbGxC/AqDmRZ+f67lQFSLrdXrGoNkfJLAwaNnR622Lgv3qw8o5vpW6LYrWy72XnE5BokEaDs2K50mCMnpK/pTq8k8UolM2d/qZJA3s2dj08aKu8R0kCKpVIhZcB18YAQvWgVcwp0qFhHSkh5oMGINnK1GZYUcQbYRnDAvEaGxvkRf8xCKqL6SSgeNNSvcyUl3OLDKUZK83ZxFDZDPM4M2lI9Gu+bqfwJ+vxFuWJLIiFWSL00oRcVfLjfaSZGGTQwNTc4hPgeWcLO2IzyvHTZdGH+4Kputc31ZPtRn0jKX8UwE8zgKPV+IB3Bo+Ex7ekG87JbLz4V/LoWKrwZOIOT5VHlK98U+EgIisPBjdKk2/3S3lVJ/MZIdpKMyfPSsoMSic1OlS3WE+MoEAFKf2RFM/BaNCEaGDLxcrwWy/jJd50ZKqvO6CUUHU2qqBYA6sW96MVKsreZe3FonY8DCy4VcZ7mey2lP8X1wfu2HGfyYmYVr+RYh2NY2CPJkVfwfJ5e5uBdnebUwzmmvfqc3zc0E6I2q7f02E7R9RZWrlgpX1zVhfZPwGGq4WUgQuVcXcJpSwJ0pknOM7n+ttoh1A2CnrHJAzK4Ko8yML1VBkenuceWC3Xva06BPEuhhHahHCraaitczY0AdZtWZ5JYVvAtgm6AgAXi/iNYOsha6TIdDnADwIU0efEyGLQV7Bs1zXyeopt7IYfkvnrgjqgLexmOxKkDRojAxkcckKndwsQP7x7Oi+bKdNeIBVvlwzddRQb7rkmVg61N/BAeteBqYwzBX21vX3wJLbo2hOtbW8XUtWMB1TCAYDujWhbPdjIO/VeRK3EOeGZUI5JepO+kkfNm0eteaoFfXgJJPOeKwu4HcovVoHw4TxYWO/5QuD4RWuAm5Sys5ZbGWnLShGE92e0zgOddiE8/dbE0IIYHSfwbLlQG9rDGUcFPr1JcSLJ4oZ131NqAbsAKXcaSRU1+HYtjGs66cCG31XPH9rLo/zTdrilycVWGbQ98xr3BxRyPTM69XiTxJjAAlIr2xbpRDZzuY1BAPDiH8TbXsq0IXAI+6Mhjz0WZ4a5c4b2M/iua0NJP9zSovK2mgfEUE6ognSYoI57io2ZlhRU/2FSKztjT+blfC1dUbWHif/km9HLSLxkSNT1OWl45zguvpIXyqpPP73FzuaTE+ylgjqHtYOqbRtPkYxkxNcEKYjE5lyCDritLAIBCbscaasw8cpkIj/eashPvB9cF4Ot2KsJeEMGrrnnU+JreOoOOwIqC7PnaQIKVwk8wcSMQn13BoPsjrim7UMX25b2bXmRpxr6Kdk1e4Ndy2po0MHXHyp26Hl7SQi/COJfLSR+XefflueNNxCKKs+lUsO3AZ7G4YcBo+qme2wsVcEMYvz7Yq7wqNFozlrDOzRYNBoVxEzpGM/IMRq5Y0r34kvhRKYXacUaurHF/Ty0LJGYsCAoPf8y4ql7eiU3gY5To60rPgkXrqgR9nM7lDeY8LwPs+2CSmT/ra2J6qTk+kZVbk6aDmL8Jz+9ykpIMQ+gdMSF1yeXivnBKYMTC53YAetn4bCA+gVYuEV+0+Rl5umOsS9CoHuXT0BhHogCra8ZO3KRb7EwkFH9Vb1exH8fYg5EszRqeiKi/8P/k9OZdOis8p9z4oF5aP7V8VG2M4UUi5HPE0m52DHt35RGQab97IfiKuPpA8obOwpcZER8JG9/8fUYk9UL46HOIfWGu2JfLEAbBSEOT5uFHayr7xUak92mwloy/6gsKMnSl4go2U1n0eGZ44HOTA2nB7hRh8TLT1BtLjWYHNBkk6SbOSPUwLzeqp416u5LY61/d562F4jdFnXm+mfnwMOl6KUGgTpABILzt9+WJriC77snl+s9SgJWh7nq2uBybY13p0K8FUmtLR1llL1Bgbmb9pxo7/1AiPDLfp6A7a5rGDylyozpaHN6NHPcFhEydt2uc2MLz4Q+q/q8VuEQQqS9pfrSW65IaAjEeeFqc7fc861tgh/q88e9SKimJq5VHxxjCw4zxsdEqie7GiWPX9eXoz3rJQUNpJpN7LoXzAc8DIMBuhzRkOPsukli7T9I/mlJMCZLfIqVuCefGosWJmNVMHmXDkl0NBs1qxJMi2GwD1xiD8pz9OoDMxmfXwCWpHPzohx+zU4NmNsgeANTwtlpUxP4fpuiMYBdcR1uPzhlgR5Wa1FPRw7Dnvr7Xvdl1KeqY7H8XZfV6E63lQEBpNQy5bjU0rCyD/vL7kYD5iCQnZqEur0rT4cRHUbi4GVRcKTwmtXNBU9V7FXfl5Ifxz41CmROj+Bq5oqf1VNb1dm5T6nlEVSDd5UXUye+4GTNUQLVbhgW8jMHeGpo6gnVFU+qIMpeVg03zUI/hjjguSu1w9AKYF5inRiQyzYREKnmJoNFzgba0YYaM94L/i7eS11GzcMkKUvypDQVUHZ8FLWKRD1m04/07/LsUinkwFC8YYjKNSUZd29j8+ABLRU4xYFPYs+DEMhr9vjMAaJGc6Trfj2JngVthAumLM33VnSgTHYqi2+SlvEMOnasqK/nHGLmVgbMh/Yleu/7e2xxvh7rrt7IjqADbMaMxiknfHxGyz39oKNoM05qpgnZRpZRUeqo0b7CqU9ts1BQMPUThkrYipU4oZFtKL/pVYTB/t0xel2BQ5RIWPtJRipX90Vu6aZ+pX+ECUcC4N/7lkDRXuUpDGSHSL0M4K6Qu1trbgO432gu12kewbFGh1f6yQxaC3f+XquErepSQ/qMVPSW1ieGeE1qfGywvc7z9SBQZeMuC6X+SvYCbsfwPT62HSRfslx8PCo41jwxq8Htn0deOOETZYPDwEMIee+eUnFVxkqfNLKsbEkpUEVD2btY9K836jy22nbvN4dm/8C7k0Pzv+TsY6c1SLVvGs+Rp00N44FSvXxL/llh1BUECm+jh2KjiO4ARajdKJvRSnJtB6Z8DeN55XJr4Dfrjb93G5iEclXGUlN/fd/7ud0IIvfi+GmoGGT3XtOyhf9uIPQIbLsWeturnRQqbEzmdsjByR9k9isKw1ta2ErWHOsvnijgaUIHMZaFg0f+jxZi77v5RWhHs7Lzwu/qqm2715Bi/Sbq0WxOfWveQ02vLhxNIGwKJbZ8ijV1kemHItZf69/6PYlQcA/BYjM5fkfw1TMtoLkaVKz63e7hKvfAjShFNpt6zOX6QVNbJ12UIBcKTR+qlR2c2c1ks0RYM3hWAO8npDyv6bZK3S/o3Bv+PgR1DG6tEZt0CufQ4v3XZL5tuqNN+jci1qAv/wKq4ygCh+uvPXFJmkhA1D61YmCXOopQG1cj9ESdFiDCHynloeWvo/rb+xmZgJOqUwvfu5MR1FI4NBj0e2I8mZWGaS1VP3bsgb80VwHjk3m9W+KisXLyfM+X8mCh6ZwmZC5/mJGM7EswAGNjccX+Hf7i7HXARYfwwtiNRK22Csb4qIQDMe7nhgxCJeK3YCVcpBUNK/JMy69A31Hq2xU7UPBzDMVcKkBBhthtLzBubBL3b09CLVmLv//tvXU7tKatouI7WkLMhhmZmyaeutUWNALT16yqri69UefDYscXG9YRiiQSZ6wLZyO/yu443nRQPl3FOjbvwbK70lSYiTmMp+ass3j2FpbFNtPqMDnSJw3sBHgLzWM7GpkDRZKNKagF3rcXxhVU+PugUg1UInSY+Jt9RqtWWbSsp82Ne+RcPw2BmCXY1QissFOj0naGcXOOEaTC5OTWlm6zzpehcnkuuI2lU52xg48HYYTGYgUB1+norTvBrqNXOyBPrWJ1Oq19+zHadpIAzGF8WTLqTS0OwFTkevOuYr3eRxYQ/1zbQn/CBcplYJrQDvfch24G9191qS6cOYgb7sHlkNyC0PS0pqUthPrPsVJEtOTBhS89JV/3l0hJ9ymTvIJpexQ2+Yx1QAkVXHXB+MdOPD3MJrj5CqMIVTkp1skf9clKPOkRt+BzpeVWTWg5ams9YuJAvRoAPRTYIIYcYd0WQvvO0/gP37QpxW6Krx1zZueUnGKf0bbuX3832xQk7/GKbP6BHXBVydE3LJgNEzP/bLbByfS1K5uvka17LSR9y1FJTlIHKhA31hAdqFwI8kHkMcdr2PHWMuZWplZLyMUrXPAyJbbnijnSfRWvfoT6Z2xq0PQwPR9VO5XKBirro1Um9uqpdu7fAqTsjnBl0ToshkoZIfaSW2Q/6/dVwNzxqSd3isqCRWH41pR6bc/ko9ldOLxguulxvONafWb9dkxHZWafWK4/8eGD0qvOG+NRpAhP8wFiBvOIICyubvIihJJB5hETzhkgYgIJvLHmzewvdokQgQThqY6+KUse4EByvPPGxo3707uvHtrZIp/64CKiDv7PxEvtBv9mAeyp5lMetuBFZlI7akQuCfQI/EiYPH1xtiMbYOh3fEo+V8wfLvBrTl0mESiQ+id013eNQcwznViyggncWl0iNHu0sOWqAbQU6R0N62ARTpWmAPKAsAEYTyW5I/rFxvv5/zWx3cX8Hs2a17Fey/atFb2NBXPk/3iryzQXa0U69IGt4Zn4Dj0QWWxYWw1L8/tpQVNUoEmCbtbMn5qBCtjHsAaYrhxeHxgXrn3SSalgSYdifyTeVKe1UL+FCNq17C/i7V0I4XgMHbdzPFMV50nzltPQkEWBpgTF/CVVGD1w+vbMojMZLn5ilflYlUIVUm/Dku/rgMEU4oOuEVPZh1m/saIywvrvL/SZTqFKSjWHiy0CupVYVCJIxj9jWwldRSFA+FSzswzu4/dGeTT2CeJMSibTP9Z+1mfQu78qQGZg1KH+SkLa0z1A4k8G3tRu6xoqhELya9uDYk1+t/W1+NCV0UdSbMbdwpu+2shYc/54ilVHlnWtMZogmr3QZUrwp3ZksEX5Ty2Fou66lKPYfF6Cx2VUcWAtlVtn+8C0lES9M4F4HMJmyoKb6yAWwqiQvmKr8z8lu7EgOw5TVx7i8BHv/TBaVN417RebnW7a+Ho/o886QEOWt91mo0Gu5Cyt1gW83a0icgkO8I4aeN0TimXctqcxnwzGnF9D/cuUae2jEbmML/ITzOMqIl7RmXC39FJY1IzmlQrDnWnj3357AbZahJZtkFAzhThx02euBlVMMo7yFO8mgjI6BTy80D4sCwJ+mcHV1OiTUgvJS1qRwuvoyPpZmCFcSFVXmiFLILk2wKib/dxLLDOH5Pr2prD/9hVRVZVhl1nAjXO5tMuE7D1cLuGBr/OWvM/wHcw0ZQJP1kp4PmE7NPW2wJyDA0hf1WvBDHooNMaDsBo2tPmYjGaCFjyrcddx3h6qJG+WKywA4cYFi5CvkiZ5ueADXpjv5esL9C5gFUp6LrWSz7lxFchS0+SlnyhzflkyKE9nX1vuemSxRpGTfICLRMc/0En3ie9X03kfOvrdtBM6od3ICjmbO7Q01TmyzNftCgQzL8EdtEbioeNi3zRbkh73BIC1Tl3nm219oVurOhW3QU3/jCvI5KKGNAnqyikOyStosYvpe7iCScUmEiS5trZTyIG+U/9/KbI/7/wC/NgCL2Vc9dQVtpCvAC7ogNpgj2brXs/Yt8iO/PluqGL6G2jCc3hAkIScmBrTiMRo80umoHGOjISv851LKcA9mQHbLyHGOOVveuFI/1jUOF1NvS3tKpdonuOn11DQ42tOI+Glh7ih6aXh7XVGk54jCtmdyYpt/9ZE8zp/szsr1F6JSXdvhYQqwlSd8fagf4BP06ANZKgaE4grUjv8qKeDjcqxhbkMj/6T9sCAzbRtposipUrRpyCfPzkJlhcds27TxMdN9CxLKikAMhG+HkVV/DWKN3tBKSy9kAqNkgVnsZWb3qpbpLr3kvhUCo6Cw/mnx3anRVLdoxDpMDyS5S8mTS0m1S+fuas9lC339sExSCoelhzzOsFjR4iLFQEqdlMjPSt2+obaewqLTPDtzHE2qhY7TbCpBWyhvPxpp9qEFyXyVm+gfL3quCt+oWJLxTJmEz4k+SfZTgNQh8A1fJup3VdeBqBJ2NCF/iNECmM41NZZVg0sHJmjOsTKxMy6L6mYF7ftUwzU8v6ybiAXUhDkMBV88htSUISv6Kup6D5vNUMLaei23sovhZEN25WU5kr8JM79x7GSc6bvmesIxlsQwc94v487QIj7/WvV+1hb9rMOLZ+CV4uvjb2WbJnoXVAYsGOg4zWoGsJ7wllWZCUnwSQ6FR16Tfr0RofLsapGO9YR4zhlfY1apDo46iyrncbFLBAspDcheVt+UCL7m52l7vXGcrB1J3DEVMUd6EofN0ULangJDsKfNd+QYB2xDaH+z7rWPt5XgxydL1K4ao/NqiGRkY+0G4s4PgDqrhbfLYajg+3qbRwu7J5vcQMp5k/ZRlhXAZtrTsQNFdhZqonSj5uoWqIp1eJxm0M5H6q4thguqSbB+8TJ9NVtoFfKVHhvL3MQ69Dc7TsNeZ3iqZugpsb4OPAZbndsXNB9pT7lOvds5dDkBSntqQPrtvB6sUX/JWi0cQf8hyEltuzPKKY59aMsZiR3a+5E4QXQMdnDg3TAGTH3Q5kr34NNO8uBy1pOm+BP7jL5FvAAvMKBH6GZ6KMOcAdPNzOQ9D1rxO84CPEs4sE5GNFh24j1bjI2sh7tFsPioUC7DRnocgoWA7mBYzqe7DeijlKHjNcNDhbBaNaFs8Zy9lYYhRepQiS59j/4VbLna3oOj/SxYczadM5C/K3f4cwFpXEfqcjzTR1XhBJ1ZbzzZwd/wDNI52Cf8O5hQOOv6GxCYI3TFvUYw2+iQW53xbKDR2S9kwyf6gFb5y+w/amW2pou0PJP+TWCg6D+dV+DO7bnE6W7FJhmjqWcxQblweavve1bviJa9AtCTf+ZlXbvB84iAHddOSYHWzNqwI/gVKpNbn12LgCtlGi4Acb0oKsYWSefa6DM7cpJ3isd5Zb3XClHcu6Vo4tulci6Iqpfh6SnK0lj+nqL0EcrLrY5N08O1mZK0DJS/3uUgLlBjb9Fdbd4M9bSyVleUOQvvWYY+raOA5uhtO9NZdhFehRKI3mYu6OOXT/irMxDjKiyqvPdTM6yomuKk6BRThutQvBf3Zzb61wcShqpxCRiCUfZeP0aOA2nqCSrUhvbN4cIT7yrLyj/c+K24jv4X1H+W7+sLBsO+8G+L3S3KlKZsfdjMpt4WYDZO/DoHCDefhaT6roOXDqvx9kTBPXJGqvrUUfvN+HIIhwqPiyFUIHPKZmoaHLoSBVbba9VTJQBI72orzGwcpbNKyJiiVsKsuJ75dPSyndvA5ancMRgfynwiC5K4ffhVIt30+IxoDl7wSA4VlMCMK/kT6zGYBWhSiyf+houEsIeaCvonlQZXS0KRNk9xqPQ8Y0oL2jPgvXWUZVezocJSq2dHXKz1vasXUXCWieUyupI1zb1OdXII6NYIVdfdYtvvRfMv41k8D8IT1cdjROdkqRYcH8nHlWSjOPXgRWcYWZ+wHlRcFkX16+S/fKi5YMYQGqxVf0ARrIecvRwVrpjOqZm+yc+75F97L3LxsvmWl62ojyR0/6azmznBmIc3F7b4DHAVEdEPFoqOfEWNGvU3XcCIoJqxsKSZJvAgYf7MDL/G+Ky1mkFndLYxgMpbqw3MSDUhOwsIGD3Q6XmAnkTdshF79v8hZdae6ldE3rUs398OXkmWyVp7LmcKYr8WaB96Z/yC3M5AaL3pSmaMAnEm69rIwXNAFwPrPkGyzc0ImlJUGfKIZK5vLEAV+nTsxNWQm945jzUS3Niq6jNBMwA0hl6dSYl6MCRGmS6JvSm/hjmVubHRiXCNCSJIupVngQ9kzWDdGQXKXAXoD+HLEDXyBqDdaT1C+WB/fQ5XQDuf8DRIxvBOG7QrxEJcWjJotdtugPgGPPChX73uDEjxrL10IDG6d1T9b7Gjb/qnyEKpgnyLQbo9eUHbONpwVnJSgGhGdWUVThPeeKzshEx833C3I29BrL15SDllbtlcKCHSGEY4rwdVcywfPbBxTnhqmUszjVi2qYwGbXGPCabyEESBhRm1m2f4zPGH6GfaTWIMuQxPnSX2C4ntKJARW+dKIFGtyI9fiiWDYbmSFqTmZZSJi2JpnIb2FbHWvrIgmjDLt2QRed1WOj20/Dz55GdoDIteEH5+qOQPAl7P6NMUEm0JtRmzzLfuonMdKWakQgugLiXXJ8Yjbip93DxhGwN5DRrEkS/inqU5imk5yo7Mj3lw/5aLUNENJgkSZhmzIERWt7vwN9xd2OM9X/ggKsCISLF1F1hiRnFJ+5mzCU85eex4XImqAbfFpjtpZAKEMi4svq6MbylxHF+pL4r13VTc6IcsAtatpx8kD8jSSXtQPin0grQOu8CUE4EvCHOcfW9HrBrRkzUg9tf3cEa07/OtJdaTSQ58VEW3JI+2o3E/zkuY8BtlR23YWvEkTPraDpgEWGsQ431ADYvroq0RkhdkR0nGxCgWXWf8YMBuW0IkQbkaD181B2ETN2vvVJ83L4oyM8J6Ict35pL87HRs2o8a+gUZx2SFdC7Z3ImQMUZF/XqiVMpeBKhU2Qtyog09krnLHhRCTSWPn8y82m8YhzmZ4KlV9gSWLPre/4DbG2V82Tz8cOfQodoe54weVPa6wjzvuKfXK1DhNK0/xQ09XhtoMKH8bgnxC/WHWeB4ZhE8CrTjhu1C3DpC/Ie+oH5ywP+tSAPoVaEyRQzNJiSUsYzRC/Mr7oMiLKHjo4GUEJSn6AhMTLk3PrcHibsfpmqBVq/HHlzpt9e92qISTs/mHfm0G1/fsEV+fcXNmebnm2/Ugd68kN08XoOiWplB01Ur+/rAbierTX548i+FteX6J9x5VQpR4gSnBysMtuSQPv1AFKKK47LRvjx0M97KaVvIXVlALdQzdh2q+3tHtoSt/9IpXdvzIuWqeMWWbbgEGIQEaAoLjLMvFVKoVKMPHBRZqbbM0af8ZwT2z+osm94yERah8wlE/LlX9FLO8VpRciROX3PhL7U7/dXp9tiPQMAj76A2h2TNjV0gKADNK5OdQx3eI7kiwqIJJ4f0Rt2Ptbrx33geug6qXqXHw87FroeKGn2OoJQNDJIwdWwdHS3NVQ/P0+tscfmEN2J5B/43e2YEZf0EtTO445HOawo1nifb7ez7/WajVKxMu13Hm/cEIxup6V1H8n1nCdy93sS8I8NLzvu/sPRjJnpCaNQDN0vihP3Kv2kVmMY5lQr2sRTh7ntywOLMlXtNAqz6btUba40zyDVRVvn55jBoY7gK9BYTUCQMi8Jlw7dQuGgnca/L5lMu8LDQE1zmgh5g6285tRS3FjUGFZW10S/inmtzLWCuDldOf0uIalHhTHkoT0bNOcFtHZd29d5XRvplaeL4saJF4MEdA6Jz/QqIo2CZSV7XAzfmcBgyyN0HfxvMuTJos8PCNIfVWpC0IBjzbE0VnyqRnBk8x2TBq2087K3ok6MfAWyoOaBKYz3x1Lf8xKF/AiEtJnApfDwtYFyZOvuAqaHojyS8DY9J5jNS6CLF2n1dlLXh0sdPt4hTQ98f5SJ5a159NTghkEpkuJt8WpYVUKCjj1HfJeQ9KfxFiXnECqgkclzRQk78KzcMY0Vk5qR7vFfgmAS5ZJGkpNzPaDiqFKLvZziblf7ioxLRdLroH/IDx8LJSBDZDBSwl4/MfsiaQt5uvWuKEuVFiG2fjWo7ugqsezDU0tID5GFWLE4LIP6Px9UmxGLXcB1Jr3i9x7Fus0k9R5XD2kYrIEN3+U2NIcSqAc9D2i+D1xfYBciE86xxavqQZw2JXgCWmpJWp5WDvXONw/jFQJCVieGAGD6LkylVvQkD1ekA17/H8Ip+GwVwzufsLrxwzuMCbKXxuvBXvM3GiZarfe9iiQZ/zBRB1XQMylXQYL0hF4CO5NLRC1LbgFHKeEjynCqQTc56PXKiQI0NTF5YojPtAn8TL/N5meIoXLHGm1c1K6qQSoCQFak/Is0vSjAcMcij91tklh4KghI1qxyEdVUe5DLQUgu7y+5Qa4tdq37VQODqVpQVszNpIqJLPzNGFbctp2KBYFVan6vAPDgrl2LW7GITd2k2RxBc1MxMo7cLrXjCR/ju0FAjncpPjSc6+01BMy6HxlR23IO+MaqOO7fNPgoeMcgbbOuf5q4ET1y4jwZbDVDFro9+fJ466zJAwomKH2vh7tFSmBZ+mFIJtu6cIEG2ICboS9FPq0SigoUyp6//xrfjxJ6phQ6HB1Fuz66h10chod7sWRKLq0C2bf3TVvQwE9dWQA9C0ovcZHgvWSx3Y6x9gnjFEaJa8QSpbKL2ZFuyazBNBIj9oNJR1I8kbB81d0FqS0WMyzE0AGl9Bz896bMvrkb7VhrtBD8O52MdXWQWzmIYUnvzaTGVDEassujHFnGxw+8cE36/93R8pmgpDdhAe+iUro6qGuyFgozxCu6ZsvFMHJHcRQTa9gLIRiz7q/Ceb5hJHLOGxy2328REHn1kdlRnTyO/ubaG+sxsRBcMLZTcAfEUchmVYcXnHdFyAu2ar5XzQBcb9ohWxX0SvdYiMNcvVj/r8vfbEkOBPA4LxinnOttdZB5kSGbEDm7v69Pg1zJ9M54L+DGtRxl4UxifwnxmS5vNk9lLZ9LvBFbENqAqBdqtXZwv08ePj6Jxw/2k05A217o91+rr2JRpGRymxOc2h23I9aDxaL1tPiNPk0eqcJBndr7ODudooO4bEOrCNce/zud+Kqk88tW9NEj/1JOQjIMMdijTPcLZUAkOB6o1hY6w1/skoBlt9EfqUEN+H8u7Gd1QRKm+qOxesvXklONsHjA9uQ2iBiQ8zVco92M+VBgoRFY2K8hwruPKtyPLJZ/keEfT9BBwSlSSOgVs3r+HKhd3gE9WBsIvCEELzv4oenhks/18m+nbXF8AeODgQY50V4qg+ZMpPQZCwIudFZiaIc/RgAMYkhrZj6+FGh2kjKH1kmSjmV3qIRaC0dyRmQV7KBe/VfqMDsQaoWu+fUhIR+X0nZcIWI5+W/MGWnCE+SpSVBGayRi5aMW9H7QhcdKBgzisv2Xfat3RW8WmGXpOkmuvxUzzr3721fE28B8t/8UsZIlRgpjoDnvMD/vdoXLWPHPGhsP+PmA4jpkXix1ky4gB7UDtZ59XH05kMN5tyrKP60FITX+AtMIQ1hCI4LeFZhtAVHXBs+KBJSU388tl01hD1ZWyTT+WSKtvhyMglLKFO8mcURXm7Bqkryy3ZCbHXtLS6VNwIawX3x8I6Rjsre/K2NRiTa52doscEmG13+ZFvdo7JiItVqz8/1qGipSk0v60HPCBmjSST0+JwmU/JhhNot9HjnJlOIGyrSEyOLdLEkAWgDfIhmWUSEH6MZUW0/XHZ/dUBY81AuA8vXW33fBRmhV4DjebE7afKAbyYk25L1o1jv7PoeHhAy20LVUNOqtxA8VEfJqq1MPMAs9nGXBIxBfO/OzjvyntXUsztt2bybcvXPlIF7ALisn3pgQBpTLamhl2k+ptHfVHANP6cZgFu+838MQ+vssTTVN/faKxZbxzVycFg4SZ85GObJewhZ2RbQqbOX2cBSAcwfFs+86zfPlIiUtbjvxBbZm2fmRDojfbW9SUoDAxHt2oGqTPoPduKYc5fefsnndbP8cNXHOSTxjwuHjF+oIJ8QiC3JQRt9EO4HbUoTh20s9TBopgPC3nEUMj8OX/lbxiBmF3C+WR+6B2neCI3BghcSds6vRQsZHt+5e/4Ih4f6ne9XtpRH4LDFBade9iKd/bKU8jmziyUO0WM44dF4TIvVP5I=",
+                "tokens": 1856
+              }
+            }
+          ],
+          "modelMessageId": "b850dc3a-d135-4a55-b486-d58665fdfaa7",
+          "responseId": "11ff6337-d52f-4855-aee6-b6d649a8432c",
+          "sessionId": "65fc6261-afcd-4199-969f-de88d4e08026",
+          "agentId": "github.copilot.editor",
+          "command": "fix"
+        },
+        "details": "GPT-5 • 0.9x"
+      },
+      "followups": [],
+      "isCanceled": false,
+      "agent": {
+        "extensionId": {
+          "value": "GitHub.copilot-chat",
+          "_lower": "github.copilot-chat"
+        },
+        "extensionVersion": "0.32.3",
+        "publisherDisplayName": "GitHub",
+        "extensionPublisherId": "GitHub",
+        "extensionDisplayName": "GitHub Copilot Chat",
+        "id": "github.copilot.editor",
+        "description": "Ask or edit in context",
+        "when": "!config.inlineChat.enableV2 && !config.github.copilot.chat.advanced.inlineChat2",
+        "metadata": {
+          "themeIcon": {
+            "id": "copilot"
+          },
+          "hasFollowups": false,
+          "supportIssueReporting": false
+        },
+        "name": "Copilot",
+        "fullName": "GitHub Copilot",
+        "isDefault": true,
+        "locations": [
+          "editor"
+        ],
+        "modes": [
+          "ask"
+        ],
+        "slashCommands": [
+          {
+            "name": "generate",
+            "description": "Generate new code",
+            "disambiguation": [
+              {
+                "category": "generate",
+                "description": "Generate new code",
+                "examples": [
+                  "Add a function that returns the sum of two numbers"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "edit",
+            "description": "Edit the selected code in your active editor",
+            "disambiguation": [
+              {
+                "category": "edit",
+                "description": "Make changes to existing code",
+                "examples": [
+                  "Change this method to use async/await"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "doc",
+            "description": "Add documentation comment for this symbol",
+            "disambiguation": [
+              {
+                "category": "doc",
+                "description": "Add documentation comment for this symbol",
+                "examples": [
+                  "Add jsdoc to this method"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "fix",
+            "description": "Propose a fix for the problems in the selected code",
+            "disambiguation": [
+              {
+                "category": "fix",
+                "description": "Propose a fix for the problems in the selected code",
+                "examples": [
+                  "There is a problem in this code. Rewrite the code to show it with the bug fixed."
+                ]
+              }
+            ]
+          },
+          {
+            "name": "explain",
+            "description": "Explain how the code in your active editor works",
+            "disambiguation": [
+              {
+                "category": "explain",
+                "description": "Explain how the code in your active editor works",
+                "examples": [
+                  "Write an explanation for the code above as paragraphs of text."
+                ]
+              }
+            ]
+          },
+          {
+            "name": "tests",
+            "description": "Generate unit tests for the selected code",
+            "disambiguation": [
+              {
+                "category": "tests",
+                "description": "Generate unit tests for the selected code. The user does not want to fix their existing tests.",
+                "examples": [
+                  "Write a set of detailed unit test functions for the code above."
+                ]
+              }
+            ]
+          }
+        ],
+        "disambiguation": [
+          {
+            "category": "unknown",
+            "description": "Intent of this command is unclear or is not related to information technologies",
+            "examples": [
+              "Add a dog to this comment."
+            ]
+          }
+        ]
+      },
+      "slashCommand": {
+        "name": "fix",
+        "description": "Propose a fix for the problems in the selected code",
+        "disambiguation": [
+          {
+            "category": "fix",
+            "description": "Propose a fix for the problems in the selected code",
+            "examples": [
+              "There is a problem in this code. Rewrite the code to show it with the bug fixed."
+            ]
+          }
+        ]
+      },
+      "contentReferences": [],
+      "codeCitations": [],
+      "timestamp": 1761343761636,
+      "modelId": "copilot/auto"
+    }
+  ],
+  "sessionId": "07bde6ea-db57-44c4-b7e3-936dd8935e02",
+  "creationDate": 1761343525208,
+  "isImported": false,
+  "lastMessageDate": 1761343761636
+}

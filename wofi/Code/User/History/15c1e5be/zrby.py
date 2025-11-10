@@ -1,0 +1,6 @@
+class PredictModel:
+  def __init__():
+    ...
+
+  def predict():
+    ...

@@ -1,0 +1,63 @@
+import { apiExternal } from '@/lib/apiExternal';
+import { NextResponse } from 'next/server';
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+/**
+ * Lida com erros vindos da API externa e os formata para o cliente.
+ */
+function handleApiError(error: any) {
+  const status = error.response?.status || 500;
+  const message = error.response?.data?.message || 'Erro na comunicação com a API externa.';
+  return NextResponse.json({ message }, { status });
+}
+
+// Handler para requisições POST
+export async function POST(
+  request: Request,
+  { params }: { params: { slug: string[] } }
+) {
+  const path = params.slug.join('/');
+  console.log(path)
+  const apiUrl = `${API_BASE_URL}/auth/${path}`;
+
+  let body;
+  try {
+    // O corpo só é necessário para a maioria das rotas POST
+    if (request.headers.get("content-type")?.includes("application/json")) {
+      body = await request.json();
+    }
+  } catch (e) {
+    body = null;
+  }
+
+  try {
+    const response = await apiExternal.post(apiUrl, body);
+    return NextResponse.json(response.data, { status: response.status });
+  } catch (error) {
+    return handleApiError(error);
+  }
+}
+
+// Handler para requisições GET
+export async function GET(
+  request: Request,
+  { params }: { params: { slug: string[] } }
+) {
+  const path = params.slug.join('/');
+  const apiUrl = `${API_BASE_URL}/v1/auth/${path}`;
+
+  // Repassa o header de autorização para a API externa
+  const authHeader = request.headers.get('Authorization');
+  const headers: Record<string, string> = {};
+  if (authHeader) {
+    headers['Authorization'] = authHeader;
+  }
+
+  try {
+    const response = await apiExternal.get(apiUrl, { headers });
+    return NextResponse.json(response.data, { status: response.status });
+  } catch (error) {
+    return handleApiError(error);
+  }
+}

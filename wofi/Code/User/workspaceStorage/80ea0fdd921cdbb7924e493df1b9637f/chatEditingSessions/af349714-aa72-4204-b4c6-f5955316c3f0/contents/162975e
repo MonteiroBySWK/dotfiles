@@ -1,0 +1,226 @@
+/**
+ * TableIngredientList - Tabela de listagem de ingredientes
+ * Sistema REVIS
+ */
+
+'use client';
+
+import { useState } from 'react';
+import { useIngredientes } from '@/hooks/useIngredientes';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Card, CardContent } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { FormIngredient } from './FormIngredient';
+import { ModalAjusteEstoque } from './ModalAjusteEstoque';
+import { HistoricoMovimentacaoList } from './HistoricoMovimentacao';
+import { Edit, Search, AlertTriangle, Settings, History } from 'lucide-react';
+import { Ingrediente } from '@/types';
+
+export function TableIngredientList() {
+  const { data: ingredientes, loading } = useIngredientes();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [editingIngrediente, setEditingIngrediente] = useState<Ingrediente | null>(null);
+  const [adjustingIngrediente, setAdjustingIngrediente] = useState<Ingrediente | null>(null);
+  const [historicoIngrediente, setHistoricoIngrediente] = useState<Ingrediente | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [adjustModalOpen, setAdjustModalOpen] = useState(false);
+  const [historicoModalOpen, setHistoricoModalOpen] = useState(false);
+
+  // Filtrar ingredientes
+  const filteredIngredientes = ingredientes.filter((ing) =>
+    ing.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    ing.categoria.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Loading state
+  if (loading) {
+    return (
+      <Card>
+        <CardContent className="pt-6">
+          <div className="space-y-3">
+            <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-12 w-full" />
+            <Skeleton className="h-12 w-full" />
+            <Skeleton className="h-12 w-full" />
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  const handleEdit = (ingrediente: Ingrediente) => {
+    setEditingIngrediente(ingrediente);
+    setDialogOpen(true);
+  };
+
+  const handleAdjust = (ingrediente: Ingrediente) => {
+    setAdjustingIngrediente(ingrediente);
+    setAdjustModalOpen(true);
+  };
+
+  const handleHistorico = (ingrediente: Ingrediente) => {
+    setHistoricoIngrediente(ingrediente);
+    setHistoricoModalOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+    setEditingIngrediente(null);
+  };
+
+  const handleCloseAdjustModal = () => {
+    setAdjustModalOpen(false);
+    setAdjustingIngrediente(null);
+  };
+
+  const handleCloseHistoricoModal = () => {
+    setHistoricoModalOpen(false);
+    setHistoricoIngrediente(null);
+  };
+
+  return (
+    <>
+      <Card>
+        <CardContent className="pt-6">
+          {/* Busca */}
+          <div className="mb-4 flex items-center gap-2">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                placeholder="Buscar por nome ou categoria..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-9"
+              />
+            </div>
+          </div>
+
+          {/* Tabela */}
+          {filteredIngredientes.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-12 text-center">
+              <p className="text-muted-foreground">
+                {searchTerm ? 'Nenhum ingrediente encontrado' : 'Nenhum ingrediente cadastrado'}
+              </p>
+            </div>
+          ) : (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Nome</TableHead>
+                  <TableHead>Categoria</TableHead>
+                  <TableHead className="text-right">Estoque Atual</TableHead>
+                  <TableHead className="text-right">Estoque Mínimo</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead className="text-right">Ações</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredIngredientes.map((ingrediente) => {
+                  const estoquePercentual = (ingrediente.estoqueAtual / ingrediente.estoqueMinimo) * 100;
+                  const estoqueBaixo = ingrediente.estoqueAtual < ingrediente.estoqueMinimo;
+
+                  return (
+                    <TableRow key={ingrediente.id}>
+                      <TableCell className="font-medium">{ingrediente.nome}</TableCell>
+                      <TableCell>
+                        <Badge variant="outline">{ingrediente.categoria}</Badge>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <span className={estoqueBaixo ? 'font-medium text-destructive' : ''}>
+                          {ingrediente.estoqueAtual} {ingrediente.unidade}
+                        </span>
+                      </TableCell>
+                      <TableCell className="text-right text-muted-foreground">
+                        {ingrediente.estoqueMinimo} {ingrediente.unidade}
+                      </TableCell>
+                      <TableCell>
+                        {estoqueBaixo ? (
+                          <Badge variant="destructive" className="gap-1">
+                            <AlertTriangle className="h-3 w-3" />
+                            Baixo
+                          </Badge>
+                        ) : estoquePercentual < 150 ? (
+                          <Badge variant="outline" className="border-warning text-warning">
+                            Atenção
+                          </Badge>
+                        ) : (
+                          <Badge variant="outline" className="border-success text-success">
+                            OK
+                          </Badge>
+                        )}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex justify-end gap-1">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handleHistorico(ingrediente)}
+                            aria-label="Ver histórico"
+                            title="Ver histórico"
+                          >
+                            <History className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handleAdjust(ingrediente)}
+                            aria-label="Ajustar estoque"
+                            title="Ajustar estoque"
+                          >
+                            <Settings className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handleEdit(ingrediente)}
+                            aria-label="Editar ingrediente"
+                            title="Editar ingrediente"
+                          >
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Dialog de Edição */}
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Editar Ingrediente</DialogTitle>
+          </DialogHeader>
+          {editingIngrediente && (
+            <FormIngredient
+              ingrediente={editingIngrediente}
+              onSuccess={handleCloseDialog}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal de Ajuste de Estoque */}
+      <ModalAjusteEstoque
+        ingrediente={adjustingIngrediente}
+        open={adjustModalOpen}
+        onOpenChange={handleCloseAdjustModal}
+      />
+    </>
+  );
+}

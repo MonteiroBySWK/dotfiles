@@ -1,0 +1,142 @@
+"use client"
+
+import { useEffect, useState } from "react"
+import { Heart, Wifi, WifiOff } from "lucide-react"
+
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { useAPIHealthData } from "@/hooks/use-api-health-data"
+
+interface RealTimeHealthDataProps {
+  employeeId?: string
+  employeeName?: string
+  employeePhoto?: string
+}
+
+export function RealTimeHealthData({ employeeId, employeeName = "Employee", employeePhoto }: RealTimeHealthDataProps) {
+  const { healthData, connectionState, reconnect } = useAPIHealthData()
+  const [currentData, setCurrentData] = useState<any>(null)
+
+  useEffect(() => {
+    if (employeeId) {
+      const data = healthData.get(employeeId)
+      if (data) {
+        setCurrentData(data)
+      }
+    } else {
+      // Show the most recent update from any employee
+      const allData = Array.from(healthData.values())
+      if (allData.length > 0) {
+        const mostRecent = allData.reduce((latest, current) =>
+          new Date(current.timestamp || 0) > new Date(latest.timestamp || 0) ? current : latest,
+        )
+        setCurrentData(mostRecent)
+      }
+    }
+  }, [healthData, employeeId])
+
+  const getHeartRateStatus = (bpm?: number) => {
+    if (!bpm) return { status: "unknown", color: "bg-gray-500" }
+    if (bpm < 60) return { status: "low", color: "bg-blue-500" }
+    if (bpm > 100) return { status: "high", color: "bg-red-500" }
+    return { status: "normal", color: "bg-green-500" }
+  }
+
+  const getSleepQualityDisplay = (quality?: string) => {
+    const qualityMap = {
+      POOR: "Poor",
+      AVERAGE: "Average",
+      GOOD: "Good",
+      EXCEPTIONAL: "Exceptional",
+    }
+    return quality ? qualityMap[quality as keyof typeof qualityMap] || quality : "N/A"
+  }
+
+  const heartRateStatus = getHeartRateStatus(currentData?.bpm)
+
+  return (
+    <Card className="w-full">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <div className="flex items-center space-x-2">
+          <Heart className="h-5 w-5 text-red-500" />
+          <CardTitle className="text-sm font-medium">Real-Time Health Data</CardTitle>
+        </div>
+        <div className="flex items-center space-x-2">
+          {connectionState.isConnected ? (
+            <Badge variant="outline" className="text-green-600 border-green-600">
+              <Wifi className="h-3 w-3 mr-1" />
+              Live
+            </Badge>
+          ) : (
+            <Badge variant="outline" className="text-red-600 border-red-600">
+              <WifiOff className="h-3 w-3 mr-1" />
+              Offline
+            </Badge>
+          )}
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            {employeePhoto && (
+              <div className="h-12 w-12 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                <img
+                  src={employeePhoto || "/placeholder.svg"}
+                  alt={employeeName}
+                  className="h-full w-full object-cover"
+                />
+              </div>
+            )}
+            <div>
+              <p className="text-sm font-medium">{employeeName}</p>
+              {currentData?.timestamp && (
+                <p className="text-xs text-muted-foreground">
+                  Last update: {new Date(currentData.timestamp).toLocaleTimeString()}
+                </p>
+              )}
+            </div>
+          </div>
+          <div className="text-right">
+            <div className="flex items-center space-x-2">
+              <div className={`h-3 w-3 rounded-full ${heartRateStatus.color} animate-pulse`} />
+              <span className="text-2xl font-bold">{currentData?.bpm || "--"}</span>
+              <span className="text-sm text-muted-foreground">BPM</span>
+            </div>
+            <p className="text-xs text-muted-foreground capitalize">{heartRateStatus.status}</p>
+          </div>
+        </div>
+
+        {currentData && (
+          <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+            <div className="text-center">
+              <p className="text-muted-foreground">SpO2</p>
+              <p className="font-semibold">{currentData.spo2 || "--"}%</p>
+            </div>
+            <div className="text-center">
+              <p className="text-muted-foreground">Stress</p>
+              <p className="font-semibold">{currentData.stressLevel || "--"}</p>
+            </div>
+            <div className="text-center">
+              <p className="text-muted-foreground">Sleep</p>
+              <p className="font-semibold">{getSleepQualityDisplay(currentData.sleepQuality)}</p>
+            </div>
+            <div className="text-center">
+              <p className="text-muted-foreground">Steps</p>
+              <p className="font-semibold">{currentData.steps?.toLocaleString() || "--"}</p>
+            </div>
+          </div>
+        )}
+
+        {connectionState.error && (
+          <div className="mt-4 p-2 bg-red-50 border border-red-200 rounded-md">
+            <p className="text-sm text-red-600">{connectionState.error}</p>
+            <Button variant="outline" size="sm" onClick={reconnect} className="mt-2">
+              Reconnect
+            </Button>
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  )
+}

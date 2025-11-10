@@ -1,0 +1,191 @@
+/**
+ * Tabela de Listagem de Eventos
+ * Sistema REVIS
+ */
+
+'use client';
+
+import { useState } from 'react';
+import { useEventos } from '@/hooks/useEventos';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { FormEvento } from './FormEvento';
+import { CardEventoDetalhes } from './CardEventoDetalhes';
+import { Search, Eye, Edit, Calendar } from 'lucide-react';
+import { format, parseISO } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+
+export function TableEventos() {
+  const { eventos, loading } = useEventos();
+  const [search, setSearch] = useState('');
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
+  const [selectedEventoId, setSelectedEventoId] = useState<string | null>(null);
+
+  // Filtrar eventos
+  const eventosFiltrados = eventos.filter((evento) => {
+    const searchLower = search.toLowerCase();
+    const dataInicio = evento.dataInicio.toDate();
+    return (
+      evento.nome.toLowerCase().includes(searchLower) ||
+      evento.local.toLowerCase().includes(searchLower) ||
+      format(dataInicio, 'dd/MM/yyyy').includes(searchLower)
+    );
+  });
+
+  // Ordenar por data (mais recentes primeiro)
+  const eventosOrdenados = [...eventosFiltrados].sort((a, b) => {
+    return b.dataInicio.toDate().getTime() - a.dataInicio.toDate().getTime();
+  });
+
+  const handleEdit = (eventoId: string) => {
+    setSelectedEventoId(eventoId);
+    setEditDialogOpen(true);
+  };
+
+  const handleViewDetails = (eventoId: string) => {
+    setSelectedEventoId(eventoId);
+    setDetailsDialogOpen(true);
+  };
+
+  const getStatusBadge = (dataEvento: Date) => {
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+    const dataEventoDate = new Date(dataEvento);
+    dataEventoDate.setHours(0, 0, 0, 0);
+
+    if (dataEventoDate < hoje) {
+      return <Badge variant="secondary">Realizado</Badge>;
+    } else if (dataEventoDate.getTime() === hoje.getTime()) {
+      return <Badge className="bg-primary text-white">Hoje</Badge>;
+    } else {
+      return <Badge variant="outline">Agendado</Badge>;
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="space-y-3">
+        {[...Array(5)].map((_, i) => (
+          <Skeleton key={i} className="h-16 w-full" />
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      {/* Busca */}
+      <div className="flex items-center gap-2">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            placeholder="Buscar por nome, local ou data..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="pl-9"
+          />
+        </div>
+      </div>
+
+      {/* Tabela */}
+      {eventosOrdenados.length === 0 ? (
+        <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-border p-12 text-center">
+          <Calendar className="mb-4 h-12 w-12 text-muted-foreground" />
+          <h3 className="mb-2 text-lg font-medium text-foreground">
+            Nenhum evento encontrado
+          </h3>
+          <p className="text-sm text-muted-foreground">
+            {search ? 'Tente ajustar sua busca.' : 'Cadastre o primeiro evento do sistema.'}
+          </p>
+        </div>
+      ) : (
+        <div className="rounded-lg border border-border bg-surface">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Nome</TableHead>
+                <TableHead>Data</TableHead>
+                <TableHead>Local</TableHead>
+                <TableHead className="text-center">Vendas</TableHead>
+                <TableHead className="text-center">Status</TableHead>
+                <TableHead className="text-right">Ações</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {eventosOrdenados.map((evento) => (
+                <TableRow key={evento.id}>
+                  <TableCell className="font-medium">{evento.nome}</TableCell>
+                  <TableCell>
+                    {format(evento.dataInicio.toDate(), "dd/MM/yyyy (EEEE)", { locale: ptBR })}
+                  </TableCell>
+                  <TableCell>{evento.local}</TableCell>
+                  <TableCell className="text-center">
+                    {evento.vendasPrevistas ? `${evento.vendasPrevistas} previsto` : '-'}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    {getStatusBadge(evento.dataInicio.toDate())}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <div className="flex justify-end gap-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleViewDetails(evento.id)}
+                      >
+                        <Eye className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleEdit(evento.id)}
+                      >
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      )}
+
+      {/* Dialog de Edição */}
+      <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Editar Evento</DialogTitle>
+          </DialogHeader>
+          {selectedEventoId && (
+            <FormEvento
+              eventoId={selectedEventoId}
+              onSuccess={() => setEditDialogOpen(false)}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Dialog de Detalhes */}
+      <Dialog open={detailsDialogOpen} onOpenChange={setDetailsDialogOpen}>
+        <DialogContent className="max-w-4xl">
+          <DialogHeader>
+            <DialogTitle>Detalhes do Evento</DialogTitle>
+          </DialogHeader>
+          {selectedEventoId && <CardEventoDetalhes eventoId={selectedEventoId} />}
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}

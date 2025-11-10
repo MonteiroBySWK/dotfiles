@@ -1,0 +1,137 @@
+\documentclass[10pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage[margin=1.5cm]{geometry}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fontawesome}
+\usepackage{array}
+\usepackage{setspace}
+\usepackage{parskip}
+\usepackage{ragged2e}
+
+% Cores
+\definecolor{primary}{RGB}{50,50,50}
+\definecolor{secondary}{RGB}{100,100,100}
+
+% Configurações gerais
+\setlist{nosep, leftmargin=*, before=\vspace{-0.2em}, after=\vspace{-0.5em}}
+\setlength{\parindent}{0pt}
+\pagestyle{empty}
+\renewcommand{\baselinestretch}{1.1}
+
+% Comandos personalizados
+\newcommand{\header}[1]{{\color{primary}\large\bfseries\MakeUppercase{#1}}}
+\newcommand{\subsectiontitle}[1]{{\color{primary}\normalsize\bfseries\MakeUppercase{#1}\vspace{0.3em}\hrule\vspace{0.5em}}}
+\newcommand{\datedentry}[4]{\textbf{#1} \hfill \textit{#2}\\ \textbf{\footnotesize #3} \hfill \textit{\footnotesize #4}}
+\newcommand{\skillitem}[1]{\item \faIcon{check-circle}~#1}
+
+\begin{document}
+
+% Cabeçalho
+\begin{center}
+{\Huge\bfseries \textcolor{primary}{Gabriel Silva Monteiro}}\\[0.2em]
+{\large \textcolor{secondary}{Engenharia da Computação | Backend | DevOps | Segurança de Aplicações}}\\[0.5em]
+{\small 
+    \faIcon{map-marker-alt}~S\~ao Lu\'is, MA \hspace{0.5em} 
+    \faIcon{phone}~(98) 98211-6257 \hspace{0.5em} 
+    \faIcon{envelope}~\texttt{eumonteiro.ofc@gmail.com}\\[0.3em]
+    \faIcon{linkedin}~\texttt{linkedin.com/in/montbyswk} \hspace{0.5em} 
+    \faIcon{github}~\texttt{github.com/MonteiroBySWK}
+}
+\end{center}
+
+% Resumo
+\subsectiontitle{Resumo Profissional}
+Estudante de Engenharia da Computação (5/10), com forte atuação no desenvolvimento de aplicações Web e Mobile, gestão de projetos e infraestrutura. Possuo experiência liderando equipes multidisciplinares em soluções tecnológicas para PMEs e instituições públicas, com foco em qualidade, segurança e inovação. Interesse especial em backend, DevOps, infraestrutura, segurança de aplicações e gestão técnica de projetos.
+
+% Experiência
+\subsectiontitle{Experi\^encia Profissional}
+
+\datedentry{Coordenador}{maio 2023 -- Presente}{Thera Software House}{S\~ao Lu\'is, MA}
+\begin{itemize}
+    \item Coordenação do laboratório de desenvolvimento de sistemas, atuando como Product Owner e líder técnico
+    \item Liderança de equipes multidisciplinares em projetos web/mobile para PMEs e instituições públicas
+    \item Manutenção de aplicações em produção, gestão de infraestrutura e segurança de aplicações
+    \item Implementação de práticas DevOps e garantia de qualidade de código
+\end{itemize}
+
+\vspace{0.5em}
+\datedentry{Bolsista}{maio 2025 -- Presente}{Pulse}{S\~ao Lu\'is, MA}
+\begin{itemize}
+    \item Programa de Formação de Profissionais em Inovação e Tecnologia
+    \item Desenvolvimento de soluções inovadoras com foco em eficiência e escalabilidade
+\end{itemize}
+
+% Formação
+\subsectiontitle{Forma\c{c}\~ao Acad\^emica}
+
+\datedentry{Bacharelado em Engenharia da Computa\c{c}\~ao}{2023 -- 2027}{Universidade Estadual do Maranh\~ao}{S\~ao Lu\'is, MA}
+\begin{itemize}
+    \item Previsão de conclusão: Dezembro 2027
+    \item Disciplinas relevantes: Arquitetura de Software, Segurança da Informação, Sistemas Distribuídos
+\end{itemize}
+
+% Habilidades
+\subsectiontitle{Habilidades T\'ecnicas}
+
+\begin{minipage}[t]{0.32\textwidth}
+    \header{Linguagens}
+    \begin{itemize}
+        \skillitem{C/C++}
+        \skillitem{Python}
+        \skillitem{Java}
+        \skillitem{JavaScript/TypeScript}
+        \skillitem{Rust}
+    \end{itemize}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.32\textwidth}
+    \header{Frameworks}
+    \begin{itemize}
+        \skillitem{NextJS}
+        \skillitem{ViteJS}
+        \skillitem{Django}
+        \skillitem{Flask}
+        \skillitem{Spring}
+    \end{itemize}
+    
+    \header{Cloud/DevOps}
+    \begin{itemize}
+        \skillitem{Docker}
+        \skillitem{Kubernetes}
+        \skillitem{NGINX}
+        \skillitem{Railway}
+        \skillitem{Bash Scripting}
+    \end{itemize}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.32\textwidth}
+    \header{Bancos de Dados}
+    \begin{itemize}
+        \skillitem{PostgreSQL}
+        \skillitem{MySQL}
+        \skillitem{MongoDB}
+    \end{itemize}
+    
+    \header{Ferramentas}
+    \begin{itemize}
+        \skillitem{Pandas/Matplotlib}
+        \skillitem{GSAP/Framer Motion}
+        \skillitem{WASM (Rust)}
+        \skillitem{WebScrapy}
+        \skillitem{Google Sheets/Docs}
+    \end{itemize}
+\end{minipage}
+
+% Idiomas
+\vspace{1em}
+\subsectiontitle{Idiomas}
+\begin{itemize}
+    \item \textbf{Português}: Nativo
+    \item \textbf{Inglês}: Intermediário (Leitura/escrita fluentes, compreensão/conversação com desenvoltura)
+    \item \textbf{Russo/Chinês}: Em estudo
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,32 @@
+@startuml Membro - Gerenciamento de Pessoas
+scale 1920*1080
+left to right direction
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam backgroundColor white
+
+title Gerenciamento de Pessoas - Casos de Uso do Membro
+
+actor "Membro do Laboratório" as membro
+
+rectangle "Gerenciamento de Pessoas" {
+  (Listar Membros) as listar
+  (Filtrar Membros) as filtrar
+  (Buscar Membro) as buscar
+  (Visualizar Detalhes do Membro) as detalhes
+}
+
+membro --> listar
+
+(filtrar) .> listar : extends
+(buscar) .> listar : extends
+listar .> detalhes : include
+
+legend right
+  |= Requisito |= Descrição |
+  | REQ-28 | Listar membros com filtros |
+  | REQ-29 | Buscar membros por nome ou e-mail |
+  | REQ-30 | Exibir detalhes completos de cada membro |
+endlegend
+
+@enduml

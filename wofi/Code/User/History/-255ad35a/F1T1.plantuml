@@ -1,0 +1,27 @@
+@startuml GerenciamentoPessoas
+' Diagrama de Caso de Uso: Gerenciamento de Pessoas
+
+left to right direction
+
+actor "Administrador" as Admin
+
+rectangle "Sistema NeoLab" {
+  (Cadastrar Membro)
+  (Editar Membro)
+  (Inativar Membro)
+  (Listar Membros)
+  (Buscar Membro)
+  (Visualizar Detalhes do Membro)
+}
+
+Admin --> (Cadastrar Membro)
+Admin --> (Editar Membro)
+Admin --> (Inativar Membro)
+Admin --> (Listar Membros)
+Admin --> (Buscar Membro)
+Admin --> (Visualizar Detalhes do Membro)
+
+(Listar Membros) .> (Buscar Membro) : <<include>>
+(Listar Membros) .> (Visualizar Detalhes do Membro) : <<extend>>
+
+@enduml

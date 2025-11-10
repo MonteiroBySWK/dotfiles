@@ -1,0 +1,49 @@
+# usar imagem base do openjdk 17
+FROM openjdk:17-jdk-slim
+
+# definir diretório de trabalho
+WORKDIR /app
+
+# copiar arquivos do maven
+COPY mvnw .
+COPY .mvn .mvn
+COPY pom.xml .
+
+# dar permissão de execução ao mvnw
+RUN chmod +x mvnw
+
+# baixar dependências (cache layer)
+RUN ./mvnw dependency:go-offline -B
+
+# copiar código fonte
+COPY src src
+
+# compilar aplicação
+RUN ./mvnw clean package -DskipTests
+
+# usar imagem mais leve para runtime
+FROM openjdk:17-jre-slim
+
+# instalar curl para health checks
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
+# criar usuário não-root para segurança
+RUN addgroup --system spring && adduser --system spring --ingroup spring
+USER spring:spring
+
+# definir diretório de trabalho
+WORKDIR /app
+
+# copiar jar da aplicação do stage anterior
+COPY --from=0 /app/target/*.jar app.jar
+
+# expor porta que a railway vai usar
+EXPOSE $PORT
+
+# variáveis de ambiente para railway
+ENV JAVA_OPTS="-Xmx512m -Xms256m"
+ENV SPRING_PROFILES_ACTIVE=prod
+
+# comando para executar aplicação
+# railway define a porta via variável $PORT
+CMD ["sh", "-c", "java $JAVA_OPTS -Dserver.port=$PORT -jar app.jar"]

@@ -1,0 +1,31 @@
+@startuml GestaoConteudoAcademico
+' Diagrama de Caso de Uso: Gestão de Conteúdo Acadêmico
+
+left to right direction
+
+actor "Membro"
+actor "Usuário Autorizado" as UsuarioAutorizado
+actor "Administrador" as Admin
+
+rectangle "Sistema NeoLab" {
+  (Upload de Material)
+  (Listar Materiais)
+  (Buscar Material)
+  (Download de Material)
+  (Editar Informações do Material)
+  (Excluir Material)
+}
+
+Membro --> (Listar Materiais)
+Membro --> (Buscar Material)
+Membro --> (Download de Material)
+
+UsuarioAutorizado --> (Upload de Material)
+UsuarioAutorizado --> (Editar Informações do Material)
+UsuarioAutorizado --> (Excluir Material)
+
+(Listar Materiais) .> (Buscar Material) : <<include>>
+
+Admin --|> UsuarioAutorizado
+
+@enduml

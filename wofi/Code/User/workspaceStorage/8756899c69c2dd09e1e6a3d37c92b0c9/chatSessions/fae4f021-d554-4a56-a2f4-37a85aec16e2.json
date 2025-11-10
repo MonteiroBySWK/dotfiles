@@ -1,0 +1,278 @@
+{
+  "version": 3,
+  "requesterUsername": "MonteiroBySWK",
+  "requesterAvatarIconUri": {
+    "$mid": 1,
+    "path": "/u/129693679",
+    "scheme": "https",
+    "authority": "avatars.githubusercontent.com",
+    "query": "v=4"
+  },
+  "responderUsername": "GitHub Copilot",
+  "responderAvatarIconUri": {
+    "id": "copilot"
+  },
+  "initialLocation": "editor",
+  "requests": [
+    {
+      "requestId": "request_7e45348d-e17c-4a6f-9971-8fe218dc6106",
+      "message": {
+        "parts": [
+          {
+            "range": {
+              "start": 0,
+              "endExclusive": 15
+            },
+            "editorRange": {
+              "startLineNumber": 1,
+              "startColumn": 1,
+              "endLineNumber": 1,
+              "endColumn": 16
+            },
+            "text": "explique o erro",
+            "kind": "text"
+          }
+        ],
+        "text": "explique o erro"
+      },
+      "variableData": {
+        "variables": []
+      },
+      "response": [
+        {
+          "kind": "textEditGroup",
+          "uri": {
+            "$mid": 1,
+            "fsPath": "/home/monteiro/codes/sonar/src/hooks/useResource.ts",
+            "external": "file:///home/monteiro/codes/sonar/src/hooks/useResource.ts",
+            "path": "/home/monteiro/codes/sonar/src/hooks/useResource.ts",
+            "scheme": "file"
+          },
+          "edits": [
+            [
+              {
+                "text": "  // Na interface ReturnCreateResourseHook:",
+                "range": {
+                  "startLineNumber": 48,
+                  "startColumn": 1,
+                  "endLineNumber": 48,
+                  "endColumn": 52
+                }
+              }
+            ],
+            [
+              {
+                "text": "  update: (id: string, payload: TUpdate) => Promise<TData>; // quando isList=false",
+                "range": {
+                  "startLineNumber": 49,
+                  "startColumn": 1,
+                  "endLineNumber": 49,
+                  "endColumn": 66
+                }
+              }
+            ],
+            [
+              {
+                "text": "",
+                "range": {
+                  "startLineNumber": 50,
+                  "startColumn": 1,
+                  "endLineNumber": 50,
+                  "endColumn": 24
+                }
+              }
+            ],
+            [
+              {
+                "text": "  // Na implementação:",
+                "range": {
+                  "startLineNumber": 51,
+                  "startColumn": 1,
+                  "endLineNumber": 51,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "  update: async (payload: TUpdate): Promise<TData> // falta o parâmetro 'id'",
+                "range": {
+                  "startLineNumber": 52,
+                  "startColumn": 1,
+                  "endLineNumber": 52,
+                  "endColumn": 68
+                }
+              }
+            ],
+            [
+              {
+                "text": "",
+                "range": {
+                  "startLineNumber": 53,
+                  "startColumn": 1,
+                  "endLineNumber": 185,
+                  "endColumn": 1
+                }
+              }
+            ],
+            []
+          ],
+          "state": {
+            "sha1": "9ef2f7ca4372a74501411b30294a2c8726a688f5",
+            "applied": 1
+          }
+        }
+      ],
+      "responseId": "response_dcd1dd12-03fe-422b-9d4b-22c6dca6ea54",
+      "result": {
+        "timings": {
+          "totalElapsed": 10378
+        },
+        "metadata": {
+          "codeBlocks": [],
+          "toolCallRounds": [
+            {
+              "response": "O código tem alguns problemas de tipagem TypeScript:\n\n**1. Assinatura de `update` incompatível:**\n```typescript\n// Na interface ReturnCreateResourseHook:\nupdate: (id: string, payload: TUpdate) => Promise<TData>; // quando isList=false\n\n// Na implementação:\nupdate: async (payload: TUpdate): Promise<TData> // falta o parâmetro 'id'\n```\n\n**2. Assinatura de `remove` incompatível:**\n```typescript",
+              "toolCalls": [],
+              "toolInputRetry": 0,
+              "id": "46b6d562-8d40-4ac4-8ca1-71e96df68cf8"
+            }
+          ],
+          "modelMessageId": "d83a1086-76ef-4229-846c-8743342b2e37",
+          "responseId": "34f6961d-27bf-478b-a452-3b24ed245213",
+          "sessionId": "38a2734e-15e2-48e3-9903-f700b1f71803",
+          "agentId": "github.copilot.editor"
+        },
+        "details": "Claude Sonnet 4.5 • 0.9x"
+      },
+      "followups": [],
+      "isCanceled": false,
+      "agent": {
+        "extensionId": {
+          "value": "GitHub.copilot-chat",
+          "_lower": "github.copilot-chat"
+        },
+        "extensionVersion": "0.32.3",
+        "publisherDisplayName": "GitHub",
+        "extensionPublisherId": "GitHub",
+        "extensionDisplayName": "GitHub Copilot Chat",
+        "id": "github.copilot.editor",
+        "description": "Ask or edit in context",
+        "when": "!config.inlineChat.enableV2 && !config.github.copilot.chat.advanced.inlineChat2",
+        "metadata": {
+          "themeIcon": {
+            "id": "copilot"
+          },
+          "hasFollowups": false,
+          "supportIssueReporting": false
+        },
+        "name": "Copilot",
+        "fullName": "GitHub Copilot",
+        "isDefault": true,
+        "locations": [
+          "editor"
+        ],
+        "modes": [
+          "ask"
+        ],
+        "slashCommands": [
+          {
+            "name": "generate",
+            "description": "Generate new code",
+            "disambiguation": [
+              {
+                "category": "generate",
+                "description": "Generate new code",
+                "examples": [
+                  "Add a function that returns the sum of two numbers"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "edit",
+            "description": "Edit the selected code in your active editor",
+            "disambiguation": [
+              {
+                "category": "edit",
+                "description": "Make changes to existing code",
+                "examples": [
+                  "Change this method to use async/await"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "doc",
+            "description": "Add documentation comment for this symbol",
+            "disambiguation": [
+              {
+                "category": "doc",
+                "description": "Add documentation comment for this symbol",
+                "examples": [
+                  "Add jsdoc to this method"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "fix",
+            "description": "Propose a fix for the problems in the selected code",
+            "disambiguation": [
+              {
+                "category": "fix",
+                "description": "Propose a fix for the problems in the selected code",
+                "examples": [
+                  "There is a problem in this code. Rewrite the code to show it with the bug fixed."
+                ]
+              }
+            ]
+          },
+          {
+            "name": "explain",
+            "description": "Explain how the code in your active editor works",
+            "disambiguation": [
+              {
+                "category": "explain",
+                "description": "Explain how the code in your active editor works",
+                "examples": [
+                  "Write an explanation for the code above as paragraphs of text."
+                ]
+              }
+            ]
+          },
+          {
+            "name": "tests",
+            "description": "Generate unit tests for the selected code",
+            "disambiguation": [
+              {
+                "category": "tests",
+                "description": "Generate unit tests for the selected code. The user does not want to fix their existing tests.",
+                "examples": [
+                  "Write a set of detailed unit test functions for the code above."
+                ]
+              }
+            ]
+          }
+        ],
+        "disambiguation": [
+          {
+            "category": "unknown",
+            "description": "Intent of this command is unclear or is not related to information technologies",
+            "examples": [
+              "Add a dog to this comment."
+            ]
+          }
+        ]
+      },
+      "contentReferences": [],
+      "codeCitations": [],
+      "timestamp": 1761457886741,
+      "modelId": "copilot/auto"
+    }
+  ],
+  "sessionId": "fae4f021-d554-4a56-a2f4-37a85aec16e2",
+  "creationDate": 1761457882559,
+  "isImported": false,
+  "lastMessageDate": 1761457886741
+}

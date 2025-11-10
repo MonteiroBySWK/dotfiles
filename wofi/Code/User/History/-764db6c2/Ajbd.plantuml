@@ -1,0 +1,81 @@
+@startuml Gestão de Conteúdo Acadêmico
+skinparam packageStyle rectangle
+
+actor "Membro Autorizado" as membro_autorizado
+actor "Membro do Laboratório" as membro
+actor "Administrador" as admin
+
+rectangle "Gestão de Conteúdo Acadêmico" {
+  (Fazer Upload de Material) as upload
+  (Validar Tipo de Arquivo) as validar_tipo
+  (Validar Tamanho do Arquivo) as validar_tamanho
+  (Categorizar Material) as categorizar
+  (Registrar Informações do Material) as info_material
+  (Listar Materiais) as listar
+  (Filtrar por Categoria) as filtrar
+  (Buscar Material) as buscar
+  (Fazer Download de Material) as download
+  (Editar Informações do Material) as editar
+  (Excluir Material) as excluir
+  (Visualizar Detalhes do Material) as detalhes
+}
+
+membro_autorizado --> upload
+membro_autorizado --> editar
+
+admin --|> membro_autorizado
+admin --> excluir
+
+upload ..> validar_tipo : include
+upload ..> validar_tamanho : include
+upload ..> categorizar : include
+upload ..> info_material : include
+
+membro --> listar
+membro --> buscar
+membro --> download
+membro --> detalhes
+
+listar ..> filtrar : extend
+listar ..> buscar : extend
+listar ..> detalhes : include
+
+note right of upload
+  REQ-43, REQ-44, REQ-45:
+  Upload de materiais (PDF, DOCX,
+  XLSX, PPT, ZIP) até 50MB
+end note
+
+note right of categorizar
+  REQ-46: Categorias: Notas de Aula,
+  Artigos, Manuais, Tutoriais, Outros
+end note
+
+note right of info_material
+  REQ-47, REQ-49: Registro de título,
+  descrição, autor, data e usuário
+  que fez upload
+end note
+
+note right of listar
+  REQ-48, REQ-49, REQ-50:
+  Listagem com filtros, busca
+  e download por membros autenticados
+end note
+
+note right of editar
+  REQ-51: Edição de informações
+  de materiais existentes
+end note
+
+note right of excluir
+  REQ-52: Exclusão por
+  usuários autorizados
+end note
+
+note bottom of membro
+  REQ-54: Acesso restrito
+  apenas para usuários autenticados
+end note
+
+@enduml

@@ -1,0 +1,124 @@
+2025-11-04 19:08:26.480 [info] [GitExtensionServiceImpl] Initializing Git extension service.
+2025-11-04 19:08:27.290 [info] [GitExtensionServiceImpl] Successfully activated the vscode.git extension.
+2025-11-04 19:08:27.290 [info] [GitExtensionServiceImpl] Enablement state of the vscode.git extension: true.
+2025-11-04 19:08:27.290 [info] [GitExtensionServiceImpl] Successfully registered Git commit message provider.
+2025-11-04 19:08:27.735 [info] Using the Electron fetcher.
+2025-11-04 19:08:32.614 [info] Logged in as MonteiroBySWK
+2025-11-04 19:08:33.239 [info] Got Copilot token for MonteiroBySWK
+2025-11-04 19:08:33.239 [info] Copilot Chat: 0.32.4, VS Code: 1.105.1
+2025-11-04 19:08:33.263 [info] activationBlocker from 'languageModelAccess' took for 5603ms
+2025-11-04 19:08:33.757 [info] Fetched model metadata in 1269ms 6e28d8dd-a1c5-43de-aac6-81801e1f1e36
+2025-11-04 19:08:33.868 [info] Logged in as MonteiroBySWK
+2025-11-04 19:08:33.962 [info] copilot token chat_enabled: true, sku: free_educational_quota
+2025-11-04 19:08:33.962 [info] GitHub.vscode-pull-request-github extension is not yet activated.
+2025-11-04 19:08:33.981 [info] Registering default platform agent...
+2025-11-04 19:08:33.982 [info] activationBlocker from 'conversationFeature' took for 6328ms
+2025-11-04 19:08:34.050 [info] Latest entry: ccreq:latest.copilotmd
+2025-11-04 19:08:34.051 [info] ccreq:c4831a08.copilotmd | markdown
+2025-11-04 19:08:34.072 [info] BYOK: Copilot Chat known models list fetched successfully.
+2025-11-04 19:08:34.216 [info] Fetched model metadata in 152ms 0b50521f-946d-4af2-87e4-33f581e84455
+2025-11-04 19:08:34.219 [info] ccreq:408724b2.copilotmd | markdown
+2025-11-04 19:08:34.297 [info] Got Copilot token for MonteiroBySWK
+2025-11-04 19:08:34.297 [info] Copilot Chat: 0.32.4, VS Code: 1.105.1
+2025-11-04 19:08:34.388 [info] Fetched auto model in 167ms.
+2025-11-04 19:08:34.469 [info] copilot token chat_enabled: true, sku: free_educational_quota
+2025-11-04 19:08:34.614 [info] Fetched model metadata in 142ms 4851337a-6d5b-4958-b0f5-e07839adfeea
+2025-11-04 19:08:34.616 [info] ccreq:ac5a2123.copilotmd | markdown
+2025-11-04 19:08:34.758 [info] Fetched auto model in 141ms.
+2025-11-04 19:08:35.626 [error] API key not valid. Please pass a valid API key.: Error fetching available Gemini models
+2025-11-04 19:08:39.762 [info] Refetch model metadata: Succeeded in 573ms fde3cc80-ad34-411c-8391-a3cf200a9acd (D475:2AB8DE:EBC7EE:11469E2:690A7967) using node-http with status 200.
+2025-11-04 19:08:40.351 [info] Refetch model metadata: Succeeded in 589ms c07509b1-0bd8-46b4-b1eb-d2e960dd22b7 (D54C:2E3A1F:EFBF2C:118622A:690A7968) using node-fetch with status 200.
+2025-11-04 19:08:40.949 [info] Refetch model metadata: Succeeded in 597ms dcf2dc39-e032-4c89-bc5d-488f567abadb (D40C:2E3A1F:EFC0C1:1186402:690A7969) using electron-fetch with status 200.
+2025-11-04 22:38:42.200 [info] Logged in as MonteiroBySWK
+2025-11-04 22:38:42.910 [info] Got Copilot token for MonteiroBySWK
+2025-11-04 22:38:42.910 [info] Copilot Chat: 0.32.4, VS Code: 1.105.1
+2025-11-04 22:38:42.930 [info] copilot token chat_enabled: true, sku: free_educational_quota
+2025-11-04 22:38:43.488 [info] Fetched model metadata in 1304ms c01bc1e5-26a6-49e4-ba6e-5a5665cd2c02
+2025-11-04 22:38:43.620 [info] ccreq:cdce0839.copilotmd | markdown
+2025-11-04 22:38:43.771 [info] Fetched auto model in 150ms.
+2025-11-04 22:47:35.926 [info] GitHub.vscode-pull-request-github extension is not yet activated.
+2025-11-04 22:47:35.926 [warning] GitHub.vscode-pull-request-github extension API is not available.
+2025-11-04 22:47:35.982 [info] GitHub.vscode-pull-request-github extension is not yet activated.
+2025-11-04 22:47:35.982 [warning] GitHub.vscode-pull-request-github extension API is not available.
+2025-11-04 22:47:53.190 [info] message 0 returned. finish reason: [tool_calls]
+2025-11-04 22:47:53.190 [info] request done: requestId: [a889d829-1c48-4b40-b4dd-734fc51ff947] model deployment ID: []
+2025-11-04 22:47:53.193 [info] ccreq:44383855.copilotmd | success | claude-sonnet-4.5 | 17074ms | [panel/editAgent]
+2025-11-04 22:47:53.256 [info] GitHub.vscode-pull-request-github extension is not yet activated.
+2025-11-04 22:47:53.256 [warning] GitHub.vscode-pull-request-github extension API is not available.
+2025-11-04 22:49:26.118 [info] message 0 returned. finish reason: [stop]
+2025-11-04 22:49:26.118 [info] request done: requestId: [a889d829-1c48-4b40-b4dd-734fc51ff947] model deployment ID: []
+2025-11-04 22:49:26.120 [info] ccreq:e69f8c10.copilotmd | success | claude-sonnet-4.5 | 92809ms | [panel/editAgent]
+2025-11-04 23:36:25.877 [info] Logged in as MonteiroBySWK
+2025-11-04 23:36:26.424 [info] Got Copilot token for MonteiroBySWK
+2025-11-04 23:36:26.424 [info] Copilot Chat: 0.32.4, VS Code: 1.105.1
+2025-11-04 23:36:26.439 [info] copilot token chat_enabled: true, sku: free_educational_quota
+2025-11-04 23:36:26.938 [info] Fetched model metadata in 1212ms e0c905ee-552b-4b13-bc78-a69fc471a10a
+2025-11-04 23:36:27.041 [info] ccreq:a26f4c99.copilotmd | markdown
+2025-11-04 23:36:27.060 [info] GitHub.vscode-pull-request-github extension is not yet activated.
+2025-11-04 23:36:27.060 [warning] GitHub.vscode-pull-request-github extension API is not available.
+2025-11-04 23:36:27.172 [info] Fetched auto model in 130ms.
+2025-11-04 23:36:27.440 [info] GitHub.vscode-pull-request-github extension is not yet activated.
+2025-11-04 23:36:27.440 [warning] GitHub.vscode-pull-request-github extension API is not available.
+2025-11-04 23:36:49.978 [info] message 0 returned. finish reason: [stop]
+2025-11-04 23:36:49.978 [info] request done: requestId: [fa345220-c5c6-4886-b8b0-d419d87351cf] model deployment ID: []
+2025-11-04 23:36:49.979 [info] ccreq:aabcf90e.copilotmd | success | claude-sonnet-4.5 | 22473ms | [panel/editAgent]
+2025-11-04 23:44:59.655 [info] GitHub.vscode-pull-request-github extension is not yet activated.
+2025-11-04 23:44:59.656 [warning] GitHub.vscode-pull-request-github extension API is not available.
+2025-11-04 23:44:59.977 [info] GitHub.vscode-pull-request-github extension is not yet activated.
+2025-11-04 23:44:59.977 [warning] GitHub.vscode-pull-request-github extension API is not available.
+2025-11-04 23:45:28.262 [info] message 0 returned. finish reason: [stop]
+2025-11-04 23:45:28.262 [info] request done: requestId: [a488bbb0-78f1-4f73-80a8-2abe435d1b21] model deployment ID: []
+2025-11-04 23:45:28.264 [info] ccreq:19b5f064.copilotmd | success | claude-sonnet-4.5 | 28231ms | [panel/editAgent]
+2025-11-04 23:58:12.549 [info] Logged in as MonteiroBySWK
+2025-11-04 23:58:12.996 [info] Got Copilot token for MonteiroBySWK
+2025-11-04 23:58:12.996 [info] Copilot Chat: 0.32.4, VS Code: 1.105.1
+2025-11-04 23:58:13.020 [info] copilot token chat_enabled: true, sku: free_educational_quota
+2025-11-04 23:58:13.623 [info] Fetched model metadata in 1180ms af64fc48-47a7-403a-9dcb-2f1d8e306024
+2025-11-04 23:58:13.756 [info] ccreq:bc5a1410.copilotmd | markdown
+2025-11-04 23:58:13.795 [info] GitHub.vscode-pull-request-github extension is not yet activated.
+2025-11-04 23:58:13.795 [warning] GitHub.vscode-pull-request-github extension API is not available.
+2025-11-04 23:58:13.920 [info] Fetched auto model in 163ms.
+2025-11-04 23:58:14.159 [info] GitHub.vscode-pull-request-github extension is not yet activated.
+2025-11-04 23:58:14.159 [warning] GitHub.vscode-pull-request-github extension API is not available.
+2025-11-04 23:58:20.040 [info] message 0 returned. finish reason: [tool_calls]
+2025-11-04 23:58:20.040 [info] request done: requestId: [b46abfb6-0e32-4e3c-a613-96251903426c] model deployment ID: []
+2025-11-04 23:58:20.042 [info] ccreq:ad1289a6.copilotmd | success | claude-sonnet-4.5 | 5833ms | [panel/editAgent]
+2025-11-04 23:58:20.233 [info] GitHub.vscode-pull-request-github extension is not yet activated.
+2025-11-04 23:58:20.233 [warning] GitHub.vscode-pull-request-github extension API is not available.
+2025-11-04 23:58:24.354 [info] message 0 returned. finish reason: [tool_calls]
+2025-11-04 23:58:24.354 [info] request done: requestId: [b46abfb6-0e32-4e3c-a613-96251903426c] model deployment ID: []
+2025-11-04 23:58:24.356 [info] ccreq:531dd01a.copilotmd | success | claude-sonnet-4.5 | 4032ms | [panel/editAgent]
+2025-11-04 23:58:24.397 [info] GitHub.vscode-pull-request-github extension is not yet activated.
+2025-11-04 23:58:24.397 [warning] GitHub.vscode-pull-request-github extension API is not available.
+2025-11-04 23:58:57.691 [info] message 0 returned. finish reason: [stop]
+2025-11-04 23:58:57.706 [info] request done: requestId: [b46abfb6-0e32-4e3c-a613-96251903426c] model deployment ID: []
+2025-11-04 23:58:57.708 [info] ccreq:8e2dbb3e.copilotmd | success | claude-sonnet-4.5 | 33252ms | [panel/editAgent]
+2025-11-04 23:59:51.471 [info] GitHub.vscode-pull-request-github extension is not yet activated.
+2025-11-04 23:59:51.471 [warning] GitHub.vscode-pull-request-github extension API is not available.
+2025-11-04 23:59:51.488 [info] GitHub.vscode-pull-request-github extension is not yet activated.
+2025-11-04 23:59:51.488 [warning] GitHub.vscode-pull-request-github extension API is not available.
+2025-11-05 00:00:13.327 [info] message 0 returned. finish reason: [tool_calls]
+2025-11-05 00:00:13.327 [info] request done: requestId: [7a36eed1-3838-4259-ae34-020662e68b79] model deployment ID: []
+2025-11-05 00:00:13.328 [info] ccreq:72a89e83.copilotmd | success | claude-sonnet-4.5 | 21772ms | [panel/editAgent]
+2025-11-05 00:00:15.794 [info] GitHub.vscode-pull-request-github extension is not yet activated.
+2025-11-05 00:00:15.794 [warning] GitHub.vscode-pull-request-github extension API is not available.
+2025-11-05 00:00:27.778 [info] message 0 returned. finish reason: [tool_calls]
+2025-11-05 00:00:27.778 [info] request done: requestId: [7a36eed1-3838-4259-ae34-020662e68b79] model deployment ID: []
+2025-11-05 00:00:27.780 [info] ccreq:1ffba385.copilotmd | success | claude-sonnet-4.5 | 11928ms | [panel/editAgent]
+2025-11-05 00:00:29.823 [info] GitHub.vscode-pull-request-github extension is not yet activated.
+2025-11-05 00:00:29.823 [warning] GitHub.vscode-pull-request-github extension API is not available.
+2025-11-05 00:00:41.267 [info] message 0 returned. finish reason: [tool_calls]
+2025-11-05 00:00:41.267 [info] request done: requestId: [7a36eed1-3838-4259-ae34-020662e68b79] model deployment ID: []
+2025-11-05 00:00:41.268 [info] ccreq:16913e71.copilotmd | success | claude-sonnet-4.5 | 11377ms | [panel/editAgent]
+2025-11-05 00:00:43.301 [info] GitHub.vscode-pull-request-github extension is not yet activated.
+2025-11-05 00:00:43.301 [warning] GitHub.vscode-pull-request-github extension API is not available.
+2025-11-05 00:00:48.972 [info] message 0 returned. finish reason: [tool_calls]
+2025-11-05 00:00:48.972 [info] request done: requestId: [7a36eed1-3838-4259-ae34-020662e68b79] model deployment ID: []
+2025-11-05 00:00:48.973 [info] ccreq:9010264b.copilotmd | success | claude-sonnet-4.5 | 5616ms | [panel/editAgent]
+2025-11-05 00:00:49.030 [info] GitHub.vscode-pull-request-github extension is not yet activated.
+2025-11-05 00:00:49.030 [warning] GitHub.vscode-pull-request-github extension API is not available.
+2025-11-05 00:00:50.432 [info] ccreq:409b5c7f.copilotmd | cancelled | claude-sonnet-4.5 | 1351ms | [panel/editAgent]
+2025-11-05 00:01:13.121 [info] GitHub.vscode-pull-request-github extension is not yet activated.
+2025-11-05 00:01:13.121 [warning] GitHub.vscode-pull-request-github extension API is not available.
+2025-11-05 00:01:13.463 [info] GitHub.vscode-pull-request-github extension is not yet activated.
+2025-11-05 00:01:13.463 [warning] GitHub.vscode-pull-request-github extension API is not available.

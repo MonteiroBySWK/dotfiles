@@ -1,0 +1,106 @@
+"use client"
+
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { useSSEHealthData } from "@/hooks/use-sse-health-data"
+import { RealTimeHeartRate } from "./real-time-heart-rate"
+import { RealTimeHealthGauge } from "./real-time-health-gauge"
+import { Badge } from "@/components/ui/badge"
+
+export function RealTimeDashboardOverview() {
+  const { healthData, connectionState } = useSSEHealthData("all")
+
+  const activeEmployees = Array.from(healthData.keys()).length
+  const averageBPM = Array.from(healthData.values())
+    .filter((data) => data.bpm)
+    .reduce((sum, data, _, arr) => sum + (data.bpm || 0) / arr.length, 0)
+
+  const highStressCount = Array.from(healthData.values()).filter(
+    (data) => data.stressLevel && data.stressLevel > 60,
+  ).length
+
+  return (
+    <div className="space-y-6">
+      {/* Connection Status */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center justify-between">
+            Real-Time Health Monitoring
+            <Badge variant={connectionState.isConnected ? "default" : "destructive"}>
+              {connectionState.isConnected ? "Connected" : "Disconnected"}
+            </Badge>
+          </CardTitle>
+          <CardDescription>Live health data streaming from employee smartwatches</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-blue-600">{activeEmployees}</div>
+              <p className="text-sm text-muted-foreground">Active Connections</p>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-green-600">{averageBPM > 0 ? Math.round(averageBPM) : "--"}</div>
+              <p className="text-sm text-muted-foreground">Avg Heart Rate</p>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-red-600">{highStressCount}</div>
+              <p className="text-sm text-muted-foreground">High Stress Alerts</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Real-time Heart Rate Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <RealTimeHeartRate
+          employeeId="emp-001"
+          employeeName="Sarah Johnson"
+          employeePhoto="/placeholder.svg?height=48&width=48"
+        />
+        <RealTimeHeartRate
+          employeeId="emp-002"
+          employeeName="Michael Chen"
+          employeePhoto="/placeholder.svg?height=48&width=48"
+        />
+        <RealTimeHeartRate
+          employeeId="emp-003"
+          employeeName="Emily Rodriguez"
+          employeePhoto="/placeholder.svg?height=48&width=48"
+        />
+      </div>
+
+      {/* Health Gauges */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <RealTimeHealthGauge
+          employeeId="emp-001"
+          employeeName="Sarah Johnson"
+          metric="bpm"
+          title="Heart Rate"
+          unit="BPM"
+          minValue={40}
+          maxValue={120}
+          normalRange={[60, 100]}
+        />
+        <RealTimeHealthGauge
+          employeeId="emp-001"
+          employeeName="Sarah Johnson"
+          metric="spo2"
+          title="Blood Oxygen"
+          unit="%"
+          minValue={90}
+          maxValue={100}
+          normalRange={[95, 100]}
+        />
+        <RealTimeHealthGauge
+          employeeId="emp-001"
+          employeeName="Sarah Johnson"
+          metric="stressLevel"
+          title="Stress Level"
+          unit=""
+          minValue={0}
+          maxValue={100}
+          normalRange={[0, 40]}
+        />
+      </div>
+    </div>
+  )
+}

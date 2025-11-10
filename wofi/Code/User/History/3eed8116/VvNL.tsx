@@ -1,0 +1,13 @@
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { SearchCheck } from "lucide-react";
+
+export default function SearchPrincipal() {
+  return (
+    <div className="flex flex-col space-y-3 items-center w-7/10">
+      <p className="font-extrabold text-3xl">Sonar Docs</p>
+      <Input/>
+      <Button><SearchCheck/> </Button>
+    </div>
+  );
+}

@@ -1,0 +1,50 @@
+:root {
+  font-family: monospace;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 0.5rem;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  color: black;
+  background-color: white;
+  z-index: 1;
+}
+
+nav > ul {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+}
+
+#home {
+  background-color: #000;
+  display: flex;
+  align-items: center;
+  height: 100dvh;
+}
+
+#home > h1 {
+  color: white;
+  height: 500;
+  cursor: pointer;
+}
+
+.tags {
+  color: white;
+}
+
+#about {
+  background-color: #eae;
+  height: 100dvh;
+}

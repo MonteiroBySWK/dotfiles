@@ -1,0 +1,145 @@
+/**
+ * Formulário de Cadastro/Edição de Eventos
+ * Sistema REVIS
+ */
+
+'use client';
+
+import { useState, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { useFirestore } from '@/hooks/useFirestore';
+import { Evento } from '@/types';
+import { toast } from 'sonner';
+import { Loader2 } from 'lucide-react';
+
+interface FormEventoProps {
+  eventoId?: string;
+  onSuccess?: () => void;
+}
+
+export function FormEvento({ eventoId, onSuccess }: FormEventoProps) {
+  const { getById, add, update } = useFirestore<Evento>({ collection: 'eventos' });
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    nome: '',
+    data: '',
+    local: '',
+    descricao: '',
+  });
+
+  // Carregar dados se for edição
+  useEffect(() => {
+    if (eventoId) {
+      setLoading(true);
+      getById(eventoId)
+        .then((evento) => {
+          if (evento) {
+            const dataInicio = evento.dataInicio.toDate();
+            setFormData({
+              nome: evento.nome,
+              data: dataInicio.toISOString().split('T')[0],
+              local: evento.local,
+              descricao: evento.descricao || '',
+            });
+          }
+        })
+        .finally(() => setLoading(false));
+    }
+  }, [eventoId, getById]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const dataEvento = new Date(formData.data);
+      const eventoData: Omit<Evento, 'id'> = {
+        nome: formData.nome,
+        descricao: formData.descricao,
+        local: formData.local,
+        dataInicio: dataEvento,
+        dataFim: dataEvento,
+        criadoEm: new Date(),
+        atualizadoEm: new Date(),
+      };
+
+      if (eventoId) {
+        await update(eventoId, eventoData);
+        toast.success('Evento atualizado com sucesso!');
+      } else {
+        await add(eventoData);
+        toast.success('Evento cadastrado com sucesso!');
+      }
+
+      onSuccess?.();
+    } catch (error) {
+      console.error('Erro ao salvar evento:', error);
+      toast.error('Erro ao salvar evento. Tente novamente.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      {/* Nome */}
+      <div className="space-y-2">
+        <Label htmlFor="nome">Nome do Evento *</Label>
+        <Input
+          id="nome"
+          placeholder="Ex: Festa de Verão 2024"
+          value={formData.nome}
+          onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
+          required
+        />
+      </div>
+
+      {/* Data */}
+      <div className="space-y-2">
+        <Label htmlFor="data">Data *</Label>
+        <Input
+          id="data"
+          type="date"
+          value={formData.data}
+          onChange={(e) => setFormData({ ...formData, data: e.target.value })}
+          required
+        />
+      </div>
+
+      {/* Local */}
+      <div className="space-y-2">
+        <Label htmlFor="local">Local *</Label>
+        <Input
+          id="local"
+          placeholder="Ex: Clube Recreativo"
+          value={formData.local}
+          onChange={(e) => setFormData({ ...formData, local: e.target.value })}
+          required
+        />
+      </div>
+
+      {/* Descrição */}
+      <div className="space-y-2">
+        <Label htmlFor="descricao">Descrição</Label>
+        <Textarea
+          id="descricao"
+          placeholder="Informações adicionais sobre o evento"
+          value={formData.descricao}
+          onChange={(e) => setFormData({ ...formData, descricao: e.target.value })}
+          rows={3}
+        />
+      </div>
+
+      {/* Botões */}
+      <div className="flex gap-3 pt-4">
+        <Button type="submit" disabled={loading} className="flex-1">
+          {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          {eventoId ? 'Atualizar' : 'Cadastrar'}
+        </Button>
+      </div>
+    </form>
+  );
+}

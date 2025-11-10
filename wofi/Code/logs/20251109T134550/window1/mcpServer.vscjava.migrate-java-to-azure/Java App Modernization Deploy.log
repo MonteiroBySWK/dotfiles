@@ -1,0 +1,20 @@
+2025-11-09 13:48:20.336 [info] Starting server Java App Modernization Deploy
+2025-11-09 13:48:20.336 [info] Connection state: Starting
+2025-11-09 13:48:20.336 [info] Starting server from LocalProcess extension host
+2025-11-09 13:48:20.353 [info] Connection state: Starting
+2025-11-09 13:48:20.354 [info] Connection state: Running
+2025-11-09 13:48:23.157 [warning] Failed to parse message: "MCP server connected successfully.\n"
+2025-11-09 13:48:23.158 [warning] Failed to parse message: "MCP server is running. Press Ctrl+C to exit.\n"
+2025-11-09 13:48:23.171 [info] Discovered 12 tools
+2025-11-09 14:08:13.749 [warning] Extension host shut down, server will stop.
+2025-11-09 14:08:13.752 [info] Connection state: Stopped
+2025-11-09 14:08:27.348 [info] Starting server Java App Modernization Deploy
+2025-11-09 14:08:27.350 [info] Connection state: Starting
+2025-11-09 14:08:27.350 [info] Starting server from LocalProcess extension host
+2025-11-09 14:08:27.368 [info] Connection state: Starting
+2025-11-09 14:08:27.370 [info] Connection state: Running
+2025-11-09 14:08:29.883 [warning] Failed to parse message: "MCP server connected successfully.\n"
+2025-11-09 14:08:29.884 [warning] Failed to parse message: "MCP server is running. Press Ctrl+C to exit.\n"
+2025-11-09 14:08:29.896 [info] Discovered 12 tools
+2025-11-09 15:04:47.139 [warning] Extension host shut down, server will stop.
+2025-11-09 15:04:47.141 [info] Connection state: Stopped

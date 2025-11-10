@@ -1,0 +1,94 @@
+2025-11-02 21:33:22.523 [info] Configuration changed
+2025-11-02 21:33:34.239 [info] Active editor: file:///home/monteiro/codes/sonar/src/app/api/projects/%5Bid%5D/route.ts
+2025-11-02 21:33:34.297 [info] /home/monteiro/codes/sonar/src/app/api/projects/[id]/route.ts.git closed
+2025-11-02 21:34:48.609 [info] Active editor: git:/home/monteiro/codes/sonar/src/app/api/projects/%5Bid%5D/route.ts?%7B%22path%22%3A%22%2Fhome%2Fmonteiro%2Fcodes%2Fsonar%2Fsrc%2Fapp%2Fapi%2Fprojects%2F%5Bid%5D%2Froute.ts%22%2C%22ref%22%3A%22~%22%7D
+2025-11-02 21:35:18.038 [info] Active editor: file:///home/monteiro/codes/sonar/src/app/api/projects/%5Bid%5D/route.ts
+2025-11-02 21:35:20.006 [info] Active editor: git:/home/monteiro/codes/sonar/src/app/api/projects/%5Bid%5D/route.ts?%7B%22path%22%3A%22%2Fhome%2Fmonteiro%2Fcodes%2Fsonar%2Fsrc%2Fapp%2Fapi%2Fprojects%2F%5Bid%5D%2Froute.ts%22%2C%22ref%22%3A%22~%22%7D
+2025-11-02 21:35:20.658 [info] /home/monteiro/codes/sonar/.next/package.json closed
+2025-11-02 21:35:20.675 [info] /home/monteiro/codes/sonar/package.json closed
+2025-11-02 21:35:27.584 [info] Active editor: file:///home/monteiro/codes/sonar/src/app/api/projects/%5Bid%5D/route.ts
+2025-11-02 21:35:27.616 [info] /home/monteiro/codes/sonar/src/app/api/projects/[id]/route.ts closed
+2025-11-02 21:35:27.698 [info] Active editor: file:///home/monteiro/codes/sonar/src/app/api/auth/%5B...slug%5D/route.ts
+2025-11-02 21:35:38.416 [info] Active editor: file:///home/monteiro/codes/sonar/src/app/api/projects/%5Bid%5D/route.ts
+2025-11-02 21:35:38.445 [info] /home/monteiro/codes/sonar/src/app/api/auth/[...slug]/route.ts.git closed
+2025-11-02 21:35:40.423 [info] Active editor: file:///home/monteiro/codes/sonar/src/app/api/auth/%5B...slug%5D/route.ts
+2025-11-02 21:35:40.458 [info] /home/monteiro/codes/sonar/src/app/api/projects/[id]/route.ts.git closed
+2025-11-02 21:36:03.041 [info] Active editor: file:///home/monteiro/codes/sonar/src/app/api/projects/%5Bid%5D/route.ts
+2025-11-02 21:36:03.068 [info] /home/monteiro/codes/sonar/src/app/api/auth/[...slug]/route.ts.git closed
+2025-11-02 21:36:13.500 [info] Executing :w
+2025-11-02 21:36:24.360 [info] Configuration changed
+2025-11-02 21:36:25.173 [info] Configuration changed
+2025-11-02 21:38:02.996 [info] /home/monteiro/codes/sonar/src/app/api/auth/[...slug]/route.ts closed
+2025-11-02 21:38:03.078 [info] Active editor: file:///home/monteiro/codes/sonar/src/provider/AuthProvider.tsx
+2025-11-02 21:38:03.114 [info] /home/monteiro/codes/sonar/src/app/api/projects/[id]/route.ts.git closed
+2025-11-02 21:38:33.660 [info] Searching for console.
+2025-11-02 21:41:46.154 [info] /home/monteiro/codes/sonar/src/provider/AuthProvider.tsx closed
+2025-11-02 21:41:46.206 [info] Active editor: file:///home/monteiro/codes/sonar/.env.local
+2025-11-02 21:41:46.226 [info] /home/monteiro/codes/sonar/src/provider/AuthProvider.tsx.git closed
+2025-11-02 21:41:54.249 [info] /home/monteiro/codes/sonar/.env.local closed
+2025-11-02 21:41:54.281 [info] Active editor: file:///home/monteiro/codes/sonar/firestore.rules
+2025-11-02 21:41:55.588 [info] /home/monteiro/codes/sonar/firestore.rules closed
+2025-11-02 21:41:55.630 [info] Active editor: file:///home/monteiro/codes/sonar/firestore.indexes.json
+2025-11-02 21:41:55.648 [info] /home/monteiro/codes/sonar/firestore.rules.git closed
+2025-11-02 21:41:56.352 [info] /home/monteiro/codes/sonar/firestore.indexes.json closed
+2025-11-02 21:41:56.383 [info] Active editor: file:///home/monteiro/codes/sonar/firebase.json
+2025-11-02 21:41:56.394 [info] /home/monteiro/codes/sonar/firestore.indexes.json.git closed
+2025-11-02 21:41:58.796 [info] /home/monteiro/codes/sonar/firebase.json closed
+2025-11-02 21:41:58.823 [info] Active editor: file:///home/monteiro/codes/sonar/tsconfig.json
+2025-11-02 21:41:58.833 [info] /home/monteiro/codes/sonar/firebase.json.git closed
+2025-11-02 21:41:59.462 [info] /home/monteiro/codes/sonar/tsconfig.json closed
+2025-11-02 21:41:59.513 [info] Active editor: file:///home/monteiro/codes/sonar/tsconfig.tsbuildinfo
+2025-11-02 21:41:59.528 [info] /home/monteiro/codes/sonar/tsconfig.json.git closed
+2025-11-02 21:42:01.590 [info] /home/monteiro/codes/sonar/tsconfig.tsbuildinfo closed
+2025-11-02 21:42:01.631 [info] Active editor: file:///home/monteiro/codes/sonar/tsconfig.json
+2025-11-02 21:42:04.384 [info] /home/monteiro/codes/sonar/tsconfig.json closed
+2025-11-02 21:42:04.417 [info] Active editor: file:///home/monteiro/codes/sonar/src/provider/AuthProvider.tsx
+2025-11-02 21:42:04.633 [info] /home/monteiro/codes/sonar/tsconfig.json.git closed
+2025-11-02 21:42:12.159 [info] /home/monteiro/codes/sonar/src/provider/AuthProvider.tsx closed
+2025-11-02 21:42:12.219 [info] Active editor: file:///home/monteiro/codes/sonar/src/app/api/auth/%5B...slug%5D/route.ts
+2025-11-02 21:42:12.259 [info] /home/monteiro/codes/sonar/src/provider/AuthProvider.tsx.git closed
+2025-11-02 21:45:19.186 [info] Active editor: file:///home/monteiro/codes/sonar/src/app/page.tsx
+2025-11-02 21:45:19.302 [info] /home/monteiro/codes/sonar/src/app/api/auth/[...slug]/route.ts.git closed
+2025-11-02 21:46:01.948 [info] /home/monteiro/codes/sonar/src/components/ui/button.tsx closed
+2025-11-02 21:46:02.575 [info] /home/monteiro/codes/sonar/src/components/ui/button.tsx closed
+2025-11-02 21:46:02.761 [info] /home/monteiro/codes/sonar/src/components/ui/button.tsx closed
+2025-11-02 21:46:36.291 [info] Executing :w
+2025-11-02 21:48:37.697 [info] Active editor: file:///home/monteiro/codes/sonar/src/app/api/projects/%5Bid%5D/route.ts
+2025-11-02 21:48:37.749 [info] /home/monteiro/codes/sonar/src/app/page.tsx.git closed
+2025-11-02 21:49:39.467 [info] Active editor: file:///home/monteiro/codes/sonar/src/app/api/auth/%5B...slug%5D/route.ts
+2025-11-02 21:49:39.505 [info] /home/monteiro/codes/sonar/src/app/api/projects/[id]/route.ts.git closed
+2025-11-02 22:01:21.122 [info] Active editor: file:///home/monteiro/codes/sonar/src/app/api/projects/%5Bid%5D/route.ts
+2025-11-02 22:01:21.165 [info] /home/monteiro/codes/sonar/src/app/api/auth/[...slug]/route.ts.git closed
+2025-11-02 22:01:22.399 [info] /home/monteiro/codes/sonar/src/app/api/projects/[id]/route.ts closed
+2025-11-02 22:01:22.478 [info] Active editor: file:///home/monteiro/codes/sonar/src/app/api/auth/%5B...slug%5D/route.ts
+2025-11-02 22:01:29.436 [info] Active editor: file:///home/monteiro/codes/sonar/src/app/page.tsx
+2025-11-02 22:01:30.301 [info] Active editor: file:///home/monteiro/codes/sonar/src/lib/apiExternal.ts
+2025-11-02 22:01:30.336 [info] /home/monteiro/codes/sonar/src/app/page.tsx.git closed
+2025-11-02 22:01:36.573 [info] Active editor: file:///home/monteiro/codes/sonar/src/app/api/auth/%5B...slug%5D/route.ts
+2025-11-02 22:01:36.607 [info] /home/monteiro/codes/sonar/src/lib/apiExternal.ts.git closed
+2025-11-02 22:02:35.559 [info] Active editor: file:///home/monteiro/codes/sonar/src/app/api/auth/%5B...slug%5D/route.ts
+2025-11-02 22:02:35.690 [info] /home/monteiro/codes/sonar/src/app/api/auth/[...slug]/route.ts.git closed
+2025-11-02 22:02:36.456 [info] Active editor: file:///home/monteiro/codes/sonar/src/app/page.tsx
+2025-11-02 22:02:37.195 [info] Active editor: file:///home/monteiro/codes/sonar/src/app/api/auth/%5B...slug%5D/route.ts
+2025-11-02 22:02:37.225 [info] /home/monteiro/codes/sonar/src/app/page.tsx.git closed
+2025-11-02 22:02:41.279 [info] Active editor: file:///home/monteiro/codes/sonar/src/app/api/projects/%5Bid%5D/route.ts
+2025-11-02 22:02:41.310 [info] /home/monteiro/codes/sonar/src/app/api/auth/[...slug]/route.ts.git closed
+2025-11-02 22:03:39.941 [info] /home/monteiro/codes/sonar/src/app/api/auth/[...slug]/route.ts closed
+2025-11-02 22:03:40.005 [info] Active editor: file:///home/monteiro/codes/sonar/src/app/dashboard/projects/page.tsx
+2025-11-02 22:03:40.067 [info] /home/monteiro/codes/sonar/src/app/api/projects/[id]/route.ts.git closed
+2025-11-02 22:04:08.204 [info] /home/monteiro/codes/sonar/node_modules/@types/react/index.d.ts closed
+2025-11-02 22:06:09.122 [info] Executing :w
+2025-11-02 22:11:28.070 [info] /response_706e63c2-1542-4e83-a2d2-9b4d5d3ebaf1/0 closed
+2025-11-02 22:11:28.072 [info] /response_706e63c2-1542-4e83-a2d2-9b4d5d3ebaf1/1 closed
+2025-11-02 22:12:34.571 [info] /response_49dccd4d-e962-448a-a361-26574d02235d/0 closed
+2025-11-02 22:12:38.212 [info] /home/monteiro/codes/sonar/src/middleware.ts closed
+2025-11-02 22:12:42.903 [info] /response_49dccd4d-e962-448a-a361-26574d02235d/1 closed
+2025-11-02 22:13:28.144 [info] /home/monteiro/codes/sonar/src/middleware.ts closed
+2025-11-02 22:14:29.834 [info] /home/monteiro/codes/sonar/src/provider/AuthProvider.tsx closed
+2025-11-02 22:14:29.856 [info] /home/monteiro/codes/sonar/src/components/nav-user.tsx closed
+2025-11-02 22:14:52.455 [info] /home/monteiro/codes/sonar/src/hooks/useProjects.ts closed
+2025-11-02 22:14:57.261 [info] /home/monteiro/codes/sonar/src/hooks/createResourceHook.ts closed
+2025-11-02 22:15:02.340 [info] /home/monteiro/codes/sonar/src/lib/apiClient.ts closed
+2025-11-02 22:23:25.060 [info] Active editor: vscode-chat-code-block://ae55326a-976c-4fe9-9a6f-a99a8feb3991/response_49dccd4d-e962-448a-a361-26574d02235d/1#%7B%22references%22%3A%5B%5D%7D
+2025-11-02 22:23:28.473 [info] Active editor: file:///home/monteiro/codes/sonar/src/app/dashboard/projects/page.tsx
+2025-11-02 22:23:38.267 [info] /home/monteiro/codes/sonar/src/app/dashboard/projects/page.tsx.git closed

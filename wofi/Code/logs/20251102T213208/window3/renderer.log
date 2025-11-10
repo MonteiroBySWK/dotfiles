@@ -1,0 +1,13 @@
+2025-11-02 22:21:11.228 [info] Started local extension host with pid 38413.
+2025-11-02 22:21:11.488 [warning] [redhat.vscode-yaml]: Cannot register 'redhat.telemetry.enabled'. This property is already registered.
+2025-11-02 22:21:11.505 [error] Ignoring expo.appManifest.fileReferences.excludeGlobPatterns as expo.appManifest.fileReferences is true
+2025-11-02 22:21:12.649 [error] Ignoring expo.appManifest.fileReferences.excludeGlobPatterns as expo.appManifest.fileReferences is true
+2025-11-02 22:21:17.291 [error] [Extension Host] (node:38413) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `exe --trace-deprecation ...` to show where the warning was created)
+2025-11-02 22:21:18.166 [info] MCP Registry configured: https://api.mcp.github.com/2025-09-15
+2025-11-02 22:21:19.228 [info] Settings Sync: Account status changed from uninitialized to unavailable
+2025-11-02 22:21:19.690 [info] Extension host (LocalProcess pid: 38413) is unresponsive.
+2025-11-02 22:21:19.819 [info] [perf] Render performance baseline is 31ms
+2025-11-02 22:21:20.128 [error] [Extension Host] (node:38413) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+2025-11-02 22:21:20.452 [info] Extension host (LocalProcess pid: 38413) is responsive.
+2025-11-02 22:21:21.783 [error] chatParticipant must be declared in package.json: claude-code

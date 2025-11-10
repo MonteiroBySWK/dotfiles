@@ -1,0 +1,175 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Users collection - permissões simplificadas para permitir operações básicas
+    match /users/{userId} {
+      // Permitir leitura para usuários autenticados (próprios dados)
+      allow read: if isAuthenticated() && request.auth.uid == userId;
+      
+      // Permitir criação de usuário durante registro
+      allow create: if isAuthenticated() && request.auth.uid == userId;
+      
+      // Permitir atualização dos próprios dados
+      allow update: if isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Projects collection
+    match /projects/{projectId} {
+      // Read: Team members, managers, admins
+      allow read: if hasAnyRole(['admin', 'manager']) || 
+        request.auth.uid in resource.data.teamMembers.map(member => member.userId) ||
+        request.auth.uid == resource.data.managerId;
+      
+      // Create: Managers and admins
+      allow create: if hasAnyRole(['admin', 'manager']) && 
+        isInCompany(request.resource.data.companyId);
+      
+      // Update: Project manager, admins, managers
+      allow update: if hasRole('admin') || 
+        request.auth.uid == resource.data.managerId ||
+        (hasRole('manager') && isInCompany(resource.data.companyId));
+      
+      // Delete: Only admins
+      allow delete: if hasRole('admin');
+    }
+
+    // Tasks collection
+    match /tasks/{taskId} {
+      // Read: Assignee, reporter, watchers, project team members, managers, admins
+      allow read: if hasAnyRole(['admin', 'manager']) ||
+        request.auth.uid == resource.data.assigneeId ||
+        request.auth.uid == resource.data.reporterId ||
+        request.auth.uid in resource.data.watchers;
+      
+      // Create: Anyone authenticated (can create tasks)
+      allow create: if isAuthenticated();
+      
+      // Update: Assignee, reporter, managers, admins
+      allow update: if hasAnyRole(['admin', 'manager']) ||
+        request.auth.uid == resource.data.assigneeId ||
+        request.auth.uid == resource.data.reporterId;
+      
+      // Delete: Reporter, managers, admins
+      allow delete: if hasAnyRole(['admin', 'manager']) ||
+        request.auth.uid == resource.data.reporterId;
+    }
+
+    // Clients collection
+    match /clients/{clientId} {
+      // Read/Write: Managers and admins
+      allow read, write: if hasAnyRole(['admin', 'manager']);
+    }
+
+    // Tickets collection
+    match /tickets/{ticketId} {
+      // Read: Assignee, reporter, managers, admins
+      allow read: if hasAnyRole(['admin', 'manager']) ||
+        request.auth.uid == resource.data.assigneeId ||
+        request.auth.uid == resource.data.reporterId;
+      
+      // Create: Anyone authenticated can create tickets
+      allow create: if isAuthenticated();
+      
+      // Update: Assignee, managers, admins
+      allow update: if hasAnyRole(['admin', 'manager']) ||
+        request.auth.uid == resource.data.assigneeId;
+      
+      // Delete: Managers and admins only
+      allow delete: if hasAnyRole(['admin', 'manager']);
+    }
+
+    // Notifications collection
+    match /notifications/{notificationId} {
+      // Read/Update: Only the notification owner
+      allow read, update: if isOwner(resource.data.userId);
+      
+      // Create: System/admins can create notifications for users
+      allow create: if hasAnyRole(['admin', 'manager']);
+      
+      // Delete: Owner or admins
+      allow delete: if isOwner(resource.data.userId) || hasRole('admin');
+    }
+
+    // Companies collection
+    match /companies/{companyId} {
+      // Read: Company members
+      allow read: if isInCompany(companyId);
+      
+      // Write: Only admins
+      allow write: if hasRole('admin') && isInCompany(companyId);
+    }
+
+    // Teams collection
+    match /teams/{teamId} {
+      // Read: Team members and managers
+      allow read: if isInTeam(teamId) || hasAnyRole(['admin', 'manager']);
+      
+      // Write: Team leader, managers, admins
+      allow write: if hasAnyRole(['admin', 'manager']) ||
+        request.auth.uid == resource.data.leaderId;
+    }
+
+    // Time entries collection
+    match /timeEntries/{entryId} {
+      // Read: Entry owner, managers, admins
+      allow read: if isOwner(resource.data.userId) || hasAnyRole(['admin', 'manager']);
+      
+      // Write: Entry owner
+      allow write: if isOwner(resource.data.userId);
+    }
+
+    // Invoices collection
+    match /invoices/{invoiceId} {
+      // Read/Write: Managers and admins only
+      allow read, write: if hasAnyRole(['admin', 'manager']);
+    }
+
+    // Reports collection
+    match /reports/{reportId} {
+      // Read: Report creator, managers, admins
+      allow read: if isOwner(resource.data.generatedBy) || hasAnyRole(['admin', 'manager']);
+      
+      // Write: Managers and admins
+      allow write: if hasAnyRole(['admin', 'manager']);
+    }
+
+    // Activity logs collection
+    match /activityLogs/{logId} {
+      // Read: Admins and managers only
+      allow read: if hasAnyRole(['admin', 'manager']);
+      
+      // Create: System only (no user writes)
+      allow create: if false;
+      
+      // No updates or deletes allowed
+      allow update, delete: if false;
+    }
+
+    // File uploads collection
+    match /fileUploads/{fileId} {
+      // Read: File uploader, managers, admins
+      allow read: if isOwner(resource.data.uploadedBy) || hasAnyRole(['admin', 'manager']);
+      
+      // Create: Authenticated users
+      allow create: if isAuthenticated();
+      
+      // Update/Delete: File uploader, admins
+      allow update, delete: if isOwner(resource.data.uploadedBy) || hasRole('admin');
+    }
+
+    // Integrations collection
+    match /integrations/{integrationId} {
+      // Read/Write: Admins only
+      allow read, write: if hasRole('admin') && isInCompany(resource.data.companyId);
+    }
+  }
+}

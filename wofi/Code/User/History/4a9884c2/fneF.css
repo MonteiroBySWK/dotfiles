@@ -1,0 +1,73 @@
+@import "tailwindcss";
+@import "tailwindcss/preflight";
+
+:root {
+  /* Paleta de cores especificada */
+  --primary: hsla(268, 78%, 56%, 1); /* #8937E6 (Violeta) */
+  --secondary: hsla(209, 100%, 40%, 1); /* #0069CC (Azul Ciano) */
+  --background: hsla(0, 0%, 13%, 1); /* #212121 (Preto Quase Total) */
+  --foreground: hsla(0, 0%, 97%, 1); /* #F7F7F7 (Branco Quase Total) */
+
+  /* Gradientes */
+  --primary-gradient: linear-gradient(135deg, hsla(268, 78%, 56%, 1), hsla(268, 78%, 66%, 1));
+  --secondary-gradient: linear-gradient(135deg, hsla(209, 100%, 40%, 1), hsla(209, 100%, 50%, 1));
+  
+  /* Variáveis de tema */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Evita barras de rolagem */
+}
+
+/* Classes específicas para o projeto */
+.ascii-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  background-color: var(--background);
+}
+
+/* Garantir que o canvas se posicione corretamente */
+.ascii-background canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.hero-title-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.hero-title {
+  font-family: var(--font-mono);
+  font-weight: bold;
+  letter-spacing: 0.15em;
+}
+
+.hero-subtitle {
+  font-family: var(--font-sans);
+  font-weight: normal;
+}

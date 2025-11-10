@@ -1,0 +1,35 @@
+@startuml Membro - Gestão de Conteúdo
+scale 1920*1080
+left to right direction
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam backgroundColor white
+
+title Gestão de Conteúdo Acadêmico - Casos de Uso do Membro
+
+actor "Membro do Laboratório" as membro
+
+rectangle "Gestão de Conteúdo Acadêmico" {
+  (Listar Materiais) as listar
+  (Filtrar por Categoria) as filtrar
+  (Buscar Material) as buscar
+  (Fazer Download de Material) as download
+  (Visualizar Detalhes do Material) as detalhes
+}
+
+membro --> listar
+membro --> download
+
+(filtrar) .> listar : extends
+(buscar) .> listar : extends
+listar .> detalhes : include
+
+legend right
+  |= Requisito |= Descrição |
+  | REQ-48 | Listar materiais com filtros por categoria |
+  | REQ-49 | Buscar materiais por título ou palavra-chave |
+  | REQ-50 | Download de materiais por membros autenticados |
+  | REQ-54 | Restringir acesso apenas para autenticados |
+endlegend
+
+@enduml

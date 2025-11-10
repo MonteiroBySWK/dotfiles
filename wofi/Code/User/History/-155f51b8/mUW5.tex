@@ -1,0 +1,68 @@
+\documentclass[12pt, a4paper]{article}
+
+% Pacotes úteis
+\usepackage[utf8]{inputenc} % Codificação de entrada
+\usepackage[T1]{fontenc}    % Codificação de fonte
+\usepackage[brazilian]{babel} % Idioma português do Brasil
+\usepackage{amsmath}        % Para equações matemáticas
+\usepackage{graphicx}       % Para incluir imagens
+\usepackage{float}          % Para controlar a posição de figuras e tabelas
+\usepackage[hidelinks]{hyperref} % Para links clicáveis no PDF (hidelinks remove as caixas coloridas)
+\usepackage[numbers]{natbib} % Para citações e bibliografia
+\usepackage{indentfirst}    % Para indentar o primeiro parágrafo de cada seção
+\usepackage{caption}        % Para legendas de figuras e tabelas
+\usepackage{subcaption}     % Para subfiguras
+\usepackage{geometry}       % Para configurar margens
+\geometry{a4paper, top=3cm, bottom=2cm, left=3cm, right=2cm} % Margens ABNT
+
+% Informações do documento
+\title{Desenvolvimento de um Back-End para um Sistema Multiplataforma para a Empresa Júnior do Curso de Bacharelado em Engenharia de Computação da UEMA}
+\author{Gabriel Silva Monteiro \\ Orientador: Prof. Pedro Brandão Neto}
+\date{São Luís - MA \\ 2025} % A data atual é 14 de junho de 2025, São Luís - MA.
+
+% Configurações para a lista de figuras e tabelas (se houver)
+\usepackage{tocloft}
+\setlength{\cftfigindent}{0pt}
+\setlength{\cfttabindent}{0pt}
+
+\begin{document}
+
+\maketitle % Gera a página de título
+
+\clearpage
+\tableofcontents % Gera o sumário
+\clearpage
+\listoffigures % Gera a lista de figuras
+% \clearpage
+% \listoftables % Seu documento não tem tabelas, então comente se não for usar
+
+\begin{abstract}
+    \noindent O objetivo deste trabalho é o desenvolvimento de um back-end para um sistema multiplataforma destinado à Technos, empresa júnior do curso de Bacharelado em Engenharia de Computação do Centro de Ciências Tecnológicas da Universidade Estadual do Maranhão. A Technos busca apoiar a formação dos alunos proporcionando o contato dos alunos com a prestação de serviços de hardware e software à comunidade interna e externa à universidade, com o treinamento em produtos tecnológicos, conserto e manutenção de equipamentos eletrônicos, com excelência de qualidade e baixo custo. Para a melhoria e organização da empresa é proposto um sistema multiplataforma para organização das demandas, registro dos materiais permanentes e de uso contínuo, cadastros de usuários e clientes, com a integração de vendas de serviços e apresentação da empresa. O trabalho deve pesquisar as melhores tecnologias de banco de dados, conexão interna do sistema, segurança da informação, escalabilidade e versatilidade para um sistema confiável, procurando garantir a confidencialidade, integridade e disponibilidade dos serviços a serem prestados.
+    \vspace{0.5cm} % Adiciona um pequeno espaço
+    \noindent \textbf{Palavras-chave:} Empresa júnior, sistema multiplataforma, back-end, serviços.
+\end{abstract}
+
+% Você havia colocado \input{secoes/palavras_chave.tex} aqui, mas as palavras-chave já estão no abstract.
+% Se fosse uma seção separada de "Palavras-chave" (não no abstract), seria uma seção, não um input de texto solto.
+% Removendo para evitar duplicidade ou erro de estrutura.
+
+\section{Introdução}
+\input{secoes/introducao.tex}
+
+\section{Objetivos}
+\input{secoes/objetivos.tex}
+
+\section{Metodologia}
+\input{secoes/metodologia.tex}
+
+\section{Resultados} % Renomeei para "Resultados" conforme seu documento original, que usa "Resultados Parciais"
+\input{secoes/resultados.tex}
+
+\section{Considerações Parciais} % Mudei para "Considerações Parciais" conforme o texto do seu documento
+\input{secoes/consideracoes_parciais.tex}
+
+\section*{Referências} % Usei section* para não numerar as referências
+\bibliographystyle{plainnat} % Use plainnat para compatibilidade com \cite{...} de natbib.
+\bibliography{referencias}
+
+\end{document}

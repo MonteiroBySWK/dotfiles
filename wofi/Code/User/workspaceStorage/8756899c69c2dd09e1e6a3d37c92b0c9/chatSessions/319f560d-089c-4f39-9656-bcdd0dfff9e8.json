@@ -1,0 +1,4048 @@
+{
+  "version": 3,
+  "requesterUsername": "MonteiroBySWK",
+  "requesterAvatarIconUri": {
+    "$mid": 1,
+    "path": "/u/129693679",
+    "scheme": "https",
+    "authority": "avatars.githubusercontent.com",
+    "query": "v=4"
+  },
+  "responderUsername": "GitHub Copilot",
+  "responderAvatarIconUri": {
+    "id": "copilot"
+  },
+  "initialLocation": "editor",
+  "requests": [
+    {
+      "requestId": "request_e9bb26a1-c037-423e-acd8-5ef67e005847",
+      "message": {
+        "parts": [
+          {
+            "range": {
+              "start": 0,
+              "endExclusive": 76
+            },
+            "editorRange": {
+              "startLineNumber": 1,
+              "startColumn": 1,
+              "endLineNumber": 1,
+              "endColumn": 77
+            },
+            "text": "cria aqui um CRUD mas se uma variavel inTest estiver true use dados mockados",
+            "kind": "text"
+          }
+        ],
+        "text": "cria aqui um CRUD mas se uma variavel inTest estiver true use dados mockados"
+      },
+      "variableData": {
+        "variables": []
+      },
+      "response": [
+        {
+          "kind": "textEditGroup",
+          "uri": {
+            "$mid": 1,
+            "fsPath": "/home/monteiro/codes/sonar/src/app/api/projects/route.ts",
+            "external": "file:///home/monteiro/codes/sonar/src/app/api/projects/route.ts",
+            "path": "/home/monteiro/codes/sonar/src/app/api/projects/route.ts",
+            "scheme": "file"
+          },
+          "edits": [
+            [
+              {
+                "text": "// /app/api/projects/route.ts",
+                "range": {
+                  "startLineNumber": 1,
+                  "startColumn": 1,
+                  "endLineNumber": 1,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n",
+                "range": {
+                  "startLineNumber": 1,
+                  "startColumn": 30,
+                  "endLineNumber": 1,
+                  "endColumn": 30
+                }
+              }
+            ],
+            [
+              {
+                "text": "\nexport const runtime = \"nodejs\";",
+                "range": {
+                  "startLineNumber": 2,
+                  "startColumn": 1,
+                  "endLineNumber": 2,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\nexport const dynamic = \"force-dynamic\";",
+                "range": {
+                  "startLineNumber": 3,
+                  "startColumn": 33,
+                  "endLineNumber": 3,
+                  "endColumn": 33
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n",
+                "range": {
+                  "startLineNumber": 4,
+                  "startColumn": 40,
+                  "endLineNumber": 4,
+                  "endColumn": 40
+                }
+              }
+            ],
+            [
+              {
+                "text": "\ntype Project = {",
+                "range": {
+                  "startLineNumber": 5,
+                  "startColumn": 1,
+                  "endLineNumber": 5,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  id: string;",
+                "range": {
+                  "startLineNumber": 6,
+                  "startColumn": 17,
+                  "endLineNumber": 6,
+                  "endColumn": 17
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  name: string;",
+                "range": {
+                  "startLineNumber": 7,
+                  "startColumn": 14,
+                  "endLineNumber": 7,
+                  "endColumn": 14
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  description?: string;",
+                "range": {
+                  "startLineNumber": 8,
+                  "startColumn": 16,
+                  "endLineNumber": 8,
+                  "endColumn": 16
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  createdAt: string;",
+                "range": {
+                  "startLineNumber": 9,
+                  "startColumn": 24,
+                  "endLineNumber": 9,
+                  "endColumn": 24
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  updatedAt: string;",
+                "range": {
+                  "startLineNumber": 10,
+                  "startColumn": 21,
+                  "endLineNumber": 10,
+                  "endColumn": 21
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n};",
+                "range": {
+                  "startLineNumber": 11,
+                  "startColumn": 21,
+                  "endLineNumber": 11,
+                  "endColumn": 21
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n",
+                "range": {
+                  "startLineNumber": 12,
+                  "startColumn": 3,
+                  "endLineNumber": 12,
+                  "endColumn": 3
+                }
+              }
+            ],
+            [
+              {
+                "text": "\ntype CreateProject = {",
+                "range": {
+                  "startLineNumber": 13,
+                  "startColumn": 1,
+                  "endLineNumber": 13,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  name: string;",
+                "range": {
+                  "startLineNumber": 14,
+                  "startColumn": 23,
+                  "endLineNumber": 14,
+                  "endColumn": 23
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  description?: string;",
+                "range": {
+                  "startLineNumber": 15,
+                  "startColumn": 16,
+                  "endLineNumber": 15,
+                  "endColumn": 16
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n};",
+                "range": {
+                  "startLineNumber": 16,
+                  "startColumn": 24,
+                  "endLineNumber": 16,
+                  "endColumn": 24
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n",
+                "range": {
+                  "startLineNumber": 17,
+                  "startColumn": 3,
+                  "endLineNumber": 17,
+                  "endColumn": 3
+                }
+              }
+            ],
+            [
+              {
+                "text": "\ntype UpdateProject = {",
+                "range": {
+                  "startLineNumber": 18,
+                  "startColumn": 1,
+                  "endLineNumber": 18,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  name?: string;",
+                "range": {
+                  "startLineNumber": 19,
+                  "startColumn": 23,
+                  "endLineNumber": 19,
+                  "endColumn": 23
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  description?: string;",
+                "range": {
+                  "startLineNumber": 20,
+                  "startColumn": 17,
+                  "endLineNumber": 20,
+                  "endColumn": 17
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n};",
+                "range": {
+                  "startLineNumber": 21,
+                  "startColumn": 24,
+                  "endLineNumber": 21,
+                  "endColumn": 24
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n",
+                "range": {
+                  "startLineNumber": 22,
+                  "startColumn": 3,
+                  "endLineNumber": 22,
+                  "endColumn": 3
+                }
+              }
+            ],
+            [
+              {
+                "text": "\ninterface Repo {",
+                "range": {
+                  "startLineNumber": 23,
+                  "startColumn": 1,
+                  "endLineNumber": 23,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  list(): Promise<Project[]>;",
+                "range": {
+                  "startLineNumber": 24,
+                  "startColumn": 17,
+                  "endLineNumber": 24,
+                  "endColumn": 17
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  get(id: string): Promise<Project | null>;",
+                "range": {
+                  "startLineNumber": 25,
+                  "startColumn": 30,
+                  "endLineNumber": 25,
+                  "endColumn": 30
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  create(data: CreateProject): Promise<Project>;",
+                "range": {
+                  "startLineNumber": 26,
+                  "startColumn": 44,
+                  "endLineNumber": 26,
+                  "endColumn": 44
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  update(id: string, patch: UpdateProject): Promise<Project | null>;",
+                "range": {
+                  "startLineNumber": 27,
+                  "startColumn": 49,
+                  "endLineNumber": 27,
+                  "endColumn": 49
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  remove(id: string): Promise<boolean>;",
+                "range": {
+                  "startLineNumber": 28,
+                  "startColumn": 69,
+                  "endLineNumber": 28,
+                  "endColumn": 69
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n}",
+                "range": {
+                  "startLineNumber": 29,
+                  "startColumn": 40,
+                  "endLineNumber": 29,
+                  "endColumn": 40
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n",
+                "range": {
+                  "startLineNumber": 30,
+                  "startColumn": 2,
+                  "endLineNumber": 30,
+                  "endColumn": 2
+                }
+              }
+            ],
+            [
+              {
+                "text": "\nconst inTest = process.env.IN_TEST === \"true\";",
+                "range": {
+                  "startLineNumber": 31,
+                  "startColumn": 1,
+                  "endLineNumber": 31,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n",
+                "range": {
+                  "startLineNumber": 32,
+                  "startColumn": 47,
+                  "endLineNumber": 32,
+                  "endColumn": 47
+                }
+              }
+            ],
+            [
+              {
+                "text": "\nclass MockRepo implements Repo {",
+                "range": {
+                  "startLineNumber": 33,
+                  "startColumn": 1,
+                  "endLineNumber": 33,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  private items: Project[];",
+                "range": {
+                  "startLineNumber": 34,
+                  "startColumn": 33,
+                  "endLineNumber": 34,
+                  "endColumn": 33
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n",
+                "range": {
+                  "startLineNumber": 35,
+                  "startColumn": 28,
+                  "endLineNumber": 35,
+                  "endColumn": 28
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  constructor() {",
+                "range": {
+                  "startLineNumber": 36,
+                  "startColumn": 1,
+                  "endLineNumber": 36,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    const now = new Date().toISOString();",
+                "range": {
+                  "startLineNumber": 37,
+                  "startColumn": 18,
+                  "endLineNumber": 37,
+                  "endColumn": 18
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    this.items = [",
+                "range": {
+                  "startLineNumber": 38,
+                  "startColumn": 42,
+                  "endLineNumber": 38,
+                  "endColumn": 42
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n      { id: \"p1\", name: \"Projeto Alpha\", description: \"Projeto de teste\", createdAt: now, updatedAt: now },",
+                "range": {
+                  "startLineNumber": 39,
+                  "startColumn": 19,
+                  "endLineNumber": 39,
+                  "endColumn": 19
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n      { id: \"p2\", name: \"Projeto Beta\", description: \"Outro projeto de teste\", createdAt: now, updatedAt: now },",
+                "range": {
+                  "startLineNumber": 40,
+                  "startColumn": 108,
+                  "endLineNumber": 40,
+                  "endColumn": 108
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    ];",
+                "range": {
+                  "startLineNumber": 41,
+                  "startColumn": 113,
+                  "endLineNumber": 41,
+                  "endColumn": 113
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  }",
+                "range": {
+                  "startLineNumber": 42,
+                  "startColumn": 7,
+                  "endLineNumber": 42,
+                  "endColumn": 7
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n",
+                "range": {
+                  "startLineNumber": 43,
+                  "startColumn": 4,
+                  "endLineNumber": 43,
+                  "endColumn": 4
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  async list() { return [...this.items]; }",
+                "range": {
+                  "startLineNumber": 44,
+                  "startColumn": 1,
+                  "endLineNumber": 44,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  async get(id: string) { return this.items.find(p => p.id === id) ?? null; }",
+                "range": {
+                  "startLineNumber": 45,
+                  "startColumn": 43,
+                  "endLineNumber": 45,
+                  "endColumn": 43
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  async create(data: CreateProject) {",
+                "range": {
+                  "startLineNumber": 46,
+                  "startColumn": 78,
+                  "endLineNumber": 46,
+                  "endColumn": 78
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    const now = new Date().toISOString();",
+                "range": {
+                  "startLineNumber": 47,
+                  "startColumn": 38,
+                  "endLineNumber": 47,
+                  "endColumn": 38
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    const proj: Project = { id: crypto.randomUUID(), name: data.name, description: data.description, createdAt: now, updatedAt: now };",
+                "range": {
+                  "startLineNumber": 48,
+                  "startColumn": 42,
+                  "endLineNumber": 48,
+                  "endColumn": 42
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    this.items.unshift(proj);",
+                "range": {
+                  "startLineNumber": 49,
+                  "startColumn": 135,
+                  "endLineNumber": 49,
+                  "endColumn": 135
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    return proj;",
+                "range": {
+                  "startLineNumber": 50,
+                  "startColumn": 30,
+                  "endLineNumber": 50,
+                  "endColumn": 30
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  }",
+                "range": {
+                  "startLineNumber": 51,
+                  "startColumn": 17,
+                  "endLineNumber": 51,
+                  "endColumn": 17
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  async update(id: string, patch: UpdateProject) {",
+                "range": {
+                  "startLineNumber": 52,
+                  "startColumn": 4,
+                  "endLineNumber": 52,
+                  "endColumn": 4
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    const idx = this.items.findIndex(p => p.id === id);",
+                "range": {
+                  "startLineNumber": 53,
+                  "startColumn": 51,
+                  "endLineNumber": 53,
+                  "endColumn": 51
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    if (idx < 0) return null;",
+                "range": {
+                  "startLineNumber": 54,
+                  "startColumn": 56,
+                  "endLineNumber": 54,
+                  "endColumn": 56
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    const updated: Project = { ...this.items[idx], ...patch, updatedAt: new Date().toISOString() };",
+                "range": {
+                  "startLineNumber": 55,
+                  "startColumn": 30,
+                  "endLineNumber": 55,
+                  "endColumn": 30
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    this.items[idx] = updated;",
+                "range": {
+                  "startLineNumber": 56,
+                  "startColumn": 100,
+                  "endLineNumber": 56,
+                  "endColumn": 100
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    return updated;",
+                "range": {
+                  "startLineNumber": 57,
+                  "startColumn": 31,
+                  "endLineNumber": 57,
+                  "endColumn": 31
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  }",
+                "range": {
+                  "startLineNumber": 58,
+                  "startColumn": 20,
+                  "endLineNumber": 58,
+                  "endColumn": 20
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  async remove(id: string) {",
+                "range": {
+                  "startLineNumber": 59,
+                  "startColumn": 4,
+                  "endLineNumber": 59,
+                  "endColumn": 4
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    const before = this.items.length;",
+                "range": {
+                  "startLineNumber": 60,
+                  "startColumn": 29,
+                  "endLineNumber": 60,
+                  "endColumn": 29
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    this.items = this.items.filter(p => p.id !== id);",
+                "range": {
+                  "startLineNumber": 61,
+                  "startColumn": 38,
+                  "endLineNumber": 61,
+                  "endColumn": 38
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    return this.items.length !== before;",
+                "range": {
+                  "startLineNumber": 62,
+                  "startColumn": 54,
+                  "endLineNumber": 62,
+                  "endColumn": 54
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  }",
+                "range": {
+                  "startLineNumber": 63,
+                  "startColumn": 41,
+                  "endLineNumber": 63,
+                  "endColumn": 41
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n}",
+                "range": {
+                  "startLineNumber": 64,
+                  "startColumn": 4,
+                  "endLineNumber": 64,
+                  "endColumn": 4
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n",
+                "range": {
+                  "startLineNumber": 65,
+                  "startColumn": 2,
+                  "endLineNumber": 65,
+                  "endColumn": 2
+                }
+              }
+            ],
+            [
+              {
+                "text": "\nclass MemoryRepo implements Repo {",
+                "range": {
+                  "startLineNumber": 66,
+                  "startColumn": 1,
+                  "endLineNumber": 66,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  private items: Project[] = [];",
+                "range": {
+                  "startLineNumber": 67,
+                  "startColumn": 35,
+                  "endLineNumber": 67,
+                  "endColumn": 35
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  async list() { return [...this.items]; }",
+                "range": {
+                  "startLineNumber": 68,
+                  "startColumn": 33,
+                  "endLineNumber": 68,
+                  "endColumn": 33
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  async get(id: string) { return this.items.find(p => p.id === id) ?? null; }",
+                "range": {
+                  "startLineNumber": 69,
+                  "startColumn": 43,
+                  "endLineNumber": 69,
+                  "endColumn": 43
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  async create(data: CreateProject) {",
+                "range": {
+                  "startLineNumber": 70,
+                  "startColumn": 78,
+                  "endLineNumber": 70,
+                  "endColumn": 78
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    const now = new Date().toISOString();",
+                "range": {
+                  "startLineNumber": 71,
+                  "startColumn": 38,
+                  "endLineNumber": 71,
+                  "endColumn": 38
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    const proj: Project = { id: crypto.randomUUID(), name: data.name, description: data.description, createdAt: now, updatedAt: now };",
+                "range": {
+                  "startLineNumber": 72,
+                  "startColumn": 42,
+                  "endLineNumber": 72,
+                  "endColumn": 42
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    this.items.unshift(proj);",
+                "range": {
+                  "startLineNumber": 73,
+                  "startColumn": 135,
+                  "endLineNumber": 73,
+                  "endColumn": 135
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    return proj;",
+                "range": {
+                  "startLineNumber": 74,
+                  "startColumn": 30,
+                  "endLineNumber": 74,
+                  "endColumn": 30
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  }",
+                "range": {
+                  "startLineNumber": 75,
+                  "startColumn": 17,
+                  "endLineNumber": 75,
+                  "endColumn": 17
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  async update(id: string, patch: UpdateProject) {",
+                "range": {
+                  "startLineNumber": 76,
+                  "startColumn": 4,
+                  "endLineNumber": 76,
+                  "endColumn": 4
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    const idx = this.items.findIndex(p => p.id === id);",
+                "range": {
+                  "startLineNumber": 77,
+                  "startColumn": 51,
+                  "endLineNumber": 77,
+                  "endColumn": 51
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    if (idx < 0) return null;",
+                "range": {
+                  "startLineNumber": 78,
+                  "startColumn": 56,
+                  "endLineNumber": 78,
+                  "endColumn": 56
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    const updated: Project = { ...this.items[idx], ...patch, updatedAt: new Date().toISOString() };",
+                "range": {
+                  "startLineNumber": 79,
+                  "startColumn": 30,
+                  "endLineNumber": 79,
+                  "endColumn": 30
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    this.items[idx] = updated;",
+                "range": {
+                  "startLineNumber": 80,
+                  "startColumn": 100,
+                  "endLineNumber": 80,
+                  "endColumn": 100
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    return updated;",
+                "range": {
+                  "startLineNumber": 81,
+                  "startColumn": 31,
+                  "endLineNumber": 81,
+                  "endColumn": 31
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  }",
+                "range": {
+                  "startLineNumber": 82,
+                  "startColumn": 20,
+                  "endLineNumber": 82,
+                  "endColumn": 20
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  async remove(id: string) {",
+                "range": {
+                  "startLineNumber": 83,
+                  "startColumn": 4,
+                  "endLineNumber": 83,
+                  "endColumn": 4
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    const before = this.items.length;",
+                "range": {
+                  "startLineNumber": 84,
+                  "startColumn": 29,
+                  "endLineNumber": 84,
+                  "endColumn": 29
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    this.items = this.items.filter(p => p.id !== id);",
+                "range": {
+                  "startLineNumber": 85,
+                  "startColumn": 38,
+                  "endLineNumber": 85,
+                  "endColumn": 38
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    return this.items.length !== before;",
+                "range": {
+                  "startLineNumber": 86,
+                  "startColumn": 54,
+                  "endLineNumber": 86,
+                  "endColumn": 54
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  }",
+                "range": {
+                  "startLineNumber": 87,
+                  "startColumn": 41,
+                  "endLineNumber": 87,
+                  "endColumn": 41
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n}",
+                "range": {
+                  "startLineNumber": 88,
+                  "startColumn": 4,
+                  "endLineNumber": 88,
+                  "endColumn": 4
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n",
+                "range": {
+                  "startLineNumber": 89,
+                  "startColumn": 2,
+                  "endLineNumber": 89,
+                  "endColumn": 2
+                }
+              }
+            ],
+            [
+              {
+                "text": "\nconst repo: Repo = inTest ? new MockRepo() : new MemoryRepo();",
+                "range": {
+                  "startLineNumber": 90,
+                  "startColumn": 1,
+                  "endLineNumber": 90,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n",
+                "range": {
+                  "startLineNumber": 91,
+                  "startColumn": 63,
+                  "endLineNumber": 91,
+                  "endColumn": 63
+                }
+              }
+            ],
+            [
+              {
+                "text": "\nfunction badRequest(message: string, details?: unknown) {",
+                "range": {
+                  "startLineNumber": 92,
+                  "startColumn": 1,
+                  "endLineNumber": 92,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  return NextResponse.json({ error: message, details }, { status: 400 });",
+                "range": {
+                  "startLineNumber": 93,
+                  "startColumn": 58,
+                  "endLineNumber": 93,
+                  "endColumn": 58
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n}",
+                "range": {
+                  "startLineNumber": 94,
+                  "startColumn": 74,
+                  "endLineNumber": 94,
+                  "endColumn": 74
+                }
+              }
+            ],
+            [
+              {
+                "text": "\nfunction notFound(message = \"Not found\") {",
+                "range": {
+                  "startLineNumber": 95,
+                  "startColumn": 2,
+                  "endLineNumber": 95,
+                  "endColumn": 2
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  return NextResponse.json({ error: message }, { status: 404 });",
+                "range": {
+                  "startLineNumber": 96,
+                  "startColumn": 43,
+                  "endLineNumber": 96,
+                  "endColumn": 43
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n}",
+                "range": {
+                  "startLineNumber": 97,
+                  "startColumn": 65,
+                  "endLineNumber": 97,
+                  "endColumn": 65
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n",
+                "range": {
+                  "startLineNumber": 98,
+                  "startColumn": 2,
+                  "endLineNumber": 98,
+                  "endColumn": 2
+                }
+              }
+            ],
+            [
+              {
+                "text": "\nexport async function GET(req: NextRequest) {",
+                "range": {
+                  "startLineNumber": 99,
+                  "startColumn": 1,
+                  "endLineNumber": 99,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  const id = new URL(req.url).searchParams.get(\"id\");",
+                "range": {
+                  "startLineNumber": 100,
+                  "startColumn": 46,
+                  "endLineNumber": 100,
+                  "endColumn": 46
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  if (id) {",
+                "range": {
+                  "startLineNumber": 101,
+                  "startColumn": 54,
+                  "endLineNumber": 101,
+                  "endColumn": 54
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    const project = await repo.get(id);",
+                "range": {
+                  "startLineNumber": 102,
+                  "startColumn": 12,
+                  "endLineNumber": 102,
+                  "endColumn": 12
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    if (!project) return notFound(\"Projeto não encontrado\");",
+                "range": {
+                  "startLineNumber": 103,
+                  "startColumn": 40,
+                  "endLineNumber": 103,
+                  "endColumn": 40
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    return NextResponse.json(project);",
+                "range": {
+                  "startLineNumber": 104,
+                  "startColumn": 61,
+                  "endLineNumber": 104,
+                  "endColumn": 61
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  }",
+                "range": {
+                  "startLineNumber": 105,
+                  "startColumn": 39,
+                  "endLineNumber": 105,
+                  "endColumn": 39
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  const list = await repo.list();",
+                "range": {
+                  "startLineNumber": 106,
+                  "startColumn": 4,
+                  "endLineNumber": 106,
+                  "endColumn": 4
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  return NextResponse.json(list);",
+                "range": {
+                  "startLineNumber": 107,
+                  "startColumn": 34,
+                  "endLineNumber": 107,
+                  "endColumn": 34
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n}",
+                "range": {
+                  "startLineNumber": 108,
+                  "startColumn": 34,
+                  "endLineNumber": 108,
+                  "endColumn": 34
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n",
+                "range": {
+                  "startLineNumber": 109,
+                  "startColumn": 2,
+                  "endLineNumber": 109,
+                  "endColumn": 2
+                }
+              }
+            ],
+            [
+              {
+                "text": "\nexport async function POST(req: NextRequest) {",
+                "range": {
+                  "startLineNumber": 110,
+                  "startColumn": 1,
+                  "endLineNumber": 110,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  let data: CreateProject;",
+                "range": {
+                  "startLineNumber": 111,
+                  "startColumn": 47,
+                  "endLineNumber": 111,
+                  "endColumn": 47
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  try {",
+                "range": {
+                  "startLineNumber": 112,
+                  "startColumn": 27,
+                  "endLineNumber": 112,
+                  "endColumn": 27
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    data = await req.json();",
+                "range": {
+                  "startLineNumber": 113,
+                  "startColumn": 8,
+                  "endLineNumber": 113,
+                  "endColumn": 8
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  } catch {",
+                "range": {
+                  "startLineNumber": 114,
+                  "startColumn": 29,
+                  "endLineNumber": 114,
+                  "endColumn": 29
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    return badRequest(\"JSON inválido\");",
+                "range": {
+                  "startLineNumber": 115,
+                  "startColumn": 12,
+                  "endLineNumber": 115,
+                  "endColumn": 12
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  }",
+                "range": {
+                  "startLineNumber": 116,
+                  "startColumn": 40,
+                  "endLineNumber": 116,
+                  "endColumn": 40
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  if (!data?.name || typeof data.name !== \"string\") {",
+                "range": {
+                  "startLineNumber": 117,
+                  "startColumn": 4,
+                  "endLineNumber": 117,
+                  "endColumn": 4
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    return badRequest(\"Campo 'name' é obrigatório\");",
+                "range": {
+                  "startLineNumber": 118,
+                  "startColumn": 54,
+                  "endLineNumber": 118,
+                  "endColumn": 54
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  }",
+                "range": {
+                  "startLineNumber": 119,
+                  "startColumn": 53,
+                  "endLineNumber": 119,
+                  "endColumn": 53
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  const created = await repo.create({ name: data.name.trim(), description: data.description });",
+                "range": {
+                  "startLineNumber": 120,
+                  "startColumn": 4,
+                  "endLineNumber": 120,
+                  "endColumn": 4
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  return NextResponse.json(created, { status: 201 });",
+                "range": {
+                  "startLineNumber": 121,
+                  "startColumn": 96,
+                  "endLineNumber": 121,
+                  "endColumn": 96
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n}",
+                "range": {
+                  "startLineNumber": 122,
+                  "startColumn": 54,
+                  "endLineNumber": 122,
+                  "endColumn": 54
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n",
+                "range": {
+                  "startLineNumber": 123,
+                  "startColumn": 2,
+                  "endLineNumber": 123,
+                  "endColumn": 2
+                }
+              }
+            ],
+            [
+              {
+                "text": "\nexport async function PUT(req: NextRequest) {",
+                "range": {
+                  "startLineNumber": 124,
+                  "startColumn": 1,
+                  "endLineNumber": 124,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  const url = new URL(req.url);",
+                "range": {
+                  "startLineNumber": 125,
+                  "startColumn": 46,
+                  "endLineNumber": 125,
+                  "endColumn": 46
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  const idFromQuery = url.searchParams.get(\"id\");",
+                "range": {
+                  "startLineNumber": 126,
+                  "startColumn": 32,
+                  "endLineNumber": 126,
+                  "endColumn": 32
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  let body: UpdateProject & { id?: string };",
+                "range": {
+                  "startLineNumber": 127,
+                  "startColumn": 50,
+                  "endLineNumber": 127,
+                  "endColumn": 50
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n",
+                "range": {
+                  "startLineNumber": 128,
+                  "startColumn": 45,
+                  "endLineNumber": 128,
+                  "endColumn": 45
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  try {",
+                "range": {
+                  "startLineNumber": 129,
+                  "startColumn": 1,
+                  "endLineNumber": 129,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    body = await req.json();",
+                "range": {
+                  "startLineNumber": 130,
+                  "startColumn": 8,
+                  "endLineNumber": 130,
+                  "endColumn": 8
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  } catch {",
+                "range": {
+                  "startLineNumber": 131,
+                  "startColumn": 29,
+                  "endLineNumber": 131,
+                  "endColumn": 29
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    return badRequest(\"JSON inválido\");",
+                "range": {
+                  "startLineNumber": 132,
+                  "startColumn": 12,
+                  "endLineNumber": 132,
+                  "endColumn": 12
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  }",
+                "range": {
+                  "startLineNumber": 133,
+                  "startColumn": 40,
+                  "endLineNumber": 133,
+                  "endColumn": 40
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n",
+                "range": {
+                  "startLineNumber": 134,
+                  "startColumn": 4,
+                  "endLineNumber": 134,
+                  "endColumn": 4
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  const id = idFromQuery ?? body?.id;",
+                "range": {
+                  "startLineNumber": 135,
+                  "startColumn": 1,
+                  "endLineNumber": 135,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  if (!id) return badRequest(\"Parâmetro 'id' é obrigatório (query ?id= ou no corpo)\");",
+                "range": {
+                  "startLineNumber": 136,
+                  "startColumn": 38,
+                  "endLineNumber": 136,
+                  "endColumn": 38
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n",
+                "range": {
+                  "startLineNumber": 137,
+                  "startColumn": 87,
+                  "endLineNumber": 137,
+                  "endColumn": 87
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  if (body.name !== undefined && typeof body.name !== \"string\") {",
+                "range": {
+                  "startLineNumber": 138,
+                  "startColumn": 1,
+                  "endLineNumber": 138,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    return badRequest(\"Campo 'name' deve ser string\");",
+                "range": {
+                  "startLineNumber": 139,
+                  "startColumn": 66,
+                  "endLineNumber": 139,
+                  "endColumn": 66
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  }",
+                "range": {
+                  "startLineNumber": 140,
+                  "startColumn": 55,
+                  "endLineNumber": 140,
+                  "endColumn": 55
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  if (body.description !== undefined && typeof body.description !== \"string\") {",
+                "range": {
+                  "startLineNumber": 141,
+                  "startColumn": 4,
+                  "endLineNumber": 141,
+                  "endColumn": 4
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    return badRequest(\"Campo 'description' deve ser string\");",
+                "range": {
+                  "startLineNumber": 142,
+                  "startColumn": 80,
+                  "endLineNumber": 142,
+                  "endColumn": 80
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  }",
+                "range": {
+                  "startLineNumber": 143,
+                  "startColumn": 62,
+                  "endLineNumber": 143,
+                  "endColumn": 62
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n",
+                "range": {
+                  "startLineNumber": 144,
+                  "startColumn": 4,
+                  "endLineNumber": 144,
+                  "endColumn": 4
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  const updated = await repo.update(id, { name: body.name, description: body.description });",
+                "range": {
+                  "startLineNumber": 145,
+                  "startColumn": 1,
+                  "endLineNumber": 145,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  if (!updated) return notFound(\"Projeto não encontrado\");",
+                "range": {
+                  "startLineNumber": 146,
+                  "startColumn": 93,
+                  "endLineNumber": 146,
+                  "endColumn": 93
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  return NextResponse.json(updated);",
+                "range": {
+                  "startLineNumber": 147,
+                  "startColumn": 59,
+                  "endLineNumber": 147,
+                  "endColumn": 59
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n}",
+                "range": {
+                  "startLineNumber": 148,
+                  "startColumn": 37,
+                  "endLineNumber": 148,
+                  "endColumn": 37
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n",
+                "range": {
+                  "startLineNumber": 149,
+                  "startColumn": 2,
+                  "endLineNumber": 149,
+                  "endColumn": 2
+                }
+              }
+            ],
+            [
+              {
+                "text": "\nexport async function DELETE(req: NextRequest) {",
+                "range": {
+                  "startLineNumber": 150,
+                  "startColumn": 1,
+                  "endLineNumber": 150,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  const id = new URL(req.url).searchParams.get(\"id\");",
+                "range": {
+                  "startLineNumber": 151,
+                  "startColumn": 49,
+                  "endLineNumber": 151,
+                  "endColumn": 49
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  if (!id) return badRequest(\"Parâmetro 'id' é obrigatório (?id=)\");",
+                "range": {
+                  "startLineNumber": 152,
+                  "startColumn": 54,
+                  "endLineNumber": 152,
+                  "endColumn": 54
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  const ok = await repo.remove(id);",
+                "range": {
+                  "startLineNumber": 153,
+                  "startColumn": 69,
+                  "endLineNumber": 153,
+                  "endColumn": 69
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  if (!ok) return notFound(\"Projeto não encontrado\");",
+                "range": {
+                  "startLineNumber": 154,
+                  "startColumn": 36,
+                  "endLineNumber": 154,
+                  "endColumn": 36
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  return NextResponse.json({ deleted: true, id });",
+                "range": {
+                  "startLineNumber": 155,
+                  "startColumn": 54,
+                  "endLineNumber": 155,
+                  "endColumn": 54
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n}",
+                "range": {
+                  "startLineNumber": 156,
+                  "startColumn": 51,
+                  "endLineNumber": 156,
+                  "endColumn": 51
+                }
+              }
+            ],
+            [
+              {
+                "text": "import { NextRequest, NextResponse } from \"next/server\";\n\n",
+                "range": {
+                  "startLineNumber": 1,
+                  "startColumn": 1,
+                  "endLineNumber": 1,
+                  "endColumn": 1
+                }
+              }
+            ]
+          ],
+          "state": {
+            "sha1": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+            "applied": 1
+          }
+        }
+      ],
+      "responseId": "response_c6ef59da-c951-4b4c-98bc-6df489067da8",
+      "result": {
+        "timings": {
+          "totalElapsed": 23709
+        },
+        "metadata": {
+          "codeBlocks": [],
+          "toolCallRounds": [
+            {
+              "response": "```typescript\n// /app/api/projects/route.ts\nimport { NextRequest, NextResponse } from \"next/server\";\n\nexport const runtime = \"nodejs\";\nexport const dynamic = \"force-dynamic\";\n\ntype Project = {\n  id: string;\n  name: string;\n  description?: string;\n  createdAt: string;\n  updatedAt: string;\n};\n\ntype CreateProject = {\n  name: string;\n  description?: string;\n};\n\ntype UpdateProject = {\n  name?: string;\n  description?: string;\n};\n\ninterface Repo {\n  list(): Promise<Project[]>;\n  get(id: string): Promise<Project | null>;\n  create(data: CreateProject): Promise<Project>;\n  update(id: string, patch: UpdateProject): Promise<Project | null>;\n  remove(id: string): Promise<boolean>;\n}\n\nconst inTest = process.env.IN_TEST === \"true\";\n\nclass MockRepo implements Repo {\n  private items: Project[];\n\n  constructor() {\n    const now = new Date().toISOString();\n    this.items = [\n      { id: \"p1\", name: \"Projeto Alpha\", description: \"Projeto de teste\", createdAt: now, updatedAt: now },\n      { id: \"p2\", name: \"Projeto Beta\", description: \"Outro projeto de teste\", createdAt: now, updatedAt: now },\n    ];\n  }\n\n  async list() { return [...this.items]; }\n  async get(id: string) { return this.items.find(p => p.id === id) ?? null; }\n  async create(data: CreateProject) {\n    const now = new Date().toISOString();\n    const proj: Project = { id: crypto.randomUUID(), name: data.name, description: data.description, createdAt: now, updatedAt: now };\n    this.items.unshift(proj);\n    return proj;\n  }\n  async update(id: string, patch: UpdateProject) {\n    const idx = this.items.findIndex(p => p.id === id);\n    if (idx < 0) return null;\n    const updated: Project = { ...this.items[idx], ...patch, updatedAt: new Date().toISOString() };\n    this.items[idx] = updated;\n    return updated;\n  }\n  async remove(id: string) {\n    const before = this.items.length;\n    this.items = this.items.filter(p => p.id !== id);\n    return this.items.length !== before;\n  }\n}\n\nclass MemoryRepo implements Repo {\n  private items: Project[] = [];\n  async list() { return [...this.items]; }\n  async get(id: string) { return this.items.find(p => p.id === id) ?? null; }\n  async create(data: CreateProject) {\n    const now = new Date().toISOString();\n    const proj: Project = { id: crypto.randomUUID(), name: data.name, description: data.description, createdAt: now, updatedAt: now };\n    this.items.unshift(proj);\n    return proj;\n  }\n  async update(id: string, patch: UpdateProject) {\n    const idx = this.items.findIndex(p => p.id === id);\n    if (idx < 0) return null;\n    const updated: Project = { ...this.items[idx], ...patch, updatedAt: new Date().toISOString() };\n    this.items[idx] = updated;\n    return updated;\n  }\n  async remove(id: string) {\n    const before = this.items.length;\n    this.items = this.items.filter(p => p.id !== id);\n    return this.items.length !== before;\n  }\n}\n\nconst repo: Repo = inTest ? new MockRepo() : new MemoryRepo();\n\nfunction badRequest(message: string, details?: unknown) {\n  return NextResponse.json({ error: message, details }, { status: 400 });\n}\nfunction notFound(message = \"Not found\") {\n  return NextResponse.json({ error: message }, { status: 404 });\n}\n\nexport async function GET(req: NextRequest) {\n  const id = new URL(req.url).searchParams.get(\"id\");\n  if (id) {\n    const project = await repo.get(id);\n    if (!project) return notFound(\"Projeto não encontrado\");\n    return NextResponse.json(project);\n  }\n  const list = await repo.list();\n  return NextResponse.json(list);\n}\n\nexport async function POST(req: NextRequest) {\n  let data: CreateProject;\n  try {\n    data = await req.json();\n  } catch {\n    return badRequest(\"JSON inválido\");\n  }\n  if (!data?.name || typeof data.name !== \"string\") {\n    return badRequest(\"Campo 'name' é obrigatório\");\n  }\n  const created = await repo.create({ name: data.name.trim(), description: data.description });\n  return NextResponse.json(created, { status: 201 });\n}\n\nexport async function PUT(req: NextRequest) {\n  const url = new URL(req.url);\n  const idFromQuery = url.searchParams.get(\"id\");\n  let body: UpdateProject & { id?: string };\n\n  try {\n    body = await req.json();\n  } catch {\n    return badRequest(\"JSON inválido\");\n  }\n\n  const id = idFromQuery ?? body?.id;\n  if (!id) return badRequest(\"Parâmetro 'id' é obrigatório (query ?id= ou no corpo)\");\n\n  if (body.name !== undefined && typeof body.name !== \"string\") {\n    return badRequest(\"Campo 'name' deve ser string\");\n  }\n  if (body.description !== undefined && typeof body.description !== \"string\") {\n    return badRequest(\"Campo 'description' deve ser string\");\n  }\n\n  const updated = await repo.update(id, { name: body.name, description: body.description });\n  if (!updated) return notFound(\"Projeto não encontrado\");\n  return NextResponse.json(updated);\n}\n\nexport async function DELETE(req: NextRequest) {\n  const id = new URL(req.url).searchParams.get(\"id\");\n  if (!id) return badRequest(\"Parâmetro 'id' é obrigatório (?id=)\");\n  const ok = await repo.remove(id);\n  if (!ok) return notFound(\"Projeto não encontrado\");\n  return NextResponse.json({ deleted: true, id });\n}\n```",
+              "toolCalls": [],
+              "toolInputRetry": 0,
+              "id": "69de31fc-e50e-4584-8bf9-ec4063cefc63",
+              "statefulMarker": "UrJEhcdOB8+pwE1XrmAtJCZOzZTs6xM6PlOWdpl9jQoVAsdnDx+FzOpxNj6i+W2yOty9vn1UQlXlHzKQfx42glgh3RcYoKxMpkbDqgQm6/mJ9pG8ynhlT9LSpGohw2cXlhvCTSl6/C7v+Kc5hjFYjqW4bMuNLfPVNBqjQ4KfSFvSA81cPdA/vf5XertRmzu4wZ1xfkg+FA+FDCqVvhDywYjpcYRh3DSwCppYMzcOSJUE5iNsfkF4ifav5Zhf9/uAtd0MczZnWvnt4L7acpcokNb5PDrv4IZ4SByH3DStbL6j7gvwIGs0a1T/qqbxF1GDvwtF1DKl8c9d87389Jh2IzV8RfJjXffb0LRpIq1YlYEufTKQ9r3dejvx/8OiEAVDEMEZ9ktvUNGBZ/HVbT9GAQ==",
+              "thinking": {
+                "id": "lg2ll5AjAQZwGSBbaSVNdbtzsTrsuorVcsGXxpjaVNabTksbN3ohfwS2o3r++wq88RCzoTUIgwKo7JcfV1zJFbo0S5hgEI2GAsqBuPxVtMSUOSa4icmyddQv6DecF066fDlmfAxU+WRFdAFI2Yll7Y4Xzk57g/hje3rjO86x4mpzQ68aVgj7CHI669KziudLhN1JMibCT1aQKQmriuAlb9BkT6MPgGg2xopC7D0Vg1CMgWzsC5IIUcKxM3u+SfeXo0GJBcp+RcErxUcYQJFlWjZuwMDCypOyUA5s7KMUBztcELsG7Y0b5LQTY6S/jXf01ggMVf9T4l/nucBzNWMlbJdFbDuyCjkhdJ1svwuGle2aextFXiUuK6PIVea0er//n6qO9SFNGHQGsw14q3M=",
+                "text": "**Creating TypeScript code for API**\n\nI need to write TypeScript code in a new file for a Next.js API route specifically at `/app/api/projects/route.ts`. The user wants a CRUD setup in Portuguese, noting that if the variable `inTest` is true, I should use mocked data. The route should support GET, POST, PUT, and DELETE methods for projects. Since it’s `/app/api/projects`, I should handle collection-level operations and possibly accept an `id` query parameter to streamline the implementation.**Clarifying API route implementation**\n\nNext.js recommends a separate dynamic route for handling IDs, but the user specifically asked for a CRUD implementation in this file. I’ll set it up to manage the four methods and handle IDs using a query parameter or the request body for PUT and DELETE. There’s also a requirement to use an `inTest` variable to switch between mock data and actual database operations. If `inTest` is true, I'll operate against an in-memory array. If false, I might need a placeholder for the database since there's no configuration provided.**Deciding on data storage**\n\nI can choose to implement a real database or a simple file-based store. Since the user specified that if `inTest` is true, I should use mocked data, I can set `const inTest = process.env.IN_TEST === 'true'`. If `inTest` is false, I’ll return a 501 Not Implemented error to avoid confusion. For a CRUD functionality, I could create an in-memory store that’s flagged by this variable. Alternatively, I could use JSON file storage with Node APIs in Next.js if the runtime is set to \"nodejs\".**Implementing project storage**\n\nI need to create an interface named `Project` with properties like `id`, `name`, `description`, `createdAt`, and `updatedAt`. For mocked storage, I’ll initialize an array called `mockProjects`. When parsing the request method: for GET requests, if `inTest` is true, I’ll handle optional query parameters for `id`, returning a single project or a 404 if it’s not found. If no ID is provided, I could return a list or an empty one for now. They haven’t required a real database, so I’ll implement the mocked operations while noting a placeholder for a potential database connection in the future.**Implementing the API with mocked data**\n\nI’ll create a TypeScript implementation for the API, focusing on a mocked data scenario as per the user’s request. First, I'll set `const inTest = process.env.IN_TEST === 'true'`. I will define a `Repo` interface and provide two implementations: `MockRepo` for in-memory data and `MemoryRepo` starting empty. I’ll handle GET, POST, PUT, and DELETE methods, using `NextResponse` for responses. The key elements will include the repository, methods for data handling, and ensuring we return proper JSON. Here's the code block to finalize this setup efficiently.",
+                "encrypted": "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",
+                "tokens": 1600
+              }
+            }
+          ],
+          "modelMessageId": "d18d645e-02e3-48bc-ae45-a81a61a9fca2",
+          "responseId": "7ea22e33-7fff-480f-b60f-ac8bf2ab74f3",
+          "sessionId": "f2a30609-7877-419b-a50b-09a198cea312",
+          "agentId": "github.copilot.editor"
+        },
+        "details": "GPT-5 • 0.9x"
+      },
+      "followups": [],
+      "isCanceled": false,
+      "agent": {
+        "extensionId": {
+          "value": "GitHub.copilot-chat",
+          "_lower": "github.copilot-chat"
+        },
+        "extensionVersion": "0.32.3",
+        "publisherDisplayName": "GitHub",
+        "extensionPublisherId": "GitHub",
+        "extensionDisplayName": "GitHub Copilot Chat",
+        "id": "github.copilot.editor",
+        "description": "Ask or edit in context",
+        "when": "!config.inlineChat.enableV2 && !config.github.copilot.chat.advanced.inlineChat2",
+        "metadata": {
+          "themeIcon": {
+            "id": "copilot"
+          },
+          "hasFollowups": false,
+          "supportIssueReporting": false
+        },
+        "name": "Copilot",
+        "fullName": "GitHub Copilot",
+        "isDefault": true,
+        "locations": [
+          "editor"
+        ],
+        "modes": [
+          "ask"
+        ],
+        "slashCommands": [
+          {
+            "name": "generate",
+            "description": "Generate new code",
+            "disambiguation": [
+              {
+                "category": "generate",
+                "description": "Generate new code",
+                "examples": [
+                  "Add a function that returns the sum of two numbers"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "edit",
+            "description": "Edit the selected code in your active editor",
+            "disambiguation": [
+              {
+                "category": "edit",
+                "description": "Make changes to existing code",
+                "examples": [
+                  "Change this method to use async/await"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "doc",
+            "description": "Add documentation comment for this symbol",
+            "disambiguation": [
+              {
+                "category": "doc",
+                "description": "Add documentation comment for this symbol",
+                "examples": [
+                  "Add jsdoc to this method"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "fix",
+            "description": "Propose a fix for the problems in the selected code",
+            "disambiguation": [
+              {
+                "category": "fix",
+                "description": "Propose a fix for the problems in the selected code",
+                "examples": [
+                  "There is a problem in this code. Rewrite the code to show it with the bug fixed."
+                ]
+              }
+            ]
+          },
+          {
+            "name": "explain",
+            "description": "Explain how the code in your active editor works",
+            "disambiguation": [
+              {
+                "category": "explain",
+                "description": "Explain how the code in your active editor works",
+                "examples": [
+                  "Write an explanation for the code above as paragraphs of text."
+                ]
+              }
+            ]
+          },
+          {
+            "name": "tests",
+            "description": "Generate unit tests for the selected code",
+            "disambiguation": [
+              {
+                "category": "tests",
+                "description": "Generate unit tests for the selected code. The user does not want to fix their existing tests.",
+                "examples": [
+                  "Write a set of detailed unit test functions for the code above."
+                ]
+              }
+            ]
+          }
+        ],
+        "disambiguation": [
+          {
+            "category": "unknown",
+            "description": "Intent of this command is unclear or is not related to information technologies",
+            "examples": [
+              "Add a dog to this comment."
+            ]
+          }
+        ]
+      },
+      "contentReferences": [],
+      "codeCitations": [],
+      "timestamp": 1761270871710,
+      "modelId": "copilot/auto"
+    },
+    {
+      "requestId": "request_71b12cb2-41b7-49a8-b02f-981bf949bf6e",
+      "message": {
+        "parts": [
+          {
+            "range": {
+              "start": 0,
+              "endExclusive": 90
+            },
+            "editorRange": {
+              "startLineNumber": 1,
+              "startColumn": 1,
+              "endLineNumber": 1,
+              "endColumn": 91
+            },
+            "text": "use Project que tá em types, e olha o useResource pra você ter uma ideia de como deve vir ",
+            "kind": "text"
+          }
+        ],
+        "text": "use Project que tá em types, e olha o useResource pra você ter uma ideia de como deve vir "
+      },
+      "variableData": {
+        "variables": []
+      },
+      "response": [
+        {
+          "kind": "textEditGroup",
+          "uri": {
+            "$mid": 1,
+            "fsPath": "/home/monteiro/codes/sonar/src/app/api/projects/route.ts",
+            "external": "file:///home/monteiro/codes/sonar/src/app/api/projects/route.ts",
+            "path": "/home/monteiro/codes/sonar/src/app/api/projects/route.ts",
+            "scheme": "file"
+          },
+          "edits": [
+            [
+              {
+                "text": "import type { Project } from \"@/types\";",
+                "range": {
+                  "startLineNumber": 2,
+                  "startColumn": 1,
+                  "endLineNumber": 2,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "import { randomUUID } from \"node:crypto\";",
+                "range": {
+                  "startLineNumber": 3,
+                  "startColumn": 1,
+                  "endLineNumber": 3,
+                  "endColumn": 30
+                }
+              }
+            ],
+            [
+              {
+                "text": "// /app/api/projects/route.ts",
+                "range": {
+                  "startLineNumber": 5,
+                  "startColumn": 1,
+                  "endLineNumber": 5,
+                  "endColumn": 33
+                }
+              }
+            ],
+            [
+              {
+                "text": "",
+                "range": {
+                  "startLineNumber": 6,
+                  "startColumn": 1,
+                  "endLineNumber": 6,
+                  "endColumn": 40
+                }
+              }
+            ],
+            [
+              {
+                "text": "export const runtime = \"nodejs\";",
+                "range": {
+                  "startLineNumber": 7,
+                  "startColumn": 1,
+                  "endLineNumber": 7,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "export const dynamic = \"force-dynamic\";",
+                "range": {
+                  "startLineNumber": 8,
+                  "startColumn": 1,
+                  "endLineNumber": 8,
+                  "endColumn": 17
+                }
+              }
+            ],
+            [
+              {
+                "text": "",
+                "range": {
+                  "startLineNumber": 9,
+                  "startColumn": 1,
+                  "endLineNumber": 9,
+                  "endColumn": 14
+                }
+              }
+            ],
+            [
+              {
+                "text": "type CreateProject = Pick<Project, \"name\" | \"description\">;",
+                "range": {
+                  "startLineNumber": 10,
+                  "startColumn": 1,
+                  "endLineNumber": 10,
+                  "endColumn": 16
+                }
+              }
+            ],
+            [
+              {
+                "text": "type UpdateProject = Partial<Pick<Project, \"name\" | \"description\">>;",
+                "range": {
+                  "startLineNumber": 11,
+                  "startColumn": 1,
+                  "endLineNumber": 11,
+                  "endColumn": 24
+                }
+              }
+            ],
+            [
+              {
+                "text": "",
+                "range": {
+                  "startLineNumber": 12,
+                  "startColumn": 1,
+                  "endLineNumber": 12,
+                  "endColumn": 21
+                }
+              }
+            ],
+            [
+              {
+                "text": "interface Repo {",
+                "range": {
+                  "startLineNumber": 13,
+                  "startColumn": 1,
+                  "endLineNumber": 13,
+                  "endColumn": 21
+                }
+              }
+            ],
+            [
+              {
+                "text": "  list(): Promise<Project[]>;",
+                "range": {
+                  "startLineNumber": 14,
+                  "startColumn": 1,
+                  "endLineNumber": 14,
+                  "endColumn": 3
+                }
+              }
+            ],
+            [
+              {
+                "text": "  get(id: string): Promise<Project | null>;",
+                "range": {
+                  "startLineNumber": 15,
+                  "startColumn": 1,
+                  "endLineNumber": 15,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "  create(data: CreateProject): Promise<Project>;",
+                "range": {
+                  "startLineNumber": 16,
+                  "startColumn": 1,
+                  "endLineNumber": 16,
+                  "endColumn": 23
+                }
+              }
+            ],
+            [
+              {
+                "text": "  update(id: string, patch: UpdateProject): Promise<Project | null>;",
+                "range": {
+                  "startLineNumber": 17,
+                  "startColumn": 1,
+                  "endLineNumber": 17,
+                  "endColumn": 16
+                }
+              }
+            ],
+            [
+              {
+                "text": "  remove(id: string): Promise<boolean>;",
+                "range": {
+                  "startLineNumber": 18,
+                  "startColumn": 1,
+                  "endLineNumber": 18,
+                  "endColumn": 24
+                }
+              }
+            ],
+            [
+              {
+                "text": "}",
+                "range": {
+                  "startLineNumber": 19,
+                  "startColumn": 1,
+                  "endLineNumber": 19,
+                  "endColumn": 3
+                }
+              }
+            ],
+            [
+              {
+                "text": "const inTest = process.env.IN_TEST === \"true\";",
+                "range": {
+                  "startLineNumber": 21,
+                  "startColumn": 1,
+                  "endLineNumber": 21,
+                  "endColumn": 23
+                }
+              }
+            ],
+            [
+              {
+                "text": "",
+                "range": {
+                  "startLineNumber": 22,
+                  "startColumn": 1,
+                  "endLineNumber": 22,
+                  "endColumn": 17
+                }
+              }
+            ],
+            [
+              {
+                "text": "class MockRepo implements Repo {",
+                "range": {
+                  "startLineNumber": 23,
+                  "startColumn": 1,
+                  "endLineNumber": 23,
+                  "endColumn": 24
+                }
+              }
+            ],
+            [
+              {
+                "text": "  private items: Project[];",
+                "range": {
+                  "startLineNumber": 24,
+                  "startColumn": 1,
+                  "endLineNumber": 24,
+                  "endColumn": 3
+                }
+              }
+            ],
+            [
+              {
+                "text": "  constructor() {",
+                "range": {
+                  "startLineNumber": 26,
+                  "startColumn": 1,
+                  "endLineNumber": 26,
+                  "endColumn": 17
+                }
+              }
+            ],
+            [
+              {
+                "text": "    const now = new Date().toISOString();",
+                "range": {
+                  "startLineNumber": 27,
+                  "startColumn": 1,
+                  "endLineNumber": 27,
+                  "endColumn": 30
+                }
+              }
+            ],
+            [
+              {
+                "text": "    this.items = [",
+                "range": {
+                  "startLineNumber": 28,
+                  "startColumn": 1,
+                  "endLineNumber": 28,
+                  "endColumn": 44
+                }
+              }
+            ],
+            [
+              {
+                "text": "      { id: \"p1\", name: \"Projeto Alpha\", description: \"Projeto de teste\", createdAt: now, updatedAt: now },",
+                "range": {
+                  "startLineNumber": 29,
+                  "startColumn": 1,
+                  "endLineNumber": 29,
+                  "endColumn": 49
+                }
+              }
+            ],
+            [
+              {
+                "text": "      { id: \"p2\", name: \"Projeto Beta\", description: \"Outro projeto de teste\", createdAt: now, updatedAt: now },",
+                "range": {
+                  "startLineNumber": 30,
+                  "startColumn": 1,
+                  "endLineNumber": 30,
+                  "endColumn": 69
+                }
+              }
+            ],
+            [
+              {
+                "text": "    ];",
+                "range": {
+                  "startLineNumber": 31,
+                  "startColumn": 1,
+                  "endLineNumber": 31,
+                  "endColumn": 40
+                }
+              }
+            ],
+            [
+              {
+                "text": "  }",
+                "range": {
+                  "startLineNumber": 32,
+                  "startColumn": 1,
+                  "endLineNumber": 32,
+                  "endColumn": 2
+                }
+              }
+            ],
+            [
+              {
+                "text": "  async list() { return [...this.items]; }",
+                "range": {
+                  "startLineNumber": 34,
+                  "startColumn": 1,
+                  "endLineNumber": 34,
+                  "endColumn": 47
+                }
+              }
+            ],
+            [
+              {
+                "text": "  async get(id: string) { return this.items.find(p => p.id === id) ?? null; }",
+                "range": {
+                  "startLineNumber": 35,
+                  "startColumn": 1,
+                  "endLineNumber": 35,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "  async create(data: CreateProject) {",
+                "range": {
+                  "startLineNumber": 36,
+                  "startColumn": 1,
+                  "endLineNumber": 36,
+                  "endColumn": 33
+                }
+              }
+            ],
+            [
+              {
+                "text": "    const now = new Date().toISOString();",
+                "range": {
+                  "startLineNumber": 37,
+                  "startColumn": 1,
+                  "endLineNumber": 37,
+                  "endColumn": 28
+                }
+              }
+            ],
+            [
+              {
+                "text": "    const proj: Project = {",
+                "range": {
+                  "startLineNumber": 38,
+                  "startColumn": 1,
+                  "endLineNumber": 38,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "      id: randomUUID(),",
+                "range": {
+                  "startLineNumber": 39,
+                  "startColumn": 1,
+                  "endLineNumber": 39,
+                  "endColumn": 18
+                }
+              }
+            ],
+            [
+              {
+                "text": "      name: data.name,",
+                "range": {
+                  "startLineNumber": 40,
+                  "startColumn": 1,
+                  "endLineNumber": 40,
+                  "endColumn": 42
+                }
+              }
+            ],
+            [
+              {
+                "text": "      description: data.description,",
+                "range": {
+                  "startLineNumber": 41,
+                  "startColumn": 1,
+                  "endLineNumber": 41,
+                  "endColumn": 19
+                }
+              }
+            ],
+            [
+              {
+                "text": "      createdAt: now,",
+                "range": {
+                  "startLineNumber": 42,
+                  "startColumn": 1,
+                  "endLineNumber": 42,
+                  "endColumn": 108
+                }
+              }
+            ],
+            [
+              {
+                "text": "      updatedAt: now,",
+                "range": {
+                  "startLineNumber": 43,
+                  "startColumn": 1,
+                  "endLineNumber": 43,
+                  "endColumn": 113
+                }
+              }
+            ],
+            [
+              {
+                "text": "    };",
+                "range": {
+                  "startLineNumber": 44,
+                  "startColumn": 1,
+                  "endLineNumber": 44,
+                  "endColumn": 7
+                }
+              }
+            ],
+            [
+              {
+                "text": "    this.items.unshift(proj);",
+                "range": {
+                  "startLineNumber": 45,
+                  "startColumn": 1,
+                  "endLineNumber": 45,
+                  "endColumn": 4
+                }
+              }
+            ],
+            [
+              {
+                "text": "    return proj;",
+                "range": {
+                  "startLineNumber": 46,
+                  "startColumn": 1,
+                  "endLineNumber": 46,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "  }",
+                "range": {
+                  "startLineNumber": 47,
+                  "startColumn": 1,
+                  "endLineNumber": 47,
+                  "endColumn": 43
+                }
+              }
+            ],
+            [
+              {
+                "text": "  async update(id: string, patch: UpdateProject) {",
+                "range": {
+                  "startLineNumber": 48,
+                  "startColumn": 1,
+                  "endLineNumber": 48,
+                  "endColumn": 78
+                }
+              }
+            ],
+            [
+              {
+                "text": "    const idx = this.items.findIndex(p => p.id === id);",
+                "range": {
+                  "startLineNumber": 49,
+                  "startColumn": 1,
+                  "endLineNumber": 49,
+                  "endColumn": 38
+                }
+              }
+            ],
+            [
+              {
+                "text": "    if (idx < 0) return null;",
+                "range": {
+                  "startLineNumber": 50,
+                  "startColumn": 1,
+                  "endLineNumber": 50,
+                  "endColumn": 42
+                }
+              }
+            ],
+            [
+              {
+                "text": "    const updated: Project = { ...this.items[idx], ...patch, updatedAt: new Date().toISOString() };",
+                "range": {
+                  "startLineNumber": 51,
+                  "startColumn": 1,
+                  "endLineNumber": 51,
+                  "endColumn": 135
+                }
+              }
+            ],
+            [
+              {
+                "text": "    this.items[idx] = updated;",
+                "range": {
+                  "startLineNumber": 52,
+                  "startColumn": 1,
+                  "endLineNumber": 52,
+                  "endColumn": 30
+                }
+              }
+            ],
+            [
+              {
+                "text": "    return updated;",
+                "range": {
+                  "startLineNumber": 53,
+                  "startColumn": 1,
+                  "endLineNumber": 53,
+                  "endColumn": 17
+                }
+              }
+            ],
+            [
+              {
+                "text": "  async remove(id: string) {",
+                "range": {
+                  "startLineNumber": 55,
+                  "startColumn": 1,
+                  "endLineNumber": 55,
+                  "endColumn": 51
+                }
+              }
+            ],
+            [
+              {
+                "text": "    const before = this.items.length;",
+                "range": {
+                  "startLineNumber": 56,
+                  "startColumn": 1,
+                  "endLineNumber": 56,
+                  "endColumn": 56
+                }
+              }
+            ],
+            [
+              {
+                "text": "    this.items = this.items.filter(p => p.id !== id);",
+                "range": {
+                  "startLineNumber": 57,
+                  "startColumn": 1,
+                  "endLineNumber": 57,
+                  "endColumn": 30
+                }
+              }
+            ],
+            [
+              {
+                "text": "    return this.items.length !== before;",
+                "range": {
+                  "startLineNumber": 58,
+                  "startColumn": 1,
+                  "endLineNumber": 58,
+                  "endColumn": 100
+                }
+              }
+            ],
+            [
+              {
+                "text": "  }",
+                "range": {
+                  "startLineNumber": 59,
+                  "startColumn": 1,
+                  "endLineNumber": 59,
+                  "endColumn": 31
+                }
+              }
+            ],
+            [
+              {
+                "text": "}",
+                "range": {
+                  "startLineNumber": 60,
+                  "startColumn": 1,
+                  "endLineNumber": 60,
+                  "endColumn": 20
+                }
+              }
+            ],
+            [
+              {
+                "text": "",
+                "range": {
+                  "startLineNumber": 61,
+                  "startColumn": 1,
+                  "endLineNumber": 61,
+                  "endColumn": 4
+                }
+              }
+            ],
+            [
+              {
+                "text": "class MemoryRepo implements Repo {",
+                "range": {
+                  "startLineNumber": 62,
+                  "startColumn": 1,
+                  "endLineNumber": 62,
+                  "endColumn": 29
+                }
+              }
+            ],
+            [
+              {
+                "text": "  private items: Project[] = [];",
+                "range": {
+                  "startLineNumber": 63,
+                  "startColumn": 1,
+                  "endLineNumber": 63,
+                  "endColumn": 38
+                }
+              }
+            ],
+            [
+              {
+                "text": "  async list() { return [...this.items]; }",
+                "range": {
+                  "startLineNumber": 64,
+                  "startColumn": 1,
+                  "endLineNumber": 64,
+                  "endColumn": 54
+                }
+              }
+            ],
+            [
+              {
+                "text": "  async get(id: string) { return this.items.find(p => p.id === id) ?? null; }",
+                "range": {
+                  "startLineNumber": 65,
+                  "startColumn": 1,
+                  "endLineNumber": 65,
+                  "endColumn": 41
+                }
+              }
+            ],
+            [
+              {
+                "text": "  async create(data: CreateProject) {",
+                "range": {
+                  "startLineNumber": 66,
+                  "startColumn": 1,
+                  "endLineNumber": 66,
+                  "endColumn": 4
+                }
+              }
+            ],
+            [
+              {
+                "text": "    const now = new Date().toISOString();",
+                "range": {
+                  "startLineNumber": 67,
+                  "startColumn": 1,
+                  "endLineNumber": 67,
+                  "endColumn": 2
+                }
+              }
+            ],
+            [
+              {
+                "text": "    const proj: Project = {",
+                "range": {
+                  "startLineNumber": 68,
+                  "startColumn": 1,
+                  "endLineNumber": 68,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "      id: randomUUID(),",
+                "range": {
+                  "startLineNumber": 69,
+                  "startColumn": 1,
+                  "endLineNumber": 69,
+                  "endColumn": 35
+                }
+              }
+            ],
+            [
+              {
+                "text": "      name: data.name,",
+                "range": {
+                  "startLineNumber": 70,
+                  "startColumn": 1,
+                  "endLineNumber": 70,
+                  "endColumn": 33
+                }
+              }
+            ],
+            [
+              {
+                "text": "      description: data.description,",
+                "range": {
+                  "startLineNumber": 71,
+                  "startColumn": 1,
+                  "endLineNumber": 71,
+                  "endColumn": 43
+                }
+              }
+            ],
+            [
+              {
+                "text": "      createdAt: now,",
+                "range": {
+                  "startLineNumber": 72,
+                  "startColumn": 1,
+                  "endLineNumber": 72,
+                  "endColumn": 78
+                }
+              }
+            ],
+            [
+              {
+                "text": "      updatedAt: now,",
+                "range": {
+                  "startLineNumber": 73,
+                  "startColumn": 1,
+                  "endLineNumber": 73,
+                  "endColumn": 38
+                }
+              }
+            ],
+            [
+              {
+                "text": "    };",
+                "range": {
+                  "startLineNumber": 74,
+                  "startColumn": 1,
+                  "endLineNumber": 74,
+                  "endColumn": 42
+                }
+              }
+            ],
+            [
+              {
+                "text": "    this.items.unshift(proj);",
+                "range": {
+                  "startLineNumber": 75,
+                  "startColumn": 1,
+                  "endLineNumber": 75,
+                  "endColumn": 135
+                }
+              }
+            ],
+            [
+              {
+                "text": "    return proj;",
+                "range": {
+                  "startLineNumber": 76,
+                  "startColumn": 1,
+                  "endLineNumber": 76,
+                  "endColumn": 30
+                }
+              }
+            ],
+            [
+              {
+                "text": "  }",
+                "range": {
+                  "startLineNumber": 77,
+                  "startColumn": 1,
+                  "endLineNumber": 77,
+                  "endColumn": 17
+                }
+              }
+            ],
+            [
+              {
+                "text": "  async update(id: string, patch: UpdateProject) {",
+                "range": {
+                  "startLineNumber": 78,
+                  "startColumn": 1,
+                  "endLineNumber": 78,
+                  "endColumn": 4
+                }
+              }
+            ],
+            [
+              {
+                "text": "    const idx = this.items.findIndex(p => p.id === id);",
+                "range": {
+                  "startLineNumber": 79,
+                  "startColumn": 1,
+                  "endLineNumber": 79,
+                  "endColumn": 51
+                }
+              }
+            ],
+            [
+              {
+                "text": "    if (idx < 0) return null;",
+                "range": {
+                  "startLineNumber": 80,
+                  "startColumn": 1,
+                  "endLineNumber": 80,
+                  "endColumn": 56
+                }
+              }
+            ],
+            [
+              {
+                "text": "    const updated: Project = { ...this.items[idx], ...patch, updatedAt: new Date().toISOString() };",
+                "range": {
+                  "startLineNumber": 81,
+                  "startColumn": 1,
+                  "endLineNumber": 81,
+                  "endColumn": 30
+                }
+              }
+            ],
+            [
+              {
+                "text": "    this.items[idx] = updated;",
+                "range": {
+                  "startLineNumber": 82,
+                  "startColumn": 1,
+                  "endLineNumber": 82,
+                  "endColumn": 100
+                }
+              }
+            ],
+            [
+              {
+                "text": "    return updated;",
+                "range": {
+                  "startLineNumber": 83,
+                  "startColumn": 1,
+                  "endLineNumber": 83,
+                  "endColumn": 31
+                }
+              }
+            ],
+            [
+              {
+                "text": "  }",
+                "range": {
+                  "startLineNumber": 84,
+                  "startColumn": 1,
+                  "endLineNumber": 84,
+                  "endColumn": 20
+                }
+              }
+            ],
+            [
+              {
+                "text": "  async remove(id: string) {",
+                "range": {
+                  "startLineNumber": 85,
+                  "startColumn": 1,
+                  "endLineNumber": 85,
+                  "endColumn": 4
+                }
+              }
+            ],
+            [
+              {
+                "text": "    const before = this.items.length;",
+                "range": {
+                  "startLineNumber": 86,
+                  "startColumn": 1,
+                  "endLineNumber": 86,
+                  "endColumn": 29
+                }
+              }
+            ],
+            [
+              {
+                "text": "    this.items = this.items.filter(p => p.id !== id);",
+                "range": {
+                  "startLineNumber": 87,
+                  "startColumn": 1,
+                  "endLineNumber": 87,
+                  "endColumn": 38
+                }
+              }
+            ],
+            [
+              {
+                "text": "    return this.items.length !== before;",
+                "range": {
+                  "startLineNumber": 88,
+                  "startColumn": 1,
+                  "endLineNumber": 88,
+                  "endColumn": 54
+                }
+              }
+            ],
+            [
+              {
+                "text": "  }",
+                "range": {
+                  "startLineNumber": 89,
+                  "startColumn": 1,
+                  "endLineNumber": 89,
+                  "endColumn": 41
+                }
+              }
+            ],
+            [
+              {
+                "text": "}",
+                "range": {
+                  "startLineNumber": 90,
+                  "startColumn": 1,
+                  "endLineNumber": 90,
+                  "endColumn": 4
+                }
+              }
+            ],
+            [
+              {
+                "text": "",
+                "range": {
+                  "startLineNumber": 91,
+                  "startColumn": 1,
+                  "endLineNumber": 91,
+                  "endColumn": 2
+                }
+              }
+            ],
+            [
+              {
+                "text": "const repo: Repo = inTest ? new MockRepo() : new MemoryRepo();",
+                "range": {
+                  "startLineNumber": 92,
+                  "startColumn": 1,
+                  "endLineNumber": 92,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "",
+                "range": {
+                  "startLineNumber": 93,
+                  "startColumn": 1,
+                  "endLineNumber": 93,
+                  "endColumn": 63
+                }
+              }
+            ],
+            [
+              {
+                "text": "function badRequest(message: string, details?: unknown) {",
+                "range": {
+                  "startLineNumber": 94,
+                  "startColumn": 1,
+                  "endLineNumber": 94,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "  return NextResponse.json({ error: message, details }, { status: 400, headers: { \"Cache-Control\": \"no-store\" } });",
+                "range": {
+                  "startLineNumber": 95,
+                  "startColumn": 1,
+                  "endLineNumber": 95,
+                  "endColumn": 58
+                }
+              }
+            ],
+            [
+              {
+                "text": "}",
+                "range": {
+                  "startLineNumber": 96,
+                  "startColumn": 1,
+                  "endLineNumber": 96,
+                  "endColumn": 74
+                }
+              }
+            ],
+            [
+              {
+                "text": "function notFound(message = \"Not found\") {",
+                "range": {
+                  "startLineNumber": 97,
+                  "startColumn": 1,
+                  "endLineNumber": 97,
+                  "endColumn": 2
+                }
+              }
+            ],
+            [
+              {
+                "text": "  return NextResponse.json({ error: message }, { status: 404, headers: { \"Cache-Control\": \"no-store\" } });",
+                "range": {
+                  "startLineNumber": 98,
+                  "startColumn": 1,
+                  "endLineNumber": 98,
+                  "endColumn": 43
+                }
+              }
+            ],
+            [
+              {
+                "text": "}",
+                "range": {
+                  "startLineNumber": 99,
+                  "startColumn": 1,
+                  "endLineNumber": 99,
+                  "endColumn": 65
+                }
+              }
+            ],
+            [
+              {
+                "text": "",
+                "range": {
+                  "startLineNumber": 100,
+                  "startColumn": 1,
+                  "endLineNumber": 100,
+                  "endColumn": 2
+                }
+              }
+            ],
+            [
+              {
+                "text": "export async function GET(req: NextRequest) {",
+                "range": {
+                  "startLineNumber": 101,
+                  "startColumn": 1,
+                  "endLineNumber": 101,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "  const id = new URL(req.url).searchParams.get(\"id\");",
+                "range": {
+                  "startLineNumber": 102,
+                  "startColumn": 1,
+                  "endLineNumber": 102,
+                  "endColumn": 46
+                }
+              }
+            ],
+            [
+              {
+                "text": "  if (id) {",
+                "range": {
+                  "startLineNumber": 103,
+                  "startColumn": 1,
+                  "endLineNumber": 103,
+                  "endColumn": 54
+                }
+              }
+            ],
+            [
+              {
+                "text": "    const project = await repo.get(id);",
+                "range": {
+                  "startLineNumber": 104,
+                  "startColumn": 1,
+                  "endLineNumber": 104,
+                  "endColumn": 12
+                }
+              }
+            ],
+            [
+              {
+                "text": "    if (!project) return notFound(\"Projeto não encontrado\");",
+                "range": {
+                  "startLineNumber": 105,
+                  "startColumn": 1,
+                  "endLineNumber": 105,
+                  "endColumn": 40
+                }
+              }
+            ],
+            [
+              {
+                "text": "    return NextResponse.json({ data: project }, { headers: { \"Cache-Control\": \"no-store\" } });",
+                "range": {
+                  "startLineNumber": 106,
+                  "startColumn": 1,
+                  "endLineNumber": 106,
+                  "endColumn": 61
+                }
+              }
+            ],
+            [
+              {
+                "text": "  }",
+                "range": {
+                  "startLineNumber": 107,
+                  "startColumn": 1,
+                  "endLineNumber": 107,
+                  "endColumn": 39
+                }
+              }
+            ],
+            [
+              {
+                "text": "  const list = await repo.list();",
+                "range": {
+                  "startLineNumber": 108,
+                  "startColumn": 1,
+                  "endLineNumber": 108,
+                  "endColumn": 4
+                }
+              }
+            ],
+            [
+              {
+                "text": "  return NextResponse.json(",
+                "range": {
+                  "startLineNumber": 109,
+                  "startColumn": 1,
+                  "endLineNumber": 109,
+                  "endColumn": 34
+                }
+              }
+            ],
+            [
+              {
+                "text": "    { data: list, meta: { total: list.length } },",
+                "range": {
+                  "startLineNumber": 110,
+                  "startColumn": 1,
+                  "endLineNumber": 110,
+                  "endColumn": 34
+                }
+              }
+            ],
+            [
+              {
+                "text": "    { headers: { \"Cache-Control\": \"no-store\" } }",
+                "range": {
+                  "startLineNumber": 111,
+                  "startColumn": 1,
+                  "endLineNumber": 111,
+                  "endColumn": 2
+                }
+              }
+            ],
+            [
+              {
+                "text": "  );",
+                "range": {
+                  "startLineNumber": 112,
+                  "startColumn": 1,
+                  "endLineNumber": 112,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "}",
+                "range": {
+                  "startLineNumber": 113,
+                  "startColumn": 1,
+                  "endLineNumber": 113,
+                  "endColumn": 47
+                }
+              }
+            ],
+            [
+              {
+                "text": "",
+                "range": {
+                  "startLineNumber": 114,
+                  "startColumn": 1,
+                  "endLineNumber": 114,
+                  "endColumn": 27
+                }
+              }
+            ],
+            [
+              {
+                "text": "export async function POST(req: NextRequest) {",
+                "range": {
+                  "startLineNumber": 115,
+                  "startColumn": 1,
+                  "endLineNumber": 115,
+                  "endColumn": 8
+                }
+              }
+            ],
+            [
+              {
+                "text": "  let data: CreateProject;",
+                "range": {
+                  "startLineNumber": 116,
+                  "startColumn": 1,
+                  "endLineNumber": 116,
+                  "endColumn": 29
+                }
+              }
+            ],
+            [
+              {
+                "text": "  try {",
+                "range": {
+                  "startLineNumber": 117,
+                  "startColumn": 1,
+                  "endLineNumber": 117,
+                  "endColumn": 12
+                }
+              }
+            ],
+            [
+              {
+                "text": "    data = await req.json();",
+                "range": {
+                  "startLineNumber": 118,
+                  "startColumn": 1,
+                  "endLineNumber": 118,
+                  "endColumn": 40
+                }
+              }
+            ],
+            [
+              {
+                "text": "  } catch {",
+                "range": {
+                  "startLineNumber": 119,
+                  "startColumn": 1,
+                  "endLineNumber": 119,
+                  "endColumn": 4
+                }
+              }
+            ],
+            [
+              {
+                "text": "    return badRequest(\"JSON inválido\");",
+                "range": {
+                  "startLineNumber": 120,
+                  "startColumn": 1,
+                  "endLineNumber": 120,
+                  "endColumn": 54
+                }
+              }
+            ],
+            [
+              {
+                "text": "  }",
+                "range": {
+                  "startLineNumber": 121,
+                  "startColumn": 1,
+                  "endLineNumber": 121,
+                  "endColumn": 53
+                }
+              }
+            ],
+            [
+              {
+                "text": "  if (!data?.name || typeof data.name !== \"string\") {",
+                "range": {
+                  "startLineNumber": 122,
+                  "startColumn": 1,
+                  "endLineNumber": 122,
+                  "endColumn": 4
+                }
+              }
+            ],
+            [
+              {
+                "text": "    return badRequest(\"Campo 'name' é obrigatório\");",
+                "range": {
+                  "startLineNumber": 123,
+                  "startColumn": 1,
+                  "endLineNumber": 123,
+                  "endColumn": 96
+                }
+              }
+            ],
+            [
+              {
+                "text": "  }",
+                "range": {
+                  "startLineNumber": 124,
+                  "startColumn": 1,
+                  "endLineNumber": 124,
+                  "endColumn": 54
+                }
+              }
+            ],
+            [
+              {
+                "text": "  const created = await repo.create({ name: data.name.trim(), description: data.description });",
+                "range": {
+                  "startLineNumber": 125,
+                  "startColumn": 1,
+                  "endLineNumber": 125,
+                  "endColumn": 2
+                }
+              }
+            ],
+            [
+              {
+                "text": "  return NextResponse.json({ data: created }, { status: 201, headers: { \"Cache-Control\": \"no-store\" } });",
+                "range": {
+                  "startLineNumber": 126,
+                  "startColumn": 1,
+                  "endLineNumber": 126,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "}",
+                "range": {
+                  "startLineNumber": 127,
+                  "startColumn": 1,
+                  "endLineNumber": 127,
+                  "endColumn": 46
+                }
+              }
+            ],
+            [
+              {
+                "text": "",
+                "range": {
+                  "startLineNumber": 128,
+                  "startColumn": 1,
+                  "endLineNumber": 128,
+                  "endColumn": 32
+                }
+              }
+            ],
+            [
+              {
+                "text": "export async function PUT(req: NextRequest) {",
+                "range": {
+                  "startLineNumber": 129,
+                  "startColumn": 1,
+                  "endLineNumber": 129,
+                  "endColumn": 50
+                }
+              }
+            ],
+            [
+              {
+                "text": "  const url = new URL(req.url);",
+                "range": {
+                  "startLineNumber": 130,
+                  "startColumn": 1,
+                  "endLineNumber": 130,
+                  "endColumn": 45
+                }
+              }
+            ],
+            [
+              {
+                "text": "  const idFromQuery = url.searchParams.get(\"id\");",
+                "range": {
+                  "startLineNumber": 131,
+                  "startColumn": 1,
+                  "endLineNumber": 131,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "  let body: UpdateProject & { id?: string };",
+                "range": {
+                  "startLineNumber": 132,
+                  "startColumn": 1,
+                  "endLineNumber": 132,
+                  "endColumn": 8
+                }
+              }
+            ],
+            [
+              {
+                "text": "",
+                "range": {
+                  "startLineNumber": 133,
+                  "startColumn": 1,
+                  "endLineNumber": 133,
+                  "endColumn": 29
+                }
+              }
+            ],
+            [
+              {
+                "text": "  try {",
+                "range": {
+                  "startLineNumber": 134,
+                  "startColumn": 1,
+                  "endLineNumber": 134,
+                  "endColumn": 12
+                }
+              }
+            ],
+            [
+              {
+                "text": "    body = await req.json();",
+                "range": {
+                  "startLineNumber": 135,
+                  "startColumn": 1,
+                  "endLineNumber": 135,
+                  "endColumn": 40
+                }
+              }
+            ],
+            [
+              {
+                "text": "  } catch {",
+                "range": {
+                  "startLineNumber": 136,
+                  "startColumn": 1,
+                  "endLineNumber": 136,
+                  "endColumn": 4
+                }
+              }
+            ],
+            [
+              {
+                "text": "    return badRequest(\"JSON inválido\");",
+                "range": {
+                  "startLineNumber": 137,
+                  "startColumn": 1,
+                  "endLineNumber": 137,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "  }",
+                "range": {
+                  "startLineNumber": 138,
+                  "startColumn": 1,
+                  "endLineNumber": 138,
+                  "endColumn": 38
+                }
+              }
+            ],
+            [
+              {
+                "text": "",
+                "range": {
+                  "startLineNumber": 139,
+                  "startColumn": 1,
+                  "endLineNumber": 139,
+                  "endColumn": 87
+                }
+              }
+            ],
+            [
+              {
+                "text": "  const id = idFromQuery ?? body?.id;",
+                "range": {
+                  "startLineNumber": 140,
+                  "startColumn": 1,
+                  "endLineNumber": 140,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "  if (!id) return badRequest(\"Parâmetro 'id' é obrigatório (query ?id= ou no corpo)\");",
+                "range": {
+                  "startLineNumber": 141,
+                  "startColumn": 1,
+                  "endLineNumber": 141,
+                  "endColumn": 66
+                }
+              }
+            ],
+            [
+              {
+                "text": "",
+                "range": {
+                  "startLineNumber": 142,
+                  "startColumn": 1,
+                  "endLineNumber": 142,
+                  "endColumn": 55
+                }
+              }
+            ],
+            [
+              {
+                "text": "  if (body.name !== undefined && typeof body.name !== \"string\") {",
+                "range": {
+                  "startLineNumber": 143,
+                  "startColumn": 1,
+                  "endLineNumber": 143,
+                  "endColumn": 4
+                }
+              }
+            ],
+            [
+              {
+                "text": "    return badRequest(\"Campo 'name' deve ser string\");",
+                "range": {
+                  "startLineNumber": 144,
+                  "startColumn": 1,
+                  "endLineNumber": 144,
+                  "endColumn": 80
+                }
+              }
+            ],
+            [
+              {
+                "text": "  }",
+                "range": {
+                  "startLineNumber": 145,
+                  "startColumn": 1,
+                  "endLineNumber": 145,
+                  "endColumn": 62
+                }
+              }
+            ],
+            [
+              {
+                "text": "  if (body.description !== undefined && typeof body.description !== \"string\") {",
+                "range": {
+                  "startLineNumber": 146,
+                  "startColumn": 1,
+                  "endLineNumber": 146,
+                  "endColumn": 4
+                }
+              }
+            ],
+            [
+              {
+                "text": "    return badRequest(\"Campo 'description' deve ser string\");",
+                "range": {
+                  "startLineNumber": 147,
+                  "startColumn": 1,
+                  "endLineNumber": 147,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "  }",
+                "range": {
+                  "startLineNumber": 148,
+                  "startColumn": 1,
+                  "endLineNumber": 148,
+                  "endColumn": 93
+                }
+              }
+            ],
+            [
+              {
+                "text": "",
+                "range": {
+                  "startLineNumber": 149,
+                  "startColumn": 1,
+                  "endLineNumber": 149,
+                  "endColumn": 59
+                }
+              }
+            ],
+            [
+              {
+                "text": "  const updated = await repo.update(id, { name: body.name, description: body.description });",
+                "range": {
+                  "startLineNumber": 150,
+                  "startColumn": 1,
+                  "endLineNumber": 150,
+                  "endColumn": 37
+                }
+              }
+            ],
+            [
+              {
+                "text": "  if (!updated) return notFound(\"Projeto não encontrado\");",
+                "range": {
+                  "startLineNumber": 151,
+                  "startColumn": 1,
+                  "endLineNumber": 151,
+                  "endColumn": 2
+                }
+              }
+            ],
+            [
+              {
+                "text": "  return NextResponse.json({ data: updated }, { headers: { \"Cache-Control\": \"no-store\" } });",
+                "range": {
+                  "startLineNumber": 152,
+                  "startColumn": 1,
+                  "endLineNumber": 152,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "}",
+                "range": {
+                  "startLineNumber": 153,
+                  "startColumn": 1,
+                  "endLineNumber": 153,
+                  "endColumn": 49
+                }
+              }
+            ],
+            [
+              {
+                "text": "",
+                "range": {
+                  "startLineNumber": 154,
+                  "startColumn": 1,
+                  "endLineNumber": 154,
+                  "endColumn": 54
+                }
+              }
+            ],
+            [
+              {
+                "text": "export async function DELETE(req: NextRequest) {",
+                "range": {
+                  "startLineNumber": 155,
+                  "startColumn": 1,
+                  "endLineNumber": 155,
+                  "endColumn": 69
+                }
+              }
+            ],
+            [
+              {
+                "text": "  const id = new URL(req.url).searchParams.get(\"id\");",
+                "range": {
+                  "startLineNumber": 156,
+                  "startColumn": 1,
+                  "endLineNumber": 156,
+                  "endColumn": 36
+                }
+              }
+            ],
+            [
+              {
+                "text": "  if (!id) return badRequest(\"Parâmetro 'id' é obrigatório (?id=)\");",
+                "range": {
+                  "startLineNumber": 157,
+                  "startColumn": 1,
+                  "endLineNumber": 157,
+                  "endColumn": 54
+                }
+              }
+            ],
+            [
+              {
+                "text": "  const ok = await repo.remove(id);",
+                "range": {
+                  "startLineNumber": 158,
+                  "startColumn": 1,
+                  "endLineNumber": 158,
+                  "endColumn": 51
+                }
+              }
+            ],
+            [
+              {
+                "text": "  if (!ok) return notFound(\"Projeto não encontrado\");",
+                "range": {
+                  "startLineNumber": 159,
+                  "startColumn": 1,
+                  "endLineNumber": 159,
+                  "endColumn": 2
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  return NextResponse.json({ data: { deleted: true, id } }, { headers: { \"Cache-Control\": \"no-store\" } });",
+                "range": {
+                  "startLineNumber": 159,
+                  "startColumn": 54,
+                  "endLineNumber": 159,
+                  "endColumn": 54
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n}",
+                "range": {
+                  "startLineNumber": 160,
+                  "startColumn": 107,
+                  "endLineNumber": 160,
+                  "endColumn": 107
+                }
+              }
+            ],
+            []
+          ],
+          "state": {
+            "sha1": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+            "applied": 1
+          }
+        }
+      ],
+      "responseId": "response_d15fc980-cc54-42e1-a813-9bf97fbe2e26",
+      "result": {
+        "timings": {
+          "totalElapsed": 48918
+        },
+        "metadata": {
+          "codeBlocks": [],
+          "toolCallRounds": [
+            {
+              "response": "```typescript\nimport { NextRequest, NextResponse } from \"next/server\";\nimport type { Project } from \"@/types\";\nimport { randomUUID } from \"node:crypto\";\n\n// /app/api/projects/route.ts\n\nexport const runtime = \"nodejs\";\nexport const dynamic = \"force-dynamic\";\n\ntype CreateProject = Pick<Project, \"name\" | \"description\">;\ntype UpdateProject = Partial<Pick<Project, \"name\" | \"description\">>;\n\ninterface Repo {\n  list(): Promise<Project[]>;\n  get(id: string): Promise<Project | null>;\n  create(data: CreateProject): Promise<Project>;\n  update(id: string, patch: UpdateProject): Promise<Project | null>;\n  remove(id: string): Promise<boolean>;\n}\n\nconst inTest = process.env.IN_TEST === \"true\";\n\nclass MockRepo implements Repo {\n  private items: Project[];\n\n  constructor() {\n    const now = new Date().toISOString();\n    this.items = [\n      { id: \"p1\", name: \"Projeto Alpha\", description: \"Projeto de teste\", createdAt: now, updatedAt: now },\n      { id: \"p2\", name: \"Projeto Beta\", description: \"Outro projeto de teste\", createdAt: now, updatedAt: now },\n    ];\n  }\n\n  async list() { return [...this.items]; }\n  async get(id: string) { return this.items.find(p => p.id === id) ?? null; }\n  async create(data: CreateProject) {\n    const now = new Date().toISOString();\n    const proj: Project = {\n      id: randomUUID(),\n      name: data.name,\n      description: data.description,\n      createdAt: now,\n      updatedAt: now,\n    };\n    this.items.unshift(proj);\n    return proj;\n  }\n  async update(id: string, patch: UpdateProject) {\n    const idx = this.items.findIndex(p => p.id === id);\n    if (idx < 0) return null;\n    const updated: Project = { ...this.items[idx], ...patch, updatedAt: new Date().toISOString() };\n    this.items[idx] = updated;\n    return updated;\n  }\n  async remove(id: string) {\n    const before = this.items.length;\n    this.items = this.items.filter(p => p.id !== id);\n    return this.items.length !== before;\n  }\n}\n\nclass MemoryRepo implements Repo {\n  private items: Project[] = [];\n  async list() { return [...this.items]; }\n  async get(id: string) { return this.items.find(p => p.id === id) ?? null; }\n  async create(data: CreateProject) {\n    const now = new Date().toISOString();\n    const proj: Project = {\n      id: randomUUID(),\n      name: data.name,\n      description: data.description,\n      createdAt: now,\n      updatedAt: now,\n    };\n    this.items.unshift(proj);\n    return proj;\n  }\n  async update(id: string, patch: UpdateProject) {\n    const idx = this.items.findIndex(p => p.id === id);\n    if (idx < 0) return null;\n    const updated: Project = { ...this.items[idx], ...patch, updatedAt: new Date().toISOString() };\n    this.items[idx] = updated;\n    return updated;\n  }\n  async remove(id: string) {\n    const before = this.items.length;\n    this.items = this.items.filter(p => p.id !== id);\n    return this.items.length !== before;\n  }\n}\n\nconst repo: Repo = inTest ? new MockRepo() : new MemoryRepo();\n\nfunction badRequest(message: string, details?: unknown) {\n  return NextResponse.json({ error: message, details }, { status: 400, headers: { \"Cache-Control\": \"no-store\" } });\n}\nfunction notFound(message = \"Not found\") {\n  return NextResponse.json({ error: message }, { status: 404, headers: { \"Cache-Control\": \"no-store\" } });\n}\n\nexport async function GET(req: NextRequest) {\n  const id = new URL(req.url).searchParams.get(\"id\");\n  if (id) {\n    const project = await repo.get(id);\n    if (!project) return notFound(\"Projeto não encontrado\");\n    return NextResponse.json({ data: project }, { headers: { \"Cache-Control\": \"no-store\" } });\n  }\n  const list = await repo.list();\n  return NextResponse.json(\n    { data: list, meta: { total: list.length } },\n    { headers: { \"Cache-Control\": \"no-store\" } }\n  );\n}\n\nexport async function POST(req: NextRequest) {\n  let data: CreateProject;\n  try {\n    data = await req.json();\n  } catch {\n    return badRequest(\"JSON inválido\");\n  }\n  if (!data?.name || typeof data.name !== \"string\") {\n    return badRequest(\"Campo 'name' é obrigatório\");\n  }\n  const created = await repo.create({ name: data.name.trim(), description: data.description });\n  return NextResponse.json({ data: created }, { status: 201, headers: { \"Cache-Control\": \"no-store\" } });\n}\n\nexport async function PUT(req: NextRequest) {\n  const url = new URL(req.url);\n  const idFromQuery = url.searchParams.get(\"id\");\n  let body: UpdateProject & { id?: string };\n\n  try {\n    body = await req.json();\n  } catch {\n    return badRequest(\"JSON inválido\");\n  }\n\n  const id = idFromQuery ?? body?.id;\n  if (!id) return badRequest(\"Parâmetro 'id' é obrigatório (query ?id= ou no corpo)\");\n\n  if (body.name !== undefined && typeof body.name !== \"string\") {\n    return badRequest(\"Campo 'name' deve ser string\");\n  }\n  if (body.description !== undefined && typeof body.description !== \"string\") {\n    return badRequest(\"Campo 'description' deve ser string\");\n  }\n\n  const updated = await repo.update(id, { name: body.name, description: body.description });\n  if (!updated) return notFound(\"Projeto não encontrado\");\n  return NextResponse.json({ data: updated }, { headers: { \"Cache-Control\": \"no-store\" } });\n}\n\nexport async function DELETE(req: NextRequest) {\n  const id = new URL(req.url).searchParams.get(\"id\");\n  if (!id) return badRequest(\"Parâmetro 'id' é obrigatório (?id=)\");\n  const ok = await repo.remove(id);\n  if (!ok) return notFound(\"Projeto não encontrado\");\n  return NextResponse.json({ data: { deleted: true, id } }, { headers: { \"Cache-Control\": \"no-store\" } });\n}\n```",
+              "toolCalls": [],
+              "toolInputRetry": 0,
+              "id": "c97cd584-1039-43db-9de6-33cbbb6abafc",
+              "statefulMarker": "l9y5KCvlZlDyUHJxra8wu0ndZNIolVB/l54cHvelyKGcD3hAJLSLqeYBsMrAc0y7iH4Sxm6PhesJxIS1ahxv42mDUTyv86C57ivX3LiTUALrJ4qFEKJ0tj10w3cz5gctdX/My8Sp9JDSfL2ozgUrooh3JeWmYPzCJDPTZHqFbX+OlaciIArTYQtvxFwLIkRzJXsSP9iNz6oJdbj0Sl3YzM6oMHnn2279xn6z+MCGaQb/fsgFOf2XR//8hgrGPtBAWvw8JIvaWtbgvgb0L63fH5BUqR9lFpl+S1+SSTmSkNb6oMRZnaFS7mm0y+1pap4SvfR0L8922hKiVtXR1n+gkZlT8NHOzBgim7CpJojsXLOc1oz0shO8bafHE+zv3owGLGjyXowgmZywocA5iayiDw==",
+              "thinking": {
+                "id": "QOc3snTJUPlNVJ1S+oYG2RbrhhgiSJlNCNe/E05AaUH5pHBEC5E4MZMzPt6isvr1u5p4QSovOkjYU/YoYeVmDx9y6WQXvW8ardK3G535Tvw7djWj53IYokOaKWPlhBMOUNcpo+/SkLswflQpFt4xO6t0JOtZ9X4kMb9I/jBmIUCx0Cttsd8Ko0yucZSRj/VXm/niXE6Hcs1Xr8Ye08WopK4fpyX2KzeDdG5Pzm75oCvItuEMb3vFmfrCFC9GbrA/eK5x86qUSzNYDeRVA3ZaU8SQn0KEQ1fE5pIieB+ZGbR7HFg8/pjo9mMYWYxFsUq/jGdpgcFC73x6VVyEVMBCy05s+I/ffWOk9fTcUSFHZTQ4Qsn2j4m+A6od5NqDviDCHgkaGEbzmjfZfBWv6ok=",
+                "text": "**Proposing Type Adjustments**\n\nI'm thinking about removing local type definitions for Project and just importing it instead. I could define CreateProject and UpdateProject using Pick and Partial utilities. Also, I’d consider using the global crypto.randomUUID available in Node 18 since the Next runtime supports it.\n\nFor the response format, maybe I should shape the GET list to return a { data: Project[] } envelope, but it might break existing setups. It could be useful to implement an adapter layer for flexibility. I'll explore how to handle this with either an envelope or an array response.**Implementing Consistent API Responses**\n\nI'm considering the expected response formats for various API methods. For instance, the GET list should return an object with both { data: Project[], total: number }, while a single GET would just provide { data: Project }.\n\nI want to standardize the response envelope to include { data, error? } and possibly \"meta.\" For the different methods: GET with an ID should return the project, otherwise a list and total; POST and PUT should return the created or updated project respectively; DELETE returns a boolean or an object indicating deletion. I'll also implement a helper function and error wrappers as needed.**Ensuring TypeScript Compatibility**\n\nI need to make sure TypeScript types compile correctly, so I'll modify the code. First, I’ll import the type { Project } from \"@/types\" and ensure the global Node crypto is utilized. In Next.js, web Crypto works in edge environments, but we’re using Node runtime.\n\nNode 18 gives us access to crypto.randomUUID directly from 'node:crypto'. I should update the import to { randomUUID } from \"node:crypto\" and use it accordingly. Then, I’ll implement memory and mock repositories, while ensuring test toggling and possibly updating NextResponse objects, and finally produce the updated file, keeping ESM!**Crafting the Code**\n\nI want to set up my code by importing the necessary modules: NextRequest and NextResponse from \"next/server,\" the Project type from \"@/types,\" and the `randomUUID` from \"node:crypto.\"\n\nI'll define the CreateProject and UpdateProject types based on Project properties. The repository interface will stay the same, and I’ll add a helper for the current ISO string as `nowISOString`. I'll also implement the MockRepo constructor with sample Portuguese text, while keeping the MemoryRepo intact.\n\nFor the helper responses, I'll define an `ok` function to handle JSON responses. I'll ensure the headers are set correctly, especially for POST status codes and returning lists in the useResource shape.**Finalizing Response Structure**\n\nThe user mentioned using \"useResource\" for guidance. I want to keep the data structure simple, treating it as an array or resource while adding a \"total\" might help. However, using { items, total } doesn’t fit the usual shape. So, I’ll stick with an array for data and include metadata separately.\n\nI'll set up the `ok` function to accept meta information, and then create JSON responses for different methods. I'll make sure the output is concise and follows the instructions for source code format. Let's provide just the updated code block and a brief note.",
+                "encrypted": "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",
+                "tokens": 1920
+              }
+            }
+          ],
+          "modelMessageId": "61a171f8-9f17-4970-afe3-4ece18e99f21",
+          "responseId": "c6d04b65-75fe-4fd7-98d2-23fd480d2280",
+          "sessionId": "f2a30609-7877-419b-a50b-09a198cea312",
+          "agentId": "github.copilot.editor"
+        },
+        "details": "GPT-5 • 0.9x"
+      },
+      "followups": [],
+      "isCanceled": false,
+      "agent": {
+        "extensionId": {
+          "value": "GitHub.copilot-chat",
+          "_lower": "github.copilot-chat"
+        },
+        "extensionVersion": "0.32.3",
+        "publisherDisplayName": "GitHub",
+        "extensionPublisherId": "GitHub",
+        "extensionDisplayName": "GitHub Copilot Chat",
+        "id": "github.copilot.editor",
+        "description": "Ask or edit in context",
+        "when": "!config.inlineChat.enableV2 && !config.github.copilot.chat.advanced.inlineChat2",
+        "metadata": {
+          "themeIcon": {
+            "id": "copilot"
+          },
+          "hasFollowups": false,
+          "supportIssueReporting": false
+        },
+        "name": "Copilot",
+        "fullName": "GitHub Copilot",
+        "isDefault": true,
+        "locations": [
+          "editor"
+        ],
+        "modes": [
+          "ask"
+        ],
+        "slashCommands": [
+          {
+            "name": "generate",
+            "description": "Generate new code",
+            "disambiguation": [
+              {
+                "category": "generate",
+                "description": "Generate new code",
+                "examples": [
+                  "Add a function that returns the sum of two numbers"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "edit",
+            "description": "Edit the selected code in your active editor",
+            "disambiguation": [
+              {
+                "category": "edit",
+                "description": "Make changes to existing code",
+                "examples": [
+                  "Change this method to use async/await"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "doc",
+            "description": "Add documentation comment for this symbol",
+            "disambiguation": [
+              {
+                "category": "doc",
+                "description": "Add documentation comment for this symbol",
+                "examples": [
+                  "Add jsdoc to this method"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "fix",
+            "description": "Propose a fix for the problems in the selected code",
+            "disambiguation": [
+              {
+                "category": "fix",
+                "description": "Propose a fix for the problems in the selected code",
+                "examples": [
+                  "There is a problem in this code. Rewrite the code to show it with the bug fixed."
+                ]
+              }
+            ]
+          },
+          {
+            "name": "explain",
+            "description": "Explain how the code in your active editor works",
+            "disambiguation": [
+              {
+                "category": "explain",
+                "description": "Explain how the code in your active editor works",
+                "examples": [
+                  "Write an explanation for the code above as paragraphs of text."
+                ]
+              }
+            ]
+          },
+          {
+            "name": "tests",
+            "description": "Generate unit tests for the selected code",
+            "disambiguation": [
+              {
+                "category": "tests",
+                "description": "Generate unit tests for the selected code. The user does not want to fix their existing tests.",
+                "examples": [
+                  "Write a set of detailed unit test functions for the code above."
+                ]
+              }
+            ]
+          }
+        ],
+        "disambiguation": [
+          {
+            "category": "unknown",
+            "description": "Intent of this command is unclear or is not related to information technologies",
+            "examples": [
+              "Add a dog to this comment."
+            ]
+          }
+        ]
+      },
+      "contentReferences": [],
+      "codeCitations": [],
+      "timestamp": 1761270979866,
+      "modelId": "copilot/auto"
+    },
+    {
+      "requestId": "request_2c070a67-91e8-42bb-8008-b3562bd75446",
+      "message": {
+        "parts": [
+          {
+            "range": {
+              "start": 0,
+              "endExclusive": 16
+            },
+            "editorRange": {
+              "startLineNumber": 1,
+              "startColumn": 1,
+              "endLineNumber": 1,
+              "endColumn": 17
+            },
+            "text": "corrija os erros",
+            "kind": "text"
+          }
+        ],
+        "text": "corrija os erros"
+      },
+      "variableData": {
+        "variables": []
+      },
+      "response": [],
+      "responseId": "response_2476df46-9977-437f-8310-eb478122b39a",
+      "result": {
+        "errorDetails": {
+          "code": "canceled",
+          "message": "Canceled",
+          "responseIsIncomplete": true
+        },
+        "timings": {
+          "totalElapsed": 53274
+        },
+        "metadata": {
+          "toolCallRounds": [
+            {
+              "response": "",
+              "toolCalls": [],
+              "toolInputRetry": 0,
+              "id": "71f0ddbd-59ff-4a46-8f30-8be9f70b8bb0"
+            }
+          ],
+          "modelMessageId": "296acc2e-f01c-4749-a320-7a5f18030b6f",
+          "responseId": "78e6972e-47d3-4e29-a735-d0d98cdd38d0",
+          "sessionId": "f2a30609-7877-419b-a50b-09a198cea312",
+          "agentId": "github.copilot.editor",
+          "command": "fix"
+        },
+        "details": "GPT-5 • 0.9x"
+      },
+      "followups": [],
+      "isCanceled": true,
+      "agent": {
+        "extensionId": {
+          "value": "GitHub.copilot-chat",
+          "_lower": "github.copilot-chat"
+        },
+        "extensionVersion": "0.32.3",
+        "publisherDisplayName": "GitHub",
+        "extensionPublisherId": "GitHub",
+        "extensionDisplayName": "GitHub Copilot Chat",
+        "id": "github.copilot.editor",
+        "description": "Ask or edit in context",
+        "when": "!config.inlineChat.enableV2 && !config.github.copilot.chat.advanced.inlineChat2",
+        "metadata": {
+          "themeIcon": {
+            "id": "copilot"
+          },
+          "hasFollowups": false,
+          "supportIssueReporting": false
+        },
+        "name": "Copilot",
+        "fullName": "GitHub Copilot",
+        "isDefault": true,
+        "locations": [
+          "editor"
+        ],
+        "modes": [
+          "ask"
+        ],
+        "slashCommands": [
+          {
+            "name": "generate",
+            "description": "Generate new code",
+            "disambiguation": [
+              {
+                "category": "generate",
+                "description": "Generate new code",
+                "examples": [
+                  "Add a function that returns the sum of two numbers"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "edit",
+            "description": "Edit the selected code in your active editor",
+            "disambiguation": [
+              {
+                "category": "edit",
+                "description": "Make changes to existing code",
+                "examples": [
+                  "Change this method to use async/await"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "doc",
+            "description": "Add documentation comment for this symbol",
+            "disambiguation": [
+              {
+                "category": "doc",
+                "description": "Add documentation comment for this symbol",
+                "examples": [
+                  "Add jsdoc to this method"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "fix",
+            "description": "Propose a fix for the problems in the selected code",
+            "disambiguation": [
+              {
+                "category": "fix",
+                "description": "Propose a fix for the problems in the selected code",
+                "examples": [
+                  "There is a problem in this code. Rewrite the code to show it with the bug fixed."
+                ]
+              }
+            ]
+          },
+          {
+            "name": "explain",
+            "description": "Explain how the code in your active editor works",
+            "disambiguation": [
+              {
+                "category": "explain",
+                "description": "Explain how the code in your active editor works",
+                "examples": [
+                  "Write an explanation for the code above as paragraphs of text."
+                ]
+              }
+            ]
+          },
+          {
+            "name": "tests",
+            "description": "Generate unit tests for the selected code",
+            "disambiguation": [
+              {
+                "category": "tests",
+                "description": "Generate unit tests for the selected code. The user does not want to fix their existing tests.",
+                "examples": [
+                  "Write a set of detailed unit test functions for the code above."
+                ]
+              }
+            ]
+          }
+        ],
+        "disambiguation": [
+          {
+            "category": "unknown",
+            "description": "Intent of this command is unclear or is not related to information technologies",
+            "examples": [
+              "Add a dog to this comment."
+            ]
+          }
+        ]
+      },
+      "slashCommand": {
+        "name": "fix",
+        "description": "Propose a fix for the problems in the selected code",
+        "disambiguation": [
+          {
+            "category": "fix",
+            "description": "Propose a fix for the problems in the selected code",
+            "examples": [
+              "There is a problem in this code. Rewrite the code to show it with the bug fixed."
+            ]
+          }
+        ]
+      },
+      "contentReferences": [],
+      "codeCitations": [],
+      "timestamp": 1761271102926,
+      "modelId": "copilot/auto"
+    }
+  ],
+  "sessionId": "319f560d-089c-4f39-9656-bcdd0dfff9e8",
+  "creationDate": 1761270846027,
+  "isImported": false,
+  "lastMessageDate": 1761271102926
+}

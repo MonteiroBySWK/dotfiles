@@ -1,0 +1,3 @@
+# NEST_API_URL=https://sonar-api-scsq.vercel.app/v1
+NEST_API_URL=localhost:3001/v1
+IN_TEST=true 

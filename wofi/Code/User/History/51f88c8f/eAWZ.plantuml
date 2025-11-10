@@ -1,0 +1,32 @@
+@startuml Usuário Não Autenticado - Autenticação
+scale 1920*1080
+left to right direction
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam backgroundColor white
+
+title Autenticação - Casos de Uso do Usuário Não Autenticado
+
+actor "Usuário Não Autenticado" as usuario
+
+rectangle "Autenticação e Controle de Acesso" {
+  (Fazer Login) as login
+  (Cadastrar Novo Usuário) as cadastro
+  (Recuperar Senha) as recuperar_senha
+}
+
+usuario --> login
+usuario --> cadastro
+usuario --> recuperar_senha
+
+legend right
+  |= Requisito |= Descrição |
+  | REQ-11 | Implementar módulo de autenticação |
+  | REQ-12 | Login exclusivo com e-mail institucional UEMA |
+  | REQ-13 | Validar domínio do e-mail (@uema.br) |
+  | REQ-14 | Permitir cadastro com e-mail institucional |
+  | REQ-15 | Enviar e-mail de confirmação de cadastro |
+  | REQ-16 | Implementar recuperação de senha via e-mail |
+endlegend
+
+@enduml

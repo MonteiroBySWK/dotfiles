@@ -1,0 +1,41 @@
+import TitleSection from "../components/ui/TitleSection";
+import { type ServiceProps, ServiceData } from "../constants/ServiceData";
+
+const Service = (props: ServiceProps) => {
+  return (
+    <div className="flex flex-col bg-card/10 border border-dashed border-border shadow-md col-span-1 duration-200 hover:scale-105 cursor-pointer">
+      <img
+        src={props.urlImage}
+        alt={`card-${props.title}`}
+        className="object-cover h-48 object-top"
+      />
+      <div className="p-4 space-y-2 h-1/2">
+        <h3 className="text-primary text-lg font-semibold">{props.title}</h3>
+        <p className="text-txt-primary">{props.description}</p>
+
+        <a href="#" className="bg-primary px-2 py-1 mt-5">
+          Saiba Mais
+        </a>
+      </div>
+    </div>
+  );
+};
+
+
+export default function Services() {
+  return (
+    <section className="max-w-7xl flex flex-col mx-auto items-center h-fit">
+      <TitleSection>Serviços Prestados</TitleSection>
+      <div className="grid grid-cols-4 gap-2 h-full">
+        {ServiceData.map((e, i) => (
+          <Service
+            title={e.title}
+            description={e.description}
+            urlImage={e.urlImage}
+            key={i}
+          />
+        ))}
+      </div>
+    </section>
+  );
+}

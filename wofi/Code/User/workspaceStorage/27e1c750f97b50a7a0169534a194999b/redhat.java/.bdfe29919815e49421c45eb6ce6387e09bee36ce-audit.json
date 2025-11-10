@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 2
+    },
+    "auditLog": "/home/monteiro/.config/Code/User/workspaceStorage/27e1c750f97b50a7a0169534a194999b/redhat.java/.bdfe29919815e49421c45eb6ce6387e09bee36ce-audit.json",
+    "files": [
+        {
+            "date": 1761078296009,
+            "name": "/home/monteiro/.config/Code/User/workspaceStorage/27e1c750f97b50a7a0169534a194999b/redhat.java/client.log.2025-10-21",
+            "hash": "4fbc57cb4de0006915fdbb1a8e5134fa0fa6dc98ec1694f8b3adfb9d396fa041"
+        }
+    ],
+    "hashType": "sha256"
+}

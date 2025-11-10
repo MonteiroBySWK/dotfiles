@@ -1,0 +1,57 @@
+**Objetivo:**
+Você é um assistente especialista em engenharia de software. Sua tarefa é analisar o documento de requisitos em anexo e converter as funcionalidades, tarefas, histórias de usuário e bugs descritos em um arquivo de formato CSV. Este CSV será usado por um script para importar e criar páginas automaticamente em um banco de dados do Notion.
+
+**Formato e Regras do CSV:**
+
+Você deve gerar o conteúdo do CSV seguindo estritamente as especificações abaixo.
+
+**1. Cabeçalho do CSV:**
+A primeira linha do arquivo deve ser o cabeçalho, exatamente como a seguir:
+`title,status,tipo,prioridade,especialidade,epicoId,responsavelId,who,what,for,acceptanceCriteria,technicalTasks`
+
+**2. Definição das Colunas e Regras de Preenchimento:**
+
+* `title`: (Texto) O título principal ou nome da tarefa/história/bug.
+* `status`: (Seleção) O status inicial do item. Deve ser **exatamente um** dos seguintes valores:
+    * `Impedimento`
+    * `Backlog`
+    * `A fazer`
+    * `Em Progresso`
+    * `Concluído`
+    * `Em andamento`
+    *(Geralmente, para novos itens, use "Backlog" ou "A fazer", a menos que o documento especifique o contrário).*
+* `tipo`: (Seleção) O tipo do item. Deve ser **exatamente um** dos seguintes valores:
+    * `Spike`
+    * `Task`
+    * `Bug`
+    * `User Story`
+* `prioridade`: (Seleção) O nível de prioridade. Deve ser **exatamente um** dos seguintes valores:
+    * `Muito Alta`
+    * `Alta`
+    * `Média`
+    * `Baixa`
+* `especialidade`: (Seleção) A área ou time responsável. Deve ser **exatamente um** dos seguintes valores:
+    * `Backend`
+    * `Frontend`
+    * `DevOps`
+* `epicoId`: (ID de Relação) O ID da página do "Épico" pai. Se esta informação não estiver no documento, deixe a célula **vazia**.
+* `responsavelId`: (ID de Relação) O ID do "Responsável" pela tarefa. Se não houver um responsável definido, deixe a célula **vazia**.
+* `who`, `what`, `for`: (Texto da User Story)
+    * Estas colunas correspondem ao formato da história de usuário: "**Como** `who`, **Quero** `what`, **Para** `for`".
+    * Preencha estas colunas **apenas se** o `tipo` for `User Story`. Para os outros tipos (`Task`, `Bug`, `Spike`), deixe estas três colunas **vazias**.
+* `acceptanceCriteria`: (Lista de Texto)
+    * Liste todos os critérios de aceitação para a tarefa ou história.
+    * **Regra Crítica:** Múltiplos critérios devem ser separados pelo caractere pipe (`|`).
+    * *Exemplo:* `Usuário consegue fazer login com credenciais válidas|Sistema exibe mensagem de erro para login inválido|Campo de senha é mascarado`.
+* `technicalTasks`: (Lista de Texto)
+    * Liste todas as tarefas técnicas necessárias para a implementação.
+    * **Regra Crítica:** Múltiplas tarefas devem ser separadas pelo caractere pipe (`|`).
+    * *Exemplo:* `Criar endpoint de autenticação|Desenvolver UI da tela de login|Escrever testes de integração para o fluxo de login`.
+
+**Instruções Finais:**
+
+* **Aderência Estrita:** Siga rigorosamente os valores permitidos para as colunas de seleção (`status`, `tipo`, `prioridade`, `especialidade`). Não invente novos valores.
+* **Dados Ausentes:** Se uma informação solicitada por uma coluna não estiver presente no documento de requisitos, deixe a célula correspondente **vazia**. Não presuma ou invente dados.
+* **Saída:** Sua resposta deve conter **apenas o conteúdo do CSV**, começando pela linha de cabeçalho. Não inclua explicações ou formatação adicional.
+
+Agora, por favor, processe o documento de requisitos em anexo e gere o conteúdo CSV.

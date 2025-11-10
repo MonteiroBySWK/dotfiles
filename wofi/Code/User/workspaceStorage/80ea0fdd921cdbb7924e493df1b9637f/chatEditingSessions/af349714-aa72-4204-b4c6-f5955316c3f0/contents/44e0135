@@ -1,0 +1,271 @@
+/**
+ * TableIngredientList - Tabela de listagem de ingredientes
+ * Sistema REVIS
+ */
+
+'use client';
+
+import { useState } from 'react';
+import { useIngredientes } from '@/hooks/useIngredientes';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Card, CardContent } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { FormIngredient } from './FormIngredient';
+import { ModalAjusteEstoque } from './ModalAjusteEstoque';
+import { HistoricoMovimentacaoList } from './HistoricoMovimentacao';
+import { Edit, Search, AlertTriangle, Settings, History } from 'lucide-react';
+import { Ingrediente } from '@/types';
+import { Pagination } from '@/components/ui/pagination';
+
+const ITEMS_PER_PAGE = 10;
+
+export function TableIngredientList() {
+  const { data: ingredientes, loading } = useIngredientes();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [editingIngrediente, setEditingIngrediente] = useState<Ingrediente | null>(null);
+  const [adjustingIngrediente, setAdjustingIngrediente] = useState<Ingrediente | null>(null);
+  const [historicoIngrediente, setHistoricoIngrediente] = useState<Ingrediente | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [adjustModalOpen, setAdjustModalOpen] = useState(false);
+  const [historicoModalOpen, setHistoricoModalOpen] = useState(false);
+
+  // Filtrar ingredientes
+  const filteredIngredientes = ingredientes.filter((ing) =>
+    ing.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    ing.categoria.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Paginação
+  const totalPages = Math.ceil(filteredIngredientes.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const paginatedIngredientes = filteredIngredientes.slice(startIndex, endIndex);
+
+  // Reset page quando busca muda
+  const handleSearchChange = (value: string) => {
+    setSearchTerm(value);
+    setCurrentPage(1);
+  };
+
+  // Loading state
+  if (loading) {
+    return (
+      <Card>
+        <CardContent className="pt-6">
+          <div className="space-y-3">
+            <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-12 w-full" />
+            <Skeleton className="h-12 w-full" />
+            <Skeleton className="h-12 w-full" />
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  const handleEdit = (ingrediente: Ingrediente) => {
+    setEditingIngrediente(ingrediente);
+    setDialogOpen(true);
+  };
+
+  const handleAdjust = (ingrediente: Ingrediente) => {
+    setAdjustingIngrediente(ingrediente);
+    setAdjustModalOpen(true);
+  };
+
+  const handleHistorico = (ingrediente: Ingrediente) => {
+    setHistoricoIngrediente(ingrediente);
+    setHistoricoModalOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+    setEditingIngrediente(null);
+  };
+
+  const handleCloseAdjustModal = () => {
+    setAdjustModalOpen(false);
+    setAdjustingIngrediente(null);
+  };
+
+  const handleCloseHistoricoModal = () => {
+    setHistoricoModalOpen(false);
+    setHistoricoIngrediente(null);
+  };
+
+  return (
+    <>
+      <Card>
+        <CardContent className="pt-6">
+          {/* Busca */}
+          <div className="mb-4 flex items-center gap-2">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                placeholder="Buscar por nome ou categoria..."
+                value={searchTerm}
+                onChange={(e) => handleSearchChange(e.target.value)}
+                className="pl-9"
+              />
+            </div>
+          </div>
+
+          {/* Tabela com scroll horizontal em mobile */}
+          {filteredIngredientes.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-12 text-center">
+              <p className="text-muted-foreground">
+                {searchTerm ? 'Nenhum ingrediente encontrado' : 'Nenhum ingrediente cadastrado'}
+              </p>
+            </div>
+          ) : (
+            <div className="overflow-x-auto -mx-6 px-6 md:mx-0 md:px-0">
+              <div className="min-w-[640px]">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Nome</TableHead>
+                      <TableHead>Categoria</TableHead>
+                      <TableHead className="text-right">Estoque Atual</TableHead>
+                      <TableHead className="text-right">Estoque Mínimo</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead className="text-right">Ações</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {paginatedIngredientes.map((ingrediente) => {
+                      const estoquePercentual = (ingrediente.estoqueAtual / ingrediente.estoqueMinimo) * 100;
+                      const estoqueBaixo = ingrediente.estoqueAtual < ingrediente.estoqueMinimo;
+
+                      return (
+                        <TableRow key={ingrediente.id}>
+                          <TableCell className="font-medium">{ingrediente.nome}</TableCell>
+                          <TableCell>
+                            <Badge variant="outline">{ingrediente.categoria}</Badge>
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <span className={estoqueBaixo ? 'font-medium text-destructive' : ''}>
+                              {ingrediente.estoqueAtual} {ingrediente.unidade}
+                            </span>
+                          </TableCell>
+                          <TableCell className="text-right text-muted-foreground">
+                            {ingrediente.estoqueMinimo} {ingrediente.unidade}
+                          </TableCell>
+                          <TableCell>
+                            {estoqueBaixo ? (
+                              <Badge variant="destructive" className="gap-1">
+                                <AlertTriangle className="h-3 w-3" />
+                                Baixo
+                              </Badge>
+                            ) : estoquePercentual < 150 ? (
+                              <Badge variant="outline" className="border-warning text-warning">
+                                Atenção
+                              </Badge>
+                            ) : (
+                              <Badge variant="outline" className="border-success text-success">
+                                OK
+                              </Badge>
+                            )}
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <div className="flex justify-end gap-1">
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => handleHistorico(ingrediente)}
+                                aria-label="Ver histórico"
+                                title="Ver histórico"
+                                className="h-8 w-8"
+                              >
+                                <History className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => handleAdjust(ingrediente)}
+                                aria-label="Ajustar estoque"
+                                title="Ajustar estoque"
+                                className="h-8 w-8"
+                              >
+                                <Settings className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => handleEdit(ingrediente)}
+                                aria-label="Editar ingrediente"
+                                title="Editar ingrediente"
+                                className="h-8 w-8"
+                              >
+                                <Edit className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </div>
+            </div>
+          )}
+
+          {/* Paginação */}
+          {filteredIngredientes.length > 0 && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+              itemsPerPage={ITEMS_PER_PAGE}
+              totalItems={filteredIngredientes.length}
+            />
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Dialog de Edição */}
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Editar Ingrediente</DialogTitle>
+          </DialogHeader>
+          {editingIngrediente && (
+            <FormIngredient
+              ingrediente={editingIngrediente}
+              onSuccess={handleCloseDialog}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal de Ajuste de Estoque */}
+      <ModalAjusteEstoque
+        ingrediente={adjustingIngrediente}
+        open={adjustModalOpen}
+        onOpenChange={handleCloseAdjustModal}
+      />
+
+      {/* Modal de Histórico */}
+      {historicoIngrediente && (
+        <HistoricoMovimentacaoList
+          historico={historicoIngrediente.historico || []}
+          ingredienteNome={historicoIngrediente.nome}
+          unidade={historicoIngrediente.unidade}
+          open={historicoModalOpen}
+          onOpenChange={handleCloseHistoricoModal}
+        />
+      )}
+    </>
+  );
+}

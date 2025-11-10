@@ -1,0 +1,14 @@
+{
+  "environment": {
+    "executable": "/home/monteiro/codes/JT-Check/.venv/bin/python",
+    "prefix": "/home/monteiro/codes/JT-Check/.venv",
+    "version": "3.13.3.final.0",
+    "is64Bit": true,
+    "symlinks": [
+      "/home/monteiro/codes/JT-Check/.venv/bin/python",
+      "/home/monteiro/codes/JT-Check/.venv/bin/python3",
+      "/home/monteiro/codes/JT-Check/.venv/bin/python3.13"
+    ]
+  },
+  "symlinks": []
+}

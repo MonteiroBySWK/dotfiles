@@ -1,0 +1,144 @@
+// TODO: Importar seus serviços reais
+// import { authService } from '@/services/authService';
+// import { clientService } from '@/services/clientService';
+// import { memberService } from '@/services/memberService';
+
+import { NextResponse } from 'next/server';
+
+// Handler para requisições POST
+export async function POST(
+  request: Request,
+  { params }: { params: { slug: string[] } }
+) {
+  const path = params.slug.join('/');
+
+  // Algumas rotas podem não ter corpo, então o parsing é opcional
+  let body;
+  try {
+    body = await request.json();
+  } catch (e) {
+    body = null;
+  }
+
+  try {
+    switch (path) {
+      // --- Registro ---
+      case 'register': {
+        // const { email, password, type } = body;
+        // const result = await authService.register({ email, password, type });
+        return NextResponse.json({ message: 'User registered successfully', data: { /* dados do usuário e tokens */ } }, { status: 201 });
+      }
+
+      case 'register/client/cpf': {
+        // const { user, client } = body;
+        // const result = await clientService.registerCpfWithUser(user, client);
+        return NextResponse.json({ message: 'Client CPF registered successfully', data: { /* dados do cliente, usuário e tokens */ } }, { status: 201 });
+      }
+        
+      case 'register/client/cnpj': {
+        // const { user, client } = body;
+        // const result = await clientService.registerCnpjWithUser(user, client);
+        return NextResponse.json({ message: 'Client CNPJ registered successfully', data: { /* dados do cliente, usuário e tokens */ } }, { status: 201 });
+      }
+
+      case 'register/member': {
+        // const { user, member } = body;
+        // const result = await memberService.registerWithUser(user, member);
+        return NextResponse.json({ message: 'Member registered successfully', data: { /* dados do membro, usuário e tokens */ } }, { status: 201 });
+      }
+
+      // --- Autenticação ---
+      case 'login': {
+        // const { email, password } = body;
+        // const result = await authService.login(email, password);
+        // NOTA: Lembre-se de ajustar seu AuthProvider para ler `data.data.user`
+        return NextResponse.json({ message: 'User logged in successfully', data: { /* dados do usuário e tokens */ } }, { status: 200 });
+      }
+
+      case 'validate-token': {
+        // const { token } = body;
+        // const result = await authService.validateToken(token);
+        return NextResponse.json({ message: 'Token is valid', data: { /* uid, email, expiresAt */ } }, { status: 200 });
+      }
+        
+      // --- Logout ---
+      case 'logout': {
+        // A lógica de logout deve invalidar o token/sessão do lado do servidor
+        // O UID do usuário deve ser extraído do token de autenticação, não do corpo
+        // await authService.logout(firebaseUidFromToken);
+        return NextResponse.json({ message: 'User logged out successfully', data: null }, { status: 200 });
+      }
+
+      // --- Gerenciamento de Senha ---
+      case 'change-password': {
+        // const { userId, firebaseUid, oldPassword, newPassword } = body;
+        // await authService.changePassword(...);
+        return NextResponse.json({ message: 'Password changed successfully', data: null }, { status: 200 });
+      }
+
+      case 'forgot-password': {
+        // const { email } = body;
+        // await authService.forgotPassword(email);
+        return NextResponse.json({ message: 'If the email exists, a password reset link has been sent', data: null }, { status: 200 });
+      }
+
+      case 'reset-password': {
+        // const { email, newPassword } = body;
+        // await authService.resetPassword(email, newPassword);
+        return NextResponse.json({ message: 'Password reset successfully', data: null }, { status: 200 });
+      }
+        
+      // --- Gerenciamento de Email ---
+      case 'update-email': {
+        // const { userId, firebaseUid, newEmail, password } = body;
+        // await authService.updateEmail(...);
+        return NextResponse.json({ message: 'Email updated successfully', data: null }, { status: 200 });
+      }
+
+      // --- Exclusão de Conta ---
+      case 'delete-account': {
+        // const { userId, firebaseUid } = body;
+        // await authService.deleteAccount(userId, firebaseUid);
+        return NextResponse.json({ message: 'Account deleted successfully', data: null }, { status: 200 });
+      }
+
+      // --- Permissões ---
+      case 'check-permission': {
+        // const { userId, permission } = body;
+        // const hasPermission = await authService.checkPermission(userId, permission);
+        return NextResponse.json({ message: 'Permission checked', data: { /* hasPermission */ } }, { status: 200 });
+      }
+
+      default:
+        return NextResponse.json({ message: `Route not found for POST: /api/auth/${path}` }, { status: 404 });
+    }
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+    return NextResponse.json({ message: 'An error occurred', error: errorMessage }, { status: 500 });
+  }
+}
+
+// Handler para requisições GET
+export async function GET(
+  request: Request,
+  { params }: { params: { slug: string[] } }
+) {
+  const path = params.slug.join('/');
+
+  try {
+    switch (path) {
+      case 'me': {
+        // A lógica deve extrair o usuário do token/sessão contido nos headers
+        // const user = await authService.getMe(request.headers.get('Authorization'));
+        // NOTA: Lembre-se de ajustar seu AuthProvider para ler `data.data.user`
+        return NextResponse.json({ message: 'User retrieved successfully', data: { /* dados do usuário */ } });
+      }
+
+      default:
+        return NextResponse.json({ message: `Route not found for GET: /api/auth/${path}` }, { status: 404 });
+    }
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+    return NextResponse.json({ message: 'An error occurred', error: errorMessage }, { status: 500 });
+  }
+}

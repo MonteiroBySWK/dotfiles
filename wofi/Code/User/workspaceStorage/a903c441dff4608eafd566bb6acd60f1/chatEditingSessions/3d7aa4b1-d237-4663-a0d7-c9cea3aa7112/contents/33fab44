@@ -1,0 +1,48 @@
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+
+const skills = [
+  { name: "JavaScript", color: "bg-yellow-400", icon: "🟨" },
+  { name: "TypeScript", color: "bg-blue-400", icon: "🟦" },
+  { name: "React", color: "bg-cyan-400", icon: "⚛️" },
+  { name: "GSAP", color: "bg-green-400", icon: "🟩" },
+  { name: "Node.js", color: "bg-green-700", icon: "🟩" },
+  { name: "CSS3", color: "bg-blue-600", icon: "🎨" },
+  { name: "HTML5", color: "bg-orange-400", icon: "🟧" },
+  { name: "Git", color: "bg-red-500", icon: "🔺" },
+  { name: "Figma", color: "bg-pink-400", icon: "🎨" },
+];
+
+export default function Skills() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    gsap.fromTo(
+      sectionRef.current,
+      { opacity: 0, y: 60 },
+      { opacity: 1, y: 0, duration: 1, delay: 0.2, ease: "power2.out" }
+    );
+  }, []);
+
+  return (
+    <section
+      id="skills"
+      ref={sectionRef}
+      className="py-24 px-4 max-w-3xl mx-auto text-center"
+    >
+      <h2 className="text-4xl font-extrabold text-blue-300 mb-8 drop-shadow-lg">
+        Skills
+      </h2>
+      <div className="flex flex-wrap justify-center gap-4">
+        {skills.map((skill) => (
+          <span
+            key={skill.name}
+            className={`flex items-center gap-2 ${skill.color} text-white px-5 py-2 rounded-full shadow-md text-lg font-semibold hover:scale-110 transition-transform`}
+          >
+            <span>{skill.icon}</span> {skill.name}
+          </span>
+        ))}
+      </div>
+    </section>
+  );
+}

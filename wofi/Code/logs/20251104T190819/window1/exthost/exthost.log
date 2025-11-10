@@ -1,0 +1,73 @@
+2025-11-04 19:08:23.491 [info] Extension host with pid 45062 started
+2025-11-04 19:08:23.491 [info] Skipping acquiring lock for /home/monteiro/.config/Code/User/workspaceStorage/8756899c69c2dd09e1e6a3d37c92b0c9.
+2025-11-04 19:08:24.307 [info] ExtensionService#_doActivateExtension vscode.github-authentication, startup: false, activationEvent: 'onAuthenticationRequest:github'
+2025-11-04 19:08:24.344 [info] ExtensionService#_doActivateExtension mechatroner.rainbow-csv, startup: false, activationEvent: 'onLanguage:plaintext'
+2025-11-04 19:08:24.351 [info] ExtensionService#_doActivateExtension vscode.emmet, startup: false, activationEvent: 'onLanguage'
+2025-11-04 19:08:24.372 [info] ExtensionService#_doActivateExtension GitHub.copilot-chat, startup: false, activationEvent: 'onChatParticipant:github.copilot.editsAgent'
+2025-11-04 19:08:25.365 [info] ExtensionService#_doActivateExtension vscode.typescript-language-features, startup: false, activationEvent: 'onLanguage:typescript'
+2025-11-04 19:08:25.435 [info] ExtensionService#_doActivateExtension VisualStudioExptTeam.intellicode-api-usage-examples, startup: false, activationEvent: 'onLanguage:typescript'
+2025-11-04 19:08:25.605 [info] ExtensionService#_doActivateExtension VisualStudioExptTeam.vscodeintellicode, startup: false, activationEvent: 'onLanguage:typescript'
+2025-11-04 19:08:25.974 [info] ExtensionService#_doActivateExtension vscode.git-base, startup: true, activationEvent: '*', root cause: vscode.git
+2025-11-04 19:08:26.585 [info] ExtensionService#_doActivateExtension vscode.npm, startup: true, activationEvent: 'workspaceContains:package.json'
+2025-11-04 19:08:26.643 [info] ExtensionService#_doActivateExtension vscode.microsoft-authentication, startup: false, activationEvent: 'onAuthenticationRequest:microsoft'
+2025-11-04 19:08:26.867 [info] ExtensionService#_doActivateExtension vscode.git, startup: true, activationEvent: '*'
+2025-11-04 19:08:26.995 [info] ExtensionService#_doActivateExtension vscode.github, startup: true, activationEvent: '*'
+2025-11-04 19:08:27.491 [info] ExtensionService#_doActivateExtension fill-labs.dependi, startup: true, activationEvent: 'workspaceContains:**/Cargo.toml,**/go.mod,**/package.json,**/composer.json,**/requirements.txt,**/requirements.in,**/pixi.toml,**/pyproject.toml'
+2025-11-04 19:08:27.614 [info] Eager extensions activated
+2025-11-04 19:08:27.736 [info] ExtensionService#_doActivateExtension vscode.debug-auto-launch, startup: false, activationEvent: 'onStartupFinished'
+2025-11-04 19:08:27.739 [info] ExtensionService#_doActivateExtension vscode.merge-conflict, startup: false, activationEvent: 'onStartupFinished'
+2025-11-04 19:08:27.767 [info] ExtensionService#_doActivateExtension bradlc.vscode-tailwindcss, startup: false, activationEvent: 'onStartupFinished'
+2025-11-04 19:08:27.813 [info] ExtensionService#_doActivateExtension esbenp.prettier-vscode, startup: false, activationEvent: 'onStartupFinished'
+2025-11-04 19:08:27.914 [info] ExtensionService#_doActivateExtension ms-vscode.js-debug, startup: false, activationEvent: 'onStartupFinished', root cause: expo.vscode-expo-tools
+2025-11-04 19:08:28.073 [info] ExtensionService#_doActivateExtension redhat.vscode-yaml, startup: false, activationEvent: 'onStartupFinished', root cause: expo.vscode-expo-tools
+2025-11-04 19:08:28.199 [info] ExtensionService#_doActivateExtension GitHub.copilot, startup: false, activationEvent: 'onStartupFinished'
+2025-11-04 19:08:30.591 [info] ExtensionService#_doActivateExtension ms-vscode-remote.remote-containers, startup: false, activationEvent: 'onStartupFinished'
+2025-11-04 19:08:30.795 [info] ExtensionService#_doActivateExtension PKief.material-icon-theme, startup: false, activationEvent: 'onStartupFinished'
+2025-11-04 19:08:30.823 [info] ExtensionService#_doActivateExtension ritwickdey.LiveServer, startup: false, activationEvent: 'onStartupFinished'
+2025-11-04 19:08:30.836 [info] ExtensionService#_doActivateExtension sainnhe.gruvbox-material, startup: false, activationEvent: 'onStartupFinished'
+2025-11-04 19:08:30.857 [info] ExtensionService#_doActivateExtension zhuangtongfa.material-theme, startup: false, activationEvent: 'onStartupFinished'
+2025-11-04 19:08:30.976 [error] Error: chatParticipant must be declared in package.json: claude-code
+    at sqt.$registerAgent (vscode-file://vscode-app/opt/visual-studio-code/resources/app/out/vs/workbench/workbench.desktop.main.js:509:5906)
+2025-11-04 19:08:32.757 [info] ExtensionService#_doActivateExtension expo.vscode-expo-tools, startup: false, activationEvent: 'onStartupFinished'
+2025-11-04 19:08:33.356 [warning] [redhat.vscode-yaml] Accessing a resource scoped configuration without providing a resource is not expected. To get the effective value for '[yaml]', provide the URI of a resource or 'null' for any resource.
+2025-11-04 19:08:33.359 [warning] [redhat.vscode-yaml] Accessing a resource scoped configuration without providing a resource is not expected. To get the effective value for '[yaml]', provide the URI of a resource or 'null' for any resource.
+2025-11-04 19:08:33.646 [info] ExtensionService#_doActivateExtension vscode.configuration-editing, startup: false, activationEvent: 'onLanguage:json'
+2025-11-04 19:08:33.659 [info] ExtensionService#_doActivateExtension vscode.extension-editing, startup: false, activationEvent: 'onLanguage:json'
+2025-11-04 19:08:33.677 [info] ExtensionService#_doActivateExtension vscode.json-language-features, startup: false, activationEvent: 'onLanguage:json'
+2025-11-04 22:22:57.342 [warning] [redhat.vscode-yaml] Accessing a resource scoped configuration without providing a resource is not expected. To get the effective value for '[yaml]', provide the URI of a resource or 'null' for any resource.
+2025-11-04 22:23:51.947 [info] ExtensionService#_doActivateExtension vscode.terminal-suggest, startup: false, activationEvent: 'onTerminalShellIntegration:*'
+2025-11-04 22:23:52.105 [warning] [redhat.vscode-yaml] Accessing a resource scoped configuration without providing a resource is not expected. To get the effective value for '[yaml]', provide the URI of a resource or 'null' for any resource.
+2025-11-04 22:40:57.734 [error] [vscode.typescript-language-features] provider FAILED
+2025-11-04 22:40:57.734 [error] Error: <semantic> TypeScript Server Error (5.9.3)
+Debug Failure. False expression: Expected symbol to be a module
+Error: Debug Failure. False expression: Expected symbol to be a module
+    at Object.addImportForModuleSymbol (/opt/visual-studio-code/resources/app/extensions/node_modules/typescript/lib/typescript.js:158379:11)
+    at /opt/visual-studio-code/resources/app/extensions/node_modules/typescript/lib/typescript.js:148088:19
+    at Map.forEach (<anonymous>)
+    at addTargetFileImports (/opt/visual-studio-code/resources/app/extensions/node_modules/typescript/lib/typescript.js:148081:17)
+    at /opt/visual-studio-code/resources/app/extensions/node_modules/typescript/lib/typescript.js:183199:7
+    at ConfiguredProject2.runWithTemporaryFileUpdate (/opt/visual-studio-code/resources/app/extensions/node_modules/typescript/lib/typescript.js:188724:7)
+    at pasteEdits (/opt/visual-studio-code/resources/app/extensions/node_modules/typescript/lib/typescript.js:183179:55)
+    at /opt/visual-studio-code/resources/app/extensions/node_modules/typescript/lib/typescript.js:183164:118
+    at _ChangeTracker.with (/opt/visual-studio-code/resources/app/extensions/node_modules/typescript/lib/typescript.js:179213:5)
+    at Object.pasteEditsProvider (/opt/visual-studio-code/resources/app/extensions/node_modules/typescript/lib/typescript.js:183164:60)
+    at Object.getPasteEdits (/opt/visual-studio-code/resources/app/extensions/node_modules/typescript/lib/typescript.js:153236:34)
+    at IpcIOSession.getPasteEdits (/opt/visual-studio-code/resources/app/extensions/node_modules/typescript/lib/typescript.js:196454:49)
+    at getPasteEdits (/opt/visual-studio-code/resources/app/extensions/node_modules/typescript/lib/typescript.js:194568:43)
+    at /opt/visual-studio-code/resources/app/extensions/node_modules/typescript/lib/typescript.js:196832:15
+    at IpcIOSession.executeWithRequestId (/opt/visual-studio-code/resources/app/extensions/node_modules/typescript/lib/typescript.js:196821:14)
+    at IpcIOSession.executeCommand (/opt/visual-studio-code/resources/app/extensions/node_modules/typescript/lib/typescript.js:196830:29)
+    at IpcIOSession.onMessage (/opt/visual-studio-code/resources/app/extensions/node_modules/typescript/lib/typescript.js:196878:68)
+    at process.<anonymous> (/opt/visual-studio-code/resources/app/extensions/node_modules/typescript/lib/_tsserver.js:519:14)
+    at process.emit (node:events:519:28)
+    at emit (node:internal/child_process:949:14)
+    at process.processTicksAndRejections (node:internal/process/task_queues:91:21)
+    at n.create (/opt/visual-studio-code/resources/app/extensions/typescript-language-features/dist/extension.js:2:357397)
+    at y.dispatchResponse (/opt/visual-studio-code/resources/app/extensions/typescript-language-features/dist/extension.js:2:30831)
+    at y.dispatchMessage (/opt/visual-studio-code/resources/app/extensions/typescript-language-features/dist/extension.js:2:29272)
+    at ChildProcess.<anonymous> (/opt/visual-studio-code/resources/app/extensions/typescript-language-features/dist/extension.js:2:28557)
+    at ChildProcess.emit (node:events:519:28)
+    at emit (node:internal/child_process:949:14)
+    at processTicksAndRejections (node:internal/process/task_queues:91:21)
+2025-11-04 23:48:03.163 [warning] GitHub.copilot-chat - Code actions of kind 'quickfix' requested but returned code action is of kind 'refactor.rewrite.review.copilot'. Code action will be dropped. Please check 'CodeActionContext.only' to only return requested code actions.
+2025-11-04 23:53:59.752 [warning] GitHub.copilot-chat - Code actions of kind 'quickfix' requested but returned code action is of kind 'refactor.rewrite.review.copilot'. Code action will be dropped. Please check 'CodeActionContext.only' to only return requested code actions.

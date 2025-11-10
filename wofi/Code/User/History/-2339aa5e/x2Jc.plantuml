@@ -1,0 +1,30 @@
+@startuml Membro - Autenticação
+scale 1920*1080
+left to right direction
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam backgroundColor white
+
+title Autenticação - Casos de Uso do Membro do Laboratório
+
+actor "Membro do Laboratório" as membro
+
+rectangle "Autenticação e Controle de Acesso" {
+  (Fazer Login) as login
+  (Fazer Logout) as logout
+  (Acessar Área Restrita) as acesso_restrito
+}
+
+membro --> login
+membro --> logout
+membro --> acesso_restrito
+
+legend right
+  |= Requisito |= Descrição |
+  | REQ-17 | Diferentes níveis de acesso (Admin, Membro, Estagiário) |
+  | REQ-18 | Bloquear acesso à área restrita sem autenticação |
+  | REQ-19 | Manter sessão ativa por período configurável |
+  | REQ-20 | Permitir logout manual do usuário |
+endlegend
+
+@enduml

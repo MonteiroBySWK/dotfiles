@@ -1,0 +1,35 @@
+var input = require("fs").readFileSync("./dev/stdin", "utf8");
+var lines = input.split("\n");
+
+let values = lines.map((e) => parseInt(e));
+console.log(values)
+let qtdPares = 0;
+let qtdImpares = 0;
+let qtdPositivos = 0;
+let qtdNegativos = 0;
+
+
+values.forEach((item) => {
+  console.log(typeof item)
+
+
+  if (item % 2 === 0 && typeof item === 'number') {
+    qtdPares++;
+  } 
+  if (item % 2 !== 0 && typeof item === 'number') {
+    qtdImpares++;
+  }
+
+  if (item > 0) {
+    qtdPositivos++;
+  }
+
+  if (item < 0) {
+    qtdNegativos++;
+  }
+});
+
+console.log(`${qtdPares} valor(es) par(es)`);
+console.log(`${qtdImpares} valor(es) impar(es)`);
+console.log(`${qtdPositivos} valor(es) positivo(s)`);
+console.log(`${qtdNegativos} valor(es) negativo(s)`);

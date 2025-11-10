@@ -1,0 +1,268 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+/* Map next/font variable names to simpler project variables.
+   Removed @theme usage (some linters/parsers don't recognize it).
+   next/font sets --font-geist-mono and --font-geist-sans on the html root
+   via the class applied in layout.tsx, so we map them here for convenience. */
+:root {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+/* Custom animations for professional standby page */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes expand-width {
+  from {
+    width: 0;
+  }
+  to {
+    width: 6rem;
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 1s ease-out forwards;
+}
+
+.animate-expand-width {
+  animation: expand-width 2s ease-out 0.5s forwards;
+}
+
+/* Terminal line reveal (kitty-like) */
+@keyframes term-line-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+    filter: blur(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.animate-term-line-in {
+  animation: term-line-in 0.22s ease-out both;
+}
+
+/* Blinking caret for terminal prompt */
+@keyframes caret-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.term-caret {
+  display: inline-block;
+  width: 0.6ch;
+  height: 1em;
+  background: #F7F7F7;
+  vertical-align: -0.1em;
+  margin-left: 2px;
+  animation: caret-blink 1s steps(2, jump-none) infinite;
+}
+
+/* Terminal scanline effect */
+@keyframes scan {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+
+.scanline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: scan 6s linear infinite;
+  pointer-events: none;
+  opacity: 0.3;
+  z-index: 1;
+}
+
+/* 3D Rotation Effect */
+@keyframes rotate-y {
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(360deg);
+  }
+}
+
+.perspective-800 {
+  perspective: 800px;
+}
+
+.rotate-y {
+  animation: rotate-y 10s linear infinite;
+  transform-style: preserve-3d;
+}
+
+/* Terminal enhanced effects */
+.terminal-bg {
+  position: relative;
+  background: linear-gradient(to bottom, #050505, #080808);
+  box-shadow: 
+    0 0 50px rgba(137, 55, 230, 0.05),
+    0 0 100px rgba(0, 105, 204, 0.05);
+  overflow: hidden;
+}
+
+/* CRT screen flicker effect */
+@keyframes flicker {
+  0% { opacity: 0.97; }
+  5% { opacity: 0.95; }
+  10% { opacity: 0.97; }
+  15% { opacity: 0.94; }
+  20% { opacity: 0.98; }
+  50% { opacity: 0.95; }
+  60% { opacity: 0.98; }
+  70% { opacity: 0.95; }
+  80% { opacity: 0.93; }
+  90% { opacity: 0.95; }
+  100% { opacity: 0.98; }
+}
+
+.screen-flicker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.03);
+  opacity: 0;
+  pointer-events: none;
+  animation: flicker 6s infinite;
+  mix-blend-mode: overlay;
+}
+
+/* CRT scan lines */
+@keyframes crtScan {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 100px; }
+}
+
+.crt-lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    rgba(0, 0, 0, 0.1) 1px,
+    transparent 2px
+  );
+  background-size: 100% 4px;
+  animation: crtScan 10s linear infinite;
+  pointer-events: none;
+  opacity: 0.15;
+  mix-blend-mode: overlay;
+}
+
+/* Star field animation */
+.stars-container {
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, #eee, rgba(0, 0, 0, 0)),
+    radial-gradient(2px 2px at 40px 70px, #fff, rgba(0, 0, 0, 0)),
+    radial-gradient(1px 1px at 90px 40px, #fff, rgba(0, 0, 0, 0)),
+    radial-gradient(1px 1px at 130px 80px, #fff, rgba(0, 0, 0, 0)),
+    radial-gradient(2px 2px at 160px 120px, #ddd, rgba(0, 0, 0, 0));
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  opacity: 0.2;
+  animation: stars 4s linear infinite;
+}
+
+@keyframes stars {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 200px 200px;
+  }
+}
+
+/* Digital noise background */
+.bg-noise {
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAEw0lEQVR42u2ZW4hVVRjHf+vcZs6MOTrm2NQMlZY9RIUPoYSgkYSET1QQGUHgQ5BDRGIPRWSQEESP9hIkGQXVQw9BZfQQIX3wLUpqKpnpOJrTzJzLvuy9VqzZs/a+nLP3OVp0YMGBw95r/dd3+6+1vvWtJZzm4vRpkfwPMgJkBMigxWpM4n8VkYvlMu8nk9xdLHI2oLw3hxStrq5GKzGdyXC7tfRZC8YghDjxuxCio1IHfC5JSsNlmqn7JifdEddi7WMvd5RKzBWCz9L19LouM+MxDpZKLDt0ELdYYm9TM+92tWKdGspcjsV0mlY/WJYvGMMdpSL7jDlRzmWW5fZ8nvnFIkoIbKDcgzFzrvEwMRuTiQQLR8U5WChwo1I8lUhQrxTvF4sMKcWbySTP9/Wx0HF4QWvyQvBKKsX3WnOb63KjUpyVzfJmcwub43HyWrMokeDbGMx1HDK+f7eVy7xlDC8nEmw1hlisRkUo1SbYiYiEQcA0Y1jkOJy3ezejtWaGlpyVyfBgLIZrDCkp+Vopbjp8iBuM4TEp+SiVIiclv7ouveUyg1KSNYbfg4Ci1syxlnmFAn3GUPQrPtVaphtDzFp2WcvFUjJebgcoB9jlj9gax6FdKXqslYv271+Z03rPl0oxQQj6k0k2a011/A9jYIzW1CvFZCEIpOTbVIrf/EA2KEVPEDAjm+XuWIwHlGJKPs/PnseQUgxY+10ul+P+UILNLS1sHDeuMrxJyZfGcG0mw/JCgd3G0G8tCWvptJZ13d2sO3r0RO+tTibZICUxKWlTimnGkNWadVLysrX/HJCnrGVTqcTyzk6uLhRYlMnwXSLBYmN4znVJKkU8leLDYpHl3d0kpWReNsumZJLPHIeF2SzfJBK8XCpxZTbLzlyOu2MxFhtDVgjOzGRYl0rxkZQs6OriTWuZawyxZJJnXJdLPQ+nubkaxCnZs8AxrL1CGLSeJoT4o1Sq8qfGmCFj2G4tz7a0oI3hQilpV4qmYpEXpSTrj8UJpdgVBFwSi7EzCOg1huulpLlc5kfP43ohiClFY7FIXil+qdRym5MnmyQnDGnPMAwc8+Eho4RgQ6nEciHIB8FxVbqmTOleMpl937S3xxZks/vcujpuF4J5QvCK74Su9jwe9zyuCgJ+SCR4KAh4VQi6pGSDEBwVgpZymU+05jDP47Yg4AtrGZOXnvd3bnd3aM0G34mlQuA4zrAxJw45AhgpRA+wXwiCZLLTvP/BB/GmoaE7/zKGj0olftWaNmPAGLTWPJjL8S2Q9TyWCMGfUnKjMTwoBPcZw7PGkPI8lngeq4IAC3RaS5IQz03GnDAr33GWGsMjgFaqB5gci8UYHh7eDfQrVbD9/RMKa9f+cn5f3zuXF4ucVShwTj7PBdbSGgScsZafmprY29jIKmN4RmtStVhiVeM6jpRzpWRdocAiY7jbWj4QgtzRoxSs5U/HYfPYsbyUz3NVocDkfJ7xQUDcd+pNnZ18mkjwaqnEEs/jF2NobWwkPWbM37rju4yZ0tjYaKemUpycSkVkKrXNbt++SE+c+Ku4aNHQF8CCXC5d0NppxON1gRAOgIrHKaZSFJubKbe1UW5vp9zZST6dpjBxIoWWFt5aujR7k+dpC1Zrp1yt1dRRlvG4UzLmI+H7v1hrE/V6PSrJUur/HvJ/AzLGWP4J+QejXmb2rBhzXgAAAABJRU5ErkJggg==');
+  background-repeat: repeat;
+}
+
+/* Terminal text styling */
+.terminal-text {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(137, 55, 230, 0.3) rgba(0, 0, 0, 0.1);
+}
+
+.terminal-text::-webkit-scrollbar {
+  width: 6px;
+}
+
+.terminal-text::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.terminal-text::-webkit-scrollbar-thumb {
+  background-color: rgba(137, 55, 230, 0.3);
+  border-radius: 6px;
+}
+
+/* ASCII art container styling */
+.ascii-container {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Improved caret */
+.term-caret {
+  display: inline-block;
+  width: 0.6ch;
+  height: 1em;
+  background: #00FFBB;
+  vertical-align: -0.1em;
+  margin-left: 2px;
+  box-shadow: 0 0 8px rgba(0, 255, 187, 0.6);
+  animation: caret-blink 1s steps(2, jump-none) infinite;
+}

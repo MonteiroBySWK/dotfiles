@@ -1,0 +1,3 @@
+title,status,tipo,prioridade,especialidade,epicoId,responsavelId,criadoEm,who,what,for,acceptanceCriteria,technicalTasks
+"Login JWT","todo","User Story","Alta","Backend","","user-123","2025-08-20","Usuário","logar no sistema","acessar recursos protegidos","Critério 1|Critério 2","Task A|Task B"
+"Cadastro","in-progress","User Story","Média","Frontend","","user-456","2025-08-21","Novo usuário","cadastrar-se","usar a aplicação","Preencher todos os campos|Validar email","Form validation|Salvar no banco"

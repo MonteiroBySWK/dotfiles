@@ -1,0 +1,79 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Users collection - permissões simplificadas para permitir operações básicas
+    match /users/{userId} {
+      // Permitir leitura para usuários autenticados (próprios dados)
+      allow read: if isAuthenticated() && request.auth.uid == userId;
+      
+      // Permitir criação de usuário durante registro
+      allow create: if isAuthenticated() && request.auth.uid == userId;
+      
+      // Permitir atualização dos próprios dados
+      allow update: if isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Outras coleções - permissões básicas para usuários autenticados
+    match /projects/{projectId} {
+      allow read, write: if isAuthenticated();
+    }
+
+    match /tasks/{taskId} {
+      allow read, write: if isAuthenticated();
+    }
+
+    match /clients/{clientId} {
+      allow read, write: if isAuthenticated();
+    }
+
+    match /tickets/{ticketId} {
+      allow read, write: if isAuthenticated();
+    }
+
+    match /notifications/{notificationId} {
+      allow read, write: if isAuthenticated();
+    }
+
+    match /companies/{companyId} {
+      allow read, write: if isAuthenticated();
+    }
+
+    match /teams/{teamId} {
+      allow read, write: if isAuthenticated();
+    }
+
+    match /timeEntries/{entryId} {
+      allow read, write: if isAuthenticated();
+    }
+
+    match /invoices/{invoiceId} {
+      allow read, write: if isAuthenticated();
+    }
+
+    match /reports/{reportId} {
+      allow read, write: if isAuthenticated();
+    }
+
+    match /activityLogs/{logId} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated();
+    }
+
+    match /fileUploads/{fileId} {
+      allow read, write: if isAuthenticated();
+    }
+
+    match /integrations/{integrationId} {
+      allow read, write: if isAuthenticated();
+    }
+  }
+}

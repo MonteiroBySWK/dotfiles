@@ -1,0 +1,230 @@
+["INFO" - 22:46:26] Extension Name: esbenp.prettier-vscode.
+["INFO" - 22:46:26] Extension Version: 11.0.0.
+["INFO" - 22:46:26] Using config file at /home/monteiro/codes/api-sonar/.prettierrc
+["INFO" - 23:21:20] Using config file at /home/monteiro/codes/api-sonar/.prettierrc
+["INFO" - 23:23:12] Using config file at /home/monteiro/codes/api-sonar/.prettierrc
+["INFO" - 23:24:31] Formatting file:///home/monteiro/codes/api-sonar/src/controllers/project.controller.ts
+["INFO" - 23:24:31] Using config file at /home/monteiro/codes/api-sonar/.prettierrc
+["INFO" - 23:24:31] PrettierInstance:
+{
+  "modulePath": "/home/monteiro/codes/api-sonar/node_modules/prettier/index.cjs",
+  "messageResolvers": {},
+  "version": "3.6.2"
+}
+["INFO" - 23:24:31] Using ignore file (if present) at /home/monteiro/codes/api-sonar/.prettierignore
+["INFO" - 23:24:31] File Info:
+{
+  "ignored": false,
+  "inferredParser": "typescript"
+}
+["INFO" - 23:24:31] Detected local configuration (i.e. .prettierrc or .editorconfig), VS Code configuration will not be used
+["INFO" - 23:24:31] Prettier Options:
+{
+  "filepath": "/home/monteiro/codes/api-sonar/src/controllers/project.controller.ts",
+  "parser": "typescript",
+  "singleQuote": true,
+  "trailingComma": "all"
+}
+["INFO" - 23:24:31] Formatting completed in 369ms.
+["INFO" - 23:28:44] Using config file at /home/monteiro/codes/api-sonar/.prettierrc
+["INFO" - 23:29:42] Formatting file:///home/monteiro/codes/api-sonar/src/lib/reponse-util.ts
+["INFO" - 23:29:42] Using config file at /home/monteiro/codes/api-sonar/.prettierrc
+["INFO" - 23:29:42] PrettierInstance:
+{
+  "modulePath": "/home/monteiro/codes/api-sonar/node_modules/prettier/index.cjs",
+  "messageResolvers": {},
+  "version": "3.6.2"
+}
+["INFO" - 23:29:42] Using ignore file (if present) at /home/monteiro/codes/api-sonar/.prettierignore
+["INFO" - 23:29:42] File Info:
+{
+  "ignored": false,
+  "inferredParser": "typescript"
+}
+["INFO" - 23:29:42] Detected local configuration (i.e. .prettierrc or .editorconfig), VS Code configuration will not be used
+["INFO" - 23:29:42] Prettier Options:
+{
+  "filepath": "/home/monteiro/codes/api-sonar/src/lib/reponse-util.ts",
+  "parser": "typescript",
+  "singleQuote": true,
+  "trailingComma": "all"
+}
+["INFO" - 23:29:42] Formatting completed in 14ms.
+["INFO" - 23:30:13] Formatting file:///home/monteiro/codes/api-sonar/src/lib/reponse-util.ts
+["INFO" - 23:30:13] Using config file at /home/monteiro/codes/api-sonar/.prettierrc
+["INFO" - 23:30:13] PrettierInstance:
+{
+  "modulePath": "/home/monteiro/codes/api-sonar/node_modules/prettier/index.cjs",
+  "messageResolvers": {},
+  "version": "3.6.2"
+}
+["INFO" - 23:30:13] Using ignore file (if present) at /home/monteiro/codes/api-sonar/.prettierignore
+["INFO" - 23:30:13] File Info:
+{
+  "ignored": false,
+  "inferredParser": "typescript"
+}
+["INFO" - 23:30:13] Detected local configuration (i.e. .prettierrc or .editorconfig), VS Code configuration will not be used
+["INFO" - 23:30:13] Prettier Options:
+{
+  "filepath": "/home/monteiro/codes/api-sonar/src/lib/reponse-util.ts",
+  "parser": "typescript",
+  "singleQuote": true,
+  "trailingComma": "all"
+}
+["INFO" - 23:30:13] Formatting completed in 16ms.
+["INFO" - 23:30:18] Formatting file:///home/monteiro/codes/api-sonar/src/lib/reponse-util.ts
+["INFO" - 23:30:18] Using config file at /home/monteiro/codes/api-sonar/.prettierrc
+["INFO" - 23:30:18] PrettierInstance:
+{
+  "modulePath": "/home/monteiro/codes/api-sonar/node_modules/prettier/index.cjs",
+  "messageResolvers": {},
+  "version": "3.6.2"
+}
+["INFO" - 23:30:18] Using ignore file (if present) at /home/monteiro/codes/api-sonar/.prettierignore
+["INFO" - 23:30:18] File Info:
+{
+  "ignored": false,
+  "inferredParser": "typescript"
+}
+["INFO" - 23:30:18] Detected local configuration (i.e. .prettierrc or .editorconfig), VS Code configuration will not be used
+["INFO" - 23:30:18] Prettier Options:
+{
+  "filepath": "/home/monteiro/codes/api-sonar/src/lib/reponse-util.ts",
+  "parser": "typescript",
+  "singleQuote": true,
+  "trailingComma": "all"
+}
+["INFO" - 23:30:18] Formatting completed in 10ms.
+["INFO" - 23:31:29] Using config file at /home/monteiro/codes/api-sonar/.prettierrc
+["INFO" - 23:31:39] Formatting file:///home/monteiro/codes/api-sonar/src/controllers/project.controller.ts
+["INFO" - 23:31:39] Using config file at /home/monteiro/codes/api-sonar/.prettierrc
+["INFO" - 23:31:39] PrettierInstance:
+{
+  "modulePath": "/home/monteiro/codes/api-sonar/node_modules/prettier/index.cjs",
+  "messageResolvers": {},
+  "version": "3.6.2"
+}
+["INFO" - 23:31:39] Using ignore file (if present) at /home/monteiro/codes/api-sonar/.prettierignore
+["INFO" - 23:31:39] File Info:
+{
+  "ignored": false,
+  "inferredParser": "typescript"
+}
+["INFO" - 23:31:39] Detected local configuration (i.e. .prettierrc or .editorconfig), VS Code configuration will not be used
+["INFO" - 23:31:39] Prettier Options:
+{
+  "filepath": "/home/monteiro/codes/api-sonar/src/controllers/project.controller.ts",
+  "parser": "typescript",
+  "singleQuote": true,
+  "trailingComma": "all"
+}
+["INFO" - 23:31:39] Formatting completed in 61ms.
+["INFO" - 23:31:51] Formatting file:///home/monteiro/codes/api-sonar/src/controllers/project.controller.ts
+["INFO" - 23:31:51] Using config file at /home/monteiro/codes/api-sonar/.prettierrc
+["INFO" - 23:31:51] PrettierInstance:
+{
+  "modulePath": "/home/monteiro/codes/api-sonar/node_modules/prettier/index.cjs",
+  "messageResolvers": {},
+  "version": "3.6.2"
+}
+["INFO" - 23:31:51] Using ignore file (if present) at /home/monteiro/codes/api-sonar/.prettierignore
+["INFO" - 23:31:51] File Info:
+{
+  "ignored": false,
+  "inferredParser": "typescript"
+}
+["INFO" - 23:31:51] Detected local configuration (i.e. .prettierrc or .editorconfig), VS Code configuration will not be used
+["INFO" - 23:31:51] Prettier Options:
+{
+  "filepath": "/home/monteiro/codes/api-sonar/src/controllers/project.controller.ts",
+  "parser": "typescript",
+  "singleQuote": true,
+  "trailingComma": "all"
+}
+["INFO" - 23:31:51] Formatting completed in 56ms.
+["INFO" - 23:32:02] Formatting file:///home/monteiro/codes/api-sonar/src/controllers/project.controller.ts
+["INFO" - 23:32:02] Using config file at /home/monteiro/codes/api-sonar/.prettierrc
+["INFO" - 23:32:02] PrettierInstance:
+{
+  "modulePath": "/home/monteiro/codes/api-sonar/node_modules/prettier/index.cjs",
+  "messageResolvers": {},
+  "version": "3.6.2"
+}
+["INFO" - 23:32:02] Using ignore file (if present) at /home/monteiro/codes/api-sonar/.prettierignore
+["INFO" - 23:32:02] File Info:
+{
+  "ignored": false,
+  "inferredParser": "typescript"
+}
+["INFO" - 23:32:02] Detected local configuration (i.e. .prettierrc or .editorconfig), VS Code configuration will not be used
+["INFO" - 23:32:02] Prettier Options:
+{
+  "filepath": "/home/monteiro/codes/api-sonar/src/controllers/project.controller.ts",
+  "parser": "typescript",
+  "singleQuote": true,
+  "trailingComma": "all"
+}
+["INFO" - 23:32:02] Formatting completed in 43ms.
+["INFO" - 23:32:11] Formatting file:///home/monteiro/codes/api-sonar/src/controllers/project.controller.ts
+["INFO" - 23:32:11] Using config file at /home/monteiro/codes/api-sonar/.prettierrc
+["INFO" - 23:32:11] PrettierInstance:
+{
+  "modulePath": "/home/monteiro/codes/api-sonar/node_modules/prettier/index.cjs",
+  "messageResolvers": {},
+  "version": "3.6.2"
+}
+["INFO" - 23:32:11] Using ignore file (if present) at /home/monteiro/codes/api-sonar/.prettierignore
+["INFO" - 23:32:11] File Info:
+{
+  "ignored": false,
+  "inferredParser": "typescript"
+}
+["INFO" - 23:32:11] Detected local configuration (i.e. .prettierrc or .editorconfig), VS Code configuration will not be used
+["INFO" - 23:32:11] Prettier Options:
+{
+  "filepath": "/home/monteiro/codes/api-sonar/src/controllers/project.controller.ts",
+  "parser": "typescript",
+  "singleQuote": true,
+  "trailingComma": "all"
+}
+["INFO" - 23:32:11] Formatting completed in 38ms.
+["INFO" - 23:33:15] Formatting file:///home/monteiro/codes/api-sonar/src/controllers/project.controller.ts
+["INFO" - 23:33:15] Using config file at /home/monteiro/codes/api-sonar/.prettierrc
+["INFO" - 23:33:15] PrettierInstance:
+{
+  "modulePath": "/home/monteiro/codes/api-sonar/node_modules/prettier/index.cjs",
+  "messageResolvers": {},
+  "version": "3.6.2"
+}
+["INFO" - 23:33:15] Using ignore file (if present) at /home/monteiro/codes/api-sonar/.prettierignore
+["INFO" - 23:33:15] File Info:
+{
+  "ignored": false,
+  "inferredParser": "typescript"
+}
+["INFO" - 23:33:15] Detected local configuration (i.e. .prettierrc or .editorconfig), VS Code configuration will not be used
+["INFO" - 23:33:15] Prettier Options:
+{
+  "filepath": "/home/monteiro/codes/api-sonar/src/controllers/project.controller.ts",
+  "parser": "typescript",
+  "singleQuote": true,
+  "trailingComma": "all"
+}
+["INFO" - 23:33:15] Formatting completed in 55ms.
+["INFO" - 23:33:34] Using config file at /home/monteiro/codes/api-sonar/.prettierrc
+["INFO" - 23:33:58] Using config file at /home/monteiro/codes/api-sonar/.prettierrc
+["INFO" - 23:34:00] Using config file at /home/monteiro/codes/api-sonar/.prettierrc
+["INFO" - 23:34:23] Using config file at /home/monteiro/codes/api-sonar/.prettierrc
+["INFO" - 23:34:25] Using config file at /home/monteiro/codes/api-sonar/.prettierrc
+["INFO" - 23:34:25] Using config file at /home/monteiro/codes/api-sonar/.prettierrc
+["INFO" - 23:34:40] Using config file at /home/monteiro/codes/api-sonar/.prettierrc
+["INFO" - 23:34:44] Using config file at /home/monteiro/codes/api-sonar/.prettierrc
+["INFO" - 23:35:00] Using config file at /home/monteiro/codes/api-sonar/.prettierrc
+["INFO" - 23:35:02] Using config file at /home/monteiro/codes/api-sonar/.prettierrc
+["INFO" - 23:35:04] Using config file at /home/monteiro/codes/api-sonar/.prettierrc
+["INFO" - 23:35:35] Using config file at /home/monteiro/codes/api-sonar/.prettierrc
+["INFO" - 23:35:41] Using config file at /home/monteiro/codes/api-sonar/.prettierrc
+["INFO" - 23:46:00] Using config file at /home/monteiro/codes/api-sonar/.prettierrc
+["INFO" - 23:46:04] Using config file at /home/monteiro/codes/api-sonar/.prettierrc
+["INFO" - 23:46:07] Using config file at /home/monteiro/codes/api-sonar/.prettierrc

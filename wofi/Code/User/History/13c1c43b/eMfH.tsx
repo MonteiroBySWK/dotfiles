@@ -1,0 +1,270 @@
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import {
+  Home,
+  User,
+  Workflow,
+  Lightbulb,
+  FolderGit2,
+  MessageSquare,
+  Menu,
+  X,
+} from "lucide-react";
+import { useCallback, useEffect, useRef, useState, type MouseEvent, memo } from "react";
+import { type LinkItemProps } from "../types/SectionGuideTypes";
+import { linksItemsData } from "../constants/SectionGuideData";
+
+const iconsMap = {
+  Home: <Home />,
+  Sobre: <User />,
+  "Serviços": <Workflow />,
+  Skills: <Lightbulb />,
+  Projetos: <FolderGit2 />,
+  Contatos: <MessageSquare />,
+};
+
+
+const LinkItem = ({
+  link,
+  name,
+  active,
+  onClick,
+  isDisabled,
+}: LinkItemProps) => {
+  const linkRef = useRef<HTMLAnchorElement>(null);
+
+  useGSAP(() => {
+    const el = linkRef.current;
+    if (!el) return;
+
+    try {
+      gsap.to(el, {
+        backgroundColor: active ? "#4ade80" : "transparent",
+        paddingLeft: active ? 32 : 16,
+        paddingRight: active ? 32 : 16,
+        duration: 0.18,
+      });
+    } catch (err) {
+      // elemento pode ter sido removido antes da animação
+    }
+  }, [active]);
+
+  return (
+    <a
+      ref={linkRef}
+      href={`#${link}`}
+      id={name}
+      onClick={onClick}
+      aria-current={active ? "page" : undefined}
+      aria-disabled={isDisabled}
+      className={`transition-all duration-200 ease-out px-4 py-2 sm:px-5 sm:py-3 text-xs sm:text-sm md:text-base
+        ${
+          isDisabled
+            ? "pointer-events-none opacity-50"
+            : "hover:scale-105 hover:bg-primary/80"
+        }`}
+    >
+      {iconsMap[name as keyof typeof iconsMap] || name}
+    </a>
+  );
+};
+
+const MemoLinkItem = memo(LinkItem);
+
+export default function SectionsGuide() {
+  // single active index to minimize re-renders and state churn
+  const [activeIndex, setActiveIndex] = useState<number>(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState<boolean>(typeof window !== 'undefined' ? window.innerWidth < 640 : false);
+
+  const sectionIds = linksItemsData.map((item) => item.link);
+
+  const updateActiveIndex = useCallback((index: number) => {
+    setActiveIndex((prev) => (prev === index ? prev : index));
+  }, []);
+
+  useEffect(() => {
+    // Robust section detection: use IntersectionObserver to know when elements
+    // are in view, but decide the active section by picking the section whose
+    // vertical center is closest to the viewport center. This avoids flicker
+    // near thresholds and works reliably across mobile/desktop layouts.
+    const sections = sectionIds
+      .map((id) => document.getElementById(id))
+      .map((el, i) => ({ el, i }))
+      .filter((s) => s.el !== null) as { el: HTMLElement; i: number }[];
+
+    if (sections.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (_entries) => {
+        // throttle via rAF to avoid too many computations
+        if (typeof window === 'undefined') return;
+        let rafId = (window as any).__sectionGuideRaf;
+        if (rafId) window.cancelAnimationFrame(rafId);
+        (window as any).__sectionGuideRaf = window.requestAnimationFrame(() => {
+          // compute viewport center
+          const viewportCenterY = window.innerHeight / 2;
+          let bestIndex = -1;
+          let bestDist = Infinity;
+
+          sections.forEach((s) => {
+            const rect = s.el.getBoundingClientRect();
+            const centerY = rect.top + rect.height / 2;
+            const dist = Math.abs(centerY - viewportCenterY);
+            if (dist < bestDist) {
+              bestDist = dist;
+              bestIndex = s.i;
+            }
+          });
+
+          if (bestIndex >= 0) {
+            // small debounce to avoid rapid flicker when physically between sections
+            const last = (observer as any).__pendingTimeout as number | null;
+            if (last) window.clearTimeout(last);
+            (observer as any).__pendingTimeout = window.setTimeout(() => {
+              updateActiveIndex(bestIndex);
+              (observer as any).__pendingTimeout = null;
+            }, isMobile ? 140 : 80);
+          }
+        });
+      },
+      { threshold: Array.from({ length: 21 }, (_, i) => i / 20) }
+    );
+
+    sections.forEach((s) => observer.observe(s.el));
+
+    // resize listener to update mobile flag and re-evaluate when orientation/size changes
+    let resizeRaf = 0;
+    const onResize = () => {
+      if (resizeRaf) window.cancelAnimationFrame(resizeRaf);
+      resizeRaf = window.requestAnimationFrame(() => {
+        setIsMobile(window.innerWidth < 640);
+      });
+    };
+    window.addEventListener("resize", onResize);
+
+    return () => {
+      observer.disconnect();
+      if ((observer as any).__pendingTimeout) window.clearTimeout((observer as any).__pendingTimeout);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [sectionIds, updateActiveIndex, isMobile]);
+
+  // @ts-ignore
+  const animateTransition = (targetId: string, callback: () => void) => {
+    const tl = gsap.timeline({ onComplete: () => setIsAnimating(false) });
+
+    tl.to("#block-transition", { width: "100%", duration: 0.01 })
+      .to(
+        [
+          "#transition-1",
+          "#transition-2",
+          "#transition-3",
+          "#transition-4",
+          "#transition-5",
+        ],
+        {
+          width: "100%",
+          duration: 0.18,
+          stagger: 0.06,
+        }
+      )
+      .add(callback)
+      .to(
+        [
+          "#transition-1",
+          "#transition-2",
+          "#transition-3",
+          "#transition-4",
+          "#transition-5",
+        ],
+        {
+          width: 0,
+          duration: 0.18,
+          stagger: 0.04,
+        }
+      )
+      .to("#block-transition", { width: "0%", duration: 0.01 });
+  };
+
+  const handleClick = (e: MouseEvent<HTMLAnchorElement>, index: number) => {
+    e.preventDefault();
+    if (isAnimating) return;
+
+    setIsAnimating(true);
+
+    const target = document.getElementById(linksItemsData[index].link);
+    if (!target) return;
+
+    animateTransition(linksItemsData[index].link, () =>
+      target.scrollIntoView({ behavior: "instant" })
+    );
+
+    updateActiveIndex(index);
+    // close mobile menu on selection
+    if (isMobile) setIsMobileMenuOpen(false);
+  };
+
+  return (
+    <>
+      {/* Desktop / larger screens: centered bar (hidden on small) */}
+      <header
+        className="hidden sm:flex fixed bottom-4 sm:bottom-15 left-1/2 -translate-x-1/2 flex-wrap gap-2 
+        p-1.5 bg-card/80 backdrop-blur-2xl text-white z-11
+        w-max overflow-x-auto scrollbar-hidden"
+      >
+        {linksItemsData.map((item, i) => (
+          <MemoLinkItem
+            key={item.link}
+            link={item.link}
+            name={item.name}
+            active={activeIndex === i}
+            isDisabled={isAnimating}
+            onClick={(e) => handleClick(e, i)}
+          />
+        ))}
+      </header>
+
+      {/* Mobile: floating circular button bottom-right that toggles menu */}
+      <div className="sm:hidden">
+        <div className="fixed bottom-6 right-4 z-50">
+          <button
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="sectionguide-mobile-menu"
+            onClick={() => setIsMobileMenuOpen((s) => !s)}
+            className="w-14 h-14 rounded-full bg-primary/90 text-white shadow-lg flex items-center justify-center"
+            title={isMobileMenuOpen ? "Fechar" : "Abrir navegação"}
+          >
+            {isMobileMenuOpen ? <X /> : <Menu />}
+          </button>
+
+          <div
+            id="sectionguide-mobile-menu"
+            ref={(el) => {
+              // ensure initial styles when mounted
+              if (!el) return;
+              el.style.pointerEvents = isMobileMenuOpen ? "auto" : "none";
+            }}
+            className={`origin-bottom-right absolute bottom-16 right-0 w-48 p-2 rounded-lg bg-card/90 backdrop-blur-md text-white shadow-lg transform transition-all duration-200 ${
+              isMobileMenuOpen ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-2 scale-95"
+            }`}
+          >
+            <div className="flex flex-col gap-1">
+              {linksItemsData.map((item, i) => (
+                <MemoLinkItem
+                  key={item.link}
+                  link={item.link}
+                  name={item.name}
+                  active={activeIndex === i}
+                  isDisabled={isAnimating}
+                  onClick={(e) => handleClick(e, i)}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}

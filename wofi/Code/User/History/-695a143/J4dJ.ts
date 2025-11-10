@@ -1,0 +1,3 @@
+/*
+  Crie aqui todos os hooks de CRUD e export eles
+*/

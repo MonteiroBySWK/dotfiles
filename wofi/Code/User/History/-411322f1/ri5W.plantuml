@@ -1,0 +1,85 @@
+@startuml
+title Diagrama de Casos de Uso - Sistema NeoLab (LAICOPI/UEMA)
+
+actor "Visitante" as Visitante
+actor "Membro do Laboratório" as Membro
+actor "Estagiário/Auxiliar" as Estagiario
+actor "Administrador" as Admin
+actor "Sistema de E-mail Institucional" as Email
+
+rectangle "NeoLab / LAICOPI" {
+    
+    ' --- Área Pública ---
+    usecase "Visualizar informações do laboratório" as UC1
+    usecase "Consultar portfólio de projetos" as UC2
+    usecase "Visualizar catálogo de equipamentos" as UC3
+    usecase "Consultar equipe e currículos" as UC4
+    usecase "Enviar mensagem de contato" as UC5
+    
+    ' --- Autenticação ---
+    usecase "Realizar login com e-mail institucional" as UC6
+    usecase "Cadastrar novo usuário" as UC7
+    usecase "Validar e-mail institucional" as UC8
+    usecase "Recuperar senha" as UC9
+    usecase "Gerenciar níveis de acesso" as UC10
+    
+    ' --- Gerenciamento de Pessoas ---
+    usecase "Cadastrar membro" as UC11
+    usecase "Editar dados de membro" as UC12
+    usecase "Inativar membro" as UC13
+    usecase "Consultar lista de membros" as UC14
+    
+    ' --- Controle de Patrimônio ---
+    usecase "Cadastrar equipamento/patrimônio" as UC15
+    usecase "Editar informações de item" as UC16
+    usecase "Visualizar catálogo de patrimônio" as UC17
+    usecase "Exportar lista de patrimônio" as UC18
+    
+    ' --- Gestão de Conteúdo Acadêmico ---
+    usecase "Upload de material acadêmico" as UC19
+    usecase "Download de material" as UC20
+    usecase "Gerenciar categorias de materiais" as UC21
+    usecase "Excluir material" as UC22
+}
+
+' --- Ligações dos atores aos casos ---
+Visitante --> UC1
+Visitante --> UC2
+Visitante --> UC3
+Visitante --> UC4
+Visitante --> UC5
+
+Membro --> UC6
+Membro --> UC9
+Membro --> UC19
+Membro --> UC20
+
+Estagiario --> UC6
+Estagiario --> UC15
+Estagiario --> UC16
+Estagiario --> UC17
+
+Admin --> UC6
+Admin --> UC7
+Admin --> UC8
+Admin --> UC10
+Admin --> UC11
+Admin --> UC12
+Admin --> UC13
+Admin --> UC14
+Admin --> UC15
+Admin --> UC16
+Admin --> UC17
+Admin --> UC18
+Admin --> UC19
+Admin --> UC21
+Admin --> UC22
+
+UC7 --> UC8 : <<include>>
+UC6 --> UC10 : <<extend>>
+UC19 --> UC21 : <<extend>>
+
+Email --> UC8
+Email --> UC9
+
+@enduml

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+  </head>
+  <body>
+    <form>
+      <input type="file" name="file" accept=".csv,.xlsx" />
+      <button type="submit">Enviar</button>
+    </form>
+
+    <p id="result"></p>
+
+    <script>
+      const input = document.querySelector('input[type="file"]');
+      const btn = document.querySelector("button");
+      const result = document.querySelector("#result");
+
+      btn.addEventListener("click", async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData();
+        formData.append("file", input.files[0]);
+
+        let res = await fetch("http://localhost:8080/predict", {
+          method: "POST",
+          body: formData,
+        });
+
+        res = await res.json();
+
+        if (res) {
+          result.innerHTML = `
+            <p> colulas: ${res.colunas}</p>
+            <p> linhas: ${res.linhas}</p>
+            <p> nomes das colunas ${res.colunas_nome.map(e => `${e} - `)}</p>
+          `;
+        } else {
+          console.error("Erro na requisição de previsão");
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,213 @@
+"use client"
+
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import * as z from "zod"
+
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { toast } from "sonner"
+
+// Schema de validação usando Zod
+const formSchema = z.object({
+  user_id: z.string().uuid("ID do usuário deve ser um UUID válido"),
+  registrationNumber: z.string().min(1, "Número de registro é obrigatório"),
+  cpf: z
+    .string()
+    .min(11, "CPF deve ter 11 dígitos")
+    .max(14, "CPF não pode ter mais que 14 caracteres")
+    .regex(/^(\d{3}\.?\d{3}\.?\d{3}-?\d{2})$/, "CPF inválido - Use o formato: 000.000.000-00"),
+  fullName: z.string().min(1, "Nome completo é obrigatório"),
+  socialName: z.string().min(1, "Nome social é obrigatório"),
+})
+
+type FormValues = z.infer<typeof formSchema>
+
+export default function NewEmployeePage() {
+  const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
+
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      user_id: "",
+      registrationNumber: "",
+      cpf: "",
+      fullName: "",
+      socialName: "",
+    },
+  })
+
+  async function onSubmit(data: FormValues) {
+    setIsLoading(true)
+    try {
+      const response = await fetch("http://localhost:8081/employee/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // Adicione o token JWT aqui quando tiver o sistema de autenticação
+          // "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(data),
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.message || "Erro ao registrar funcionário")
+      }
+
+      const result = await response.json()
+      
+      toast.success("Funcionário registrado com sucesso!")
+      router.push("/dashboard/employees") // Redireciona para a lista de funcionários
+      router.refresh() // Atualiza os dados da página
+    } catch (error) {
+      console.error("Erro ao registrar funcionário:", error)
+      toast.error(error instanceof Error ? error.message : "Erro ao registrar funcionário")
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  function formatCPF(value: string) {
+    // Remove tudo que não é número
+    const numbers = value.replace(/\D/g, "")
+    
+    // Aplica a máscara
+    return numbers.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")
+  }
+
+  return (
+    <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
+      <div className="flex items-center justify-between">
+        <h2 className="text-3xl font-bold tracking-tight">Novo Funcionário</h2>
+      </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Registrar Novo Funcionário</CardTitle>
+          <CardDescription>
+            Preencha os dados do funcionário para registrá-lo no sistema.
+            O funcionário deve ter um usuário cadastrado previamente.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <FormField
+                control={form.control}
+                name="user_id"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>ID do Usuário</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="00000000-0000-0000-0000-000000000000" />
+                    </FormControl>
+                    <FormDescription>
+                      UUID do usuário já cadastrado no sistema
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="registrationNumber"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Número de Registro</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Exemplo: 12345" />
+                    </FormControl>
+                    <FormDescription>
+                      Número de registro único do funcionário na empresa
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="cpf"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>CPF</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="000.000.000-00"
+                        onChange={(e) => {
+                          const formatted = formatCPF(e.target.value)
+                          field.onChange(formatted)
+                        }}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      CPF do funcionário (será formatado automaticamente)
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="fullName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nome Completo</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Nome completo do funcionário" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="socialName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nome Social</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Nome social do funcionário" />
+                    </FormControl>
+                    <FormDescription>
+                      Nome pelo qual o funcionário prefere ser chamado
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <div className="flex gap-4">
+                <Button
+                  type="submit"
+                  disabled={isLoading}
+                  className="flex-1"
+                >
+                  {isLoading ? "Registrando..." : "Registrar Funcionário"}
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => router.back()}
+                  disabled={isLoading}
+                >
+                  Cancelar
+                </Button>
+              </div>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}

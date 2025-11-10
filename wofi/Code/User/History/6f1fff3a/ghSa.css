@@ -1,0 +1,439 @@
+/* src/index.css */
+
+/* 1. `@config` DEVE VIR ANTES de `@import "tailwindcss"` */
+@config "../tailwind.config.ts";
+
+/* 2. Importe as diretivas principais do Tailwind CSS v4 */
+@import "tailwindcss";
+
+/*
+  A diretiva @custom-variant dark (&:is(.dark *)); é tipicamente usada em versões mais antigas
+  do Tailwind ou para casos muito específicos. Se você está usando darkMode: ['class']
+  no seu tailwind.config.ts (o que é padrão para Shadcn/UI), esta linha é redundante
+  e pode causar conflitos. Removi-a para simplificar.
+*/
+// @custom-variant dark (&:is(.dark *));
+
+/* 3. Carregamento de Fontes (Mantenha-o no topo, antes de quaisquer regras CSS, mas depois dos imports do Tailwind) */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&family=Open+Sans:wght@400;600;700&display=swap");
+
+/* Se você estiver usando fontes locais, use @font-face aqui, por exemplo: */
+/*
+@font-face {
+  font-family: 'Open Sans';
+  src: url('./assets/fonts/OpenSans-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Montserrat';
+  src: url('./assets/fonts/Montserrat-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+*/
+
+/* 4. Suas variáveis CSS (Shadcn/UI, Technos Colors, Sidebar) para modo claro e escuro */
+@layer base {
+  :root {
+    /* As configurações globais que você tinha no :root antes de shadcn */
+    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif; /* Mantenha se desejar, ou remova se as fontes customizadas cobrirem */
+    line-height: 1.5;
+    font-weight: 400;
+    color-scheme: light dark;
+    color: rgba(255, 255, 255, 0.87); /* Será sobrescrito por text-foreground */
+    background-color: #242424; /* Será sobrescrito por bg-background */
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    /* Variáveis do Shadcn/UI para MODO CLARO (usando OKLCH) */
+    --background: oklch(1 0 0); /* Branco Puro */
+    --foreground: oklch(0.145 0 0); /* Preto Quase Puro */
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.145 0 0);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.145 0 0);
+    --primary: oklch(0.205 0 0);
+    --primary-foreground: oklch(0.985 0 0);
+    --secondary: oklch(0.97 0 0);
+    --secondary-foreground: oklch(0.205 0 0);
+    --muted: oklch(0.97 0 0);
+    --muted-foreground: oklch(0.556 0 0);
+    --accent: oklch(0.97 0 0);
+    --accent-foreground: oklch(0.205 0 0);
+    --destructive: oklch(0.577 0.245 27.325); /* Cor destrutiva */
+    --destructive-foreground: oklch(0.985 0 0); /* Adicionado o foreground para destructive */
+    --border: oklch(0.922 0 0);
+    --input: oklch(0.922 0 0);
+    --ring: oklch(0.708 0 0);
+    --chart-1: oklch(0.646 0.222 41.116);
+    --chart-2: oklch(0.6 0.118 184.704);
+    --chart-3: oklch(0.398 0.07 227.392);
+    --chart-4: oklch(0.828 0.189 84.429);
+    --chart-5: oklch(0.769 0.188 70.08);
+
+    /* Variáveis da Sidebar para MODO CLARO (do seu 'styles/globals.css' anterior) */
+    --sidebar-background: oklch(0.985 0 0);
+    --sidebar-foreground: oklch(0.145 0 0);
+    --sidebar-primary: oklch(0.205 0 0);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.97 0 0);
+    --sidebar-accent-foreground: oklch(0.205 0 0);
+    --sidebar-border: oklch(0.922 0 0);
+    --sidebar-ring: oklch(0.708 0 0);
+
+    /* Suas Cores Customizadas Technos (do seu 'app/globals.css' original) */
+    /* Mantenha essas cores para o modo claro com seus valores originais */
+    --brand-primary-dark: oklch(0.536 0.073 175.76); /* #19BFB7 */
+    --brand-accent: oklch(0.751 0.116 177.01); /* #28E3DA */
+    --brand-primary-light: oklch(0.407 0.063 175.69); /* #13928C */
+    --neutral-light: oklch(0.99 0 0); /* #FCFCFC */
+    --neutral-support: oklch(0.89 0 0); /* #E2E2E2 */
+    --white: oklch(1 0 0); /* #FFFFFF */
+    --black-soft: oklch(0.10 0 0); /* #1A1A1A */
+
+    /* Variável de Radius (do seu 'app/globals.css' original) */
+    --radius: 0.625rem; /* Ajustado para 0.625rem conforme seu código mais recente */
+
+    /* Variáveis de fonte que serão usadas no Tailwind (se você usar @font-face ou CDN) */
+    --font-montserrat: "Montserrat";
+    --font-open-sans: "Open Sans";
+  }
+
+  /*
+    O bloco @theme inline {...} é uma forma de expor variáveis CSS como parte
+    do tema do Tailwind v4. No entanto, se você já está usando o mapeamento
+    `hsl(var(--color-name))` ou `oklch(var(--color-name))` no seu
+    tailwind.config.ts, ele pode ser redundante ou até problemático se
+    não for configurado corretamente. Recomenda-se gerenciar isso diretamente
+    no tailwind.config.ts ou no @layer base, conforme o exemplo abaixo.
+    Comentado para evitar conflitos, a menos que seja estritamente necessário.
+  */
+  /*
+  // @theme inline {
+  //   --radius-sm: calc(var(--radius) - 4px);
+  //   --radius-md: calc(var(--radius) - 2px);
+  //   --radius-lg: var( --radius);
+  //   --radius-xl: calc(var(--radius) + 4px);
+  //   --color-background: var(--background);
+  //   --color-foreground: var(--foreground);
+  //   --color-card: var(--card);
+  //   --color-card-foreground: var(--card-foreground);
+  //   --color-popover: var(--popover);
+  //   --color-popover-foreground: var(--popover-foreground);
+  //   --color-primary: var(--primary);
+  //   --color-primary-foreground: var(--primary-foreground);
+  //   --color-secondary: var(--secondary);
+  //   --color-secondary-foreground: var(--secondary-foreground);
+  //   --color-muted: var(--muted);
+  //   --color-muted-foreground: var(--muted-foreground);
+  //   --color-accent: var(--accent);
+  //   --color-accent-foreground: var(--accent-foreground);
+  //   --color-destructive: var(--destructive);
+  //   --color-border: var(--border);
+  //   --color-input: var(--input);
+  //   --color-ring: var(--ring);
+  //   --color-chart-1: var(--chart-1);
+  //   --color-chart-2: var(--chart-2);
+  //   --color-chart-3: var(--chart-3);
+  //   --color-chart-4: var(--chart-4);
+  //   --color-chart-5: var(--chart-5);
+  //   --color-sidebar: var(--sidebar);
+  //   --color-sidebar-foreground: var(--sidebar-foreground);
+  //   --color-sidebar-primary: var(--sidebar-primary);
+  //   --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  //   --color-sidebar-accent: var(--sidebar-accent);
+  //   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  //   --color-sidebar-border: var(--sidebar-border);
+  //   --color-sidebar-ring: var(--sidebar-ring);
+  // }
+
+
+  /* Modo Escuro */
+  .dark {
+    /* FUNDO PRETO PURO e foreground para o modo escuro */
+    --background: oklch(0% 0 0); /* Preto Puro */
+    --foreground: oklch(0.985 0 0); /* Branco Quase Puro */
+
+    /* Cores Shadcn/UI adaptadas para fundo preto */
+    --card: oklch(0.04 0 0); /* Card ligeiramente mais escuro que o fundo para contraste sutil */
+    --card-foreground: oklch(0.985 0 0);
+
+    --popover: oklch(0.04 0 0);
+    --popover-foreground: oklch(0.985 0 0);
+
+    --primary: oklch(0.922 0 0); /* Primary mais claro para fundo escuro */
+    --primary-foreground: oklch(0.205 0 0);
+
+    --secondary: oklch(0.12 0 0); /* Secondary mais escuro para fundo escuro */
+    --secondary-foreground: oklch(0.985 0 0);
+
+    --muted: oklch(0.12 0 0);
+    --muted-foreground: oklch(0.708 0 0);
+
+    --accent: oklch(0.12 0 0);
+    --accent-foreground: oklch(0.985 0 0);
+
+    --destructive: oklch(0.704 0.191 22.216); /* Aumenta a luminosidade para se destacar no preto */
+    --destructive-foreground: oklch(0.985 0 0);
+
+    --border: oklch(0.12 0 0); /* Borda escura para sutil contraste */
+    --input: oklch(0.12 0 0); /* Input escuro */
+    --ring: oklch(0.85 0 0); /* Ring claro */
+
+    /* Cores de Chart (ajustadas para fundo escuro) */
+    --chart-1: oklch(0.75 0.243 264.376); /* Mais luminoso */
+    --chart-2: oklch(0.80 0.17 162.48);
+    --chart-3: oklch(0.70 0.188 70.08);
+    --chart-4: oklch(0.78 0.265 303.9);
+    --chart-5: oklch(0.79 0.246 16.439);
+
+    /* Variáveis da Sidebar para MODO ESCURO (revisadas para fundo preto) */
+    --sidebar-background: oklch(0.08 0 0); /* Fundo da sidebar um pouco diferente do fundo geral */
+    --sidebar-foreground: oklch(0.90 0 0);
+    --sidebar-primary: oklch(0.60 0.243 264.376); /* Adapte se for uma cor Technos */
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.10 0 0);
+    --sidebar-accent-foreground: oklch(0.90 0 0);
+    --sidebar-border: oklch(0.15 0 0);
+    --sidebar-ring: oklch(0.70 0 0);
+
+    /* Suas Cores Customizadas Technos para MODO ESCURO */
+    /* Essas cores precisam ser mais luminosas para se destacarem no fundo preto. */
+    --brand-primary-dark: oklch(0.65 0.073 175.76); /* #19BFB7 (claro) -> mais claro para o escuro */
+    --brand-accent: oklch(0.85 0.116 177.01);   /* #28E3DA (claro) -> mais claro e saturado para o escuro */
+    --brand-primary-light: oklch(0.55 0.063 175.69); /* #13928C (claro) -> mais claro para o escuro */
+    --neutral-light: oklch(0.85 0 0);    /* Um cinza claro que não é branco puro */
+    --neutral-support: oklch(0.30 0 0);  /* Um cinza médio/escuro que ainda contrasta */
+    --white: oklch(0.90 0 0);            /* Branco suave */
+    --black-soft: oklch(0.20 0 0);       /* Preto suave, um pouco mais claro que o fundo */
+  }
+
+  /* Estilos Base Comuns (copiados do seu app/globals.css) */
+  * {
+    @apply border-border outline-ring/50; /* Mantido o outline-ring/50 para acessibilidade */
+  }
+
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-open-sans), sans-serif;
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-montserrat), sans-serif;
+    line-height: 1.2;
+  }
+
+  h1 {
+    @apply font-black;
+    font-size: clamp(2rem, 5vw, 4rem);
+  }
+  h2 {
+    @apply font-semibold;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+  }
+  h3 {
+    @apply font-medium;
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+  }
+  p {
+    @apply font-normal leading-relaxed;
+    font-size: clamp(0.875rem, 2vw, 1.125rem);
+  }
+
+  button:focus,
+  a:focus {
+    outline: 2px solid oklch(var(--brand-accent)); /* Usando oklch() para consistência com Technos Colors */
+    outline-offset: 2px;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* 5. Suas Classes Utilitárias Customizadas (copiadas do seu app/globals.css) */
+@layer utilities {
+  /* Classes para Custom Technos Colors (usando oklch() para consistência) */
+  .text-brand-primary-dark {
+    color: oklch(var(--brand-primary-dark));
+  }
+  .text-brand-accent {
+    color: oklch(var(--brand-accent));
+  }
+  .text-brand-primary-light {
+    color: oklch(var(--brand-primary-light));
+  }
+  .text-neutral-light {
+    color: oklch(var(--neutral-light));
+  }
+  .text-neutral-support {
+    color: oklch(var(--neutral-support));
+  }
+  .text-black-soft {
+    color: oklch(var(--black-soft));
+  }
+
+  .bg-brand-primary-dark {
+    background-color: oklch(var(--brand-primary-dark));
+  }
+  .bg-brand-accent {
+    background-color: oklch(var(--brand-accent));
+  }
+  .bg-brand-primary-light {
+    background-color: oklch(var(--brand-primary-light));
+  }
+  .bg-neutral-light {
+    background-color: oklch(var(--neutral-light));
+  }
+  .bg-neutral-support {
+    background-color: oklch(var(--neutral-support));
+  }
+  .bg-black-soft {
+    background-color: oklch(var(--black-soft));
+  }
+
+  .border-brand-accent {
+    border-color: oklch(var(--brand-accent));
+  }
+  .border-neutral-support {
+    border-color: oklch(var(--neutral-support));
+  }
+
+  /* Container Responsivo */
+  .container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  @media (min-width: 640px) {
+    .container {
+      max-width: 640px;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+  @media (min-width: 768px) {
+    .container {
+      max-width: 768px;
+    }
+  }
+  @media (min-width: 1024px) {
+    .container {
+      max-width: 1024px;
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+  @media (min-width: 1280px) {
+    .container {
+      max-width: 1280px;
+    }
+  }
+  @media (min-width: 1536px) {
+    .container {
+      max-width: 1536px;
+    }
+  }
+
+  /* Animações e Keyframes */
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out;
+  }
+  .animate-slide-up {
+    animation: slideUp 0.6s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* Outras Utilitários Customizados */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-brand-accent focus:ring-offset-2;
+  }
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  }
+  .hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  }
+  .section-padding {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+  @media (min-width: 640px) {
+    .section-padding {
+      padding-top: 5rem;
+      padding-bottom: 5rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .section-padding {
+      padding-top: 6rem;
+      padding-bottom: 6rem;
+    }
+  }
+}
+
+/* 6. Estilos de Impressão */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    font-size: 12pt;
+    line-height: 1.4;
+  }
+  h1,
+  h2,
+  h3 {
+    page-break-after: avoid;
+  }
+}

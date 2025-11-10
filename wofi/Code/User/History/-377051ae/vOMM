@@ -1,0 +1,84 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+*.os
+*.dll
+
+# Distribution / packaging
+.Python
+env/
+venv/
+lib/
+build/
+develop-eggs/
+dist/
+eggs/
+*.egg-info
+.installed.cfg
+*.egg
+
+# Installer logs
+pip-log.txt
+pip-delete-this-arg.txt
+
+# Unit test / coverage reports
+.coverage
+.tox/
+.pytest_cache/
+
+# PyInstaller / cx_Freeze / Nuitka / py2app
+*.spec
+build/
+dist/
+
+# IPython Notebook
+.ipynb_checkpoints
+
+# Jupyter Lab
+.jupyter/
+.vscode/
+
+# Virtual environment
+.env
+venv
+.venv/
+env
+/venv/
+/env/
+
+# MyPy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre
+.pyre/
+
+# rst2pdf
+*.pdf
+
+# reStructuredText
+*.bak
+*.flg
+*.log
+
+# Sphinx documentation
+docs/_build/
+
+# Editors
+.idea/  # IntelliJ IDEA / PyCharm
+.vscode/ # VS Code
+*.swp # Vim swap files
+*~ # Emacs backup files
+.DS_Store # macOS specific
+Thumbs.db # Windows specific
+
+# Operating System Files
+.DS_Store
+.localized
+ehthumbs.db
+Thumbs.db

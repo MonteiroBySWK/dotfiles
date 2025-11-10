@@ -1,0 +1,581 @@
+"use client";
+
+import React, { useState, useMemo, useEffect } from "react";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Plus,
+  Calendar,
+  ChevronLeft,
+  ChevronRight,
+  CheckCircle2,
+  PlayCircle,
+  AlertCircle,
+  PauseCircle,
+  Clock,
+  MoreHorizontal,
+  Edit,
+  Trash2,
+  Users,
+} from "lucide-react";
+import { useTasks } from "@/hooks/useTasks";
+import { useProjects } from "@/hooks/useProjects";
+import { useUsers } from "@/hooks/useUsers";
+import { Task } from "@/types/task";
+import { Project } from "@/types/project";
+import { User } from "@/types/user";
+import { LoadingSpinner } from "@/components/custom/loading";
+import { useToast } from "@/components/custom/feedback";
+
+type GanttTask = Task & {
+  assignee?: User;
+  project?: Project;
+};
+
+// Funções auxiliares
+const getStatusColor = (status: string) => {
+  switch (status) {
+    case "completed":
+      return "bg-green-500";
+    case "in-progress":
+      return "bg-blue-500";
+    case "delayed":
+      return "bg-red-500";
+    case "paused":
+      return "bg-yellow-500";
+    case "todo":
+      return "bg-gray-400";
+    default:
+      return "bg-gray-400";
+  }
+};
+
+const getStatusBadgeColor = (status: string) => {
+  switch (status) {
+    case "completed":
+      return "bg-green-100 text-green-800";
+    case "in-progress":
+      return "bg-blue-100 text-blue-800";
+    case "delayed":
+      return "bg-red-100 text-red-800";
+    case "paused":
+      return "bg-yellow-100 text-yellow-800";
+    case "todo":
+      return "bg-gray-100 text-gray-800";
+    default:
+      return "bg-gray-100 text-gray-800";
+  }
+};
+
+const getPriorityColor = (priority: string) => {
+  switch (priority) {
+    case "urgent":
+      return "bg-red-500";
+    case "high":
+      return "bg-orange-500";
+    case "medium":
+      return "bg-yellow-500";
+    case "low":
+      return "bg-green-500";
+    default:
+      return "bg-gray-500";
+  }
+};
+
+const getStatusIcon = (status: string) => {
+  switch (status) {
+    case "completed":
+      return <CheckCircle2 className="h-4 w-4" />;
+    case "in-progress":
+      return <PlayCircle className="h-4 w-4" />;
+    case "delayed":
+      return <AlertCircle className="h-4 w-4" />;
+    case "paused":
+      return <PauseCircle className="h-4 w-4" />;
+    default:
+      return <Clock className="h-4 w-4" />;
+  }
+};
+
+// Componente principal
+export default function Gantt({ projectId }: { projectId?: string }) {
+  const {
+    tasks: allTasks,
+    loading: tasksLoading,
+    createTask,
+    updateTask,
+    deleteTask,
+  } = useTasks();
+  const { projects, loading: projectsLoading } = useProjects();
+  const { users, loading: usersLoading } = useUsers();
+  const { addNotification } = useToast();
+
+  const [selectedProject, setSelectedProject] = useState<string>(
+    projectId || "all"
+  );
+  const [selectedStatus, setSelectedStatus] = useState<string>("all");
+  const [viewMode, setViewMode] = useState<"days" | "weeks" | "months">("weeks");
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [showTaskModal, setShowTaskModal] = useState(false);
+  const [editingTask, setEditingTask] = useState<GanttTask | null>(null);
+
+  useEffect(() => {
+    if (projectId) {
+      setSelectedProject(projectId);
+    }
+  }, [projectId]);
+
+  // Filtros e Mapeamento
+  const ganttTasks = useMemo(() => {
+    const tasksWithDetails = allTasks.map((task) => ({
+      ...task,
+      assignee: users.find((u) => u.id === task.assigneeId),
+      project: projects.find((p) => p.id === task.projectId),
+    }));
+
+    return tasksWithDetails.filter((task) => {
+      const matchesProject =
+        selectedProject === "all" || task.projectId === selectedProject;
+      const matchesStatus = selectedStatus === "all" || task.status === selectedStatus;
+      return matchesProject && matchesStatus;
+    });
+  }, [allTasks, users, projects, selectedProject, selectedStatus]);
+
+  // Geração do calendário
+  const generateCalendarDays = () => {
+    const days = [];
+    const startDate = new Date(currentDate);
+    const range = viewMode === "days" ? 15 : viewMode === "weeks" ? 30 : 90;
+    startDate.setDate(startDate.getDate() - Math.floor(range / 2));
+
+    for (let i = 0; i < range; i++) {
+      const date = new Date(startDate);
+      date.setDate(date.getDate() + i);
+      days.push(date);
+    }
+    return days;
+  };
+
+  const calendarDays = generateCalendarDays();
+
+  // Calcular posição e largura das barras
+  const getTaskBarStyle = (task: GanttTask) => {
+    if (!task.startDate || !task.dueDate) return { left: "0%", width: "0%" };
+    const startDate = new Date(task.startDate);
+    const endDate = new Date(task.dueDate);
+    const firstDay = calendarDays[0];
+    const lastDay = calendarDays[calendarDays.length - 1];
+
+    const totalTime = lastDay.getTime() - firstDay.getTime();
+    const startOffset = startDate.getTime() - firstDay.getTime();
+    const duration = endDate.getTime() - startDate.getTime();
+
+    const left = (startOffset / totalTime) * 100;
+    const width = (duration / totalTime) * 100;
+
+    return {
+      left: `${Math.max(0, left)}%`,
+      width: `${Math.min(width, 100 - left)}%`,
+    };
+  };
+
+  // Handlers
+  const handleAddTask = () => {
+    setEditingTask(null);
+    setShowTaskModal(true);
+  };
+
+  const handleEditTask = (task: GanttTask) => {
+    setEditingTask(task);
+    setShowTaskModal(true);
+  };
+
+  const handleDeleteTask = async (taskId: string) => {
+    try {
+      await deleteTask(taskId);
+      addNotification({ type: "success", message: "Tarefa excluída com sucesso!" });
+    } catch (error) {
+      addNotification({ type: "error", message: "Erro ao excluir tarefa." });
+    }
+  };
+
+  const handleSaveTask = async (taskData: Partial<Task>) => {
+    try {
+      // Convert date strings back to Date objects
+      const dataToSave: Partial<Task> = { ...taskData };
+      if (taskData.startDate) {
+        dataToSave.startDate = new Date(taskData.startDate);
+      }
+      if (taskData.dueDate) {
+        dataToSave.dueDate = new Date(taskData.dueDate);
+      }
+
+      if (editingTask) {
+        await updateTask(editingTask.id, dataToSave);
+        addNotification({ type: 'success', message: 'Tarefa atualizada com sucesso!' });
+      } else {
+        // Construct a valid object for creation, omitting fields generated by the backend
+        const { id, createdAt, updatedAt, completedAt, ...rest } = dataToSave;
+        const newTaskData: Omit<Task, "id" | "createdAt" | "updatedAt" | "completedAt"> = {
+          title: taskData.title || "Nova Tarefa",
+          status: "todo",
+          priority: "medium",
+          ...rest,
+        };
+        await createTask(newTaskData);
+        addNotification({ type: 'success', message: 'Tarefa criada com sucesso!' });
+      }
+      setShowTaskModal(false);
+      setEditingTask(null);
+    } catch (error) {
+      addNotification({ type: 'error', message: 'Erro ao salvar tarefa.' });
+    }
+  };
+
+  const navigateCalendar = (direction: "prev" | "next") => {
+    const newDate = new Date(currentDate);
+    const daysToMove = viewMode === "days" ? 7 : viewMode === "weeks" ? 14 : 30;
+
+    if (direction === "prev") {
+      newDate.setDate(newDate.getDate() - daysToMove);
+    } else {
+      newDate.setDate(newDate.getDate() + daysToMove);
+    }
+
+    setCurrentDate(newDate);
+  };
+
+  if (tasksLoading || projectsLoading || usersLoading) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>
+            Visualização Gantt{projectId ? ` - Projeto ${projectId}` : ""}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="flex justify-center items-center min-h-[400px]">
+          <LoadingSpinner />
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <div className="space-y-4 p-4">
+      <Card>
+        <CardHeader className="pb-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+              <Calendar className="h-5 w-5 flex-shrink-0" />
+              <span className="truncate">Diagrama de Gantt</span>
+            </CardTitle>
+            <Button onClick={handleAddTask} className="w-full sm:w-auto">
+              <Plus className="h-4 w-4 mr-2" />
+              <span className="hidden sm:inline">Nova Tarefa</span>
+              <span className="sm:hidden">Nova</span>
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-4">
+            {!projectId && (
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full sm:w-auto">
+                <Label className="text-sm font-medium whitespace-nowrap">
+                  Projeto:
+                </Label>
+                <Select
+                  value={selectedProject}
+                  onValueChange={setSelectedProject}
+                >
+                  <SelectTrigger className="w-full sm:w-48">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todos os Projetos</SelectItem>
+                    {projects.map((project) => (
+                      <SelectItem key={project.id} value={project.id}>
+                        <div className="flex items-center gap-2">
+                          <span className="truncate">{project.name}</span>
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+            {/* Other filters */}
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardContent className="p-0">
+          <div className="overflow-x-auto">
+            <div className="min-w-[1200px]">
+              {/* Calendar Header */}
+              <div className="flex border-b">
+                <div className="w-80 p-4 font-semibold bg-muted/30 border-r">
+                  Tarefa
+                </div>
+                <div
+                  className="flex-1 bg-muted/30 grid"
+                  style={{
+                    gridTemplateColumns: `repeat(${calendarDays.length}, minmax(40px, 1fr))`,
+                  }}
+                >
+                  {calendarDays.map((day, index) => {
+                    const isToday = day.toDateString() === new Date().toDateString();
+                    return (
+                      <div
+                        key={index}
+                        className={`p-2 text-center text-xs border-r ${
+                          isToday ? "bg-primary/20" : ""
+                        }`}
+                      >
+                        <div>
+                          {day.toLocaleDateString("pt-BR", { weekday: "short" })}
+                        </div>
+                        <div>{day.getDate()}</div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Task Rows */}
+              <div className="divide-y">
+                {ganttTasks.map((task) => (
+                  <div key={task.id} className="flex hover:bg-muted/30">
+                    <div className="w-80 p-4 border-r flex items-center">
+                      <div>
+                        <p className="font-medium truncate">{task.title}</p>
+                        <p className="text-sm text-muted-foreground truncate">
+                          {task.assignee?.name || "Não atribuído"}
+                        </p>
+                      </div>
+                    </div>
+                    <div
+                      className="flex-1 p-2 relative grid"
+                      style={{
+                        gridTemplateColumns: `repeat(${calendarDays.length}, minmax(40px, 1fr))`,
+                      }}
+                    >
+                      {calendarDays.map((_, index) => (
+                        <div key={index} className="border-r h-full"></div>
+                      ))}
+                      <div
+                        className="absolute h-8 top-1/2 -translate-y-1/2 rounded-lg"
+                        style={getTaskBarStyle(task)}
+                      >
+                        <div
+                          className={`h-full rounded-lg flex items-center px-2 ${getStatusColor(
+                            task.status
+                          )}`}
+                        >
+                          <span className="text-white text-xs font-medium truncate">
+                            {task.title}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <TaskModal
+        open={showTaskModal}
+        onOpenChange={setShowTaskModal}
+        task={editingTask}
+        projects={projects}
+        users={users}
+        onSave={handleSaveTask}
+      />
+    </div>
+  );
+}
+
+function TaskModal({
+  open,
+  onOpenChange,
+  task,
+  projects,
+  users,
+  onSave,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  task: GanttTask | null;
+  projects: Project[];
+  users: User[];
+  onSave: (task: Partial<Task>) => void;
+}) {
+  const [formData, setFormData] = useState<Partial<Task & { startDate: string; dueDate: string }>>({});
+
+  useEffect(() => {
+    if (task) {
+      setFormData({
+          ...task,
+          startDate: task.startDate ? new Date(task.startDate).toISOString().split('T')[0] : '',
+          dueDate: task.dueDate ? new Date(task.dueDate).toISOString().split('T')[0] : '',
+      });
+    } else {
+      setFormData({
+        title: "",
+        description: "",
+        status: "todo",
+        priority: "medium",
+        startDate: "",
+        dueDate: "",
+        projectId: "",
+        assigneeId: "",
+      });
+    }
+  }, [task]);
+
+  const handleSave = () => {
+    onSave(formData);
+  };
+
+  const handleChange = (field: keyof Task, value: string | boolean) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-2xl">
+        <DialogHeader>
+          <DialogTitle>{task ? "Editar Tarefa" : "Nova Tarefa"}</DialogTitle>
+        </DialogHeader>
+
+        <div className="space-y-4 py-4">
+          <Input
+            placeholder="Nome da Tarefa"
+            value={formData.title || ""}
+            onChange={(e) => handleChange("title", e.target.value)}
+          />
+          <Textarea
+            placeholder="Descrição"
+            value={formData.description || ""}
+            onChange={(e) => handleChange("description", e.target.value)}
+          />
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label>Data de Início</Label>
+              <Input
+                type="date"
+                value={formData.startDate || ''}
+                onChange={(e) => handleChange('startDate', e.target.value)}
+              />
+            </div>
+            <div>
+              <Label>Data de Fim</Label>
+              <Input
+                type="date"
+                value={formData.dueDate || ''}
+                onChange={(e) => handleChange('dueDate', e.target.value)}
+              />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <Select
+              value={formData.projectId}
+              onValueChange={(v) => handleChange("projectId", v)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Projeto" />
+              </SelectTrigger>
+              <SelectContent>
+                {projects.map((p) => (
+                  <SelectItem key={p.id} value={p.id}>
+                    {p.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Select
+              value={formData.assigneeId}
+              onValueChange={(v) => handleChange("assigneeId", v)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Responsável" />
+              </SelectTrigger>
+              <SelectContent>
+                {users.map((u) => (
+                  <SelectItem key={u.id} value={u.id}>
+                    {u.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <Select
+              value={formData.status}
+              onValueChange={(v) => handleChange("status", v)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="todo">A Fazer</SelectItem>
+                <SelectItem value="in-progress">Em Progresso</SelectItem>
+                <SelectItem value="review">Em Revisão</SelectItem>
+                <SelectItem value="completed">Concluído</SelectItem>
+              </SelectContent>
+            </Select>
+            <Select
+              value={formData.priority}
+              onValueChange={(v) => handleChange("priority", v)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Prioridade" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="low">Baixa</SelectItem>
+                <SelectItem value="medium">Média</SelectItem>
+                <SelectItem value="high">Alta</SelectItem>
+                <SelectItem value="urgent">Urgente</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        <DialogFooter>
+          <Button variant="outline" onClick={() => onOpenChange(false)}>
+            Cancelar
+          </Button>
+          <Button onClick={handleSave}>
+            {task ? "Salvar Alterações" : "Criar Tarefa"}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}

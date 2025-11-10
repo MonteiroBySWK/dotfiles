@@ -1,0 +1,58 @@
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+
+const projects = [
+  {
+    name: "TheraLabs - Software House",
+    description: [
+      "Fundador & Coordenador | Maio/2023 – Presente",
+      "Coordenei um laboratório de desenvolvimento atuando como Product Owner e líder técnico.",
+      "Gerenciei equipes multidisciplinares em projetos para PMEs e instituições públicas.",
+      "Implementei infraestrutura de hospedagem, pipelines de deploy e práticas de segurança."
+    ],
+    link: "#"
+  },
+  {
+    name: "TechnosJR - Empresa Júnior de Engenharia de Computação",
+    description: [
+      "Desenvolvedor FullStack Voluntário | Ago/2023 – Ago/2024",
+      "Atuei em projetos web modernos, focando em animações e experiência do usuário.",
+      "Desenvolvimento de soluções fullstack e integrações com APIs."
+    ],
+    link: "#"
+  }
+];
+
+export default function Projects() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    gsap.fromTo(
+      sectionRef.current,
+      { opacity: 0, y: 60 },
+      { opacity: 1, y: 0, duration: 1, delay: 0.2, ease: "power2.out" }
+    );
+  }, []);
+
+  return (
+    <section id="projects" ref={sectionRef} className="py-24 px-4 max-w-4xl mx-auto text-center">
+      <h2 className="text-4xl font-extrabold text-purple-300 mb-8 drop-shadow-lg">Projetos</h2>
+      <div className="grid sm:grid-cols-2 gap-8">
+        {projects.map(project => (
+          <div
+            key={project.name}
+            className="bg-white/80 rounded-2xl p-6 shadow-xl hover:scale-105 hover:shadow-2xl transition-transform flex flex-col items-start text-left"
+          >
+            <h3 className="text-2xl font-bold text-blue-700 mb-2">{project.name}</h3>
+            <ul className="list-disc list-inside ml-4 text-slate-700 text-base mb-4">
+              {project.description.map((desc, idx) => (
+                <li key={idx}>{desc}</li>
+              ))}
+            </ul>
+            <a href={project.link} className="text-blue-500 hover:underline mt-auto">Ver mais</a>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}

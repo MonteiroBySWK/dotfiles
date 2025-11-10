@@ -1,0 +1,29 @@
+# Arquivos de log do npm
+npm-debug.log*
+.npm/
+
+# Dependências da aplicação
+node_modules/
+
+# Arquivos de cache e build
+build/
+dist/
+.cache/
+.next/ # Se estiver usando Next.js com React
+
+# Arquivos de ambiente e chaves sensíveis
+.env
+.env.local
+.env.development.local
+.env.production.local
+.env.test.local
+.env.*.local
+.DS_Store # macOS
+.vscode/ # Configurações do VS Code
+.idea/ # Configurações do WebStorm/IntelliJ
+
+# Arquivos temporários e de editor
+*.log
+*.tmp
+tmp/
+temp/

@@ -1,0 +1,14 @@
+{
+  "environment": {
+    "executable": "/home/monteiro/codes/administrative-prototype-for-technos/.venv/bin/python",
+    "prefix": "/home/monteiro/codes/administrative-prototype-for-technos/.venv",
+    "version": "3.12.10.final.0",
+    "is64Bit": true,
+    "symlinks": [
+      "/home/monteiro/codes/administrative-prototype-for-technos/.venv/bin/python",
+      "/home/monteiro/codes/administrative-prototype-for-technos/.venv/bin/python3",
+      "/home/monteiro/codes/administrative-prototype-for-technos/.venv/bin/python3.12"
+    ]
+  },
+  "symlinks": []
+}

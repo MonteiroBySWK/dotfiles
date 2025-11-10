@@ -1,0 +1,10 @@
+@startuml
+title "UC-05a: Consultar e Baixar Conteúdo Acadêmico"
+actor "Membro Autenticado"
+participant Sistema
+
+"Membro Autenticado" -> Sistema : 1. Acessa área de materiais acadêmicos [cite: 177]
+Sistema --> "Membro Autenticado" : 2. Exibe listagem de materiais disponíveis [cite: 177]
+"Membro Autenticado" -> Sistema : 3. Seleciona a opção "fazer download" [cite: 177]
+Sistema --> "Membro Autenticado" : (Fornece o arquivo para download)
+@enduml

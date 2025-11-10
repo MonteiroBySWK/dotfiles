@@ -1,0 +1,42 @@
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Skills from "../../sections/Skills";
+
+gsap.registerPlugin(useGSAP, ScrollTrigger);
+
+export default function Section(props: {
+  id: string;
+  className?: string;
+  children: React.ReactNode;
+  skill?: boolean
+}) {
+  
+  useGSAP(() => {
+    if(Skills)
+    
+    gsap.fromTo(
+      `#${props.id}`,
+      { opacity: 0 },
+      {
+        opacity: 1,
+        duration: 1,
+        scrollTrigger: {
+          trigger: `#${props.id}`, // elemento que aciona
+          start: "top 80%",        // quando 80% do topo da seção entra na tela
+          end: "bottom 20%",       // quando 20% do fundo da seção chega
+          toggleActions: "play reverse play reverse", // play/reverse na entrada/saída
+        },
+      }
+    );
+  }, []);
+
+  return (
+    <section
+      id={props.id}
+      className={`max-w-7xl min-h-screen mx-auto px-4 sm:px-6 lg:px-8 ${props.className}`}
+    >
+      {props.children}
+    </section>
+  );
+}

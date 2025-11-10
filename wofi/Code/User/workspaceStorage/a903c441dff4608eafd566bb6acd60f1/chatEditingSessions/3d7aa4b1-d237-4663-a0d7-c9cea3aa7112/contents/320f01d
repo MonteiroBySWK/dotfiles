@@ -1,0 +1,32 @@
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+
+export default function AboutMe() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    gsap.fromTo(
+      sectionRef.current,
+      { opacity: 0, y: 60 },
+      { opacity: 1, y: 0, duration: 1, delay: 0.2, ease: "power2.out" }
+    );
+  }, []);
+
+  return (
+    <section
+      id="about-me"
+      ref={sectionRef}
+      className="py-24 px-4 max-w-3xl mx-auto text-center"
+    >
+      <h2 className="text-4xl font-extrabold text-purple-300 mb-6 drop-shadow-lg">
+        Sobre Mim
+      </h2>
+      <p className="text-lg sm:text-2xl text-purple-100 leading-relaxed bg-purple-900/60 rounded-xl p-6 shadow-xl">
+        Sou um desenvolvedor apaixonado por tecnologia, interfaces animadas e
+        soluções criativas. Tenho experiência em desenvolvimento web, foco em
+        usabilidade e design moderno, e estou sempre buscando novos desafios
+        para evoluir minhas habilidades.
+      </p>
+    </section>
+  );
+}

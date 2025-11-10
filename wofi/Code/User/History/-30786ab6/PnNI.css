@@ -1,0 +1,21 @@
+/* Minimal styles for not-found page using the requested color palette and Geist Mono */
+.container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  /* Softer gradient: purple -> blue, with a dark vignette to the edges */
+  background: radial-gradient(1000px 600px at 10% 20%, hsla(268, 78%, 56%, 1) 0%, hsla(209, 100%, 40%, 0.65) 45%, hsla(0, 0%, 13%, 1) 100%), linear-gradient(180deg, rgba(0,0,0,0.05), rgba(0,0,0,0.12));
+  color: hsla(0, 0%, 97%, 1);
+}
+
+.heading {
+  /* Explicitly use Geist Mono variable injected by next/font */
+  font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Segoe UI Mono", "Helvetica Neue", monospace;
+  font-size: clamp(1.5rem, 6vw, 4rem);
+  line-height: 1;
+  margin: 0;
+  text-shadow: 0 6px 18px rgba(0,0,0,0.35);
+}

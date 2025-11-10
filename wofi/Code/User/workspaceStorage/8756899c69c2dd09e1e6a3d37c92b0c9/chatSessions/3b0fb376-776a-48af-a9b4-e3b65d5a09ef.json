@@ -1,0 +1,2177 @@
+{
+  "version": 3,
+  "requesterUsername": "MonteiroBySWK",
+  "requesterAvatarIconUri": {
+    "$mid": 1,
+    "path": "/u/129693679",
+    "scheme": "https",
+    "authority": "avatars.githubusercontent.com",
+    "query": "v=4"
+  },
+  "responderUsername": "GitHub Copilot",
+  "responderAvatarIconUri": {
+    "id": "copilot"
+  },
+  "initialLocation": "editor",
+  "requests": [
+    {
+      "requestId": "request_0a0189b2-d563-40f7-9bd8-293addfbffe8",
+      "message": {
+        "text": "",
+        "parts": []
+      },
+      "variableData": {
+        "variables": []
+      },
+      "response": [
+        {
+          "kind": "textEditGroup",
+          "uri": {
+            "$mid": 1,
+            "fsPath": "/home/monteiro/codes/sonar/src/hooks/useResource.ts",
+            "external": "file:///home/monteiro/codes/sonar/src/hooks/useResource.ts",
+            "path": "/home/monteiro/codes/sonar/src/hooks/useResource.ts",
+            "scheme": "file"
+          },
+          "edits": [
+            [],
+            [
+              {
+                "text": "import { useCallback, useEffect, useState, useRef } from \"react\";",
+                "range": {
+                  "startLineNumber": 1,
+                  "startColumn": 1,
+                  "endLineNumber": 1,
+                  "endColumn": 58
+                }
+              }
+            ],
+            [
+              {
+                "text": "import { apiClient } from \"@/lib/apiClient\";",
+                "range": {
+                  "startLineNumber": 2,
+                  "startColumn": 1,
+                  "endLineNumber": 2,
+                  "endColumn": 45
+                }
+              }
+            ],
+            [
+              {
+                "text": "",
+                "range": {
+                  "startLineNumber": 3,
+                  "startColumn": 1,
+                  "endLineNumber": 3,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "// --- Tipos Auxiliares ---",
+                "range": {
+                  "startLineNumber": 4,
+                  "startColumn": 1,
+                  "endLineNumber": 4,
+                  "endColumn": 18
+                }
+              }
+            ],
+            [
+              {
+                "text": "",
+                "range": {
+                  "startLineNumber": 5,
+                  "startColumn": 1,
+                  "endLineNumber": 5,
+                  "endColumn": 44
+                }
+              }
+            ],
+            [
+              {
+                "text": "// Erro padrão da API",
+                "range": {
+                  "startLineNumber": 6,
+                  "startColumn": 1,
+                  "endLineNumber": 6,
+                  "endColumn": 3
+                }
+              }
+            ],
+            [
+              {
+                "text": "type ApiError = {",
+                "range": {
+                  "startLineNumber": 7,
+                  "startColumn": 1,
+                  "endLineNumber": 7,
+                  "endColumn": 45
+                }
+              }
+            ],
+            [
+              {
+                "text": "  error?: { message?: string };",
+                "range": {
+                  "startLineNumber": 8,
+                  "startColumn": 1,
+                  "endLineNumber": 8,
+                  "endColumn": 30
+                }
+              }
+            ],
+            [
+              {
+                "text": "};",
+                "range": {
+                  "startLineNumber": 9,
+                  "startColumn": 1,
+                  "endLineNumber": 9,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "",
+                "range": {
+                  "startLineNumber": 10,
+                  "startColumn": 1,
+                  "endLineNumber": 10,
+                  "endColumn": 35
+                }
+              }
+            ],
+            [
+              {
+                "text": "// Envelope da API para um único recurso",
+                "range": {
+                  "startLineNumber": 11,
+                  "startColumn": 1,
+                  "endLineNumber": 11,
+                  "endColumn": 65
+                }
+              }
+            ],
+            [
+              {
+                "text": "type ApiOne<T> = { data: T };",
+                "range": {
+                  "startLineNumber": 12,
+                  "startColumn": 1,
+                  "endLineNumber": 12,
+                  "endColumn": 22
+                }
+              }
+            ],
+            [
+              {
+                "text": "",
+                "range": {
+                  "startLineNumber": 13,
+                  "startColumn": 1,
+                  "endLineNumber": 13,
+                  "endColumn": 48
+                }
+              }
+            ],
+            [
+              {
+                "text": "// Envelope da API para uma lista de recursos",
+                "range": {
+                  "startLineNumber": 14,
+                  "startColumn": 1,
+                  "endLineNumber": 14,
+                  "endColumn": 18
+                }
+              }
+            ],
+            [
+              {
+                "text": "type ApiList<T> = { data: T[]; meta?: any };",
+                "range": {
+                  "startLineNumber": 15,
+                  "startColumn": 1,
+                  "endLineNumber": 15,
+                  "endColumn": 3
+                }
+              }
+            ],
+            [
+              {
+                "text": "",
+                "range": {
+                  "startLineNumber": 16,
+                  "startColumn": 1,
+                  "endLineNumber": 16,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "// Opções de configuração para o hook",
+                "range": {
+                  "startLineNumber": 17,
+                  "startColumn": 1,
+                  "endLineNumber": 17,
+                  "endColumn": 35
+                }
+              }
+            ],
+            [
+              {
+                "text": "type UseResourceOptions<TData> = {",
+                "range": {
+                  "startLineNumber": 18,
+                  "startColumn": 1,
+                  "endLineNumber": 18,
+                  "endColumn": 43
+                }
+              }
+            ],
+            [
+              {
+                "text": "  // Transforma a resposta crua da API para o formato do estado",
+                "range": {
+                  "startLineNumber": 19,
+                  "startColumn": 1,
+                  "endLineNumber": 19,
+                  "endColumn": 40
+                }
+              }
+            ],
+            [
+              {
+                "text": "  transformResponse?: (response: any) => TData;",
+                "range": {
+                  "startLineNumber": 20,
+                  "startColumn": 1,
+                  "endLineNumber": 20,
+                  "endColumn": 31
+                }
+              }
+            ],
+            [
+              {
+                "text": "  // Chave para identificar itens em uma lista (padrão: 'id')",
+                "range": {
+                  "startLineNumber": 21,
+                  "startColumn": 1,
+                  "endLineNumber": 21,
+                  "endColumn": 13
+                }
+              }
+            ],
+            [
+              {
+                "text": "  idKey?: string;",
+                "range": {
+                  "startLineNumber": 22,
+                  "startColumn": 1,
+                  "endLineNumber": 22,
+                  "endColumn": 39
+                }
+              }
+            ],
+            [
+              {
+                "text": "};",
+                "range": {
+                  "startLineNumber": 23,
+                  "startColumn": 1,
+                  "endLineNumber": 23,
+                  "endColumn": 41
+                }
+              }
+            ],
+            [
+              {
+                "text": "",
+                "range": {
+                  "startLineNumber": 24,
+                  "startColumn": 1,
+                  "endLineNumber": 24,
+                  "endColumn": 25
+                }
+              }
+            ],
+            [
+              {
+                "text": "// --- Lógica de Erro ---",
+                "range": {
+                  "startLineNumber": 25,
+                  "startColumn": 1,
+                  "endLineNumber": 25,
+                  "endColumn": 24
+                }
+              }
+            ],
+            [
+              {
+                "text": "",
+                "range": {
+                  "startLineNumber": 26,
+                  "startColumn": 1,
+                  "endLineNumber": 26,
+                  "endColumn": 7
+                }
+              }
+            ],
+            [
+              {
+                "text": "function toMessage(err: unknown): string {",
+                "range": {
+                  "startLineNumber": 27,
+                  "startColumn": 1,
+                  "endLineNumber": 27,
+                  "endColumn": 4
+                }
+              }
+            ],
+            [
+              {
+                "text": "  if (err && typeof err === \"object\") {",
+                "range": {
+                  "startLineNumber": 28,
+                  "startColumn": 1,
+                  "endLineNumber": 28,
+                  "endColumn": 28
+                }
+              }
+            ],
+            [
+              {
+                "text": "    const anyErr = err as any;",
+                "range": {
+                  "startLineNumber": 29,
+                  "startColumn": 1,
+                  "endLineNumber": 29,
+                  "endColumn": 2
+                }
+              }
+            ],
+            [
+              {
+                "text": "    return (",
+                "range": {
+                  "startLineNumber": 30,
+                  "startColumn": 1,
+                  "endLineNumber": 30,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "      anyErr?.response?.data?.error ||",
+                "range": {
+                  "startLineNumber": 31,
+                  "startColumn": 1,
+                  "endLineNumber": 31,
+                  "endColumn": 3
+                }
+              }
+            ],
+            [
+              {
+                "text": "      anyErr?.response?.data?.message ||",
+                "range": {
+                  "startLineNumber": 32,
+                  "startColumn": 1,
+                  "endLineNumber": 32,
+                  "endColumn": 49
+                }
+              }
+            ],
+            [
+              {
+                "text": "      anyErr?.message ||",
+                "range": {
+                  "startLineNumber": 33,
+                  "startColumn": 1,
+                  "endLineNumber": 33,
+                  "endColumn": 78
+                }
+              }
+            ],
+            [
+              {
+                "text": "      \"Erro inesperado\"",
+                "range": {
+                  "startLineNumber": 34,
+                  "startColumn": 1,
+                  "endLineNumber": 34,
+                  "endColumn": 4
+                }
+              }
+            ],
+            [
+              {
+                "text": "    );",
+                "range": {
+                  "startLineNumber": 35,
+                  "startColumn": 1,
+                  "endLineNumber": 35,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "  }",
+                "range": {
+                  "startLineNumber": 36,
+                  "startColumn": 1,
+                  "endLineNumber": 36,
+                  "endColumn": 36
+                }
+              }
+            ],
+            [
+              {
+                "text": "  return String(err) || \"Erro inesperado\";",
+                "range": {
+                  "startLineNumber": 37,
+                  "startColumn": 1,
+                  "endLineNumber": 37,
+                  "endColumn": 20
+                }
+              }
+            ],
+            [
+              {
+                "text": "}",
+                "range": {
+                  "startLineNumber": 38,
+                  "startColumn": 1,
+                  "endLineNumber": 38,
+                  "endColumn": 38
+                }
+              }
+            ],
+            [
+              {
+                "text": "",
+                "range": {
+                  "startLineNumber": 39,
+                  "startColumn": 1,
+                  "endLineNumber": 39,
+                  "endColumn": 4
+                }
+              }
+            ],
+            [
+              {
+                "text": "// --- O Hook Refatorado ---",
+                "range": {
+                  "startLineNumber": 40,
+                  "startColumn": 1,
+                  "endLineNumber": 40,
+                  "endColumn": 56
+                }
+              }
+            ],
+            [
+              {
+                "text": "",
+                "range": {
+                  "startLineNumber": 41,
+                  "startColumn": 1,
+                  "endLineNumber": 41,
+                  "endColumn": 48
+                }
+              }
+            ],
+            [
+              {
+                "text": "export function useResource<TData>(",
+                "range": {
+                  "startLineNumber": 42,
+                  "startColumn": 1,
+                  "endLineNumber": 42,
+                  "endColumn": 59
+                }
+              }
+            ],
+            [
+              {
+                "text": "  endpoint: string | null, // Permite endpoint nulo para desativar",
+                "range": {
+                  "startLineNumber": 43,
+                  "startColumn": 1,
+                  "endLineNumber": 43,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "  options?: UseResourceOptions<TData>",
+                "range": {
+                  "startLineNumber": 44,
+                  "startColumn": 1,
+                  "endLineNumber": 44,
+                  "endColumn": 41
+                }
+              }
+            ],
+            [
+              {
+                "text": ") {",
+                "range": {
+                  "startLineNumber": 45,
+                  "startColumn": 1,
+                  "endLineNumber": 45,
+                  "endColumn": 22
+                }
+              }
+            ],
+            [
+              {
+                "text": "  const [data, setData] = useState<TData | null>(null);",
+                "range": {
+                  "startLineNumber": 46,
+                  "startColumn": 1,
+                  "endLineNumber": 46,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "  const [loading, setLoading] = useState(!!endpoint); // Só carrega se houver endpoint",
+                "range": {
+                  "startLineNumber": 47,
+                  "startColumn": 1,
+                  "endLineNumber": 47,
+                  "endColumn": 20
+                }
+              }
+            ],
+            [
+              {
+                "text": "  const [error, setError] = useState<string | null>(null);",
+                "range": {
+                  "startLineNumber": 48,
+                  "startColumn": 1,
+                  "endLineNumber": 48,
+                  "endColumn": 10
+                }
+              }
+            ],
+            [
+              {
+                "text": "  const abortRef = useRef<AbortController | null>(null);",
+                "range": {
+                  "startLineNumber": 49,
+                  "startColumn": 1,
+                  "endLineNumber": 49,
+                  "endColumn": 61
+                }
+              }
+            ],
+            [
+              {
+                "text": "",
+                "range": {
+                  "startLineNumber": 50,
+                  "startColumn": 1,
+                  "endLineNumber": 50,
+                  "endColumn": 21
+                }
+              }
+            ],
+            [
+              {
+                "text": "  // --- Funções de Carga ---",
+                "range": {
+                  "startLineNumber": 51,
+                  "startColumn": 1,
+                  "endLineNumber": 51,
+                  "endColumn": 19
+                }
+              }
+            ],
+            [
+              {
+                "text": "",
+                "range": {
+                  "startLineNumber": 52,
+                  "startColumn": 1,
+                  "endLineNumber": 52,
+                  "endColumn": 22
+                }
+              }
+            ],
+            [
+              {
+                "text": "  const load = useCallback(async () => {",
+                "range": {
+                  "startLineNumber": 53,
+                  "startColumn": 1,
+                  "endLineNumber": 53,
+                  "endColumn": 34
+                }
+              }
+            ],
+            [
+              {
+                "text": "    if (!endpoint) {",
+                "range": {
+                  "startLineNumber": 54,
+                  "startColumn": 1,
+                  "endLineNumber": 54,
+                  "endColumn": 19
+                }
+              }
+            ],
+            [
+              {
+                "text": "      setLoading(false);",
+                "range": {
+                  "startLineNumber": 55,
+                  "startColumn": 1,
+                  "endLineNumber": 55,
+                  "endColumn": 16
+                }
+              }
+            ],
+            [
+              {
+                "text": "      return;",
+                "range": {
+                  "startLineNumber": 56,
+                  "startColumn": 1,
+                  "endLineNumber": 56,
+                  "endColumn": 25
+                }
+              }
+            ],
+            [
+              {
+                "text": "    }",
+                "range": {
+                  "startLineNumber": 57,
+                  "startColumn": 1,
+                  "endLineNumber": 57,
+                  "endColumn": 6
+                }
+              }
+            ],
+            [
+              {
+                "text": "    setLoading(true);",
+                "range": {
+                  "startLineNumber": 58,
+                  "startColumn": 1,
+                  "endLineNumber": 58,
+                  "endColumn": 18
+                }
+              }
+            ],
+            [
+              {
+                "text": "    setError(null);",
+                "range": {
+                  "startLineNumber": 59,
+                  "startColumn": 1,
+                  "endLineNumber": 59,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "    abortRef.current?.abort(); // Cancela requisição anterior",
+                "range": {
+                  "startLineNumber": 60,
+                  "startColumn": 1,
+                  "endLineNumber": 60,
+                  "endColumn": 30
+                }
+              }
+            ],
+            [
+              {
+                "text": "    const controller = new AbortController();",
+                "range": {
+                  "startLineNumber": 61,
+                  "startColumn": 1,
+                  "endLineNumber": 61,
+                  "endColumn": 41
+                }
+              }
+            ],
+            [
+              {
+                "text": "    abortRef.current = controller;",
+                "range": {
+                  "startLineNumber": 62,
+                  "startColumn": 1,
+                  "endLineNumber": 62,
+                  "endColumn": 28
+                }
+              }
+            ],
+            [
+              {
+                "text": "",
+                "range": {
+                  "startLineNumber": 63,
+                  "startColumn": 1,
+                  "endLineNumber": 63,
+                  "endColumn": 35
+                }
+              }
+            ],
+            [
+              {
+                "text": "    try {",
+                "range": {
+                  "startLineNumber": 64,
+                  "startColumn": 1,
+                  "endLineNumber": 64,
+                  "endColumn": 24
+                }
+              }
+            ],
+            [
+              {
+                "text": "      const res = await apiClient.get(endpoint, { signal: controller.signal });",
+                "range": {
+                  "startLineNumber": 65,
+                  "startColumn": 1,
+                  "endLineNumber": 65,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "      const transformed = options?.transformResponse",
+                "range": {
+                  "startLineNumber": 66,
+                  "startColumn": 1,
+                  "endLineNumber": 66,
+                  "endColumn": 12
+                }
+              }
+            ],
+            [
+              {
+                "text": "        ? options.transformResponse(res.data)",
+                "range": {
+                  "startLineNumber": 67,
+                  "startColumn": 1,
+                  "endLineNumber": 67,
+                  "endColumn": 65
+                }
+              }
+            ],
+            [
+              {
+                "text": "        : res.data;",
+                "range": {
+                  "startLineNumber": 68,
+                  "startColumn": 1,
+                  "endLineNumber": 68,
+                  "endColumn": 20
+                }
+              }
+            ],
+            [
+              {
+                "text": "      setData(transformed);",
+                "range": {
+                  "startLineNumber": 69,
+                  "startColumn": 1,
+                  "endLineNumber": 69,
+                  "endColumn": 18
+                }
+              }
+            ],
+            [
+              {
+                "text": "      return transformed;",
+                "range": {
+                  "startLineNumber": 70,
+                  "startColumn": 1,
+                  "endLineNumber": 70,
+                  "endColumn": 11
+                }
+              }
+            ],
+            [
+              {
+                "text": "    } catch (err: any) {",
+                "range": {
+                  "startLineNumber": 71,
+                  "startColumn": 1,
+                  "endLineNumber": 71,
+                  "endColumn": 39
+                }
+              }
+            ],
+            [
+              {
+                "text": "      if (err.name !== \"CanceledError\") {",
+                "range": {
+                  "startLineNumber": 72,
+                  "startColumn": 1,
+                  "endLineNumber": 72,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "        setError(toMessage(err));",
+                "range": {
+                  "startLineNumber": 73,
+                  "startColumn": 1,
+                  "endLineNumber": 73,
+                  "endColumn": 72
+                }
+              }
+            ],
+            [
+              {
+                "text": "      }",
+                "range": {
+                  "startLineNumber": 74,
+                  "startColumn": 1,
+                  "endLineNumber": 74,
+                  "endColumn": 35
+                }
+              }
+            ],
+            [
+              {
+                "text": "      throw err;",
+                "range": {
+                  "startLineNumber": 75,
+                  "startColumn": 1,
+                  "endLineNumber": 75,
+                  "endColumn": 44
+                }
+              }
+            ],
+            [
+              {
+                "text": "    } finally {",
+                "range": {
+                  "startLineNumber": 76,
+                  "startColumn": 1,
+                  "endLineNumber": 76,
+                  "endColumn": 55
+                }
+              }
+            ],
+            [
+              {
+                "text": "      setLoading(false);",
+                "range": {
+                  "startLineNumber": 77,
+                  "startColumn": 1,
+                  "endLineNumber": 77,
+                  "endColumn": 12
+                }
+              }
+            ],
+            [
+              {
+                "text": "    }",
+                "range": {
+                  "startLineNumber": 78,
+                  "startColumn": 1,
+                  "endLineNumber": 78,
+                  "endColumn": 66
+                }
+              }
+            ],
+            [
+              {
+                "text": "  }, [endpoint, options]);",
+                "range": {
+                  "startLineNumber": 79,
+                  "startColumn": 1,
+                  "endLineNumber": 79,
+                  "endColumn": 12
+                }
+              }
+            ],
+            [
+              {
+                "text": "",
+                "range": {
+                  "startLineNumber": 80,
+                  "startColumn": 1,
+                  "endLineNumber": 80,
+                  "endColumn": 24
+                }
+              }
+            ],
+            [
+              {
+                "text": "  // --- Funções de Mutação (CRUD) ---",
+                "range": {
+                  "startLineNumber": 81,
+                  "startColumn": 1,
+                  "endLineNumber": 81,
+                  "endColumn": 24
+                }
+              }
+            ],
+            [
+              {
+                "text": "",
+                "range": {
+                  "startLineNumber": 82,
+                  "startColumn": 1,
+                  "endLineNumber": 82,
+                  "endColumn": 36
+                }
+              }
+            ],
+            [
+              {
+                "text": "  const create = useCallback(",
+                "range": {
+                  "startLineNumber": 83,
+                  "startColumn": 1,
+                  "endLineNumber": 83,
+                  "endColumn": 21
+                }
+              }
+            ],
+            [
+              {
+                "text": "    async <TCreateInput, TCreateOutput>(payload: TCreateInput): Promise<TCreateOutput> => {",
+                "range": {
+                  "startLineNumber": 84,
+                  "startColumn": 1,
+                  "endLineNumber": 84,
+                  "endColumn": 18
+                }
+              }
+            ],
+            [
+              {
+                "text": "      if (!endpoint) throw new Error(\"Endpoint não definido para criação.\");",
+                "range": {
+                  "startLineNumber": 85,
+                  "startColumn": 1,
+                  "endLineNumber": 85,
+                  "endColumn": 27
+                }
+              }
+            ],
+            [
+              {
+                "text": "      setLoading(true);",
+                "range": {
+                  "startLineNumber": 86,
+                  "startColumn": 1,
+                  "endLineNumber": 86,
+                  "endColumn": 8
+                }
+              }
+            ],
+            [
+              {
+                "text": "      try {",
+                "range": {
+                  "startLineNumber": 87,
+                  "startColumn": 1,
+                  "endLineNumber": 87,
+                  "endColumn": 7
+                }
+              }
+            ],
+            [
+              {
+                "text": "        const res = await apiClient.post<ApiOne<TCreateOutput>>(endpoint, payload);",
+                "range": {
+                  "startLineNumber": 88,
+                  "startColumn": 1,
+                  "endLineNumber": 88,
+                  "endColumn": 15
+                }
+              }
+            ],
+            [
+              {
+                "text": "        const newItem = res.data.data;",
+                "range": {
+                  "startLineNumber": 89,
+                  "startColumn": 1,
+                  "endLineNumber": 89,
+                  "endColumn": 5
+                }
+              }
+            ],
+            [
+              {
+                "text": "",
+                "range": {
+                  "startLineNumber": 90,
+                  "startColumn": 1,
+                  "endLineNumber": 90,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "        // Atualiza o estado local de forma otimista (se for uma lista)",
+                "range": {
+                  "startLineNumber": 91,
+                  "startColumn": 1,
+                  "endLineNumber": 91,
+                  "endColumn": 30
+                }
+              }
+            ],
+            [
+              {
+                "text": "        setData((currentData) => {",
+                "range": {
+                  "startLineNumber": 92,
+                  "startColumn": 1,
+                  "endLineNumber": 92,
+                  "endColumn": 44
+                }
+              }
+            ],
+            [
+              {
+                "text": "          if (Array.isArray(currentData)) {",
+                "range": {
+                  "startLineNumber": 93,
+                  "startColumn": 1,
+                  "endLineNumber": 93,
+                  "endColumn": 24
+                }
+              }
+            ],
+            [
+              {
+                "text": "            return [newItem, ...currentData] as TData;",
+                "range": {
+                  "startLineNumber": 94,
+                  "startColumn": 1,
+                  "endLineNumber": 94,
+                  "endColumn": 12
+                }
+              }
+            ],
+            [
+              {
+                "text": "          }",
+                "range": {
+                  "startLineNumber": 95,
+                  "startColumn": 1,
+                  "endLineNumber": 95,
+                  "endColumn": 53
+                }
+              }
+            ],
+            [
+              {
+                "text": "          return newItem as TData; // Se não for lista, substitui",
+                "range": {
+                  "startLineNumber": 96,
+                  "startColumn": 1,
+                  "endLineNumber": 96,
+                  "endColumn": 31
+                }
+              }
+            ],
+            [
+              {
+                "text": "        });",
+                "range": {
+                  "startLineNumber": 97,
+                  "startColumn": 1,
+                  "endLineNumber": 97,
+                  "endColumn": 18
+                }
+              }
+            ],
+            [
+              {
+                "text": "        return newItem;",
+                "range": {
+                  "startLineNumber": 98,
+                  "startColumn": 1,
+                  "endLineNumber": 98,
+                  "endColumn": 11
+                }
+              }
+            ],
+            [
+              {
+                "text": "      } catch (err) {",
+                "range": {
+                  "startLineNumber": 99,
+                  "startColumn": 1,
+                  "endLineNumber": 99,
+                  "endColumn": 23
+                }
+              }
+            ],
+            [
+              {
+                "text": "        setError(toMessage(err));",
+                "range": {
+                  "startLineNumber": 100,
+                  "startColumn": 1,
+                  "endLineNumber": 100,
+                  "endColumn": 21
+                }
+              }
+            ],
+            [
+              {
+                "text": "        throw err;",
+                "range": {
+                  "startLineNumber": 101,
+                  "startColumn": 1,
+                  "endLineNumber": 101,
+                  "endColumn": 24
+                }
+              }
+            ],
+            [
+              {
+                "text": "      } finally {",
+                "range": {
+                  "startLineNumber": 102,
+                  "startColumn": 1,
+                  "endLineNumber": 102,
+                  "endColumn": 36
+                }
+              }
+            ],
+            [
+              {
+                "text": "        setLoading(false);",
+                "range": {
+                  "startLineNumber": 103,
+                  "startColumn": 1,
+                  "endLineNumber": 103,
+                  "endColumn": 21
+                }
+              }
+            ],
+            [
+              {
+                "text": "      }",
+                "range": {
+                  "startLineNumber": 104,
+                  "startColumn": 1,
+                  "endLineNumber": 104,
+                  "endColumn": 18
+                }
+              }
+            ],
+            [
+              {
+                "text": "    },",
+                "range": {
+                  "startLineNumber": 105,
+                  "startColumn": 1,
+                  "endLineNumber": 105,
+                  "endColumn": 27
+                }
+              }
+            ],
+            [
+              {
+                "text": "    [endpoint]",
+                "range": {
+                  "startLineNumber": 106,
+                  "startColumn": 1,
+                  "endLineNumber": 106,
+                  "endColumn": 8
+                }
+              }
+            ],
+            [
+              {
+                "text": "  );",
+                "range": {
+                  "startLineNumber": 107,
+                  "startColumn": 1,
+                  "endLineNumber": 107,
+                  "endColumn": 7
+                }
+              }
+            ],
+            [
+              {
+                "text": "",
+                "range": {
+                  "startLineNumber": 108,
+                  "startColumn": 1,
+                  "endLineNumber": 108,
+                  "endColumn": 15
+                }
+              }
+            ],
+            [
+              {
+                "text": "  const update = useCallback(",
+                "range": {
+                  "startLineNumber": 109,
+                  "startColumn": 1,
+                  "endLineNumber": 109,
+                  "endColumn": 5
+                }
+              }
+            ],
+            [
+              {
+                "text": "    async <TUpdateInput, TUpdateOutput extends { [key: string]: any }>(",
+                "range": {
+                  "startLineNumber": 110,
+                  "startColumn": 1,
+                  "endLineNumber": 110,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "      id: string,",
+                "range": {
+                  "startLineNumber": 111,
+                  "startColumn": 1,
+                  "endLineNumber": 111,
+                  "endColumn": 30
+                }
+              }
+            ],
+            [
+              {
+                "text": "      payload: TUpdateInput",
+                "range": {
+                  "startLineNumber": 112,
+                  "startColumn": 1,
+                  "endLineNumber": 112,
+                  "endColumn": 28
+                }
+              }
+            ],
+            [
+              {
+                "text": "    ): Promise<TUpdateOutput> => {",
+                "range": {
+                  "startLineNumber": 113,
+                  "startColumn": 1,
+                  "endLineNumber": 113,
+                  "endColumn": 24
+                }
+              }
+            ],
+            [
+              {
+                "text": "      if (!endpoint) throw new Error(\"Endpoint não definido para atualização.\");",
+                "range": {
+                  "startLineNumber": 114,
+                  "startColumn": 1,
+                  "endLineNumber": 114,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "      setLoading(true);",
+                "range": {
+                  "startLineNumber": 115,
+                  "startColumn": 1,
+                  "endLineNumber": 115,
+                  "endColumn": 12
+                }
+              }
+            ],
+            [
+              {
+                "text": "      try {",
+                "range": {
+                  "startLineNumber": 116,
+                  "startColumn": 1,
+                  "endLineNumber": 116,
+                  "endColumn": 77
+                }
+              }
+            ],
+            [
+              {
+                "text": "        // A rota pode ser /recurso?id=ID ou /recurso/ID",
+                "range": {
+                  "startLineNumber": 117,
+                  "startColumn": 1,
+                  "endLineNumber": 117,
+                  "endColumn": 23
+                }
+              }
+            ],
+            [
+              {
+                "text": "        const updateEndpoint = endpoint.includes(\"?\") ? `${endpoint.split(\"?\")[0]}?id=${id}` : `${endpoint}/${id}`;",
+                "range": {
+                  "startLineNumber": 118,
+                  "startColumn": 1,
+                  "endLineNumber": 118,
+                  "endColumn": 21
+                }
+              }
+            ],
+            [
+              {
+                "text": "        const res = await apiClient.put<ApiOne<TUpdateOutput>>(updateEndpoint, payload);",
+                "range": {
+                  "startLineNumber": 119,
+                  "startColumn": 1,
+                  "endLineNumber": 119,
+                  "endColumn": 24
+                }
+              }
+            ],
+            [
+              {
+                "text": "        const updatedItem = res.data.data;",
+                "range": {
+                  "startLineNumber": 120,
+                  "startColumn": 1,
+                  "endLineNumber": 120,
+                  "endColumn": 36
+                }
+              }
+            ],
+            [
+              {
+                "text": "",
+                "range": {
+                  "startLineNumber": 121,
+                  "startColumn": 1,
+                  "endLineNumber": 121,
+                  "endColumn": 21
+                }
+              }
+            ],
+            [
+              {
+                "text": "        // Atualiza o item na lista local",
+                "range": {
+                  "startLineNumber": 122,
+                  "startColumn": 1,
+                  "endLineNumber": 122,
+                  "endColumn": 18
+                }
+              }
+            ],
+            [
+              {
+                "text": "        setData((currentData) => {",
+                "range": {
+                  "startLineNumber": 123,
+                  "startColumn": 1,
+                  "endLineNumber": 123,
+                  "endColumn": 27
+                }
+              }
+            ],
+            [
+              {
+                "text": "          if (Array.isArray(currentData)) {",
+                "range": {
+                  "startLineNumber": 124,
+                  "startColumn": 1,
+                  "endLineNumber": 124,
+                  "endColumn": 8
+                }
+              }
+            ],
+            [
+              {
+                "text": "            const idKey = options?.idKey ?? \"id\";",
+                "range": {
+                  "startLineNumber": 125,
+                  "startColumn": 1,
+                  "endLineNumber": 125,
+                  "endColumn": 7
+                }
+              }
+            ],
+            [
+              {
+                "text": "            return currentData.map((item: any) =>",
+                "range": {
+                  "startLineNumber": 126,
+                  "startColumn": 1,
+                  "endLineNumber": 126,
+                  "endColumn": 15
+                }
+              }
+            ],
+            [
+              {
+                "text": "              item[idKey] === id ? updatedItem : item",
+                "range": {
+                  "startLineNumber": 127,
+                  "startColumn": 1,
+                  "endLineNumber": 127,
+                  "endColumn": 5
+                }
+              }
+            ],
+            [
+              {
+                "text": "            ) as TData;",
+                "range": {
+                  "startLineNumber": 128,
+                  "startColumn": 1,
+                  "endLineNumber": 128,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "          }",
+                "range": {
+                  "startLineNumber": 129,
+                  "startColumn": 1,
+                  "endLineNumber": 129,
+                  "endColumn": 20
+                }
+              }
+            ],
+            [
+              {
+                "text": "          return updatedItem as TData; // Se não for lista, substitui",
+                "range": {
+                  "startLineNumber": 130,
+                  "startColumn": 1,
+                  "endLineNumber": 130,
+                  "endColumn": 30
+                }
+              }
+            ],
+            [
+              {
+                "text": "        });",
+                "range": {
+                  "startLineNumber": 131,
+                  "startColumn": 1,
+                  "endLineNumber": 131,
+                  "endColumn": 14
+                }
+              }
+            ],
+            [
+              {
+                "text": "        return updatedItem;",
+                "range": {
+                  "startLineNumber": 132,
+                  "startColumn": 1,
+                  "endLineNumber": 132,
+                  "endColumn": 6
+                }
+              }
+            ],
+            [
+              {
+                "text": "      } catch (err) {",
+                "range": {
+                  "startLineNumber": 133,
+                  "startColumn": 1,
+                  "endLineNumber": 133,
+                  "endColumn": 34
+                }
+              }
+            ],
+            [
+              {
+                "text": "        setError(toMessage(err));",
+                "range": {
+                  "startLineNumber": 134,
+                  "startColumn": 1,
+                  "endLineNumber": 134,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "        throw err;",
+                "range": {
+                  "startLineNumber": 135,
+                  "startColumn": 1,
+                  "endLineNumber": 135,
+                  "endColumn": 22
+                }
+              }
+            ],
+            [
+              {
+                "text": "      } finally {",
+                "range": {
+                  "startLineNumber": 136,
+                  "startColumn": 1,
+                  "endLineNumber": 136,
+                  "endColumn": 10
+                }
+              }
+            ],
+            [
+              {
+                "text": "        setLoading(false);",
+                "range": {
+                  "startLineNumber": 137,
+                  "startColumn": 1,
+                  "endLineNumber": 137,
+                  "endColumn": 12
+                }
+              }
+            ],
+            [
+              {
+                "text": "      }",
+                "range": {
+                  "startLineNumber": 138,
+                  "startColumn": 1,
+                  "endLineNumber": 138,
+                  "endColumn": 12
+                }
+              }
+            ],
+            [
+              {
+                "text": "    },",
+                "range": {
+                  "startLineNumber": 139,
+                  "startColumn": 1,
+                  "endLineNumber": 139,
+                  "endColumn": 12
+                }
+              }
+            ],
+            [
+              {
+                "text": "    [endpoint, options]",
+                "range": {
+                  "startLineNumber": 140,
+                  "startColumn": 1,
+                  "endLineNumber": 140,
+                  "endColumn": 5
+                }
+              }
+            ],
+            [
+              {
+                "text": "  );",
+                "range": {
+                  "startLineNumber": 141,
+                  "startColumn": 1,
+                  "endLineNumber": 141,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "",
+                "range": {
+                  "startLineNumber": 142,
+                  "startColumn": 1,
+                  "endLineNumber": 142,
+                  "endColumn": 46
+                }
+              }
+            ],
+            [
+              {
+                "text": "  const remove = useCallback(",
+                "range": {
+                  "startLineNumber": 143,
+                  "startColumn": 1,
+                  "endLineNumber": 143,
+                  "endColumn": 2
+                }
+              }
+            ],
+            [
+              {
+                "text": "    async (id: string): Promise<void> => {",
+                "range": {
+                  "startLineNumber": 144,
+                  "startColumn": 1,
+                  "endLineNumber": 144,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n      if (!endpoint) throw new Error(\"Endpoint não definido para remoção.\");",
+                "range": {
+                  "startLineNumber": 145,
+                  "startColumn": 1,
+                  "endLineNumber": 145,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n      setLoading(true);",
+                "range": {
+                  "startLineNumber": 146,
+                  "startColumn": 1,
+                  "endLineNumber": 146,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n      try {",
+                "range": {
+                  "startLineNumber": 147,
+                  "startColumn": 1,
+                  "endLineNumber": 147,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n        const deleteEndpoint = endpoint.includes(\"?\") ? `${endpoint.split(\"?\")[0]}?id=${id}` : `${endpoint}/${id}`;",
+                "range": {
+                  "startLineNumber": 148,
+                  "startColumn": 1,
+                  "endLineNumber": 148,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n        await apiClient.delete(deleteEndpoint);",
+                "range": {
+                  "startLineNumber": 149,
+                  "startColumn": 1,
+                  "endLineNumber": 149,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n",
+                "range": {
+                  "startLineNumber": 150,
+                  "startColumn": 1,
+                  "endLineNumber": 150,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n        // Remove o item da lista local",
+                "range": {
+                  "startLineNumber": 151,
+                  "startColumn": 1,
+                  "endLineNumber": 151,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n        setData((currentData) => {",
+                "range": {
+                  "startLineNumber": 152,
+                  "startColumn": 1,
+                  "endLineNumber": 152,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n          if (Array.isArray(currentData)) {",
+                "range": {
+                  "startLineNumber": 153,
+                  "startColumn": 1,
+                  "endLineNumber": 153,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n            const idKey = options?.idKey ?? \"id\";",
+                "range": {
+                  "startLineNumber": 154,
+                  "startColumn": 1,
+                  "endLineNumber": 154,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n            return currentData.filter((item: any) => item[idKey] !== id) as TData;",
+                "range": {
+                  "startLineNumber": 155,
+                  "startColumn": 1,
+                  "endLineNumber": 155,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n          }",
+                "range": {
+                  "startLineNumber": 156,
+                  "startColumn": 1,
+                  "endLineNumber": 156,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n          return null; // Se não for lista, limpa o estado",
+                "range": {
+                  "startLineNumber": 157,
+                  "startColumn": 1,
+                  "endLineNumber": 157,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n        });",
+                "range": {
+                  "startLineNumber": 158,
+                  "startColumn": 1,
+                  "endLineNumber": 158,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n      } catch (err) {",
+                "range": {
+                  "startLineNumber": 159,
+                  "startColumn": 1,
+                  "endLineNumber": 159,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n        setError(toMessage(err));",
+                "range": {
+                  "startLineNumber": 160,
+                  "startColumn": 1,
+                  "endLineNumber": 160,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n        throw err;",
+                "range": {
+                  "startLineNumber": 161,
+                  "startColumn": 1,
+                  "endLineNumber": 161,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n      } finally {",
+                "range": {
+                  "startLineNumber": 162,
+                  "startColumn": 1,
+                  "endLineNumber": 162,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n        setLoading(false);",
+                "range": {
+                  "startLineNumber": 163,
+                  "startColumn": 1,
+                  "endLineNumber": 163,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n      }",
+                "range": {
+                  "startLineNumber": 164,
+                  "startColumn": 1,
+                  "endLineNumber": 164,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    },",
+                "range": {
+                  "startLineNumber": 165,
+                  "startColumn": 1,
+                  "endLineNumber": 165,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    [endpoint, options]",
+                "range": {
+                  "startLineNumber": 166,
+                  "startColumn": 1,
+                  "endLineNumber": 166,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  );",
+                "range": {
+                  "startLineNumber": 167,
+                  "startColumn": 1,
+                  "endLineNumber": 167,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n",
+                "range": {
+                  "startLineNumber": 168,
+                  "startColumn": 1,
+                  "endLineNumber": 168,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  // --- Efeito de Carga Automática ---",
+                "range": {
+                  "startLineNumber": 169,
+                  "startColumn": 1,
+                  "endLineNumber": 169,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n",
+                "range": {
+                  "startLineNumber": 170,
+                  "startColumn": 1,
+                  "endLineNumber": 170,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  useEffect(() => {",
+                "range": {
+                  "startLineNumber": 171,
+                  "startColumn": 1,
+                  "endLineNumber": 171,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    if (endpoint) {",
+                "range": {
+                  "startLineNumber": 172,
+                  "startColumn": 1,
+                  "endLineNumber": 172,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n      load();",
+                "range": {
+                  "startLineNumber": 173,
+                  "startColumn": 1,
+                  "endLineNumber": 173,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    }",
+                "range": {
+                  "startLineNumber": 174,
+                  "startColumn": 1,
+                  "endLineNumber": 174,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    // Cleanup para abortar a requisição se o componente desmontar",
+                "range": {
+                  "startLineNumber": 175,
+                  "startColumn": 1,
+                  "endLineNumber": 175,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    return () => abortRef.current?.abort();",
+                "range": {
+                  "startLineNumber": 176,
+                  "startColumn": 1,
+                  "endLineNumber": 176,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  }, [endpoint, load]); // Depende do endpoint para refazer a busca se ele mudar",
+                "range": {
+                  "startLineNumber": 177,
+                  "startColumn": 1,
+                  "endLineNumber": 177,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n",
+                "range": {
+                  "startLineNumber": 178,
+                  "startColumn": 1,
+                  "endLineNumber": 178,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  return {",
+                "range": {
+                  "startLineNumber": 179,
+                  "startColumn": 1,
+                  "endLineNumber": 179,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    data,",
+                "range": {
+                  "startLineNumber": 180,
+                  "startColumn": 1,
+                  "endLineNumber": 180,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    loading,",
+                "range": {
+                  "startLineNumber": 181,
+                  "startColumn": 1,
+                  "endLineNumber": 181,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    error,",
+                "range": {
+                  "startLineNumber": 182,
+                  "startColumn": 1,
+                  "endLineNumber": 182,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    // Funções expostas com tipagem forte",
+                "range": {
+                  "startLineNumber": 183,
+                  "startColumn": 1,
+                  "endLineNumber": 183,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    functions: {",
+                "range": {
+                  "startLineNumber": 184,
+                  "startColumn": 1,
+                  "endLineNumber": 184,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n      load,",
+                "range": {
+                  "startLineNumber": 185,
+                  "startColumn": 1,
+                  "endLineNumber": 185,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n      create,",
+                "range": {
+                  "startLineNumber": 186,
+                  "startColumn": 1,
+                  "endLineNumber": 186,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n      update,",
+                "range": {
+                  "startLineNumber": 187,
+                  "startColumn": 1,
+                  "endLineNumber": 187,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n      remove,",
+                "range": {
+                  "startLineNumber": 188,
+                  "startColumn": 1,
+                  "endLineNumber": 188,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n      setData, // Expor o setter para manipulação manual se necessário",
+                "range": {
+                  "startLineNumber": 189,
+                  "startColumn": 1,
+                  "endLineNumber": 189,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n    },",
+                "range": {
+                  "startLineNumber": 190,
+                  "startColumn": 1,
+                  "endLineNumber": 190,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n  };",
+                "range": {
+                  "startLineNumber": 191,
+                  "startColumn": 1,
+                  "endLineNumber": 191,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n}",
+                "range": {
+                  "startLineNumber": 192,
+                  "startColumn": 1,
+                  "endLineNumber": 192,
+                  "endColumn": 1
+                }
+              }
+            ],
+            [
+              {
+                "text": "\n",
+                "range": {
+                  "startLineNumber": 193,
+                  "startColumn": 1,
+                  "endLineNumber": 193,
+                  "endColumn": 1
+                }
+              }
+            ],
+            []
+          ],
+          "done": true
+        }
+      ],
+      "responseId": "response_50189cde-c280-469b-b7d5-a718efb34517",
+      "isCanceled": false,
+      "contentReferences": [],
+      "codeCitations": [],
+      "timestamp": 1761274950979
+    }
+  ],
+  "sessionId": "3b0fb376-776a-48af-a9b4-e3b65d5a09ef",
+  "creationDate": 1761274950958,
+  "isImported": false,
+  "lastMessageDate": 1761274950979
+}

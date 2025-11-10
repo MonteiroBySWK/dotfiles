@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>JTCheck System – Student Dashboard</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons via CDN -->
+  <script src="https://unpkg.com/lucide"></script>
+  <style>
+    /* Garante que, ao inserir novos elementos via JS, o Lucide converta para SVG */
+    .lucide {
+      vertical-align: middle;
+    }
+    body {
+      margin: 0;
+      background-color: #f4f4f4;
+      /* REMOVI min-h-screen e display:flex */
+      padding: 20px; /* espaçamento leve ao redor */
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="bg-blue-600 text-white shadow-md -webkit-app-region: drag;">
+    <div class="max-w-6xl mx-auto flex justify-between items-center px-4 py-4">
+      <div>
+        <h1 class="text-2xl font-bold">JTCheck System</h1>
+        <p class="text-blue-100">Student Dashboard</p>
+      </div>
+      <div class="flex items-center gap-4 -webkit-app-region: no-drag;">
+        <div class="text-right">
+          <p id="user-name" class="font-medium">John Doe</p>
+          <p id="user-id" class="text-sm text-blue-100">JT0012345</p>
+        </div>
+        <button
+          id="btn-logout"
+          class="
+            flex items-center gap-2
+            bg-blue-700 hover:bg-blue-800 
+            text-white text-sm px-3 py-1.5 
+            rounded-md border border-blue-500
+            transition-colors
+            -webkit-app-region: no-drag;
+          ">
+          <i data-lucide="log-out" class="h-4 w-4"></i>
+          Logout
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="max-w-6xl mx-auto px-4 py-6 -webkit-app-region: no-drag;">
+    <!-- Cards de Estatísticas -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+      <div class="bg-white rounded-lg shadow p-5">
+        <p class="text-sm font-medium text-gray-500">Total Classes</p>
+        <p id="total-classes" class="mt-2 text-3xl font-bold">0</p>
+      </div>
+      <div class="bg-white rounded-lg shadow p-5">
+        <p class="text-sm font-medium text-gray-500">Present</p>
+        <p id="present-count" class="mt-2 text-3xl font-bold text-green-600">0</p>
+      </div>
+      <div class="bg-white rounded-lg shadow p-5">
+        <p class="text-sm font-medium text-gray-500">Absent</p>
+        <p id="absent-count" class="mt-2 text-3xl font-bold text-red-600">0</p>
+      </div>
+      <div class="bg-white rounded-lg shadow p-5">
+        <p class="text-sm font-medium text-gray-500">Attendance Rate</p>
+        <p id="attendance-rate" class="mt-2 text-3xl font-bold text-blue-600">0%</p>
+      </div>
+    </div>
+
+    <!-- Tabela de Registros -->
+    <div class="bg-white rounded-lg shadow">
+      <div class="flex items-center border-b px-5 py-4">
+        <i data-lucide="calendar" class="h-5 w-5 text-gray-600 mr-2"></i>
+        <h2 class="text-lg font-semibold">Your Attendance Records</h2>
+      </div>
+      <p class="px-5 py-2 text-gray-500">View your complete attendance history</p>
+
+      <div id="records-container" class="p-5">
+        <p id="no-records-msg" class="text-center text-gray-500 py-10">Loading...</p>
+        <div id="records-table-wrapper" class="hidden overflow-x-auto rounded-md border">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Notes</th>
+              </tr>
+            </thead>
+            <tbody id="records-body" class="bg-white divide-y divide-gray-200">
+              <!-- Linhas serão injetadas via JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Renderiza os ícones Lucide
+    document.addEventListener("DOMContentLoaded", () => {
+      if (window.lucide) {
+        window.lucide.replace();
+      }
+
+      // === MOCK de dados de presença ===
+      function getMockAttendanceData() {
+        return [
+          { id: "1", enrollmentId: "JT0012345", date: "2025-05-01T10:00:00Z", status: "present", notes: "" },
+          { id: "2", enrollmentId: "JT0012345", date: "2025-05-03T10:00:00Z", status: "absent", notes: "Sick" },
+          { id: "3", enrollmentId: "JT0012345", date: "2025-05-05T10:00:00Z", status: "late", notes: "Traffic" },
+          // outros registros...
+        ];
+      }
+
+      // Simula usuário fixo (ignora autenticação)
+      const userData = {
+        id: "JT0012345",
+        name: "John Doe",
+        type: "student"
+      };
+
+      document.getElementById("user-name").innerText = userData.name;
+      document.getElementById("user-id").innerText = userData.id;
+
+      // Filtra registros pelo enrollmentId
+      const allRecords = getMockAttendanceData();
+      const attendanceRecords = allRecords.filter(rec => rec.enrollmentId === userData.id);
+
+      // Calcula estatísticas
+      const totalClasses = attendanceRecords.length;
+      const presentCount = attendanceRecords.filter(r => r.status === "present").length;
+      const absentCount = attendanceRecords.filter(r => r.status === "absent").length;
+      const attendanceRate = totalClasses > 0 ? Math.round((presentCount / totalClasses) * 100) : 0;
+
+      document.getElementById("total-classes").innerText = totalClasses;
+      document.getElementById("present-count").innerText = presentCount;
+      document.getElementById("absent-count").innerText = absentCount;
+      document.getElementById("attendance-rate").innerText = attendanceRate + "%";
+
+      const noRecordsMsg = document.getElementById("no-records-msg");
+      const tableWrapper = document.getElementById("records-table-wrapper");
+      const tbody = document.getElementById("records-body");
+
+      if (attendanceRecords.length === 0) {
+        noRecordsMsg.innerText = "No attendance records found";
+        tableWrapper.classList.add("hidden");
+      } else {
+        noRecordsMsg.classList.add("hidden");
+        tableWrapper.classList.remove("hidden");
+
+        attendanceRecords.forEach(record => {
+          const tr = document.createElement("tr");
+
+          // Data
+          const tdDate = document.createElement("td");
+          tdDate.className = "px-6 py-4 whitespace-nowrap text-sm text-gray-900";
+          const dateObj = new Date(record.date);
+          tdDate.innerText = dateObj.toLocaleDateString();
+          tr.appendChild(tdDate);
+
+          // Status com Badge
+          const tdStatus = document.createElement("td");
+          tdStatus.className = "px-6 py-4 whitespace-nowrap text-sm text-gray-900";
+          const badge = document.createElement("span");
+          badge.classList.add(
+            "px-2",
+            "inline-flex",
+            "text-xs",
+            "leading-5",
+            "font-semibold",
+            "rounded-full"
+          );
+          if (record.status === "present") {
+            badge.classList.add("bg-green-100", "text-green-800");
+            badge.innerText = "Present";
+          } else if (record.status === "absent") {
+            badge.classList.add("bg-red-100", "text-red-800");
+            badge.innerText = "Absent";
+          } else {
+            badge.classList.add("bg-yellow-100", "text-yellow-800");
+            badge.innerText = "Late";
+          }
+          tdStatus.appendChild(badge);
+          tr.appendChild(tdStatus);
+
+          // Notas
+          const tdNotes = document.createElement("td");
+          tdNotes.className = "px-6 py-4 whitespace-nowrap text-sm text-gray-500";
+          tdNotes.innerText = record.notes || "-";
+          tr.appendChild(tdNotes);
+
+          tbody.appendChild(tr);
+        });
+      }
+
+      // Botão de Logout (aqui só mostra um alert)
+      document.getElementById("btn-logout").addEventListener("click", () => {
+        alert("Logout clicked. Implemente sua lógica de logout aqui.");
+      });
+    });
+  </script>
+</body>
+</html>

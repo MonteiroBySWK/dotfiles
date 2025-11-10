@@ -1,0 +1,14 @@
+{
+  "environment": {
+    "executable": "/home/monteiro/codes/zenith/.venv/bin/python",
+    "prefix": "/home/monteiro/codes/zenith/.venv",
+    "version": "3.12.10.final.0",
+    "is64Bit": true,
+    "symlinks": [
+      "/home/monteiro/codes/zenith/.venv/bin/python",
+      "/home/monteiro/codes/zenith/.venv/bin/python3",
+      "/home/monteiro/codes/zenith/.venv/bin/python3.12"
+    ]
+  },
+  "symlinks": []
+}

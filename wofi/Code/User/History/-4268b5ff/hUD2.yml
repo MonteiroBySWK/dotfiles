@@ -1,0 +1,10 @@
+services:
+  app:
+    image: thera/sgi:0.1
+    environment:
+      - SPRING_DATABSE_URL=dndakdnanda
+
+  db:
+    image: mysql:latest
+
+    

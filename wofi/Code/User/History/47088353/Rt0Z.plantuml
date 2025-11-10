@@ -1,0 +1,63 @@
+@startuml Autenticação e Controle de Acesso
+!pragma layout elk
+skinparam packageStyle rectangle
+
+actor "Usuário Não Autenticado" as usuario
+actor "Membro do Laboratório" as membro
+actor "Administrador" as admin
+actor "Estagiário/Auxiliar" as estagiario
+
+rectangle "Autenticação e Controle de Acesso" {
+  (Fazer Login) as login
+  (Validar E-mail Institucional) as validar_email
+  (Cadastrar Novo Usuário) as cadastro
+  (Confirmar E-mail) as confirmar_email
+  (Recuperar Senha) as recuperar_senha
+  (Manter Sessão Ativa) as sessao
+  (Fazer Logout) as logout
+  (Acessar Área Restrita) as acesso_restrito
+}
+
+usuario --> login
+usuario --> cadastro
+usuario --> recuperar_senha
+
+membro --|> usuario
+admin --|> membro
+estagiario --|> membro
+
+login ..> validar_email : include
+login ..> sessao : include
+login ..> acesso_restrito : include
+
+cadastro ..> validar_email : include
+cadastro ..> confirmar_email : include
+
+membro --> logout
+membro --> acesso_restrito
+
+note right of login
+  REQ-11, REQ-12, REQ-13:
+  Autenticação com e-mail
+  institucional @uema.br
+end note
+
+note right of cadastro
+  REQ-14, REQ-15:
+  Cadastro com validação
+  de e-mail institucional
+end note
+
+note right of acesso_restrito
+  REQ-17, REQ-18:
+  Diferentes níveis de acesso
+  (Administrador, Membro, Estagiário)
+end note
+
+note right of sessao
+  REQ-19, REQ-20:
+  Sessão ativa configurável
+  com opção de logout manual
+end note
+
+@enduml

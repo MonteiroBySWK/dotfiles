@@ -1,0 +1,38 @@
+{
+  "name": "jt-check",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/AlisonCostaDev/JT-Check#readme",
+  "bugs": {
+    "url": "https://github.com/AlisonCostaDev/JT-Check/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlisonCostaDev/JT-Check.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "live-server --port=8080",
+    "build": "electron-builder --linux --x64",
+    "build:win": "electron-builder --win --x64",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "build": {
+    "appId": "com.seuapp.tray",
+    "productName": "TrayApp",
+    "files": [
+      "**/*"
+    ],
+    "win": {
+      "target": "portable"
+    }
+  },
+  "devDependencies": {
+    "electron": "^36.3.2",
+    "electron-builder": "^26.0.12",
+    "live-server": "^1.2.2"
+  }
+}

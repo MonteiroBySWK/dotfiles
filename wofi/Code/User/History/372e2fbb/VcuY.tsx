@@ -1,0 +1,85 @@
+import TitleSection from "../components/ui/TitleSection";
+import type { dataProject } from "@/constants/ProjectData";
+import { dataProjectArr } from "@/constants/ProjectData";
+import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
+import Section from "../components/ui/Section";
+import Image from "next/image";
+
+const checkColorStatus = (status: "FINISHED" | "IN_PROGRESS" | "MODELING") => {
+  if (status === "FINISHED") {
+    return "text-green-800 bg-green-200 border-green-700";
+  }
+
+  if (status === "IN_PROGRESS") {
+    return "text-blue-800 bg-blue-200 border-blue-700";
+  }
+
+  if (status === "MODELING") {
+    return "text-purple-800 bg-purple-200 border-purple-700";
+  }
+};
+
+const ProjectItem = ({ data }: { data: dataProject }) => {
+  return (
+    <div className="flex border border-border p-4 text-txt-primary">
+      <div className="relative w-1/3">
+        <Image src="/assets/image_project.webp" className="object-fill" />
+        <span
+          className={`px-2 py-0.5 absolute top-0 left-0 z-1 ${checkColorStatus(
+            data.status
+          )}`}
+        >
+          {data.status}
+        </span>
+
+        <div className="duration-200 hover:opacity-30 opacity-0 bg-black h-full w-2/12 absolute left-0 top-0 flex items-center justify-center cursor-pointer">
+          <ArrowBigLeft />
+        </div>
+        <div className="duration-200 hover:opacity-30 opacity-0 bg-black h-full w-2/12 absolute right-0 top-0 flex items-center justify-center cursor-pointer">
+          <ArrowBigRight />
+        </div>
+
+        <div className="absolute flex gap-5 bottom-4 left-1/2 -translate-x-1/2">
+          <span className="size-4 rounded-full bg-blue-400"></span>
+          <span className="size-4 rounded-full bg-blue-400"></span>
+          <span className="size-4 rounded-full bg-blue-400"></span>
+        </div>
+      </div>
+
+      <div className="px-4 w-2/3">
+        <h3 className="font-extrabold text-primary text-2xl mb-2.5">
+          {data.name}
+        </h3>
+        <p className="mb-4">{data.description}</p>
+        <div className="flex gap-2 flex-wrap mb-6">
+          {data.technologies.map((e, i) => (
+            <span key={i} className="px-3 py-0.5 bg-card">
+              {e}
+            </span>
+          ))}
+        </div>
+        <a
+          href={data.url}
+          className="flex w-fit justify-center items-center gap-x-1 bg-primary py-0.5 px-3 transition-all duration-200 hover:scale-105"
+        >
+          Ver Github
+        </a>
+      </div>
+    </div>
+  );
+};
+
+export default function NewProjects() {
+  return (
+    <Section id="projects" className="h-screen max-w-7xl flex flex-col items-center justify-center mx-auto">
+      <TitleSection>Projetos</TitleSection>
+
+      <ProjectItem data={dataProjectArr[0]} />
+      <div className="flex gap-x-2">
+        <div className="size-2 bg-gray-500 rounded-full"></div>
+        <div className="size-2 bg-gray-500 rounded-full"></div>
+        <div className="size-2 bg-gray-500 rounded-full"></div>
+      </div>
+    </Section>
+  );
+}

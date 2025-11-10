@@ -1,0 +1,12 @@
+@startuml
+title "UC-02b: Cadastrar Novo Usuário"
+actor "Novo Usuário"
+participant Sistema
+
+"Novo Usuário" -> Sistema : 1. Acessa área de cadastro
+note right: Passo 6 da sequência 
+Sistema --> "Novo Usuário" : (Exibe formulário de cadastro)
+"Novo Usuário" -> Sistema : 2. Solicita cadastro com e-mail institucional
+Sistema -> Sistema : 3. Realiza validação de e-mail 
+Sistema --> "Novo Usuário" : 4. (Após validação) Conclui cadastro
+@enduml

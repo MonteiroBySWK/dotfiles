@@ -1,0 +1,63 @@
+import { NextResponse } from 'next/server';
+
+// Handler para requisições POST
+export async function POST(
+  request: Request,
+  { params }: { params: { slug: string[] } }
+) {
+  // params.slug será um array com os segmentos da URL.
+  // Ex: /api/auth/register/client -> slug = ['register', 'client']
+  const path = params.slug.join('/'); // Transforma ['register', 'client'] em 'register/client'
+
+  try {
+    const body = await request.json();
+
+    switch (path) {
+      case 'register':
+        // Lógica para POST /api/auth/register
+        // const { email, password, type } = body;
+        // const result = await authService.register(...);
+        return NextResponse.json({ message: 'User registered successfully', data: { /* ... */ } }, { status: 201 });
+
+      case 'register/client/cpf':
+        // Lógica para POST /api/auth/register/client/cpf
+        // const { user, client } = body;
+        // const result = await clientService.registerCpf(...);
+        return NextResponse.json({ message: 'Client CPF registered successfully', data: { /* ... */ } }, { status: 201 });
+
+      case 'login':
+        // Lógica para POST /api/auth/login
+        // const { email, password } = body;
+        // const result = await authService.login(...);
+        return NextResponse.json({ message: 'User logged in successfully', data: { /* ... */ } }, { status: 200 });
+      
+      // Adicione outros cases para cada rota POST
+      // case 'change-password':
+      // ...
+
+      default:
+        return NextResponse.json({ message: 'Route not found' }, { status: 404 });
+    }
+  } catch (error) {
+    return NextResponse.json({ message: 'An error occurred', error: (error as Error).message }, { status: 500 });
+  }
+}
+
+// Handler para requisições GET
+export async function GET(
+  request: Request,
+  { params }: { params: { slug: string[] } }
+) {
+  const path = params.slug.join('/');
+
+  switch (path) {
+    case 'me':
+      // Lógica para GET /api/auth/me
+      // Ex: verificar o header de autorização
+      // const user = await authService.getMe(request.headers.get('Authorization'));
+      return NextResponse.json({ message: 'User retrieved successfully', data: { /* ... */ } });
+
+    default:
+      return NextResponse.json({ message: 'Route not found' }, { status: 404 });
+  }
+}

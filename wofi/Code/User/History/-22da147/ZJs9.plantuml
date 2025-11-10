@@ -1,0 +1,42 @@
+@startuml Administrador - Gestão de Conteúdo
+scale 1920*1080
+left to right direction
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam backgroundColor white
+
+title Gestão de Conteúdo Acadêmico - Casos de Uso do Administrador
+
+actor Administrador as admin
+
+rectangle "Gestão de Conteúdo Acadêmico" {
+  (Fazer Upload de Material) as upload
+  (Validar Tipo de Arquivo) as validar_tipo
+  (Validar Tamanho do Arquivo) as validar_tamanho
+  (Categorizar Material) as categorizar
+  (Registrar Informações do Material) as info_material
+  (Editar Informações do Material) as editar
+  (Excluir Material) as excluir
+}
+
+admin --> upload
+admin --> editar
+admin --> excluir
+
+upload .> validar_tipo : include
+upload .> validar_tamanho : include
+upload .> categorizar : include
+upload .> info_material : include
+
+legend right
+  |= Requisito |= Descrição |
+  | REQ-43 | Upload de materiais por usuários autorizados |
+  | REQ-44 | Suportar arquivos PDF, DOCX, XLSX, PPT, ZIP |
+  | REQ-45 | Limitar tamanho máximo de arquivo (50MB) |
+  | REQ-46 | Categorizar materiais acadêmicos |
+  | REQ-47 | Registrar informações do material |
+  | REQ-51 | Editar informações de materiais existentes |
+  | REQ-52 | Excluir materiais por usuários autorizados |
+endlegend
+
+@enduml

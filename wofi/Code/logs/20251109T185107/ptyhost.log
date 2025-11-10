@@ -1,0 +1,1 @@
+2025-11-09 18:51:10.460 [error] Failed to set sticky bit on /tmp/monteiro-code-zsh: Error: ENOENT: no such file or directory, chmod '/tmp/monteiro-code-zsh'

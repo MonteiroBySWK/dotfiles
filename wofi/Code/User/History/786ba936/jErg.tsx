@@ -1,0 +1,150 @@
+'use client';
+
+import { DashboardLayout } from '@/src/components/layout/DashboardLayout';
+import { PageHeader } from '@/src/components/layout/PageHeader';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { UserPlus, Trash2, Shield, Mail } from 'lucide-react';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+
+const mockUsers = [
+  { id: 1, nome: 'Admin Sistema', email: 'admin@revis.com', role: 'admin', ativo: true },
+  { id: 2, nome: 'João Silva', email: 'joao@revis.com', role: 'operador', ativo: true },
+  { id: 3, nome: 'Maria Santos', email: 'maria@revis.com', role: 'visualizador', ativo: false },
+];
+
+export default function ConfiguracoesPage() {
+  return (
+    <DashboardLayout 
+      title="Configurações"
+      breadcrumbs={[
+        { label: 'Início', href: '/' },
+        { label: 'Configurações' }
+      ]}
+    >
+      <PageHeader
+        title="Configurações do Sistema"
+        subtitle="Gerencie usuários, permissões e configurações gerais"
+        actions={
+          <Button className="gap-2">
+            <UserPlus className="h-4 w-4" />
+            Novo Usuário
+          </Button>
+        }
+      />
+
+      <div className="mt-6 space-y-6">
+        {/* Gerenciamento de Usuários */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Usuários do Sistema</CardTitle>
+            <CardDescription>
+              Cadastre e gerencie usuários com acesso ao sistema
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Nome</TableHead>
+                  <TableHead>E-mail</TableHead>
+                  <TableHead>Função</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead className="text-right">Ações</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {mockUsers.map((user) => (
+                  <TableRow key={user.id}>
+                    <TableCell className="font-medium">{user.nome}</TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <Mail className="h-4 w-4 text-muted-foreground" />
+                        {user.email}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant={user.role === 'admin' ? 'default' : 'secondary'}>
+                        {user.role === 'admin' && <Shield className="h-3 w-3 mr-1" />}
+                        {user.role === 'admin' ? 'Administrador' : 
+                         user.role === 'operador' ? 'Operador' : 'Visualizador'}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant={user.ativo ? 'success' : 'secondary'}>
+                        {user.ativo ? 'Ativo' : 'Inativo'}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex justify-end gap-2">
+                        <Button variant="ghost" size="sm">
+                          Editar
+                        </Button>
+                        <Button variant="ghost" size="sm" className="text-destructive">
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+
+        {/* Configurações Gerais */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Configurações Gerais</CardTitle>
+            <CardDescription>
+              Ajuste as configurações globais do sistema
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="empresa">Nome da Empresa</Label>
+                <Input id="empresa" placeholder="REVIS" defaultValue="REVIS" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="email-suporte">E-mail de Suporte</Label>
+                <Input id="email-suporte" type="email" placeholder="suporte@revis.com" />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="estoque-min">Alerta de Estoque Mínimo (%)</Label>
+              <Input id="estoque-min" type="number" defaultValue="20" />
+              <p className="text-xs text-muted-foreground">
+                Porcentagem do estoque mínimo para disparar alertas
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="validade-alerta">Alerta de Validade (dias)</Label>
+              <Input id="validade-alerta" type="number" defaultValue="7" />
+              <p className="text-xs text-muted-foreground">
+                Número de dias antes do vencimento para alertar
+              </p>
+            </div>
+
+            <div className="flex justify-end gap-2 pt-4">
+              <Button variant="outline">Cancelar</Button>
+              <Button>Salvar Configurações</Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </DashboardLayout>
+  );
+}

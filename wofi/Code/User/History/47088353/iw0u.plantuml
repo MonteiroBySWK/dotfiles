@@ -1,0 +1,32 @@
+@startuml
+' Diagrama de Caso de Uso: Autenticação e Controle de Acesso
+
+left to right direction
+
+actor "Usuário" as Usuario
+actor "Membro" as Membro
+actor "Administrador" as Admin
+
+rectangle "Sistema NeoLab" {
+  (Fazer Login)
+  (Fazer Cadastro)
+  (Recuperar Senha)
+  (Fazer Logout)
+  (Gerenciar Níveis de Acesso)
+  (Validar E-mail Institucional)
+}
+
+Usuario --> (Fazer Login)
+Usuario --> (Fazer Cadastro)
+Usuario --> (Recuperar Senha)
+
+Membro --> (Fazer Logout)
+
+(Fazer Cadastro) .> (Validar E-mail Institucional) : <<include>>
+(Fazer Login) .> (Validar E-mail Institucional) : <<include>>
+
+Admin --> (Gerenciar Níveis de Acesso)
+
+Membro <|-- Admin
+
+@enduml

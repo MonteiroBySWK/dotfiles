@@ -1,0 +1,34 @@
+# Nome do executável
+TARGET = main
+
+# Compilador
+CC = gcc
+
+# Flags de compilação
+CFLAGS = -Wall -Wextra -I./src
+
+# Arquivo principal
+MAIN = main.c
+
+# Diretório onde estão os módulos
+SRC_DIR = src
+
+# Busca todos os .c dentro de src e subpastas
+SRC = $(wildcard $(SRC_DIR)/**/*.c) $(wildcard $(SRC_DIR)/*.c)
+
+# Gera arquivos .o correspondentes
+OBJ = $(SRC:.c=.o)
+
+# Regra padrão
+all: $(TARGET)
+
+# Compila o executável
+$(TARGET): $(MAIN) $(OBJ)
+	$(CC) $(CFLAGS) -o $@ $^
+
+# Limpeza dos arquivos .o e executável
+clean:
+	rm -f $(TARGET) $(OBJ)
+
+# Evita que arquivos como "main" ou "clean" sejam considerados arquivos reais
+.PHONY: all clean

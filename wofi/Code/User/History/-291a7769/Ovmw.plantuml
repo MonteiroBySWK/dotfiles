@@ -1,0 +1,49 @@
+@startuml Visitante - Landing Page Pública
+scale 1920*1080
+left to right direction
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam backgroundColor white
+
+title Landing Page Pública - Casos de Uso do Visitante
+
+actor Visitante as visitante
+
+rectangle "Landing Page Pública (LAICOPI)" {
+  (Visualizar Página Inicial) as home
+  (Visualizar Portfólio) as portfolio
+  (Visualizar Detalhes do Projeto) as detalhes_projeto
+  (Visualizar Catálogo de Equipamentos) as catalogo_equip
+  (Visualizar Detalhes do Equipamento) as detalhes_equip
+  (Visualizar Perfis dos Pesquisadores) as perfis
+  (Visualizar Informações de Contato) as contato
+  (Visualizar Mapa de Localização) as mapa
+  (Enviar Mensagem de Contato) as enviar_msg
+}
+
+visitante --> home
+visitante --> portfolio
+visitante --> catalogo_equip
+visitante --> perfis
+visitante --> contato
+
+portfolio .> detalhes_projeto : include
+catalogo_equip .> detalhes_equip : include
+contato .> mapa : include
+contato .> enviar_msg : include
+
+legend right
+  |= Requisito |= Descrição |
+  | REQ-01 | Exibir página inicial com textos, imagens e destaques |
+  | REQ-02 | Apresentar seção de portfólio com lista de projetos |
+  | REQ-03 | Visualização detalhada de cada projeto |
+  | REQ-04 | Exibir catálogo de equipamentos com fotos |
+  | REQ-05 | Visualização detalhada de cada equipamento |
+  | REQ-06 | Apresentar perfis dos pesquisadores |
+  | REQ-07 | Exibir informações de contato |
+  | REQ-08 | Apresentar mapa de localização |
+  | REQ-09 | Disponibilizar formulário de contato |
+  | REQ-10 | Menu de navegação responsivo |
+endlegend
+
+@enduml

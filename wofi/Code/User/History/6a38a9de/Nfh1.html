@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>JTCheck System – Login</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background-color: #f4f4f4;
+      /* Removi display:flex e height:100vh */
+      padding: 20px; /* espaçamento leve ao redor */
+    }
+
+    .card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      width: 380px;
+      margin: 0 auto; /* centraliza horizontalmente */
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Cabeçalho arrastável */
+    .card-header {
+      background-color: #1e88e5;
+      color: white;
+      padding: 20px;
+      -webkit-app-region: drag;
+    }
+
+    .card-header h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .card-header p {
+      margin: 5px 0 0;
+      font-size: 13px;
+    }
+
+    .tabs {
+      display: flex;
+      background-color: #f1f1f1;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .tab {
+      flex: 1;
+      padding: 12px;
+      text-align: center;
+      cursor: pointer;
+      background-color: #f1f1f1;
+      border-bottom: 2px solid transparent;
+      transition: 0.2s;
+      -webkit-app-region: no-drag; /* impede arrastar aqui */
+    }
+
+    .tab.active {
+      background-color: #ffffff;
+      border-bottom: 2px solid #1e88e5;
+      font-weight: 600;
+    }
+
+    .card-body {
+      padding: 20px;
+      -webkit-app-region: no-drag;
+    }
+
+    .input-group {
+      margin-bottom: 16px;
+    }
+
+    .input-group label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      -webkit-app-region: no-drag;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      background-color: #1976d2;
+      color: white;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      -webkit-app-region: no-drag;
+    }
+
+    .btn:hover {
+      background-color: #1565c0;
+    }
+
+    .card-footer {
+      text-align: center;
+      font-size: 13px;
+      color: #777;
+      background-color: #f9f9f9;
+      padding: 10px;
+      border-top: 1px solid #eee;
+      -webkit-app-region: no-drag;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="card-header">
+      <h2>JTCheck System</h2>
+      <p>Authentication</p>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab('student')">Student</div>
+      <div class="tab" onclick="switchTab('monitor')">Monitor</div>
+    </div>
+
+    <div class="card-body">
+      <form id="student" class="tab-content active">
+        <div class="input-group">
+          <label for="student-id">Student ID</label>
+          <input type="text" id="student-id" placeholder="Format: JT00XXXXX" />
+        </div>
+        <div class="input-group">
+          <label for="student-pass">Password</label>
+          <input type="password" id="student-pass" placeholder="Enter your password" />
+        </div>
+        <button type="submit" class="btn">Login as Student</button>
+      </form>
+
+      <form id="monitor" class="tab-content">
+        <div class="input-group">
+          <label for="monitor-id">Monitor ID</label>
+          <input type="text" id="monitor-id" placeholder="Format: JT00XXXXX" />
+        </div>
+        <div class="input-group">
+          <label for="monitor-pass">Password</label>
+          <input type="password" id="monitor-pass" placeholder="Enter your password" />
+        </div>
+        <button type="submit" class="btn">Login as Monitor</button>
+      </form>
+    </div>
+
+    <div class="card-footer">
+      Enter your credentials to access the JTCheck attendance system
+    </div>
+  </div>
+
+  <script>
+    function switchTab(tab) {
+      document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+      document.querySelectorAll(".tab-content").forEach(tc => tc.classList.remove("active"));
+
+      document.querySelector(`.tab-content#${tab}`).classList.add("active");
+      document.querySelector(`.tab[onclick="switchTab('${tab}')"]`).classList.add("active");
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      if (window.lucide) window.lucide.replace();
+    });
+  </script>
+</body>
+</html>

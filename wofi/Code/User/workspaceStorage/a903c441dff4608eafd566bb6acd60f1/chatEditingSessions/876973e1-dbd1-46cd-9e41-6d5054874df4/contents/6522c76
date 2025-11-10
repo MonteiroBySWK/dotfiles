@@ -1,0 +1,115 @@
+function TimelineRow({
+  date,
+  title,
+  description,
+  icon,
+}: {
+  date: string;
+  title: string;
+  description: React.ReactNode;
+  icon?: React.ReactNode;
+}) {
+  return (
+    <div className="grid grid-cols-[120px_1fr] gap-6 py-6 items-start">
+      <div className="text-sm text-gray-500 text-right">{date}</div>
+      <div>
+        <div className="flex items-center gap-2 mb-1">
+          {icon}
+          <h3 className="font-semibold text-base">{title}</h3>
+        </div>
+        <ul className="text-sm text-gray-800 list-disc list-inside space-y-1">
+          {description}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+
+function TimelineGrid() {
+  return (
+    <section className="my-12">
+      <h2 className="text-2xl font-bold mb-8">Linha do Tempo Profissional</h2>
+
+      <TimelineRow
+        date="2023 – Presente"
+        title="Fundador da TheraLabs"
+        icon={<span>🚀</span>}
+        description={
+          <>
+            <li>Coordenei um laboratório de desenvolvimento como PO e líder técnico.</li>
+            <li>Implantei infraestrutura, segurança e deploy para projetos reais.</li>
+          </>
+        }
+      />
+
+      <TimelineRow
+        date="2023 – 2024"
+        title="Dev FullStack na TechnosJR"
+        icon={<span>🏢</span>}
+        description={
+          <>
+            <li>Criei um ERP modular em Django para PMEs e órgãos públicos.</li>
+            <li>Implementei dashboards, exportações e autenticação segura.</li>
+          </>
+        }
+      />
+
+      <TimelineRow
+        date="2025"
+        title="Grupo Mateus – Jovem Tech"
+        icon={<span>📈</span>}
+        description={
+          <>
+            <li>Modelei previsão de demanda com séries temporais.</li>
+            <li>Automatizei relatórios técnicos com foco em logística e perdas.</li>
+          </>
+        }
+      />
+    </section>
+  );
+}
+
+
+export default function Projects() {
+  return (
+    <section>
+      <h2 className="text-xl font-bold mb-3 text-slate-900 tracking-tight">Projetos e Experiências</h2>
+
+      <div className="space-y-6">
+        <article className="bg-white/80 rounded-lg space-y-2">
+          <h3 className="text-lg font-semibold text-slate-800 mb-1">TheraLabs - Software House</h3>
+          <p className="text-sm text-slate-600 mb-2"><strong>Cargo:</strong> Fundador & Coordenador | <strong>Período:</strong> Maio/2023 – Presente</p>
+          <ul className="list-disc list-inside ml-4 text-slate-700 text-sm space-y-1">
+            <li>Coordenei um laboratório de desenvolvimento atuando como Product Owner e líder técnico.</li>
+            <li>Gerenciei equipes multidisciplinares em projetos para PMEs e instituições públicas.</li>
+            <li>Implementei infraestrutura de hospedagem, pipelines de deploy e práticas de segurança.</li>
+          </ul>
+        </article>
+
+        <article className="bg-white/80 rounded-lg space-y-2">
+          <h3 className="text-lg font-semibold text-slate-800 mb-1">TechnosJR - Empresa Júnior de Engenharia de Computação</h3>
+          <p className="text-sm text-slate-600 mb-2"><strong>Cargo:</strong> Desenvolvedor FullStack Voluntário | <strong>Período:</strong> Ago/2023 – Ago/2024</p>
+          <ul className="list-disc list-inside ml-4 text-slate-700 text-sm space-y-1">
+            <li>Desenvolvi um ERP modular em Django cobrindo atendimento, serviços e finanças.</li>
+            <li>Implementei dashboards, relatórios exportáveis e autenticação com segurança OWASP.</li>
+            <li>Participei do ciclo completo: requisitos, modelagem, desenvolvimento, testes e manutenção.</li>
+          </ul>
+        </article>
+
+        <article className="bg-white/80 rounded-lg space-y-2">
+          <h3 className="text-lg font-semibold text-slate-800 mb-1">Jovem Tech - Grupo Mateus</h3>
+          <p className="text-sm text-slate-600 mb-2"><strong>Projeto:</strong> Previsão de Demanda com Séries Temporais | <strong>Ano:</strong> 2025</p>
+          <ul className="list-disc list-inside ml-4 text-slate-700 text-sm space-y-1">
+            <li>Modelei previsões para retirada de SKUs congelados com base em séries temporais.</li>
+            <li>Automatizei geração de relatórios diários em CSV com documentação técnica completa.</li>
+            <li>Foquei na redução de perdas logísticas e melhora da eficiência de abastecimento.</li>
+          </ul>
+        </article>
+      </div>
+
+
+      <TimelineGrid />
+    </section>
+  );
+}

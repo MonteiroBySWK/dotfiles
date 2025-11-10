@@ -1,0 +1,1 @@
+const input: string = fs.readFileSync('/dev/stdin', 'utf-8');

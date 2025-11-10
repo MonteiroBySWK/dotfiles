@@ -1,0 +1,586 @@
+
+Home
+What's New ?
+Getting Started
+Online Server
+Running
+F.A.Q.
+Download
+Forum
+Theme
+Preprocessing
+Standard Library
+PDF Guide
+Hitchhiker's Guide
+Sequence
+Use Case
+Class
+Activity
+Component
+State
+Object
+Deployment
+Timing
+Regex
+Network
+Wireframe
+Archimate
+Gantt
+Chronology
+MindMap
+WBS
+EBNF
+JSON
+YAML
+Sequence
+Use Case
+Class
+Activity
+Component
+State
+Object
+Deployment
+Timing
+Regex
+Network
+Wireframe
+Archimate
+Gantt
+Chronology
+MindMap
+WBS
+EBNF
+JSON
+YAML
+PlantUML
+Language specification
+Use Case Diagram
+       
+
+Use Case Diagram
+
+A use case diagram is a visual representation used in software engineering to depict the interactions between system actors and the system itself. It captures the dynamic behavior of a system by illustrating its use cases and the roles that interact with them. These diagrams are essential in specifying the system's functional requirements and understanding how users will interact with the system. By providing a high-level view, use case diagrams help stakeholders understand the system's functionality and its potential value.
+
+PlantUML offers a unique approach to creating use case diagrams through its text-based language. One of the primary advantages of using PlantUML is its simplicity and efficiency. Instead of manually drawing shapes and connections, users can define their diagrams using intuitive and concise textual descriptions. This not only speeds up the diagram creation process but also ensures consistency and accuracy. The ability to integrate with various documentation platforms and its wide range of supported output formats make PlantUML a versatile tool for both developers and non-developers. Lastly, being open-source, PlantUML boasts a strong community that continually contributes to its improvement and offers a wealth of resources for users at all levels.
+[Back to top]
+Usecases
+Use cases are enclosed using between parentheses (because two parentheses looks like an oval).
+
+You can also use the usecase keyword to define a usecase. And you can define an alias, using the as keyword. This alias will be used later, when defining relations.
+
+[Copy to clipboard]
+[Edit online] 	
+
+@startuml
+
+(First usecase)
+(Another usecase) as (UC2)
+usecase UC3
+usecase (Last\nusecase) as UC4
+
+@enduml
+
+[Back to top]
+Actors
+
+The name defining an actor is enclosed between colons.
+
+You can also use the actor keyword to define an actor. An alias can be assigned using the as keyword and can be used later instead of the actor's name, e. g. when defining relations.
+
+You can see from the following examples, that the actor definitions are optional.
+
+[Copy to clipboard]
+[Edit online] 	
+
+@startuml
+
+:First Actor:
+:Another\nactor: as Man2
+actor Woman3
+actor :Last actor: as Person1
+
+@enduml
+
+[Back to top]
+Change Actor style
+
+You can change the actor style from stick man (by default) to:
+
+    an awesome man with the skinparam actorStyle awesome command;
+    a hollow man with the skinparam actorStyle hollow command.
+
+Stick man (by default)
+
+[Copy to clipboard]
+[Edit online] 	
+
+@startuml
+:User: --> (Use)
+"Main Admin" as Admin
+"Use the application" as (Use)
+Admin --> (Admin the application)
+@enduml
+
+Awesome man
+
+[Copy to clipboard]
+[Edit online] 	
+
+@startuml
+skinparam actorStyle awesome
+:User: --> (Use)
+"Main Admin" as Admin
+"Use the application" as (Use)
+Admin --> (Admin the application)
+@enduml
+
+[Ref. QA-10493]
+
+Hollow man
+
+[Copy to clipboard]
+[Edit online] 	
+
+@startuml
+skinparam actorStyle Hollow 
+:User: --> (Use)
+"Main Admin" as Admin
+"Use the application" as (Use)
+Admin --> (Admin the application)
+@enduml
+
+[Ref. PR#396]
+[Back to top]
+Usecases description
+
+If you want to have a description spanning several lines, you can use quotes.
+
+You can also use the following separators:
+
+    -- (dashes)
+    .. (periods)
+    == (equals)
+    __ (underscores)
+
+By using them pairwise and enclosing text between them, you can created separators with titles.
+
+[Copy to clipboard]
+[Edit online] 	
+
+@startuml
+
+usecase UC1 as "You can use
+several lines to define your usecase.
+You can also use separators.
+--
+Several separators are possible.
+==
+And you can add titles:
+..Conclusion..
+This allows large description."
+
+@enduml
+
+Please note that the alias and the description are switched around from the basic example:
+
+[Copy to clipboard]
+[Edit online] 	
+
+@startuml
+usecase description1 as alias1
+usecase alias2 as "description2"
+@enduml
+
+[Back to top]
+Use package
+
+You can use packages to group actors or use cases.
+
+[Copy to clipboard]
+[Edit online] 	
+
+@startuml
+left to right direction
+actor Guest as g
+package Professional {
+  actor Chef as c
+  actor "Food Critic" as fc
+}
+package Restaurant {
+  usecase "Eat Food" as UC1
+  usecase "Pay for Food" as UC2
+  usecase "Drink" as UC3
+  usecase "Review" as UC4
+}
+fc --> UC4
+g --> UC1
+g --> UC2
+g --> UC3
+@enduml
+
+You can use rectangle to change the display of the package.
+
+[Copy to clipboard]
+[Edit online] 	
+
+@startuml
+left to right direction
+actor "Food Critic" as fc
+rectangle Restaurant {
+  usecase "Eat Food" as UC1
+  usecase "Pay for Food" as UC2
+  usecase "Drink" as UC3
+}
+fc --> UC1
+fc --> UC2
+fc --> UC3
+@enduml
+
+[Back to top]
+Basic example
+
+To link actors and use cases, the arrow --> is used.
+
+The more dashes - in the arrow, the longer the arrow. You can add a label on the arrow, by adding a : character in the arrow definition.
+
+In this example, you see that User has not been defined before, and is used as an actor.
+
+[Copy to clipboard]
+[Edit online] 	
+
+@startuml
+
+User -> (Start)
+User --> (Use the application) : A small label
+
+:Main Admin: ---> (Use the application) : This is\nyet another\nlabel
+
+@enduml
+
+[Back to top]
+Extension
+
+If one actor/use case extends another one, you can use the symbol <|--.
+
+[Copy to clipboard]
+[Edit online] 	
+
+@startuml
+:Main Admin: as Admin
+(Use the application) as (Use)
+
+User <|-- Admin
+(Start) <|-- (Use)
+
+@enduml
+
+[Back to top]
+Using notes
+
+You can use the note left of , note right of , note top of , note bottom of keywords to define notes related to a single object.
+
+A note can be also define alone with the note keywords, then linked to other objects using the .. symbol.
+
+[Copy to clipboard]
+[Edit online] 	
+
+@startuml
+:Main Admin: as Admin
+(Use the application) as (Use)
+
+User -> (Start)
+User --> (Use)
+
+Admin ---> (Use)
+
+note right of Admin : This is an example.
+
+note right of (Use)
+  A note can also
+  be on several lines
+end note
+
+note "This note is connected\nto several objects." as N2
+(Start) .. N2
+N2 .. (Use)
+@enduml
+
+[Back to top]
+Stereotypes
+
+You can add stereotypes while defining actors and use cases using << and >>.
+
+[Copy to clipboard]
+[Edit online] 	
+
+@startuml
+User << Human >>
+:Main Database: as MySql << Application >>
+(Start) << One Shot >>
+(Use the application) as (Use) << Main >>
+
+User -> (Start)
+User --> (Use)
+
+MySql --> (Use)
+
+@enduml
+
+[Back to top]
+Changing arrows direction
+
+By default, links between classes have two dashes -- and are vertically oriented. It is possible to use horizontal link by putting a single dash (or dot) like this:
+
+[Copy to clipboard]
+[Edit online] 	
+
+@startuml
+:user: --> (Use case 1)
+:user: -> (Use case 2)
+@enduml
+
+You can also change directions by reversing the link:
+
+[Copy to clipboard]
+[Edit online] 	
+
+@startuml
+(Use case 1) <.. :user:
+(Use case 2) <- :user:
+@enduml
+
+It is also possible to change arrow direction by adding left, right, up or down keywords inside the arrow:
+
+[Copy to clipboard]
+[Edit online] 	
+
+@startuml
+:user: -left-> (dummyLeft)
+:user: -right-> (dummyRight)
+:user: -up-> (dummyUp)
+:user: -down-> (dummyDown)
+@enduml
+
+You can shorten the arrow by using only the first character of the direction (for example, -d- instead of -down-) or the two first characters (-do-).
+
+Please note that you should not abuse this functionality : Graphviz gives usually good results without tweaking.
+
+And with the left to right direction parameter:
+
+[Copy to clipboard]
+[Edit online] 	
+
+@startuml
+left to right direction
+:user: -left-> (dummyLeft)
+:user: -right-> (dummyRight)
+:user: -up-> (dummyUp)
+:user: -down-> (dummyDown)
+@enduml
+
+[Back to top]
+Splitting diagrams
+
+The newpage keywords to split your diagram into several pages or images.
+
+[Copy to clipboard]
+[Edit online] 	
+
+@startuml
+:actor1: --> (Usecase1)
+newpage
+:actor2: --> (Usecase2)
+@enduml
+
+[Back to top]
+Left to right direction
+
+The general default behavior when building diagram is top to bottom.
+
+[Copy to clipboard]
+[Edit online] 	
+
+@startuml
+'default
+top to bottom direction
+user1 --> (Usecase 1)
+user2 --> (Usecase 2)
+
+@enduml
+
+You may change to left to right using the left to right direction command. The result is often better with this direction.
+
+[Copy to clipboard]
+[Edit online] 	
+
+@startuml
+
+left to right direction
+user1 --> (Usecase 1)
+user2 --> (Usecase 2)
+
+@enduml
+
+See also 'Change diagram orientation' on Deployment diagram page.
+[Back to top]
+Skinparam
+
+You can use the skinparam command to change colors and fonts for the drawing.
+
+You can use this command :
+
+    In the diagram definition, like any other commands,
+    In an included file,
+    In a configuration file, provided in the command line or the ANT task.
+
+You can define specific color and fonts for stereotyped actors and usecases.
+
+[Copy to clipboard]
+[Edit online] 	
+
+@startuml
+!option handwritten true
+
+skinparam usecase {
+BackgroundColor DarkSeaGreen
+BorderColor DarkSlateGray
+
+BackgroundColor<< Main >> YellowGreen
+BorderColor<< Main >> YellowGreen
+
+ArrowColor Olive
+ActorBorderColor black
+ActorFontName Courier
+
+ActorBackgroundColor<< Human >> Gold
+}
+
+User << Human >>
+:Main Database: as MySql << Application >>
+(Start) << One Shot >>
+(Use the application) as (Use) << Main >>
+
+User -> (Start)
+User --> (Use)
+
+MySql --> (Use)
+
+@enduml
+
+[Back to top]
+Complete example
+
+[Copy to clipboard]
+[Edit online] 	
+
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+actor customer
+actor clerk
+rectangle checkout {
+  customer -- (checkout)
+  (checkout) .> (payment) : include
+  (help) .> (checkout) : extends
+  (checkout) -- clerk
+}
+@enduml
+
+[Back to top]
+Business Use Case
+
+You can add / to make Business Use Case.
+
+Business Usecase
+
+[Copy to clipboard]
+[Edit online] 	
+
+@startuml
+
+(First usecase)/
+(Another usecase)/ as (UC2)
+usecase/ UC3
+usecase/ (Last\nusecase) as UC4
+
+@enduml
+
+Business Actor
+
+[Copy to clipboard]
+[Edit online] 	
+
+@startuml
+
+:First Actor:/
+:Another\nactor:/ as Man2
+actor/ Woman3
+actor/ :Last actor: as Person1
+
+@enduml
+
+[Ref. QA-12179]
+[Back to top]
+Change arrow color and style (inline style)
+
+You can change the color or style of individual arrows using the inline following notation:
+
+    #color;line.[bold|dashed|dotted];text:color
+
+[Copy to clipboard]
+[Edit online] 	
+
+@startuml
+actor foo
+foo --> (bar) : normal
+foo --> (bar1) #line:red;line.bold;text:red  : red bold
+foo --> (bar2) #green;line.dashed;text:green : green dashed 
+foo --> (bar3) #blue;line.dotted;text:blue   : blue dotted
+@enduml
+
+[Ref. QA-3770 and QA-3816] [See similar feature on deployment-diagram or class diagram]
+[Back to top]
+Change element color and style (inline style)
+
+You can change the color or style of individual element using the following notation:
+
+    #[color|back:color];line:color;line.[bold|dashed|dotted];text:color
+
+[Copy to clipboard]
+[Edit online] 	
+
+@startuml
+actor a
+actor b #pink;line:red;line.bold;text:red
+usecase c #palegreen;line:green;line.dashed;text:green
+usecase d #aliceblue;line:blue;line.dotted;text:blue
+@enduml
+
+[Ref. QA-5340 and adapted from QA-6852]
+[Back to top]
+Display JSON Data on Usecase diagram
+
+Simple example
+
+[Copy to clipboard]
+[Edit online] 	
+
+@startuml
+allowmixing
+
+actor     Actor
+usecase   Usecase
+
+json JSON {
+   "fruit":"Apple",
+   "size":"Large",
+   "color": ["Red", "Green"]
+}
+@enduml
+
+[Ref. QA-15481]
+
+For another example, see on JSON page.
+
+Privacy Policy      Advertise
+

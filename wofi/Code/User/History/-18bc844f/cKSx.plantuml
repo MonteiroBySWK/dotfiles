@@ -1,0 +1,31 @@
+@startuml LandingPagePublica
+' Diagrama de Caso de Uso: Landing Page Pública (LAICOPI)
+
+left to right direction
+
+actor "Visitante"
+
+rectangle "Landing Page LAICOPI" {
+  (Visualizar Página Inicial)
+  (Navegar pelo Menu)
+  (Visualizar Portfólio de Projetos)
+  (Visualizar Detalhes de um Projeto)
+  (Visualizar Catálogo de Equipamentos)
+  (Visualizar Detalhes de um Equipamento)
+  (Visualizar Perfis da Equipe)
+  (Visualizar Informações de Contato)
+  (Enviar Formulário de Contato)
+}
+
+Visitante --> (Visualizar Página Inicial)
+Visitante --> (Navegar pelo Menu)
+Visitante --> (Visualizar Portfólio de Projetos)
+Visitante --> (Visualizar Catálogo de Equipamentos)
+Visitante --> (Visualizar Perfis da Equipe)
+Visitante --> (Visualizar Informações de Contato)
+
+(Visualizar Portfólio de Projetos) <. (Visualizar Detalhes de um Projeto) : <<extend>>
+(Visualizar Catálogo de Equipamentos) <. (Visualizar Detalhes de um Equipamento) : <<extend>>
+(Visualizar Informações de Contato) <. (Enviar Formulário de Contato) : <<extend>>
+
+@enduml

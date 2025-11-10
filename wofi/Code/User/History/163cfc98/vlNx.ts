@@ -1,0 +1,180 @@
+import { BaseRepository, QueryFilter } from './base.repository'import { BaseRepository } from './base.repository'
+
+import { User } from '@/types'import { User, UserPreferences } from '@/types'
+
+import { query  // Get user stats
+
+export class UserRepository extends BaseRepository<User> {  async getStats(companyId?: string): Promise<{
+
+  constructor() {    total: number
+
+    super('users')    active: number
+
+  }    inactive: number
+
+    byRole: Record<string, number>
+
+  async findByEmail(email: string): Promise<User | null> {  }> {
+
+    const filter: QueryFilter = { field: 'email', operator: '==', value: email }    const whereClause: Array<{ field: string; operator: WhereFilterOp; value: unknown }> = companyId 
+
+    const users = await this.findWhere([filter])      ? [{ field: 'companyId', operator: '==', value: companyId }]
+
+    return users.length > 0 ? users[0] : null      : []rderBy, WhereFilterOp } from 'firebase/firestore'
+
+  }
+
+export class UserRepository extends BaseRepository<User> {
+
+  async findByRole(role: User['role']): Promise<User[]> {  constructor() {
+
+    const filter: QueryFilter = { field: 'role', operator: '==', value: role }    super('users')
+
+    return this.findWhere([filter])  }
+
+  }
+
+  // Get user by email
+
+  async findActiveUsers(): Promise<User[]> {  async getByEmail(email: string): Promise<User | null> {
+
+    const filter: QueryFilter = { field: 'status', operator: '==', value: 'active' }    try {
+
+    return this.findWhere([filter])      const users = await this.getAll({
+
+  }        where: [{ field: 'email', operator: '==', value: email }],
+
+        limit: 1
+
+  async updateLastLogin(userId: string): Promise<void> {      })
+
+    await this.update(userId, {       return users.length > 0 ? users[0] : null
+
+      lastLogin: new Date(),    } catch (error) {
+
+      updatedAt: new Date()      console.error('Error getting user by email:', error)
+
+    })      throw error
+
+  }    }
+
+}  }
+
+  // Get users by role
+  async getByRole(role: string): Promise<User[]> {
+    return this.getAll({
+      where: [{ field: 'role', operator: '==', value: role }],
+      orderBy: [{ field: 'name', direction: 'asc' }]
+    })
+  }
+
+  // Get users by company
+  async getByCompany(companyId: string): Promise<User[]> {
+    return this.getAll({
+      where: [{ field: 'companyId', operator: '==', value: companyId }],
+      orderBy: [{ field: 'name', direction: 'asc' }]
+    })
+  }
+
+  // Get users by team
+  async getByTeam(teamId: string): Promise<User[]> {
+    return this.getAll({
+      where: [{ field: 'teamIds', operator: 'array-contains', value: teamId }],
+      orderBy: [{ field: 'name', direction: 'asc' }]
+    })
+  }
+
+  // Get active users
+  async getActiveUsers(): Promise<User[]> {
+    return this.getAll({
+      where: [{ field: 'status', operator: '==', value: 'active' }],
+      orderBy: [{ field: 'lastLogin', direction: 'desc' }]
+    })
+  }
+
+  // Update user preferences
+  async updatePreferences(userId: string, preferences: Partial<UserPreferences>): Promise<void> {
+    const user = await this.getById(userId)
+    if (!user) throw new Error('User not found')
+
+    const updatedPreferences = {
+      ...user.preferences,
+      ...preferences
+    }
+
+    return this.update(userId, { preferences: updatedPreferences })
+  }
+
+  // Update last login
+  async updateLastLogin(userId: string): Promise<void> {
+    return this.update(userId, { lastLogin: new Date() })
+  }
+
+  // Add user to team
+  async addToTeam(userId: string, teamId: string): Promise<void> {
+    const user = await this.getById(userId)
+    if (!user) throw new Error('User not found')
+
+    if (!user.teamIds.includes(teamId)) {
+      const updatedTeamIds = [...user.teamIds, teamId]
+      await this.update(userId, { teamIds: updatedTeamIds })
+    }
+  }
+
+  // Remove user from team
+  async removeFromTeam(userId: string, teamId: string): Promise<void> {
+    const user = await this.getById(userId)
+    if (!user) throw new Error('User not found')
+
+    const updatedTeamIds = user.teamIds.filter(id => id !== teamId)
+    await this.update(userId, { teamIds: updatedTeamIds })
+  }
+
+  // Search users by name or email
+  async search(searchTerm: string, companyId?: string): Promise<User[]> {
+    const whereClause: Array<{ field: string; operator: WhereFilterOp; value: unknown }> = companyId 
+      ? [{ field: 'companyId', operator: '==', value: companyId }]
+      : []
+
+    // Note: Firestore doesn't support text search, so we get all users and filter client-side
+    // In production, consider using Algolia or similar for better search
+    const users = await this.getAll({
+      where: whereClause,
+      orderBy: [{ field: 'name', direction: 'asc' }]
+    })
+
+    const searchLower = searchTerm.toLowerCase()
+    return users.filter(user => 
+      user.name.toLowerCase().includes(searchLower) ||
+      user.email.toLowerCase().includes(searchLower)
+    )
+  }
+
+  // Get user statistics
+  async getStats(companyId?: string): Promise<{
+    total: number
+    active: number
+    inactive: number
+    byRole: Record<string, number>
+  }> {
+    const whereClause = companyId 
+      ? [{ field: 'companyId', operator: '==', value: companyId }]
+      : []
+
+    const users = await this.getAll({ where: whereClause })
+
+    const stats = {
+      total: users.length,
+      active: users.filter(u => u.status === 'active').length,
+      inactive: users.filter(u => u.status === 'inactive').length,
+      byRole: {} as Record<string, number>
+    }
+
+    // Count by role
+    users.forEach(user => {
+      stats.byRole[user.role] = (stats.byRole[user.role] || 0) + 1
+    })
+
+    return stats
+  }
+}
