@@ -42,8 +42,11 @@ packages:
   - grim
   - slurp
   - swappy
+  - cava
+  - obs-studio
 
-aur_packages: []
+aur_packages:
+  - swaylock-effects
 
 groups:
   initial:
@@ -79,3 +82,5 @@ groups:
     - grim
     - slurp
     - swappy
+    - cava
+    - obs-studio
