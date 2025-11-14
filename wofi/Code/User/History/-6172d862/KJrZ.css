@@ -1,8 +1,0 @@
-#item-navbar-line {
-    width: 0%;
-    transition: width 200ms;
-}
-
-#item-navabar-link:hover #item-navbar-line {
-    width: 100%;
-}

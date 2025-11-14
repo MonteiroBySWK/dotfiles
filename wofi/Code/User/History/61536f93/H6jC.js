@@ -1,9 +1,0 @@
-var input = require("fs").readFileSync("stdin", "utf8");
-var lines = input.split("\n");
-
-for(let i = 0; i < 10; i++) {
-  if (parseInt(lines[i]) <= 0) {
-    lines[i] = 1;
-  }
-  console.log(`X[${i}] = ${parseInt(lines[i])}`);
-}

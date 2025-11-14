@@ -1,9 +1,0 @@
-nav {
-  display: flex;
-}
-
-nav > ul {
-  display: flex;
-  list-style: none;
-  gap: 2rem;
-}

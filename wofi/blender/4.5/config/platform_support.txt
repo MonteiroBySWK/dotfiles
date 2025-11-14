@@ -1,1 +1,0 @@
-{AMD/AMD Radeon Graphics (radeonsi, renoir, ACO, DRM 3.63, 6.15.8-arch1-1)/4.6 (Core Profile) Mesa 25.1.6-arch1.1}=SUPPORTED

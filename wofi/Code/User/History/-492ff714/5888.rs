@@ -1,9 +1,0 @@
-
-
-fn debug() {
-    
-}
-
-fn init() {
-
-}

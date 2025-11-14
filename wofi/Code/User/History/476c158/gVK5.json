@@ -1,7 +1,0 @@
-{
-    "window.zoomLevel": 0.8,
-    "workbench.iconTheme": "material-icon-theme",
-    "[javascript]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    }
-}

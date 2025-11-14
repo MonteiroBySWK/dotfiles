@@ -1,1 +1,0 @@
-INDEX VERSION 1.134+/home/monteiro/.config/Code/User/workspaceStorage/27e1c750f97b50a7a0169534a194999b/redhat.java/ss_ws/.metadata/.plugins/org.eclipse.jdt.core

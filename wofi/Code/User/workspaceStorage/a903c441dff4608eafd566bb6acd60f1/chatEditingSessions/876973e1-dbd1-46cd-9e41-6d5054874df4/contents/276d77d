@@ -1,7 +1,0 @@
-export default function App() {
-  return (
-    <main>
-      <span className="text-2xl"></span>      
-    </main>
-  )
-}

@@ -1,4 +1,0 @@
-services:
-  app:
-    environment:
-      - SPRING_DATABSE_URL=dndakdnanda

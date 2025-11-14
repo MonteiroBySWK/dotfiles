@@ -1,1 +1,0 @@
-export default function Section(props: {id: string}, {children}: {children: React.ReactNode})

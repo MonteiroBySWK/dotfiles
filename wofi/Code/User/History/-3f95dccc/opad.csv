@@ -1,3 +1,0 @@
-title,status,tipo,prioridade,especialidade,epicoId,responsavelId,criadoEm,who,what,for,acceptanceCriteria,technicalTasks
-"Login JWT","A fazer","User Story","Alta","Backend","","","","Usuário","logar no sistema","acessar recursos protegidos","Critério 1|Critério 2","Task A|Task B"
-"Cadastro","A fazer","User Story","Média","Frontend","","","","Novo usuário","cadastrar-se","usar a aplicação","Preencher todos os campos|Validar email","Form validation|Salvar no banco"
