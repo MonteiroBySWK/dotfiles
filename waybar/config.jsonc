@@ -1,5 +1,5 @@
 {
-  "height": 20,
+  "height": 15,
   "spacing": 5,
   "layer": "top",
   "position": "top",
@@ -20,20 +20,19 @@
   },
 
   "battery": {
-    "bat": "BAT0",
+    "bat": "BAT1",
+    "interval": 60,
     "states": {
-      "good": 95,
       "warning": 30,
-      "critical": 5,
+      "critical": 15,
     },
-    "format": "{icon}  {capacity}%",
-    "format-charging": "{icon}  {capacity}% (C)",
-    "format-plugged": "{icon}  {capacity}% (P)",
-    "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+    "format": "{icon}    {capacity}%",
+    "format-icons": ["", "", "", "", ""],
+    "max-length": 25,
   },
 
   "pulseaudio": {
-    "format": "{icon}  {volume}%",
+    "format": "{icon} {volume}%",
     "format-muted": " ",
     "format-icons": {
       "headphone": " ",
