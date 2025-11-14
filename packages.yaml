@@ -1,0 +1,81 @@
+metadata:
+  source: README.md
+  recommended_installer: paru
+  note: "This is the new declarative packages file for initial setup"
+
+packages:
+  - zsh
+  - hyprland
+  - wayland
+  - wayland-protocols
+  - xdg-desktop-portal
+  - xdg-desktop-portal-hyprland
+  - waybar
+  - mako
+  - wofi
+  - swaylock-effects
+  - swaybg
+  - kitty
+  - pipewire
+  - wireplumber
+  - pavucontrol
+  - pamixer
+  - wl-clipboard
+  - network-manager-applet
+  - bluez
+  - bluez-utils
+  - blueman
+  - thunar
+  - gvfs
+  - lxappearance
+  - polkit-gnome
+  - file-roller
+  - git
+  - ripgrep
+  - rsync
+  - unzip
+  - wget
+  - base-devel
+  - sudo
+  - noto-fonts-emoji
+  - ttf-fira-code
+  - grim
+  - slurp
+  - swappy
+
+aur_packages: []
+
+groups:
+  initial:
+    - hyprland
+    - waybar
+    - mako
+    - wofi
+    - kitty
+    - zsh
+    - pipewire
+    - wireplumber
+    - pavucontrol
+    - pamixer
+    - wl-clipboard
+    - network-manager-applet
+    - bluez
+    - bluez-utils
+    - blueman
+    - thunar
+    - gvfs
+    - lxappearance
+    - polkit-gnome
+    - file-roller
+    - git
+    - ripgrep
+    - rsync
+    - unzip
+    - wget
+    - base-devel
+    - sudo
+    - noto-fonts-emoji
+    - ttf-fira-code
+    - grim
+    - slurp
+    - swappy
