@@ -24,3 +24,4 @@ border-color=#a3be8c
 
 [app-name=lightcord summary~="(.*(^| )orz|ORZ|sto|STO|otl|OTL( |$).*)"]
 invisible=1
+

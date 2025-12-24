@@ -1,0 +1,35 @@
+return {
+  -- GitHub Copilot
+  {
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "InsertEnter",
+    config = function()
+      require("copilot").setup({
+        suggestion = {
+          enabled = true,
+          auto_trigger = true,
+          debounce = 75,
+          keymap = {
+            accept = "<M-l>",
+            accept_word = false,
+            accept_line = false,
+            next = "<M-]>",
+            prev = "<M-[>",
+            dismiss = "<C-]>",
+          },
+        },
+        panel = { enabled = false },
+      })
+    end,
+  },
+
+  -- Integração com nvim-cmp (desabilitada temporariamente para evitar erro)
+  -- {
+  --   "zbirenbaum/copilot-cmp",
+  --   dependencies = { "hrsh7th/nvim-cmp" },
+  --   config = function()
+  --     require("copilot_cmp").setup()
+  --   end,
+  -- },
+}
