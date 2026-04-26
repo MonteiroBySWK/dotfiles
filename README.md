@@ -1,4 +1,4 @@
-[![dotfiles](https://img.shields.io/badge/dotfiles-%7E%2F.config-brightgreen)]()
+[![dotfiles](https://img.shields.io/badge/dotfiles-%7E%2F.config-brightgreen)]() [![arch](https://img.shields.io/badge/arch-linux-blue)]() [![hyprland](https://img.shields.io/badge/hyprland-compositor-purple)]() [![neovim](https://img.shields.io/badge/neovim-editor-green)]()
 
 # Meu Setup — ~/.config
 
