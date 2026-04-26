@@ -1,0 +1,90 @@
+# .gitignore para dotfiles dentro de ~/.config
+# Atualizado: ignora grandes pastas de apps, caches e segredos; mantém configs portáteis
+
+# Grandes diretórios e dados de aplicativos (não versionar)
+Code/
+Code - OSS/
+google-chrome/
+discord/
+Bitwarden/
+LM Studio/
+LM-Studio/
+JetBrains/
+obs-studio/
+PCSX2/
+Antigravity/
+sst/
+yarn/
+Google/
+
+# Caches, builds e dependências
+**/cache/
+**/Cache/
+**/CachedData/
+**/GPUCache/
+**/BrowserSupport/
+node_modules/
+__pycache__/
+*.pyc
+.cache/
+*.log
+npm-debug.log
+yarn-error.log
+tmp/
+temp/
+*.lock
+
+# Segredos / chaves / credenciais (não commitar)
+**/.ssh/id_*
+**/.ssh/ssh_host_*
+**/.gnupg/
+**/.gpg/
+**/.password-store/
+.env
+.env.*
+*.pem
+*.key
+credentials
+**/.aws/
+**/azure/
+**/gcloud/
+
+# Arquivos binários e bancos de dados
+*.sqlite
+*.db
+*.sqlite3
+*.bin
+*.exe
+*.dll
+
+# Arquivos específicos do sistema / desktop
+.DS_Store
+Thumbs.db
+.plasma-org.kde.plasma.desktop-appletsrc.cache
+
+# Ignorar caches de browsers e extensões
+**/chrome-extension-data/
+
+# Exceções: arquivos de configuração portáveis que normalmente vale a pena versionar
+# Remover ou ajustar essas negações conforme preferir
+!nvim/
+!nvim/init.vim
+!nvim/init.lua
+!nvim/lua/
+!fish/
+!fish/config.fish
+!kitty/
+!kitty/kitty.conf
+!hypr/
+!hypr/hyprland.conf
+!waybar/
+!waybar/config.jsonc
+!wofi/
+!wofi/config
+!mimeapps.list
+!user-dirs.dirs
+!kwinrc
+!autostart/**
+!vscode-user-settings
+
+# Observação: revise antes de commitar arquivos listados nas negações — alguns podem conter caminhos absolutos ou dados específicos da máquina

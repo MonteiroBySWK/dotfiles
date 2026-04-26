@@ -1,0 +1,126 @@
+{
+  "height": 15,
+  "spacing": 5,
+  "layer": "top",
+  "position": "top",
+  "modules-left": [
+    "hyprland/workspaces"
+  ],
+  "modules-center": ["hyprland/window"],
+  "modules-right": [
+    "tray",
+    "network",
+    "pulseaudio",
+    "battery",
+    "power-profiles-daemon",
+    "temperature",
+    "cpu",
+    "memory",
+    "clock",
+  ],
+  "clock": {
+    "timezone": "America/Sao_Paulo",
+    "format": "{:%H:%M - %d/%m/%Y}",
+    "tooltip-format": "<tt>{calendar}</tt>",
+    "calendar": {
+      "format": {
+        "months": "<span color='#ffead3'><b>{}</b></span>",
+        "today": "<span color='#ff6699'><b>{}</b></span>",
+      },
+    },
+  },
+  "battery": {
+    "bat": "BAT1",
+    "interval": 60,
+    "states": {
+      "warning": 30,
+      "critical": 15,
+    },
+    "format": "{icon}   {capacity}%",
+    "format-icons": [
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "max-length": 25,
+  },
+  "pulseaudio": {
+    "format": "{icon} {volume}%",
+    "format-muted": " ",
+    "format-icons": {
+      "headphone": " ",
+      "hands-free": " ",
+      "headset": " ",
+      "phone": " ",
+      "portable": " ",
+      "car": " ",
+      "default": [
+        " ",
+        " ",
+        "  "
+      ],
+    },
+    "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+    "on-click-right": "pavucontrol",
+  },
+  "power-profiles-daemon": {
+    "format": "{icon}",
+    "tooltip-format": "Perfil de energia: {profile}\nDriver: {driver}",
+    "tooltip": true,
+    "format-icons": {
+      "default": "",
+      "performance": "",
+      "balanced": "",
+      "power-saver": ""
+    }
+  },
+  "custom/notifications": {
+    "tooltip": false,
+    "format": "{icon}",
+    "format-icons": {
+        "notification": "<span color='red'><sup></sup></span>",
+        "none": "",
+        "dnd": ""
+    },
+    "return-type": "json",
+    "exec-if": "which swaync-client",
+    "exec": "swaync-client -swb",
+    "on-click": "swaync-client -t -sw",
+    "on-click-right": "swaync-client -d -sw",
+    "escape": true
+  },
+  "cpu": {
+    "format": "  {usage}%",
+    "tooltip": false
+  },
+  "temperature": {
+    "critical-threshold": 80,
+    "format": "{icon} {temperatureC}°C",
+    "format-icons": ["", "", ""]
+  },
+  "memory": {
+    "format": " {}%"
+  },
+ "network": {
+    "format-wifi": "   {essid}",
+    "format-ethernet": "󰈀   {ifname}",
+    "format-linked": "󰈀   {ifname} (No IP)",
+    "format-disconnected": "⚠   Disconnected",
+    "tooltip-format-wifi": "{essid}  ({signaldBm}dBm) ",
+    "on-click": "kitty -e nmtui" 
+  },
+  "hyprland/window": {
+    "format": "{class}",
+    "max-length": 50,
+    "separate-outputs": true,
+    "rewrite": {
+        "kitty": "   Terminal",
+        "firefox": "󰈹   Firefox",
+        "dolphin": "   Arquivos",
+        "jetbrains-idea": "   IntelliJ",
+        "discord": "   Discord"
+    }
+  },
+}
