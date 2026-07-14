@@ -85,6 +85,7 @@
       "openslimedit@latest",
       "opencode-damage-control@latest",
       "oh-my-opencode-slim",
+      "@tarquinen/opencode-dcp",
       "plugins/rtk.ts"
    ],
    "small_model" : "opencode-go/deepseek-v4-flash",
