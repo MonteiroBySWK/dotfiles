@@ -62,6 +62,8 @@ O config usa a sintaxe `{env:NOME}` do OpenCode para ler do ambiente — **nenhu
 | `openslimedit` | Edição otimizada via subagentes |
 | `opencode-damage-control` | Proteção de paths sensíveis (`.env`, `~/.zshrc`, etc.) |
 | `@tarquinen/opencode-dcp` | Dynamic Context Pruning — poda automática de outputs obsoletos pra economizar tokens |
+| `@tarquinen/opencode-smart-title` | Geração automática de títulos descritivos pras sessões |
+| `opencode-notify` | Notificações nativas OS quando tarefas terminam, erro ou precisa de atenção |
 | `rtk` (plugins/rtk.ts) | Compressão automática de output de comandos bash (Rust Token Killer) |
 
 ### MCPs (Model Context Protocol)

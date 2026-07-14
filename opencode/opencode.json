@@ -86,6 +86,8 @@
       "opencode-damage-control@latest",
       "oh-my-opencode-slim",
       "@tarquinen/opencode-dcp",
+      "@tarquinen/opencode-smart-title",
+      "opencode-notify",
       "plugins/rtk.ts"
    ],
    "small_model" : "opencode-go/deepseek-v4-flash",
