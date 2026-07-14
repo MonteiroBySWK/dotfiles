@@ -1,0 +1,8 @@
+# OpenCode Config — Environment Variables
+# Copy this file to:
+
+# 1. For the context7 MCP to read your key at runtime
+export CONTEXT7_API_KEY="your-key-here"
+
+# 2. For the memory plugin (optional)
+export MEMORY_API_KEY="your-key-here"

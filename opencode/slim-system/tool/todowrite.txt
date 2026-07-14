@@ -1,0 +1,6 @@
+Replace the session todo list. Use for tasks with 3+ steps.
+Each todo: content, status (pending/in_progress/completed/cancelled),
+priority (high/medium/low). Keep exactly one in_progress at a time.
+Update in real time. Mark completed only after verification.
+Preserve user commands verbatim. If blocked: keep in_progress, add blocker note.
+Do NOT use for single straight-forward tasks or informational queries.

@@ -1,0 +1,3 @@
+Search the public web. Use for live info, current events, docs.
+Supports multiple engines, AI mode, domain filter, date range.
+Current year: {{year}}. MUST use this year in queries.

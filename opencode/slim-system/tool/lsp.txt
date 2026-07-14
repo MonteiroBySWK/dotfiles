@@ -1,0 +1,4 @@
+Language-server operations on any file with LSP support.
+Ops: goToDefinition, findReferences, hover, documentSymbol,
+workspaceSymbol, goToImplementation, callHierarchy (in/out calls).
+filePath, line, character are 1-based.

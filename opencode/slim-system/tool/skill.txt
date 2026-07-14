@@ -1,0 +1,2 @@
+Load a skill by name from the session's available_skills list.
+Injects skill instructions and resources into the active session.

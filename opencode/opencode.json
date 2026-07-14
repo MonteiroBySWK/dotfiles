@@ -1,0 +1,94 @@
+{
+   "$schema" : "https://opencode.ai/config.json",
+   "agent" : {
+      "explore" : {
+         "disable" : true
+      },
+      "fixer" : {
+         "permission" : {
+            "bash" : "allow",
+            "read" : "allow",
+            "write" : "allow",
+            "edit" : "allow"
+         }
+      },
+      "designer" : {
+         "permission" : {
+            "bash" : "allow",
+            "read" : "allow",
+            "write" : "allow",
+            "edit" : "allow"
+         }
+      },
+      "general" : {
+         "disable" : true
+      },
+      "reviewer" : {
+         "description" : "Review code for accuracy, hallucinated APIs, type errors, and logic bugs before declaring work complete.",
+         "mode" : "subagent",
+"model" : "opencode-go/deepseek-v4-flash",
+         "permission" : {
+            "bash" : "allow",
+            "edit" : "deny",
+            "read" : "allow"
+         },
+         "prompt" : "You are a strict code reviewer. Your job: catch hallucinations and errors before code is finalized. Check: (1) Do all imported functions/modules actually exist in the project? (2) Are API signatures used correctly? (3) Are types consistent? (4) Does the logic handle edge cases? Run build/typecheck commands if available. Mark any unverifiable claim as SUSPICIOUS. Do not approve code you cannot verify."
+      }
+   },
+   "compaction" : {
+      "auto" : true,
+      "tail_turns" : 25
+   },
+
+   "lsp" : true,
+   "mcp" : {
+      "context7" : {
+         "enabled" : true,
+         "headers" : {
+            "CONTEXT7_API_KEY" : "{env:CONTEXT7_API_KEY}"
+         },
+         "type" : "remote",
+         "url" : "https://mcp.context7.com/mcp"
+      },
+      "memory" : {
+         "command" : [
+            "npx",
+            "-y",
+            "@modelcontextprotocol/server-memory"
+         ],
+         "enabled" : true,
+         "type" : "local"
+      },
+      "playwright" : {
+         "args" : [
+            "--browser=firefox"
+         ],
+         "command" : [
+            "npx",
+            "@playwright/mcp@latest"
+         ],
+         "enabled" : false,
+         "type" : "local"
+      },
+      "token-optimizer" : {
+         "command" : [
+            "npx",
+            "@ooples/token-optimizer-mcp"
+         ],
+         "enabled" : false,
+         "type" : "local"
+      }
+   },
+   "model" : "opencode-go/deepseek-v4-flash",
+   "plugin" : [
+      "superpowers@git+https://github.com/obra/superpowers.git",
+      "openslimedit@latest",
+      "opencode-damage-control@latest",
+      "oh-my-opencode-slim"
+   ],
+   "small_model" : "opencode-go/deepseek-v4-flash",
+   "tool_output" : {
+      "max_bytes" : 4096,
+      "max_lines" : 150
+   }
+}

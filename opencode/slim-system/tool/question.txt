@@ -1,0 +1,5 @@
+Ask the user blocking structured questions via the UI.
+Use for genuine unknowns only — not for "should I continue?".
+custom is on by default — don't add "Other" options manually.
+Set multiple: true when multi-select is valid.
+Recommended option first, label "(Recommended)".

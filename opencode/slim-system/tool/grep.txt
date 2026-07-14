@@ -1,0 +1,5 @@
+Search file contents with regex (case-sensitive).
+Capped at 100 matches — narrow with include glob or path.
+Use `rg` via bash for counting/many matches, not grep.
+Prefer over shell grep for locating matches in the repo.
+For open-ended search needing multiple rounds, use Task instead.

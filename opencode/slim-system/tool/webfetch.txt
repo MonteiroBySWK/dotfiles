@@ -1,0 +1,5 @@
+Fetch a URL over HTTP(S). Scheme required.
+Response: markdown by default (HTML auto-converted).
+Text and html formats available. Images become file attachments.
+Max response: 5MB. Use stealth=true for Cloudflare sites.
+If a more targeted tool exists, prefer that instead.

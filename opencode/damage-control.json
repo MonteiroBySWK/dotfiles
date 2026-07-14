@@ -1,0 +1,17 @@
+{
+  "paths": {
+    "override": {
+      "out/": "none",
+      "~/.config/opencode": "none",
+      ".env*": "none"
+    },
+    "add": [
+      { "path": ".env", "level": "readOnly" },
+      { "path": ".env.local", "level": "readOnly" },
+      { "path": ".env.production", "level": "readOnly" },
+      { "path": ".env.staging", "level": "readOnly" },
+      { "path": ".env.development", "level": "readOnly" },
+      { "path": ".env.test", "level": "readOnly" }
+    ]
+  }
+}

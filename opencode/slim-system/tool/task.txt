@@ -1,0 +1,7 @@
+Spawn a sub-agent with independent context and tool access.
+Required: subagent_type, short description, self-contained prompt.
+task_id resumes an existing sub-session. User sees only your summary — relay results.
+Launch independent sub-agents in parallel in one turn.
+Do NOT use: for single file reads/grep/globs/edits. Use Read/Grep/Glob/Edit directly.
+Write detailed prompts. Tell agent whether to research or write code.
+Trust agent outputs. Do NOT duplicate delegated work.

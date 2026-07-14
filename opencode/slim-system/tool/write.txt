@@ -1,0 +1,4 @@
+Create or overwrite a file. Creates parent dirs automatically.
+Existing files must be Read first. Prefer Edit for small changes.
+NEVER create files unless explicitly required or helpful.
+No README/docs unless asked. No emojis in code files.

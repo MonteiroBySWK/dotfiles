@@ -44,6 +44,7 @@ temp/
 .env.*
 *.pem
 *.key
+*.bak
 credentials
 **/.aws/
 **/azure/

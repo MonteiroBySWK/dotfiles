@@ -1,0 +1,4 @@
+Find file paths by glob pattern (e.g. `**/*.ts`).
+Respects .gitignore. Results sorted by mtime.
+Call multiple Globs in parallel for independent patterns.
+For open-ended search needing multiple rounds, use Task instead.

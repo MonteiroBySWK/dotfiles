@@ -1,0 +1,111 @@
+{
+   "$schema" : "https://unpkg.com/oh-my-opencode-slim@latest/oh-my-opencode-slim.schema.json",
+   "disabled_agents" : [],
+   "preset" : "opencode-go",
+   "presets" : {
+      "openai" : {
+         "designer" : {
+            "mcps" : [],
+            "model" : "openai/gpt-5.4-mini",
+            "skills" : [],
+            "variant" : "medium"
+         },
+         "explorer" : {
+            "mcps" : [],
+            "model" : "openai/gpt-5.4-mini",
+            "skills" : [],
+            "variant" : "low"
+         },
+         "fixer" : {
+            "mcps" : [],
+            "model" : "openai/gpt-5.5",
+            "skills" : [],
+            "variant" : "low"
+         },
+         "librarian" : {
+            "mcps" : [
+               "websearch",
+               "context7",
+               "gh_grep"
+            ],
+            "model" : "openai/gpt-5.4-mini",
+            "skills" : [],
+            "variant" : "low"
+         },
+         "oracle" : {
+            "mcps" : [],
+            "model" : "openai/gpt-5.5",
+            "skills" : [
+               "simplify"
+            ],
+            "variant" : "high"
+         },
+         "orchestrator" : {
+            "mcps" : [
+               "*",
+               "!context7"
+            ],
+            "model" : "openai/gpt-5.5",
+            "skills" : [
+               "*"
+            ],
+            "variant" : "medium"
+         }
+      },
+      "opencode-go" : {
+         "designer" : {
+            "mcps" : [],
+            "model" : "opencode-go/deepseek-v4-flash",
+            "skills" : [],
+            "variant" : "high"
+         },
+         "explorer" : {
+            "mcps" : [],
+            "model" : "opencode-go/deepseek-v4-flash",
+            "skills" : [],
+            "variant" : "low"
+         },
+         "fixer" : {
+            "mcps" : [],
+            "model" : "opencode-go/deepseek-v4-flash",
+            "skills" : [],
+            "variant" : "high"
+         },
+         "librarian" : {
+            "mcps" : [
+               "websearch",
+               "context7",
+               "gh_grep"
+            ],
+            "model" : "opencode-go/deepseek-v4-flash",
+            "skills" : [],
+            "variant" : "low"
+         },
+         "observer" : {
+            "mcps" : [],
+            "model" : "opencode-go/deepseek-v4-flash",
+            "skills" : [],
+            "variant" : "low"
+         },
+         "oracle" : {
+            "mcps" : [],
+            "model" : "opencode-go/deepseek-v4-flash",
+            "skills" : [
+               "simplify"
+            ],
+            "variant" : "high"
+         },
+         "orchestrator" : {
+            "mcps" : [
+               "*",
+               "!context7"
+            ],
+            "model" : "opencode-go/deepseek-v4-flash",
+            "skills" : [
+               "*"
+            ],
+            "variant" : "medium"
+         }
+      }
+   }
+}

@@ -1,0 +1,3 @@
+Call when planning is complete — prompts user to switch to build agent.
+Do NOT call before plan is written or if user has unanswered questions.
+Do not use Question for plan approval — this tool handles that.

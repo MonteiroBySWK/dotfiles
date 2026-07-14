@@ -1,0 +1,7 @@
+Read a file or directory. filePath must be absolute.
+Returns `N: content` — never include prefix in Edit.
+Default: 2000 lines from start. Use offset (1-based) + limit.
+Lines >2000 chars truncated. Call in parallel for multiple files.
+Images/PDFs return metadata — vision models process inline.
+Use grep for content in large files, glob if unsure of path.
+Avoid tiny slices (30 line chunks) — read larger windows.

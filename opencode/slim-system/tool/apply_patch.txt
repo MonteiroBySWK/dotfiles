@@ -1,0 +1,5 @@
+Apply file changes via opencode's patch format.
+Wrap in Begin Patch / End Patch. Sections: Add File, Delete File, Update File.
+Update File hunks: @@ context, -removed, +added, End of File to EOF.
+Can specify Move to: new-path on Update File header.
+Paths relative to project root.

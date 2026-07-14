@@ -1,0 +1,63 @@
+# Dependencies
+node_modules/
+venv/
+env/
+.venv/
+__pycache__/
+*.egg-info/
+dist/
+build/
+
+# Build outputs
+.next/
+.nuxt/
+.cache/
+.turbo/
+dist/
+build/
+*.tsbuildinfo
+
+# Version control & CI
+.git/
+.github/
+.gitlab-ci.yml
+.circleci/
+
+# IDE & Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Environment & secrets
+.env*
+!.env.example
+.credentials.json
+
+# OS
+Thumbs.db
+.DS_Store
+*.log
+
+# Test & coverage
+coverage/
+.nyc_output/
+*.lcov
+
+# Docker
+.dockerignore
+Dockerfile
+
+# Java/Maven specific
+.m2/
+target/
+*.class
+*.jar
+
+# Local files & temporary
+*.tmp
+.local/
+tmp/
+temp/
