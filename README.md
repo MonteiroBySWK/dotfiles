@@ -53,6 +53,70 @@ O config usa a sintaxe `{env:NOME}` do OpenCode para ler do ambiente — **nenhu
 - `opencode-mem.jsonc` → lê `env://MEMORY_API_KEY` para auto-capture
 - `.gitignore` global bloqueia `.env`, `.env.*` e `*.bak` — sem risco de vazar secrets
 
+### Plugins
+
+| Plugin | Função |
+|---|---|
+| `oh-my-opencode-slim` | Orquestração de agentes especializados (orchestrator, oracle, fixer, designer, etc.) |
+| `superpowers` | Skills avançados (brainstorming, TDD, debugging, code review, etc.) |
+| `openslimedit` | Edição otimizada via subagentes |
+| `opencode-damage-control` | Proteção de paths sensíveis (`.env`, `~/.zshrc`, etc.) |
+
+### MCPs (Model Context Protocol)
+
+| MCP | Tipo | Status | Descrição |
+|---|---|---|---|
+| `context7` | remote | ✅ ativo | Documentação de bibliotecas via Context7 API |
+| `memory` | local | ✅ ativo | Persistência de memória (vetores) |
+| `playwright` | local | ⏸️ desativado | Automação de browser (Firefox) |
+| `token-optimizer` | local | ⏸️ desativado | Otimização de tokens |
+
+### Agentes (oh-my-opencode-slim)
+
+| Agente | Modelo | Skills | MCPs |
+|---|---|---|---|
+| **orchestrator** | `deepseek-v4-flash` | `*` (todos) | `*` exceto context7 |
+| **oracle** | `deepseek-v4-flash` | `simplify` | — |
+| **fixer** | `deepseek-v4-flash` | — | — |
+| **designer** | `deepseek-v4-flash` | — | — |
+| **explorer** | `deepseek-v4-flash` | — | — |
+| **librarian** | `deepseek-v4-flash` | — | websearch, context7, gh_grep |
+| **observer** | `deepseek-v4-flash` | — | — |
+
+### Agentes customizados
+
+| Agente | Modo | Descrição |
+|---|---|---|
+| `fixer` | subagent | Execução de tarefas bem definidas (bash/read/write/edit permitidos) |
+| `designer` | subagent | UI/UX design e implementação visual (permissões totais) |
+| `reviewer` | subagent | Revisão de código: catching de alucinações, erros de tipo e lógica |
+| `explore` (agent) | subagent | — 🔴 desabilitado |
+| `general` | — | — 🔴 desabilitado |
+
+### Skills disponíveis
+
+| Skill | Descrição |
+|---|---|
+| `brainstorming` | Exploração de requisitos e design antes de implementar |
+| `clonedeps` | Clonagem de dependências para inspeção de código-fonte |
+| `codemap` | Mapeamento hierárquico de repositórios desconhecidos |
+| `deepwork` | Workflow de alta complexidade com múltiplas fases e revisões |
+| `dispatching-parallel-agents` | Execução paralela de tarefas independentes |
+| `executing-plans` | Execução de planos de implementação |
+| `finishing-a-development-branch` | Finalização de branches (merge/PR/cleanup) |
+| `receiving-code-review` | Processamento de feedback de code review |
+| `requesting-code-review` | Solicitação de code review |
+| `simplify` | Simplificação de código sem mudar comportamento |
+| `subagent-driven-development` | Desenvolvimento orientado a subagentes |
+| `systematic-debugging` | Debug estruturado de bugs e falhas |
+| `test-driven-development` | TDD — testes antes da implementação |
+| `using-git-worktrees` | Isolamento via git worktrees |
+| `verification-before-completion` | Verificação antes de declarar conclusão |
+| `verification-planning` | Planejamento de verificação para mudanças complexas |
+| `writing-domain-docs` | Documentação de domínios de negócio |
+| `writing-plans` | Criação de planos de implementação |
+| `writing-skills` | Criação e edição de skills |
+
 —
 
 ## Notas rápidas
