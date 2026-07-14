@@ -11,6 +11,7 @@
     "tray",
     "network",
     "pulseaudio",
+    "backlight",
     "battery",
     "power-profiles-daemon",
     "temperature",
@@ -123,4 +124,11 @@
         "discord": "   Discord"
     }
   },
+  "backlight": {
+    "device": "intel_backlight", // ou "amdgpu_bl0", mas geralmente funciona sem essa linha
+    "format": "{icon} {percent}%",
+    "format-icons": ["", "", "", "", "", "", "", "", ""],
+    "on-scroll-up": "brightnessctl set 1%+",
+    "on-scroll-down": "brightnessctl set 1%-"
+  }
 }

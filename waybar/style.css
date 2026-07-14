@@ -19,6 +19,7 @@ window#waybar {
 #network,
 #pulseaudio,
 #tray,
+#backlight,
 #power-profiles-daemon {
     background: transparent;
     color: #ffffff;
