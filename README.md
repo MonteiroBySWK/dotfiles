@@ -28,6 +28,33 @@ Este repositório mostra o visual e as configurações do meu ambiente (sem expo
 
 —
 
+## OpenCode (`opencode/`)
+
+Este repositório também inclui minha configuração do [OpenCode](https://opencode.ai) (agente AI para terminal).
+
+### Variáveis de ambiente necessárias
+
+Para o OpenCode funcionar corretamente, exporte estas variáveis no seu `~/.zshrc` (ou equivalente):
+
+```bash
+# Context7 MCP — documentação de bibliotecas (obrigatório)
+export CONTEXT7_API_KEY="sua-chave-aqui"
+
+# Memory Plugin — auto-capture de memória (opcional)
+# export MEMORY_API_KEY="sua-chave-aqui"
+```
+
+O config usa a sintaxe `{env:NOME}` do OpenCode para ler do ambiente — **nenhuma chave está hardcoded nos arquivos**.
+
+> Template em `opencode/opencode-env-template.txt`
+
+### Como funciona
+- `opencode.json` → lê `{env:CONTEXT7_API_KEY}` para o MCP Context7
+- `opencode-mem.jsonc` → lê `env://MEMORY_API_KEY` para auto-capture
+- `.gitignore` global bloqueia `.env`, `.env.*` e `*.bak` — sem risco de vazar secrets
+
+—
+
 ## Notas rápidas
 - Arquivos de configuração portáveis estão no repositório; não incluí dados privados ou tokens.
 - Se quiser reproduzir o setup, bastam as configurações: tema, módulos e atalhos (os binários e dados pessoais não estão aqui).

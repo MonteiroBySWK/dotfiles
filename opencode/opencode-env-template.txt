@@ -1,14 +1,19 @@
 # ============================================
 # OpenCode Config — Environment Variables
 # ============================================
-# RENAME this file to '.env' (or to '.env.example'
-# if you want to version the template).
+# Exporte as variáveis no seu shell rc (~/.zshrc, ~/.bashrc):
 #
-# Then fill in your keys below.
+#   export CONTEXT7_API_KEY="sua-chave-aqui"
+#   export MEMORY_API_KEY="sua-chave-aqui"  # opcional
 #
-# Context7  →  opencode.json uses {env:CONTEXT7_API_KEY}
-# Memory    →  opencode-mem.jsonc uses env://MEMORY_API_KEY
+# O OpenCode lê automaticamente via {env:NOME} no opencode.json
+# e env://NOME no opencode-mem.jsonc.
+#
+# Docs completas em: ../README.md  (seção OpenCode)
 # ============================================
 
+# Context7 MCP — obrigatório para o Context7 funcionar
 CONTEXT7_API_KEY=
+
+# Memory Plugin — opcional, só se usar auto-capture
 MEMORY_API_KEY=
