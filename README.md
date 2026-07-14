@@ -61,6 +61,7 @@ O config usa a sintaxe `{env:NOME}` do OpenCode para ler do ambiente — **nenhu
 | `superpowers` | Skills avançados (brainstorming, TDD, debugging, code review, etc.) |
 | `openslimedit` | Edição otimizada via subagentes |
 | `opencode-damage-control` | Proteção de paths sensíveis (`.env`, `~/.zshrc`, etc.) |
+| `rtk` (plugins/rtk.ts) | Compressão automática de output de comandos bash (Rust Token Killer) |
 
 ### MCPs (Model Context Protocol)
 

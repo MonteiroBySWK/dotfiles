@@ -84,7 +84,8 @@
       "superpowers@git+https://github.com/obra/superpowers.git",
       "openslimedit@latest",
       "opencode-damage-control@latest",
-      "oh-my-opencode-slim"
+      "oh-my-opencode-slim",
+      "plugins/rtk.ts"
    ],
    "small_model" : "opencode-go/deepseek-v4-flash",
    "tool_output" : {
