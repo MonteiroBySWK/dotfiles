@@ -1,3 +1,31 @@
 {
-  "$schema": "https://raw.githubusercontent.com/Opencode-DCP/opencode-dynamic-context-pruning/master/dcp.schema.json"
+  "$schema": "https://raw.githubusercontent.com/Opencode-DCP/opencode-dynamic-context-pruning/master/dcp.schema.json",
+
+  // ============================================
+  // DCP — Dynamic Context Pruning Configuration
+  // ============================================
+
+  // Use percentage of model's actual context window instead of fixed token count
+  "compress": {
+    "maxContextLimit": "85%",
+    "minContextLimit": "45%",
+    "nudgeFrequency": 10,
+    "showCompression": true,
+    "protectTags": true,
+    "protectUserMessages": true,
+    "permission": "allow"
+  },
+
+  // Disable purgeErrors — it removes errored tool inputs after 4 turns,
+  // which causes the model to lose context about what went wrong.
+  // Disable deduplication — it merges similar tool calls but can remove
+  // meaningfully different invocations.
+  "strategies": {
+    "purgeErrors": {
+      "enabled": false
+    },
+    "deduplication": {
+      "enabled": false
+    }
+  }
 }

@@ -36,7 +36,7 @@
       }
    },
    "compaction" : {
-      "auto" : true,
+      "auto" : false,
       "tail_turns" : 25
    },
 
@@ -87,12 +87,11 @@
       "oh-my-opencode-slim",
       "@tarquinen/opencode-dcp",
       "@tarquinen/opencode-smart-title",
-      "opencode-notify",
-      "plugins/rtk.ts"
+       "plugins/rtk.ts"
    ],
-   "small_model" : "opencode-go/deepseek-v4-flash",
+   "small_model" : "opencode/north-mini-code-free",
    "tool_output" : {
-      "max_bytes" : 4096,
-      "max_lines" : 150
+      "max_bytes" : 65536,
+      "max_lines" : 2000
    }
 }
