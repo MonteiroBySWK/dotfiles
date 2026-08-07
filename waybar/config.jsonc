@@ -17,6 +17,7 @@
     "temperature",
     "cpu",
     "memory",
+    "custom/nightlight",
     "clock",
   ],
   "clock": {
@@ -130,5 +131,13 @@
     "format-icons": ["", "", "", "", "", "", "", "", ""],
     "on-scroll-up": "brightnessctl set 1%+",
     "on-scroll-down": "brightnessctl set 1%-"
+  },
+  "custom/nightlight": {
+    "exec": "/home/monteiro/.config/waybar/scripts/nightlight.sh status",
+    "signal": 3,
+    "return-type": "json",
+    "format": "{}",
+    "on-click": "/home/monteiro/.config/waybar/scripts/nightlight.sh toggle",
+    "tooltip": true
   }
 }

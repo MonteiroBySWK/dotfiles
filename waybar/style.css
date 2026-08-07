@@ -20,6 +20,7 @@ window#waybar {
 #pulseaudio,
 #tray,
 #backlight,
+#custom-nightlight,
 #power-profiles-daemon {
     background: transparent;
     color: #ffffff;
@@ -56,6 +57,14 @@ window#waybar {
 
 #battery.critical:not(.charging) {
     color: #ff5f56;
+}
+
+#custom-nightlight.on {
+    color: #ffb454;
+}
+
+#custom-nightlight.off {
+    color: #ffffff;
 }
 
 #tray {
