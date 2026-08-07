@@ -12,4 +12,6 @@ require("theme")        -- aparência (general, decoration, dwindle, master, mis
 require("animations")   -- curvas bezier e animações
 require("input")        -- teclado, touchpad, gestos e dispositivos
 require("workspaces")   -- regras de workspace
+require("window_rules") -- regras de janela
 require("binds")        -- atalhos de teclado e mouse
+require("nightlight")   -- modo noturno automático (timer 18h–6h)

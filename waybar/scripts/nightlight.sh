@@ -31,8 +31,27 @@ toggle() {
   pkill -"$SIGNAL" waybar 2>/dev/null || true
 }
 
+# modo idempotente para automação (timer do hyprland.lua)
+set() {
+  case "$1" in
+    on)
+      if ! is_running; then
+        setsid hyprsunset -t "$TEMP" >/dev/null 2>&1 &
+      fi
+      ;;
+    off)
+      pkill -x hyprsunset 2>/dev/null || true
+      ;;
+    *)
+      echo "uso: $0 set {on|off}" >&2; exit 1
+      ;;
+  esac
+  pkill -"$SIGNAL" waybar 2>/dev/null || true
+}
+
 case "${1:-status}" in
   status) status ;;
   toggle) toggle ;;
-  *) echo "uso: $0 {status|toggle}" >&2; exit 1 ;;
+  set) set "${2:-}" ;;
+  *) echo "uso: $0 {status|toggle|set on|set off}" >&2; exit 1 ;;
 esac
