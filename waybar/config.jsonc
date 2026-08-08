@@ -129,8 +129,8 @@
     "device": "intel_backlight", // ou "amdgpu_bl0", mas geralmente funciona sem essa linha
     "format": "{icon} {percent}%",
     "format-icons": ["", "", "", "", "", "", "", "", ""],
-    "on-scroll-up": "brightnessctl set 1%+",
-    "on-scroll-down": "brightnessctl set 1%-"
+    "on-scroll-up": "/home/monteiro/.config/hypr/scripts/brightness.sh up 1 quiet",
+    "on-scroll-down": "/home/monteiro/.config/hypr/scripts/brightness.sh down 1 quiet"
   },
   "custom/nightlight": {
     "exec": "/home/monteiro/.config/waybar/scripts/nightlight.sh status",
