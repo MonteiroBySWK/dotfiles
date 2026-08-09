@@ -81,7 +81,12 @@ query {
 **Hierarquia**:
 - Task/Bug sem parent → problema (leaf órfã)
 - Contêiner (Nível Módulo/Feature) sem subissues → informativo (vazio)
-- Título do filho que não começa com título do pai + " | " → problema (mismatch)
+- Título do filho que não deriva do pai → problema (mismatch). Regra de derivação
+  (verificar contra o título REAL do parent):
+  - OK se o filho começa com `título do pai + " | "` (novo nível)
+  - OK se o filho começa com `título do pai + " > "` (extensão do caminho do módulo,
+    ex: `Obras > Marcos` sob o pai `Obras`)
+  - Caso contrário → mismatch (sugerir renomear para `pai | descrição`)
 - Nível inconsistente com profundidade (ex: Nível=Módulo em título com 2+ níveis
   além do caminho de módulo) → informativo (dado histórico inconsistente)
 
@@ -113,6 +118,8 @@ query {
 ```
 
 Sem emojis. Se a categoria não tiver problemas, omitir a seção (ou "OK").
+Limite de 20 itens por categoria: listar os primeiros 20 e resumir o restante
+(ex: "+32 issues adicionais sem Priority"), agrupando por tipo de problema.
 
 ### Checkpoint obrigatório
 
