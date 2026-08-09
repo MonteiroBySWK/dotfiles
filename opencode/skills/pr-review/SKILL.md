@@ -279,3 +279,17 @@ Nível (Módulo/Feature/Task/Bug conforme regra).
 Confirmar título/parent/fields via a query da Task 5 (Step 1) + `parent { number }` +
 `gh api repos/$REPO/issues/N --jq '.assignees[].login'`. Se algo divergir do checklist,
 corrigir com as mutações acima antes de seguir.
+
+## Regras de falha e encerramento
+
+- Sem auth `gh` (`gh auth status` falhando) ou sem permissão em repo/project: PARAR e
+  informar o usuário. Nunca contornar com trabalho parcial.
+- Falha em uma mutation (erro de GraphQL): reportar o erro literal, NÃO tentar
+  "adivinhar" outra forma; conferir os IDs no passo de lookup e reexecutar.
+- Ao final da Fase B, resumir: comentários postados (links), issues criadas (número,
+  título, url, prioridade, nível, assignee) e issues existentes reaproveitadas (dedup).
+- Fase B só roda com comando explícito (`comment <PR>`). Fase A nunca comenta nem cria.
+- Dica (fora do skill): no GitHub Projects, criar view com filtro Nível = Task/Bug
+  para a board mostrar apenas as leaves.
+
+## Fim do skill
