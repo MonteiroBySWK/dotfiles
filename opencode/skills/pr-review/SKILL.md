@@ -74,3 +74,43 @@ escopo) ficam com o caminho do arquivo ou `PR`.
 
 Fim da Fase A: PARAR o turno e aguardar o usuário ler o relatório e decidir.
 NUNCA comentar na PR ou criar issues sem comando explícito de Fase B.
+
+## Fase B — comment <PR>
+
+### Mapeamento severidade → ação
+
+| Severidade | Modo normal | Modo fast-track (--fast-track) |
+|---|---|---|
+| BLOQUEANTE | comentário inline na linha | issue P0 |
+| ARRISCADO | issue P1 | issue P1 |
+| NAO-BLOQUEANTE | issue P2 | issue P2 |
+| DUVIDA | comentário avulso (sem linha) | comentário avulso (sem linha) |
+
+### Comentários inline (BLOQUEANTE, modo normal)
+
+Um comentário por problema, direto na linha do problema. NUNCA um comentário "pai"
+com vários problemas. Para cada comentário:
+
+```bash
+REPO=owner/repo; PR_NUM=N
+# 1. obter o commit do head (uma vez por PR)
+COMMIT=$(gh pr view $PR_NUM -R $REPO --json headRefOid --jq .headRefOid)
+# 2. postar na linha exata (path relativo ao repo, line = número da linha nova do diff)
+gh api repos/$REPO/pulls/$PR_NUM/comments \
+  -f body='**Problema:** ...' \
+  -f path='src/arquivo.ts' \
+  -f line=42 \
+  -f commit_id="$COMMIT"
+```
+
+Regras do corpo do comentário: começar com a severidade e o problema, citar o código,
+explicar o porquê, sugerir correção. pt-BR. Exemplo:
+`BLOQUEANTE — o cast em ... quebra ... quando ...; sugerido: ...`.
+
+### Comentários avulsos (DUVIDA)
+
+```bash
+gh pr comment $PR_NUM -R $REPO --body "DUVIDA — pergunta ..."
+```
+
+Formato de pergunta, sem supor resposta. Cada dúvida em comentário separado.
