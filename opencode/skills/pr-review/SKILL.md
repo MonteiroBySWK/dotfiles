@@ -114,3 +114,83 @@ gh pr comment $PR_NUM -R $REPO --body "DUVIDA — pergunta ..."
 ```
 
 Formato de pergunta, sem supor resposta. Cada dúvida em comentário separado.
+
+### Criação de issues (ARRISCADO, NAO-BLOQUEANTE e fast-track)
+
+#### Título (convenção)
+
+Título da nova issue = título do parent + " | " + descrição curta do problema.
+- Descrição curta: verbo no infinitivo, sem ponto final. Ex: `Ajustar colunas Dias p/ vencer`.
+- NUNCA criar título sem derivar do parent (se não houver parent, ver "Parent" abaixo).
+
+#### Parent (regra de busca)
+
+1. Derivar o caminho do módulo do problema (parte do título antes do último " | ").
+2. Buscar issues ABERTAS do repo cujo título comece com o caminho do módulo E que
+   sejam contêineres (campo Nível = Módulo ou Feature). Usar a query:
+
+```graphql
+query {
+  repository(owner: "OWNER", name: "REPO") {
+    issues(first: 100, states: OPEN) {
+      nodes {
+        number
+        title
+        projectItems(first: 3) {
+          nodes {
+            fieldValues(first: 15) {
+              nodes {
+                ... on ProjectV2ItemFieldSingleSelectValue {
+                  name
+                  field { ... on ProjectV2FieldCommon { name } }
+                }
+              }
+            }
+          }
+        }
+      }
+      pageInfo { hasNextPage endCursor }
+    }
+  }
+}
+```
+
+   (paginar com `after: "$endCursor"` até esgotar ou achar match).
+3. Escolher o match mais profundo (título = caminho do módulo exato, ou o mais longo
+   que case com o prefixo).
+4. Se existir parent adequado → usar, sem perguntar.
+5. Se NÃO existir parent adequado → PERGUNTAR ao usuário antes de criar qualquer
+   contêiner novo (módulo/feature). Opções a oferecer:
+   - Criar hierarquia completa (Módulo → Feature → leaf)
+   - Criar a leaf avulsa (sem parent)
+   - Usar outro parent/caminho indicado pelo usuário
+   Nunca criar módulo/feature novo sem confirmação explícita.
+6. Nível dos contêineres criados: raiz = Módulo, intermediário = Feature.
+7. Leaf: Nível = Bug se for defeito real (comportamento errado, crash, vazamento,
+   erro visível ao usuário); senão Nível = Task (melhoria, code smell, dívida, docs).
+
+#### Dedup (antes de criar)
+
+Buscar issue existente com o mesmo título (aberta ou fechada):
+
+```bash
+gh search issues --repo owner/repo "TÍTULO-EXATO" --limit 5
+```
+
+Se existir: NÃO criar duplicata. Informar o número/link da existente na resposta.
+Se houver várias semelhantes mas não idênticas, verificar se a nova é a mesma
+intenção antes de decidir; na dúvida, perguntar ao usuário.
+
+#### Checklist obrigatório por issue criada (NUNCA pular)
+
+Após criar CADA issue, confirmar via API que:
+- [ ] Título segue a convenção (parent + " | " + descrição)
+- [ ] Parent correto (subissue vinculada) — quando aplicável
+- [ ] Adicionada ao project correto (do config)
+- [ ] Status = Ready
+- [ ] Priority = P0/P1/P2 conforme o mapeamento da Fase B
+- [ ] Nível = Módulo/Feature/Task/Bug conforme o nível na hierarquia
+- [ ] Assignee (dev responsável) = autor da PR
+
+Se qualquer item falhar, corrigir antes de prosseguir. Reportar ao final:
+`Issue #N criada: <título> — <url>` para cada uma.
