@@ -194,3 +194,88 @@ Após criar CADA issue, confirmar via API que:
 
 Se qualquer item falhar, corrigir antes de prosseguir. Reportar ao final:
 `Issue #N criada: <título> — <url>` para cada uma.
+
+### Mutações (comandos verificados — não improvisar)
+
+#### 1. IDs necessários (lookup, uma vez por project/repo)
+
+```bash
+REPO=owner/repo
+# node id do repo
+REPO_ID=$(gh api repos/$REPO --jq .node_id)
+# node id do project + field IDs e option IDs (single-selects)
+gh api graphql -f query='query { organization(login: "ORG") { projectV2(number: N) { id fields(first: 40) { nodes { ... on ProjectV2FieldCommon { id name dataType } ... on ProjectV2SingleSelectField { id name dataType options { id name } } } } } } }'
+```
+
+Interpretar a saída: para Status/Priority/Nível, anotar `id` do campo (ex: `PVTSSF_...`)
+e o `id` de cada option (ex: option "Ready", "P0", "Módulo"). Project node id tem
+prefixo `PVT_`; repo node id tem prefixo `R_kg`.
+
+#### 2. Criar a issue (uma mutation faz: criar + parent + project + assignee)
+
+```graphql
+mutation {
+  createIssue(input: {
+    repositoryId: "REPO_ID"
+    title: "TITULO"
+    body: "CORPO"
+    parentIssueId: "PARENT_ISSUE_ID"   # omitir se avulsa
+    projectV2Ids: ["PROJECT_ID"]
+    assigneeIds: ["AUTHOR_GRAPHQL_ID"] # id do autor da PR
+  }) {
+    issue { id number url title }
+  }
+}
+```
+
+Via CLI (montar o JSON do input e usar --input):
+
+```bash
+gh api graphql --input /tmp/create-issue.json
+```
+
+- `PARENT_ISSUE_ID`: obter via `gh api repos/$REPO/issues/N --jq .node_id` da issue parent.
+- `AUTHOR_GRAPHQL_ID`: `gh pr view $PR_NUM -R $REPO --json author --jq .author.id`.
+- CORPO: contexto do problema (o que, onde, por quê, referência ao PR `#N`).
+
+#### 3. Setar Status, Priority e Nível (após criar; precisa do item id do project)
+
+Item id da issue criada (no project):
+
+```graphql
+query {
+  repository(owner: "OWNER", name: "REPO") {
+    issue(number: N) {
+      projectItems(first: 5) { nodes { id project { title } } }
+    }
+  }
+}
+```
+
+Para cada campo single-select, uma mutation:
+
+```graphql
+mutation {
+  updateProjectV2ItemFieldValue(input: {
+    projectId: "PROJECT_ID"
+    itemId: "ITEM_ID"
+    fieldId: "FIELD_ID"
+    value: { singleSelectOptionId: "OPTION_ID" }
+  }) { projectV2Item { id } }
+}
+```
+
+Campos a setar (obrigatório): Status="Ready", Priority=P0/P1/P2 (conforme mapeamento),
+Nível (Módulo/Feature/Task/Bug conforme regra).
+
+#### 4. Fallbacks (somente se o passo 2 não aceitar parent/project/assignee)
+
+- Parent tardio: `addSubIssue(input: { issueId: "PARENT_ID", subIssueId: "ISSUE_ID" })`.
+- Project tardio: `addProjectV2ItemById(input: { projectId: "PROJECT_ID", contentId: "ISSUE_ID" })`.
+- Assignee tardio: `addAssigneesToAssignable(input: { assignableId: "ISSUE_ID", assigneeIds: ["AUTHOR_ID"] })`.
+
+#### 5. Verificação pós-criação (por issue)
+
+Confirmar título/parent/fields via a query da Task 5 (Step 1) + `parent { number }` +
+`gh api repos/$REPO/issues/N --jq '.assignees[].login'`. Se algo divergir do checklist,
+corrigir com as mutações acima antes de seguir.
