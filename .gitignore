@@ -38,6 +38,9 @@ temp/
 **/.ssh/id_*
 **/.ssh/ssh_host_*
 **/.gnupg/
+
+# Configs com dados de projetos internos (não commitar; schema em projects.example.json)
+opencode/skills/pr-review/projects.json
 **/.gpg/
 **/.password-store/
 .env

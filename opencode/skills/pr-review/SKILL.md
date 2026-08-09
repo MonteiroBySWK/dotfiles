@@ -20,6 +20,9 @@ Fluxo da equipe: revisão de PRs no GitHub com issues gerenciadas no GitHub Proj
 ## Configuração (obrigatório — ler antes de qualquer comando)
 
 1. Ler `~/.config/opencode/skills/pr-review/projects.json` (mapeia `owner/repo` → project).
+   O arquivo NÃO é versionado (repo público); o schema está em
+   `~/.config/opencode/skills/pr-review/projects.example.json`. Se o arquivo não
+   existir, criar a partir do exemplo.
 2. Determinar o repo atual (git remote origin) e o PR a revisar.
 3. Se o repo está mapeado, usar o project do config.
 4. Se não está: auto-detect via `gh project list --owner <org>` buscando project com o
