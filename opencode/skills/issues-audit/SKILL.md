@@ -117,3 +117,77 @@ Sem emojis. Se a categoria não tiver problemas, omitir a seção (ou "OK").
 ### Checkpoint obrigatório
 
 Fim do relatório: PARAR o turno. NUNCA aplicar correção sem `--fix`.
+
+## Fase --fix — audit <repo> --fix
+
+Após gerar o relatório, para CADA categoria com problemas:
+
+1. Apresentar a lista de alterações propostas (issue, campo atual → campo novo).
+2. Aguardar confirmação do usuário (uma confirmação por categoria).
+3. Aplicar e verificar via API cada alteração.
+
+### Mutações (comandos verificados — não improvisar)
+
+Lookup de IDs (project, fields, options) e interpretação: ver seção
+"Mutações (comandos verificados)" do skill pr-review — os IDs do project são os
+mesmos para os dois skills.
+
+**Título / assignee / estado** (updateIssue):
+
+```graphql
+mutation {
+  updateIssue(input: { id: "ISSUE_ID", title: "NOVO_TITULO" }) {
+    issue { number title }
+  }
+}
+```
+
+- `ISSUE_ID`: `gh api repos/OWNER/REPO/issues/N --jq .node_id`
+- assignee: `assigneeIds: ["ID_AUTOR"]` (id via `gh api repos/OWNER/REPO/issues/N --jq '.assignees[0].id'` do autor)
+- estado: `state: CLOSED` ou `state: OPEN` (somente com confirmação item a item)
+
+**Status/Priority/Nível** (updateProjectV2ItemFieldValue):
+
+```graphql
+mutation {
+  updateProjectV2ItemFieldValue(input: {
+    projectId: "PROJECT_ID"
+    itemId: "ITEM_ID"
+    fieldId: "FIELD_ID"
+    value: { singleSelectOptionId: "OPTION_ID" }
+  }) { projectV2Item { id } }
+}
+```
+
+- `ITEM_ID`: query `issue(number: N) { projectItems(first: 5) { nodes { id } } }`
+- field/option IDs: lookup do pr-review (Status/Priority/Nível + options)
+
+**Parent** (addSubIssue):
+
+```graphql
+mutation {
+  addSubIssue(input: { issueId: "PARENT_ID", subIssueId: "ISSUE_ID" }) {
+    issue { number }
+  }
+}
+```
+
+**Assignee fallback**: `addAssigneesToAssignable(input: { assignableId: "ISSUE_ID", assigneeIds: ["AUTHOR_ID"] })`.
+
+### Regras do --fix
+
+- Ações destrutivas (fechar/reabrir, mover de project): confirmação ITEM A ITEM,
+  nunca em lote.
+- Renomear título: sempre derivar do parent real (`pai + " | " + descrição`).
+- Se a correção proposta mudar a hierarquia (criar contêiner), seguir a regra de
+  parent do pr-review: perguntar antes de criar módulo/feature novo.
+- Ao final: resumo das alterações aplicadas (issue, campo, de → para) + verificação
+  via API de cada uma.
+
+## Regras de falha
+
+- Sem auth `gh` ou sem permissão: PARAR e informar. Nunca contornar.
+- Erro de GraphQL: reportar o erro literal; conferir IDs no lookup; reexecutar.
+- Fase report nunca corrige; --fix nunca roda sem o relatório ter sido mostrado.
+
+## Fim do skill
