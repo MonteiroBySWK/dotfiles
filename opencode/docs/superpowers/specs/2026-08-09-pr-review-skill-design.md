@@ -72,8 +72,14 @@ Título da nova issue = título do parent + " | " + descrição curta do problem
 1. Derivar o caminho do módulo do problema (ex: `Solicitações > Pagamentos`).
 2. Buscar issue ABERTA cujo título case com o caminho, limitada a contêineres
    (Nível = Módulo/Feature), usando o match mais profundo.
-3. Criar como subissue do parent encontrado; criar os contêineres intermediários
-   que faltarem; se nada existir, criar a hierarquia completa.
+3. Se existir parent adequado -> criar como subissue dele (sem perguntar).
+4. Se NÃO existir parent adequado -> **perguntar ao usuário** antes de criar
+   qualquer contêiner novo (módulo/feature), oferecendo opções como:
+   - Criar a hierarquia completa (Módulo -> Feature -> leaf)
+   - Criar a leaf avulsa (sem parent)
+   - Usar outro caminho/parent indicado pelo usuário
+   Nunca criar módulo/feature novo sem confirmação explícita.
+5. Quando o usuário confirmar a criação de contêineres:
    - Raiz criada -> Nível = Módulo
    - Contêiner intermediário -> Nível = Feature
    - Leaf -> Nível = Task (melhoria, code smell, dívida, docs) ou Bug (defeito real)
