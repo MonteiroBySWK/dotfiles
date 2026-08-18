@@ -13,7 +13,7 @@
     "pulseaudio",
     "backlight",
     "battery",
-    "power-profiles-daemon",
+    "custom/tlp",
     "temperature",
     "cpu",
     "memory",
@@ -67,16 +67,13 @@
     "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
     "on-click-right": "pavucontrol",
   },
-  "power-profiles-daemon": {
-    "format": "{icon}",
-    "tooltip-format": "Perfil de energia: {profile}\nDriver: {driver}",
-    "tooltip": true,
-    "format-icons": {
-      "default": "",
-      "performance": "",
-      "balanced": "",
-      "power-saver": ""
-    }
+  "custom/tlp": {
+    "exec": "/home/monteiro/.config/waybar/scripts/tlp.sh status",
+    "signal": 2,
+    "return-type": "json",
+    "format": "{}",
+    "on-click": "/home/monteiro/.config/waybar/scripts/tlp.sh toggle",
+    "tooltip": true
   },
   "custom/notifications": {
     "tooltip": false,
