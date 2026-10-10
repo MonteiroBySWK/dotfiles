@@ -72,8 +72,15 @@ check("network on-click-right abre pavucontrol",
   typeof net["on-click-right"] === "string" &&
   net["on-click-right"].includes("pavucontrol"));
 
-check("output esta explicito", typeof cfg.output === "string",
-  "output=" + cfg.output);
+// Nao declarar "output". O man page diz typeof: string|array, e o "*"
+// aparece na documentacao no contexto de ARRAY, com exclusoes "!".
+// A string nua "*" e JSON valido ewaybar aceita o arquivo sem reclamar --
+// mas nao cria barra em NENHUMA saida: o processo sobe, fica vivo, e nada
+// aparece na tela. Ausente a chave, waybar cria a barra em todas as saidas,
+// que e o comportamento desejado. Nao voltar a declarar.
+check("nao declara output como string nua",
+  !(typeof cfg.output === "string"),
+  "output=" + JSON.stringify(cfg.output));
 
 if (failures > 0) {
   console.log("\n" + failures + " falha(s)");
