@@ -45,6 +45,30 @@ window {
     margin: 0 6px;
 }
 
+/* ---- barra plana, como a menu bar do macOS ----
+ * Cada modulo do ironbar e um GtkButton, e o GTK4 desenha uma pílula
+ * escura em CADA um. O resultado era uma tira segmentada, que e o oposto
+ * do macOS: lá a barra e uma superficie continua e nao tem caixa por item.
+ * Aqui tira o fundo de todos os botoes; o unico que ganha fundo de volta
+ * e o workspace em foco, por seletor de classe (especificidade maior). */
+button {
+    background: none;
+    border: none;
+    box-shadow: none;
+    padding: 0 4px;
+}
+
+button:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+}
+
+button:focus,
+button:focus-visible {
+    outline: none;
+    box-shadow: none;
+}
+
 .label {
     color: #ffffff;
     /* respiro para os glifos de uso privado: sem espaco o glyph e cortado
@@ -264,4 +288,25 @@ popover contents {
 .bluetooth .footer-label {
     color: #98989d;
     font-size: 12px;
+}
+/* ---- espacamento: o popup tinha ~80px de vazio entre slider e mute ----
+ * O widget do slider reserva altura mesmo com o trilho fino, e o botao de
+ * mute fica sozinho na linha seguinte. Encolhendo a caixa do slider e
+ * encostando o mute, o bloco inteiro fecha. */
+.popup-volume .slider {
+    min-height: 6px;
+    padding: 0;
+    margin: 0;
+}
+
+.popup-volume .device-box,
+.popup-volume .apps-box {
+    padding: 2px 0;
+    margin: 0 0 4px 0;
+}
+
+.popup-volume .btn-mute {
+    padding: 2px;
+    margin: 2px 0 0 0;
+    font-size: 14px;
 }

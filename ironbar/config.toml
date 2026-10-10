@@ -110,7 +110,11 @@ format = [
 
 [[end]]
 type = "clock"
-format = "{:%H:%M - %d/%m/%Y}"
+# strftime PURO. O ironbar usa {} para placeholders e tentava resolver
+# ":%H:%M - %d/%m/%Y" como nome, deixando as chaves literais na barra.
+# O modulo clock aceita Pango markup, entao a hora vem em destaque e a data
+# no cinza secundario -- como o relogio do macOS.
+format = "<span size=\"large\" weight=\"bold\">%H:%M</span>  <span foreground=\"#98989d\">%d/%m</span>"
 timezone = "America/Sao_Paulo"
 
 # ---------------- tray ----------------

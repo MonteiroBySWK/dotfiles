@@ -77,6 +77,13 @@ sed -n '/type = "battery"/,/^\[\[/p' "$CFG" | grep -q '{icon}' \
   && bad "bateria sem placeholder {icon}" '"{icon}" no format da bateria sai literal' \
   || ok "bateria sem placeholder {icon}"
 
+# --- relogio: strftime puro, sem chaves ---
+# O ironbar usa {} para placeholders e tentava resolver o formato inteiro
+# como nome, deixando "{ ... }" literal na barra.
+sed -n '/type = "clock"/,/^\[\[/p' "$CFG" | grep -q 'format = "{' \
+  && bad "relogio sem chaves em volta" 'format do clock com "{}" sai literal' \
+  || ok "relogio sem chaves em volta"
+
 # --- workspaces clicaveis: o motivo da migracao ---
 grep -q 'type = "workspaces"' "$CFG" && ok "tem workspaces" || bad "tem workspaces"
 # all_monitors = false mostraria so os workspaces do monitor da barra, e o
