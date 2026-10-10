@@ -96,6 +96,7 @@
 # Caches e artefatos de tooling
 graphify-out/
 **/graphify-out/
+.superpowers/
 waybar-view.png
 .playwright-mcp/
 .token-optimizer/
