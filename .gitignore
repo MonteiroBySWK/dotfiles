@@ -1,21 +1,106 @@
 # .gitignore para dotfiles dentro de ~/.config
 # Atualizado: ignora grandes pastas de apps, caches e segredos; mantém configs portáteis
 
-# Grandes diretórios e dados de aplicativos (não versionar)
-Code/
-Code - OSS/
-google-chrome/
-discord/
-Bitwarden/
-LM Studio/
-LM-Studio/
-JetBrains/
-obs-studio/
-PCSX2/
-Antigravity/
-sst/
-yarn/
-Google/
+# Diretórios de dados de aplicativos (não versionar)
+# Regra geral: qualquer diretório que não seja configKnown fica fora.
+# exceção é o inverso — listar explicitamente o que é configKnown.
+/*/
+
+# Pastas de apps conhecidas que NÃO são config (o /*/ acima já cobre;
+# estas ficam explícitas por causa de nomes com espaço)
+/Android Open Source Project/
+/Cemu/
+/Claude/
+/Cursor/
+/GitHub Desktop/
+/Grok Bot/
+/JetBrains/
+/KDE/
+/LM Studio/
+/LM-Studio/
+/PCSX2/
+/UNDERTALE/
+/Unity/
+/codegenv/
+/codium/
+/obs-studio/
+/sst/
+/yarn/
+/google-chrome/
+/google-chrome-for-testing/
+/google-chrome-headless/
+
+# Dados de KDE/Plasma (herança de outras máquinas)
+/.kactivitymanagerd/
+/.kded5/
+/.kded6/
+/kdeglobals
+/kwinrc
+/kwinoutputconfig.json
+/kscreenlockerrc
+/plasma-org.kde.plasma.desktop-appletsrc
+/plasmashellrc
+/powerdevilrc
+/*rc
+/ksmserverrc
+/ktimezonedrc
+/kwalletrc
+/kglobalshortcutsrc
+/plasma-localerc
+/plasma-welcomerc
+/plasmanotifyrc
+/kcminputrc
+/kcmfonts
+/kiorc
+/dolphinrc
+/katerc
+/katevirc
+/konsolerc
+/konsolesshconfig
+/arkrc
+/baloofilerc
+/bluedevilglobalrc
+/corectrl/
+/dolphin/
+/filetypesrc
+/ghostty/
+/gtkrc
+/gtkrc-2.0
+/gtk-3.0/
+/gtk-4.0/
+/haruna/
+/kaccessrc
+/kate/
+/kate-externaltoolspluginrc
+/kded5rc
+/kded6rc
+/kdedefaults/
+/menus/
+/mypy/
+/plasmaparc
+/PlasmaUserFeedback/
+/QtProject.conf
+/rofi/
+/spectaclerc
+/Trash/
+/trashrc
+/PlasmaUserFeedback
+/apps.list
+/pavucontrol.ini
+/Trolltech.conf
+/user-dirs.dirs
+/user-dirs.locale
+/xdg-desktop-portal-kderc
+/xsettingsd/
+
+# Caches e artefatos de tooling
+graphify-out/
+**/graphify-out/
+waybar-view.png
+.playwright-mcp/
+.token-optimizer/
+/.opencode/
+**/.cache/
 
 # Caches, builds e dependências
 **/cache/
@@ -32,7 +117,11 @@ npm-debug.log
 yarn-error.log
 tmp/
 temp/
+
+# Lockfiles: só os que fazem sentido versionar em dotfiles.
+# O blanket *.lock anterior escondeia o lazy-lock.json do nvim.
 *.lock
+!/nvim/lazy-lock.json
 
 # Segredos / chaves / credenciais (não commitar)
 **/.ssh/id_*
@@ -69,26 +158,50 @@ Thumbs.db
 # Ignorar caches de browsers e extensões
 **/chrome-extension-data/
 
-# Exceções: arquivos de configuração portáveis que normalmente vale a pena versionar
-# Remover ou ajustar essas negações conforme preferir
+# Exceções: configs portáveis que valem versionar.
+# A regra /*/ acima nega todo diretório de primeiro nível, então cada
+# exceção precisa ser explícita.
 !nvim/
-!nvim/init.vim
-!nvim/init.lua
-!nvim/lua/
-!fish/
-!fish/config.fish
-!kitty/
-!kitty/kitty.conf
 !hypr/
-!hypr/hyprland.conf
 !waybar/
-!waybar/config.jsonc
 !wofi/
-!wofi/config
+!kitty/
+!fish/
+!mpv/
+!obs-studio/
+!qBittorrent/
+!pulse/
+!systemd/
+!gh/
+!git/
+!rtk/
+!zed/
+!spotify/
+!mako/
+!pupgui/
+!MangoHud/
+!MangoHud/
+!cava/
+!bashtop/
+!htop/
+!rclone/
+!rustdesk/
+!glow/
+!uv/
+!mise/
+!misc/
+!autostart/
+!docs/
+!dconf/
+!opencode/
+!assets/
 !mimeapps.list
-!user-dirs.dirs
-!kwinrc
-!autostart/**
-!vscode-user-settings
+!user-dirs.dirs.locale
+!README.md
+!AGENTS.md
+!.gitignore
+
+# Não versionar
+waybar-view.png
 
 # Observação: revise antes de commitar arquivos listados nas negações — alguns podem conter caminhos absolutos ou dados específicos da máquina
