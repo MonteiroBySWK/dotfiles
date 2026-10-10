@@ -7,7 +7,7 @@
   "modules-left": [
     "hyprland/workspaces"
   ],
-  "modules-center": ["hyprland/window"],
+  "modules-center": ["hyprland/window", "cffi/ffi_vol"],
   "modules-right": [
     "tray",
     "network",
@@ -114,6 +114,9 @@
 // usuario ou de maquina -- que e o objetivo de replicar estes dotfiles.
 "on-click": "~/.config/waybar/scripts/wifi-menu.sh",
     "on-click-right": "pavucontrol"
+  },
+  "cffi/ffi_vol": {
+    "module_path": "/home/monteiro/.config/waybar/cffi/libwb_ffi_vol.so"
   },
   "hyprland/workspaces": {
     "sort-by": "number",
