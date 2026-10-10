@@ -62,6 +62,13 @@ window#waybar {
     font-weight: 700;
 }
 
+/* O icone do app e um <img> dentro do label do hyprland/window. O GTK
+   alinha imagem na baseline do texto, entao num bar de 26px ela fica
+   visivelmente baixa em relacao ao titulo. */
+#window label image {
+    margin-bottom: -3px;
+}
+
 #battery.charging {
     color: #28c940;
 }
