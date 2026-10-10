@@ -96,18 +96,15 @@ for _, m in ipairs(MODULES) do
 end
 
 -- ---- Baseline: estado atual, antes das correcoes ----
+-- Cada assert de baseline e aposentado pela task que muda o que ele
+-- descreve. Assert de baseline que vira falso trava o suite inteiro em
+-- vermelho e convida a deletar o arquivo sob pressao.
 check("baseline: regra nomeada para eDP-1", find_monitor("eDP-1") ~= nil)
-check("baseline: regra nomeada para HDMI-A-1", find_monitor("HDMI-A-1") ~= nil)
 
 local pinned = {}
 for _, w in ipairs(captured.workspace_rule) do
   if w.monitor then table.insert(pinned, tostring(w.workspace) .. "->" .. w.monitor) end
 end
-check("baseline: workspaces presos a monitor", #pinned > 0,
-  "pinned=" .. table.concat(pinned, ","))
-
-check("baseline: boot nao liga wifi",
-  not any_captured("exec_cmd", "nmcli radio wifi on"))
 
 -- ---- Alvos das Tasks 2-4: todos devem FALHAR agora ----
 local eDP = find_monitor("eDP-1")

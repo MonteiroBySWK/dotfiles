@@ -11,6 +11,12 @@ if ! lua5.4 tests/test_config.lua; then
   fail=1
 fi
 
+echo
+echo "== waybar config.jsonc =="
+if ! node tests/jsonc.mjs waybar/config.jsonc; then
+  fail=1
+fi
+
 if [ "$fail" -ne 0 ]; then
   echo
   echo "FALHOU"
