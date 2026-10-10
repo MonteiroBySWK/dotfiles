@@ -259,8 +259,8 @@ ShellRoot {
 
 						onPressedChanged: {
 							hideTimer.restart();
-							root.dragging = !pressed;
-							if (!pressed && from > to) writeVolume.apply(volSlider.value);
+							root.dragging = pressed;
+							if (!pressed) writeVolume.apply(volSlider.value);
 						}
 					}
 
@@ -318,8 +318,8 @@ ShellRoot {
 
 						onPressedChanged: {
 							hideTimer.restart();
-							root.dragging = !pressed;
-							if (!pressed && from > to) writeBrightness.apply(brightSlider.value);
+							root.dragging = pressed;
+							if (!pressed) writeBrightness.apply(brightSlider.value);
 						}
 					}
 
