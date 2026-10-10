@@ -11,6 +11,10 @@
 #
 # O waybar continua no repo, intacto, como alternativa.
 
+# position e onde a barra fica na tela (default do ironbar e "bottom" --
+# por isso ela abria embaixo). layer e a camada do compositor (top/bottom/
+# overlay), que sao coisas diferentes.
+position = "top"
 layer = "top"
 exclusive = true
 spacing = 5

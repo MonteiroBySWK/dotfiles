@@ -46,6 +46,14 @@ for t in "${!usados[@]}"; do
   fi
 done
 
+# --- posicao da barra ---
+# O default do ironbar e position = "bottom". Sem isto a barra abre embaixo
+# e o "layer = top" da ilusao de estar em cima -- sao coisas diferentes:
+# layer e a camada do compositor, position e onde na tela.
+grep -qE '^position = "top"' "$CFG" \
+  && ok "barra no topo da tela" \
+  || bad "barra no topo da tela" 'position nao esta "top"'
+
 # --- workspaces clicaveis: o motivo da migracao ---
 grep -q 'type = "workspaces"' "$CFG" && ok "tem workspaces" || bad "tem workspaces"
 # all_monitors = false mostraria so os workspaces do monitor da barra, e o
