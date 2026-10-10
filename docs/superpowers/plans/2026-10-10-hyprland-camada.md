@@ -869,14 +869,19 @@ por:
 
 ```jsonc
   "modules-left": [
-    "hyprland/workspaces": {
-      "sort-by": "number",
-      "show-special": true,
-      "on-scroll-up": "hyprctl dispatch workspace e-1",
-      "on-scroll-down": "hyprctl dispatch workspace e+1"
+    {
+      "hyprland/workspaces": {
+        "sort-by": "number",
+        "show-special": true,
+        "on-scroll-up": "hyprctl dispatch workspace e-1",
+        "on-scroll-down": "hyprctl dispatch workspace e+1"
+      }
     }
   ],
 ```
+
+O objeto precisa estar embrulhado em `[{ ... }]`. `"chave": {}` solto dentro do array é JSON
+inválido e o Waybar não sobe.
 
 - [ ] **Step 10: Edite `waybar/config.jsonc` — `hyprland/window`**
 
