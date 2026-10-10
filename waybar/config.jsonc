@@ -65,7 +65,7 @@
         "  "
       ],
     },
-    "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+    "on-click": "qs ipc -c popup call control showVolume",
     "on-click-right": "pavucontrol",
   },
   "custom/tlp": {
@@ -130,11 +130,14 @@
     "icon-size": 16
   },
   "backlight": {
-    "device": "intel_backlight", // ou "amdgpu_bl0", mas geralmente funciona sem essa linha
+    // Sem "device": esta maquina e AMD e o unico backlight e amdgpu_bl1.
+    // Apontar para "intel_backlight" nao dava erro -- o modulo caia no
+    // auto-detect e mostrava os percentuais certos, mascarando o problema.
     "format": "{icon} {percent}%",
     "format-icons": ["", "", "", "", "", "", "", "", ""],
     "on-scroll-up": "/home/monteiro/.config/hypr/scripts/brightness.sh up 1 quiet",
-    "on-scroll-down": "/home/monteiro/.config/hypr/scripts/brightness.sh down 1 quiet"
+    "on-scroll-down": "/home/monteiro/.config/hypr/scripts/brightness.sh down 1 quiet",
+    "on-click": "qs ipc -c popup call control showBrightness"
   },
   "custom/nightlight": {
     "exec": "/home/monteiro/.config/waybar/scripts/nightlight.sh status",

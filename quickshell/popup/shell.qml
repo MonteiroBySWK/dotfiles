@@ -1,0 +1,338 @@
+import QtQuick
+import QtQuick.Layouts
+import QtQuick.Controls
+import QtQuick.Controls.Basic
+import Quickshell
+import Quickshell.Io
+import Quickshell.Widgets
+
+/*
+ * quickshell/popup/shell.qml — popup de controle arrastável
+ *
+ * Dois popups: clique no ícone de volume abre o de volume, clique no de
+ * brilho abre o de brilho. O arrasto é o caminho rápido; no volume há um
+ * botão para o controle completo (pavucontrol), que é onde se troca de
+ * aparelho.
+ *
+ * O waybar chama isto por IPC:
+ *     qs ipc call control showVolume
+ *     qs ipc call control showBrightness
+ *
+ * API conferida no fonte antes de escrever:
+ *   - IpcHandler exige tipo de retorno explicito, senao a funcao nem e
+ *     registrada (src/io/ipchandler.hpp)
+ *   - Process.command e array, sem shell; usar ["sh","-c",...] quando
+ *     precisar (src/io/process.hpp)
+ *   - stdout entra por StdioCollector, com text e onStreamFinished
+ *   - Quickshell.screens devolve os monitors (src/windowmanager/test/manual)
+ */
+
+ShellRoot {
+	id: root
+
+	// 0 = fechado, 1 = volume, 2 = brilho
+	property int mode: 0
+
+	property real volume: 0
+	property bool muted: false
+	property real brightness: 0
+
+	// Enquanto o usuario arrasta, nao reescreve a cada pixel: guarda o
+	// ultimo valor enviado e so chama o processo no onReleased.
+	property bool dragging: false
+
+	readonly property int maxVolume: 120
+
+	// ------------------------------------------------------------------
+	// IPC: o waybar chama por aqui
+	// ------------------------------------------------------------------
+	IpcHandler {
+		target: "control"
+
+		function showVolume(): void {
+			root.openVolume();
+		}
+
+		function showBrightness(): void {
+			root.openBrightness();
+		}
+
+		function hide(): void {
+			root.close();
+		}
+	}
+
+	// ------------------------------------------------------------------
+	// Acoes
+	// ------------------------------------------------------------------
+	function openVolume() {
+		readVolume.running = false;
+		readVolume.running = true;
+		root.mode = 1;
+		hideTimer.restart();
+	}
+
+	function openBrightness() {
+		readBrightness.running = false;
+		readBrightness.running = true;
+		root.mode = 2;
+		hideTimer.restart();
+	}
+
+	function close() {
+		root.mode = 0;
+		root.dragging = false;
+	}
+
+	function parseVolume(text) {
+		// wpctl devolve FRACAO: "Volume: 0.74" ou "Volume: 1.19 [MUTED]".
+		// O slider e o texto trabalham em pontos (0..maxVolume), entao
+		// multiplicar por 100 aqui. Sem isso, 0.74 aparecia como "1%".
+		const m = /([0-9]*\.?[0-9]+)/.exec(text);
+		if (m) {
+			root.volume = parseFloat(m[1]) * 100;
+		}
+		root.muted = text.indexOf("MUTED") !== -1;
+	}
+
+	function parseBrightness(text) {
+		// brightnessctl get devolve "65535" ou "65535 (42%)".
+		// O texto tem "(N%)" que ja e a porcentagem; quando nao tem,
+		// calcula a partir do maximo do device.
+		const pct = /\(([0-9]+)%\)/.exec(text);
+		if (pct) {
+			root.brightness = parseInt(pct[1]);
+			return;
+		}
+		const m = /([0-9]+)/.exec(text);
+		if (m) {
+			const raw = parseInt(m[1]);
+			root.brightness = Math.round((raw / root.brightnessMax) * 100);
+		}
+	}
+
+	property real brightnessMax: 65535
+
+	// ------------------------------------------------------------------
+	// Leitura
+	// ------------------------------------------------------------------
+	Process {
+		id: readVolume
+		command: ["wpctl", "get-volume", "@DEFAULT_AUDIO_SINK@"]
+		stdout: StdioCollector {
+			id: volOut
+			onStreamFinished: root.parseVolume(volOut.text)
+		}
+	}
+
+	Process {
+		id: readBrightness
+		command: ["brightnessctl", "get"]
+		stdout: StdioCollector {
+			id: brightOut
+			onStreamFinished: root.parseBrightness(brightOut.text)
+		}
+	}
+
+	// ------------------------------------------------------------------
+	// Escrita
+	// ------------------------------------------------------------------
+	Process {
+		id: writeVolume
+		// startDetached: o processo nao e rastreado e nao morre junto com
+		// o quickshell -- que e o que queremos para o wpctl.
+		function apply(v) {
+			writeVolume.command = ["wpctl", "set-volume", "@DEFAULT_AUDIO_SINK@", Math.round(v) + "%"];
+			writeVolume.startDetached();
+		}
+	}
+
+	Process {
+		id: writeMute
+		function apply() {
+			writeMute.command = ["wpctl", "set-mute", "@DEFAULT_AUDIO_SINK@", "toggle"];
+			writeMute.startDetached();
+		}
+	}
+
+	Process {
+		id: writeBrightness
+		function apply(v) {
+			const pct = Math.round(Math.min(100, Math.max(1, v)));
+			writeBrightness.command = ["brightnessctl", "set", pct + "%"];
+			writeBrightness.startDetached();
+		}
+	}
+
+	Process {
+		id: openPavu
+		function apply() {
+			openPavu.command = ["pavucontrol"];
+			openPavu.startDetached();
+			root.close();
+		}
+	}
+
+	// Esconde sozinho quando ninguem mexe
+	Timer {
+		id: hideTimer
+		interval: 5000
+		onTriggered: root.close()
+	}
+
+	// ------------------------------------------------------------------
+	// A janela
+	// ------------------------------------------------------------------
+	PanelWindow {
+		id: panel
+
+		visible: root.mode !== 0
+		// Ignore = nao reserva espaco na area exclusiva; e um popup, nao uma barra.
+		exclusionMode: ExclusionMode.Ignore
+
+		// Anchors do PanelWindow so tem left/right/top/bottom
+		// (src/window/panelinterface.hpp, classe Anchors): nao existe
+		// centralizar horizontal por aqui. A janela estica de ponta a ponta e
+		// a caixa dentro dela que se centraliza.
+		anchors {
+			top: true
+			left: true
+			right: true
+		}
+
+		// "topMargin" nao existe: a propriedade e "margins", com um grupo.
+		margins {
+			top: 34
+		}
+
+		color: "transparent"
+		implicitHeight: box.height + 2
+
+		// Clique fora da caixa fecha. Cobre a janela toda, que e full-width.
+		MouseArea {
+			anchors.fill: parent
+			acceptedButtons: Qt.LeftButton
+			onClicked: root.close()
+		}
+
+		// A caixa. E FILHA do painel, e os layouts sao filhos da caixa --
+		// antes eles eram irmaos e ocupavam os 1920px da janela, com o
+		// conteudo caindo fora dos 300px da caixa.
+		Rectangle {
+			id: box
+			anchors.horizontalCenter: parent.horizontalCenter
+			width: 300
+			// Fixo por modo em vez de implicitHeight: com o valor vindo do
+			// layout, a caixa ficava so com a primeira linha visivel.
+			height: root.mode === 2 ? 58 : 96
+			radius: 12
+			color: "#1e1e2e"
+			border.width: 1
+			border.color: "#313244"
+
+			// ---------------- volume ----------------
+			ColumnLayout {
+				id: volCol
+				visible: root.mode === 1
+				anchors.fill: parent
+				anchors.margins: 16
+				spacing: 12
+
+				RowLayout {
+					spacing: 12
+					Layout.fillWidth: true
+
+					Text {
+						Layout.preferredWidth: 18
+						text: root.muted ? "" : ""
+						color: root.muted ? "#f38ba8" : "#cdd6f4"
+						font.pixelSize: 15
+						font.family: "JetBrainsMono Nerd Font"
+					}
+
+					Slider {
+						id: volSlider
+						Layout.fillWidth: true
+						from: 0
+						to: root.maxVolume
+						value: root.volume
+
+						onPressedChanged: {
+							hideTimer.restart();
+							root.dragging = !pressed;
+							if (!pressed && from > to) writeVolume.apply(volSlider.value);
+						}
+					}
+
+					Text {
+						Layout.preferredWidth: 38
+						text: Math.round(root.volume) + "%"
+						color: "#a6adc8"
+						font.pixelSize: 12
+						font.family: "JetBrainsMono Nerd Font"
+						horizontalAlignment: Text.AlignRight
+					}
+				}
+
+				Text {
+					Layout.fillWidth: true
+					text: "controle completo do audio"
+					color: "#6c7086"
+					font.pixelSize: 11
+					font.family: "JetBrainsMono Nerd Font"
+					horizontalAlignment: Text.AlignHCenter
+
+					MouseArea {
+						anchors.fill: parent
+						cursorShape: Qt.PointingHandCursor
+						onClicked: openPavu.apply()
+					}
+				}
+			}
+
+			// ---------------- brilho ----------------
+			ColumnLayout {
+				id: brightCol
+				visible: root.mode === 2
+				anchors.fill: parent
+				anchors.margins: 16
+
+				RowLayout {
+					spacing: 12
+					Layout.fillWidth: true
+
+					Text {
+						Layout.preferredWidth: 18
+						text: ""
+						color: "#cdd6f4"
+						font.pixelSize: 15
+						font.family: "JetBrainsMono Nerd Font"
+					}
+
+					Slider {
+						id: brightSlider
+						Layout.fillWidth: true
+						from: 0
+						to: 100
+						value: root.brightness
+
+						onPressedChanged: {
+							hideTimer.restart();
+							root.dragging = !pressed;
+							if (!pressed && from > to) writeBrightness.apply(brightSlider.value);
+						}
+					}
+
+					Text {
+						Layout.preferredWidth: 38
+						text: Math.round(root.brightness) + "%"
+						color: "#a6adc8"
+						font.pixelSize: 12
+						font.family: "JetBrainsMono Nerd Font"
+						horizontalAlignment: Text.AlignRight
+					}
+				}
+			}
+		}
+	}
+}
