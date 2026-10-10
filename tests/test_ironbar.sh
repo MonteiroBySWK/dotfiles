@@ -77,13 +77,14 @@ sed -n '/type = "battery"/,/^\[\[/p' "$CFG" | grep -q '{icon}' \
   && bad "bateria sem placeholder {icon}" '"{icon}" no format da bateria sai literal' \
   || ok "bateria sem placeholder {icon}"
 
-# --- sem seletor de aparelho duplicado ---
-# No macOS, "Output options" e "Input options" sao secoes separadas (Apple
-# Support): o microfone nao repete o seletor de saida. Com show_sources o
-# popup mostrava "Fuxi-H3" duas vezes.
-grep -qE '^show_sources = false' "$CFG" \
-  && ok "sem seletor de aparelho duplicado" \
-  || bad "sem seletor de aparelho duplicado" 'show_sources ainda true (seletor repete)'
+# --- mic presente no popup ---
+# O codigo do modulo monta o seletor de aparelho incondicionalmente
+# (container.append(&selector) em src/modules/volume/mod.rs), entao nao ha
+# como manter o slider do mic sem o seletor dele. Teste trava o mic de volta:
+# sem isso o popup perde o controle de microfone.
+grep -qE '^show_sources = true' "$CFG" \
+  && ok "mic presente no popup" \
+  || bad "mic presente no popup" 'show_sources falso: popup sem controle de mic'
 
 # --- relogio: strftime puro, sem chaves ---
 # O ironbar usa {} para placeholders e tentava resolver o formato inteiro

@@ -310,3 +310,87 @@ popover contents {
     margin: 2px 0 0 0;
     font-size: 14px;
 }
+
+/* ====================== popup: refinamento macOS ======================
+ * O GTK4 nao implementa flexbox -- aceita "display: flex" sem erro e ignora.
+ * Verificado: pintei .device-box de vermelho, casou, e os filhos continuaram
+ * empilhados. Logo o layout do DOM (seletor / slider / mute em Box vertical,
+ * spacing 5) nao pode ser reestruturado por CSS.
+ *
+ * O que da para fazer e fazer essa estrutura parecer intencional, com as
+ * convencoes do Control Center:
+ *   - aparelho como linha de menu discreta, nao uma pilha pesada
+ *   - divisor hairline entre as secoes
+ *   - cartoes de app mais leves
+ *   - realce interno na borda de cima, como a borda de luz da vibrancy
+ */
+
+/* brilho interno no topo: a "borda de luz" do material do macOS */
+popover {
+    background-image: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.07),
+        rgba(255, 255, 255, 0) 14px
+    );
+}
+
+/* ---- seletor de aparelho: linha de menu, como no Control Center ----
+ * Encher com #2c2c2e fazia parecer um botao. No macOS o aparelho e texto
+ * secundario com chevron, nao um campo preenchido. */
+.popup-volume .device-box .device-selector {
+    background: transparent;
+    color: #98989d;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 4px 2px;
+    margin: 0 0 2px 0;
+    border-radius: 6px;
+}
+
+.popup-volume .device-box .device-selector:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: #f5f5f7;
+}
+
+/* divisor entre saida e entrada, e entre os apps */
+.popup-volume .source-box {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    margin-top: 8px;
+    padding-top: 8px;
+}
+
+.popup-volume .apps-box {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    margin-top: 8px;
+    padding-top: 8px;
+}
+
+/* cartoes de app mais leves: o fundo #2c2c2e inteiro competia com o
+ * conteudo e dava aspecto de lista de botoes */
+.popup-volume .apps-box .app-box {
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 8px;
+    padding: 6px 8px;
+    margin: 0 0 4px 0;
+}
+
+.popup-volume .apps-box .app-box:hover {
+    background: rgba(255, 255, 255, 0.07);
+}
+
+.popup-volume .apps-box .label {
+    color: #98989d;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* titulo de sink/source: pequeno e cinza, como cabecalho de secao */
+.popup-volume .sink-box .title,
+.popup-volume .source-box .title {
+    color: #636366;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 0;
+    margin: 0 0 2px 0;
+}

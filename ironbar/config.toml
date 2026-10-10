@@ -68,12 +68,11 @@ popup_orientation = "vertical"
 # O vertical e o HUD antigo, pre-Sonoma. Isso tambem evita que o min-width
 # do CSS brigue com a orientacao do GTK.
 sink_slider_orientation = "horizontal"
-# No macOS, "Output options" e "Input options" sao secoes SEPARADAS (Apple
-# Support, "Change Sound settings on Mac"): o microfone nunca repete o
-# seletor do aparelho de saida. Aqui o popup mostrava "Fuxi-H3" duas vezes,
-# uma para sink e outra para source, que e o oposto do modelo da Apple.
-# O mic continua em wpctl/pactl e nas teclas.
-show_sources = false
+# true: o mic precisa voltar ao popup. O codigo do modulo monta o seletor de
+# aparelho incondicionalmente (container.append(&selector) em volume/mod.rs),
+# entao nao existe opcao que esconda o seletor da source mantendo o slider
+# dela -- as duas coisas vem juntas. O repetido e tratado por CSS.
+show_sources = true
 max_volume = 120
 # device dropdown para trocar fone/speaker -- o que o waybar nao fazia
 use_default_profiles = true
