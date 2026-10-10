@@ -1,28 +1,34 @@
 [Added Associations]
-application/pdf=firefox.desktop;
+application/pdf=firefox-4.desktop;firefox-3.desktop;firefox-2.desktop;firefox.desktop;
+application/sql=org.kde.kate.desktop;
+application/vnd.exstream-package=nvim.desktop;
+application/x-shellscript=org.kde.kate.desktop;
 image/avif=firefox.desktop;
 image/jpeg=firefox.desktop;
 image/png=firefox.desktop;
 image/webp=firefox.desktop;
 x-scheme-handler/http=firefox.desktop;
 x-scheme-handler/https=firefox.desktop;
-application/vnd.exstream-package=nvim.desktop;
 
 [Default Applications]
-application/pdf=firefox.desktop;
+application/pdf=firefox-4.desktop;
+application/x-pka=CiscoPacketTracer-9.0.0.desktop
+application/x-pksz=CiscoPacketTracer-9.0.0.desktop
+application/x-pkt=CiscoPacketTracer-9.0.0.desktop
+application/x-pkz=CiscoPacketTracer-9.0.0.desktop
 image/avif=firefox.desktop;
 image/jpeg=firefox.desktop;
 image/png=firefox.desktop;
 image/webp=firefox.desktop;
 x-scheme-handler/bitwarden=bitwarden.desktop
+x-scheme-handler/claude=claude-desktop.desktop
+x-scheme-handler/claude-cli=claude-code-url-handler.desktop
 x-scheme-handler/discord-460807638964371468=discord-460807638964371468.desktop
+x-scheme-handler/discord-831593107883032657=discord-831593107883032657.desktop
 x-scheme-handler/http=firefox.desktop;
 x-scheme-handler/https=firefox.desktop;
-x-scheme-handler/pttp=CiscoPacketTracerPtsa-9.0.0.desktop
-application/x-pka=CiscoPacketTracer-9.0.0.desktop
-application/x-pkt=CiscoPacketTracer-9.0.0.desktop
-application/x-pkz=CiscoPacketTracer-9.0.0.desktop
-application/x-pksz=CiscoPacketTracer-9.0.0.desktop
-x-scheme-handler/claude-cli=claude-code-url-handler.desktop
 x-scheme-handler/jetbrains=jetbrainsd.desktop
-x-scheme-handler/discord-831593107883032657=discord-831593107883032657.desktop
+x-scheme-handler/pttp=CiscoPacketTracerPtsa-9.0.0.desktop
+x-scheme-handler/grokbot=grok-bot.desktop
+x-scheme-handler/sand=grok-bot.desktop
+x-scheme-handler/opencode=ai.opencode.desktop.desktop

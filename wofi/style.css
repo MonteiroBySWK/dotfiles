@@ -2,8 +2,7 @@ window {
   margin: 0px;
   border: 5px solid #1e1e2e;
   background-color: #cdd6f4;
-  border-radius: 0px;
-  box-sizing: border-box;
+  border-radius: 4px;
 }
 
 #input {
@@ -30,13 +29,13 @@ window {
   color: #cdd6f4;
   font-weight: bold;
   background-color: #1e1e2e;
-  border-radius: 0px;
+  border-radius: 4px;
 }
 
 #outer-box {
   margin: 0px;
   border: none;
-  border-radius: 0px;
+  border-radius: 4px;
   background-color: #1e1e2e;
 }
 
