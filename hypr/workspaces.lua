@@ -1,9 +1,12 @@
 --[[
   hypr/workspaces.lua — regras de workspace
-  https://wiki.hypr.land/Configuring/Basics/Workspace-Rules/
-]]
 
-hl.workspace_rule({ workspace = "1", monitor = "HDMI-A-1" })
-hl.workspace_rule({ workspace = "2", monitor = "HDMI-A-1" })
-hl.workspace_rule({ workspace = "3", monitor = "eDP-1" })
-hl.workspace_rule({ workspace = "4", monitor = "eDP-1" })
+  Não há hl.workspace_rule aqui de propósito. Preso a nome de saída, o
+  workspace nasce no monitor fixo, e o Waybar (que não tem on-click em
+  hyprland/workspaces) reabre o workspace no monitor onde ele foi atribuído
+  por último. Sem aquela saída conectada, clicar no workspace não faz nada.
+
+  Deixando livre, o workspace nasce no monitor com foco e viaja por
+  SUPER + SHIFT + n. Regras futuras (default_name, on_created_empty, gaps
+  por workspace) entram aqui.
+]]
