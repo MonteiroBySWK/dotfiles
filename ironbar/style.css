@@ -1,0 +1,128 @@
+/*
+ * ironbar/style.css — traduzido do waybar/style.css
+ *
+ * O ironbar usa GTK4, então algumas regras do GTK3 não existem mais
+ * (o `text-shadow` virou `text-shadow` com sintaxe nova, e `-gtk-icon-effect`
+ * foi removido). O que sobrou foi mantido igual para a UI não mudar.
+ */
+
+/* ---------- base ---------- */
+
+* {
+    font-family: "SF Pro Display", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    text-shadow: 0 0 6px rgba(0, 0, 0, 0.7);
+}
+
+window {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+/* Espaçamento entre módulos — o waybar usava margin 0 6px */
+.horizontal {
+    margin: 0 6px;
+}
+
+.label {
+    color: #ffffff;
+    transition: all 0.3s ease-in-out;
+}
+
+/* ---------- workspaces ---------- */
+
+.workspaces .item {
+    color: rgba(255, 255, 255, 0.8);
+    padding: 0 6px;
+    border-radius: 8px;
+}
+
+.workspaces .item.focused {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.workspaces .item:hover {
+    color: #33ccff;
+    background: rgba(51, 204, 255, 0.1);
+}
+
+.workspaces .item.urgent {
+    color: #ff5f56;
+}
+
+/* ---------- janela ativa ---------- */
+
+.focused {
+    opacity: 0.9;
+    font-weight: 700;
+}
+
+/* ---------- bateria ---------- */
+
+.battery .charging {
+    color: #28c940;
+}
+
+.battery .critical:not(.charging) {
+    color: #ff5f56;
+}
+
+/* ---------- popup de volume ---------- */
+
+popover {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    border: 1px solid rgba(205, 214, 244, 0.12);
+}
+
+popover contents {
+    padding: 12px;
+    min-width: 260px;
+}
+
+/* Slider do popup — o do waybar era o modulo backlight-slider */
+.slider {
+    background: transparent;
+    border: none;
+    min-height: 140px;
+    min-width: 24px;
+}
+
+slider trough {
+    background: rgba(205, 214, 244, 0.15);
+    border-radius: 7px;
+    border: none;
+    min-width: 8px;
+    min-height: 8px;
+}
+
+slider highlight {
+    background: linear-gradient(to top, #89b4fa, #a6e3a1);
+    border-radius: 7px;
+    min-width: 8px;
+    min-height: 8px;
+}
+
+button {
+    background: transparent;
+    border: none;
+    color: #cdd6f4;
+    padding: 4px 8px;
+    border-radius: 8px;
+}
+
+button:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Dropdown de qual aparelho é o default */
+.device-selector {
+    color: #cdd6f4;
+}
+
+/* ---------- tray ---------- */
+
+.tray {
+    margin-right: 12px;
+}

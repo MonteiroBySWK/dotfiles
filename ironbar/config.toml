@@ -1,0 +1,91 @@
+# ironbar/config.toml
+#
+# Migracao do waybar para o ironbar. A UI (cores, fontes, espacamento) foi
+# traduzida do waybar/style.css; a estrutura de modulos e a mesma.
+#
+# Motivo da migracao: dois recursos que o waybar 0.15 nao tem --
+#   - workspaces clicaveis (o waybar envia dispatcher legado pro socket do
+#     hyprland, que foi removido no 0.55)
+#   - popup de volume com slider, mute e seletor de aparelho (a API cffi do
+#     waybar nao tem funcao alguma de toplevel, so get_root_widget)
+#
+# O waybar continua no repo, intacto, como alternativa.
+
+layer = "top"
+exclusive = true
+spacing = 5
+height = 26
+style = "style.css"
+
+# ---------------- esquerda: workspaces ----------------
+[[start]]
+type = "workspaces"
+# all_monitors = false mostra SO os workspaces do monitor daquela barra.
+# Como seus workspaces estao divididos (ws1 no HDMI, ws2 e ws3 no eDP),
+# cada barra mostrava so 3. Com true, os 5 favoritos aparecem nas duas.
+all_monitors = true
+# Favoritos aparecem sempre, mesmo vazios -- como o "1..10" do binds.lua.
+favorites = ["1", "2", "3", "4", "5"]
+
+[[start.truncate]]
+mode = "end"
+max_length = 60
+
+# ---------------- centro: janela ativa ----------------
+[[center]]
+type = "focused"
+
+[center.truncate]
+mode = "end"
+max_length = 40
+
+# ---------------- direita ----------------
+[[end]]
+type = "network_manager"
+
+[[end]]
+type = "bluetooth"
+# bluetooth usa format.<estado>, nao "format". O modulo ja tem popup
+# nativo com a lista de dispositivos -- resolve o item G da fila.
+[end.format]
+not_found = ""
+disabled = ""
+enabled = "󰂯"
+connected = "󰂯 {device_alias}"
+connected_battery = "󰂯 {device_alias} {device_battery_percent}%"
+
+[[end]]
+type = "volume"
+format = "{icon} {percentage}%"
+sink_slider_orientation = "vertical"
+max_volume = 120
+# device dropdown para trocar fone/speaker -- o que o waybar nao fazia
+use_default_profiles = true
+
+[[end]]
+type = "brightness"
+smooth_scroll_speed = 1.0
+
+[[end]]
+type = "battery"
+format = "{icon} {percentage}%"
+full_capacity = 100
+
+[[end]]
+type = "sys_info"
+interval = 5
+format = [
+    "󰻓 {cpu_percent}%",
+    "󰍛 {memory_percent}%",
+    "󰔋 {temp_c}°C",
+]
+
+[[end]]
+type = "clock"
+format = "{:%H:%M - %d/%m/%Y}"
+timezone = "America/Sao_Paulo"
+
+# ---------------- tray ----------------
+[[end]]
+type = "tray"
+icon_size = 16
