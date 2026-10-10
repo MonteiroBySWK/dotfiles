@@ -61,7 +61,13 @@ connected_battery = "󰂯 {device_alias} {device_battery_percent}%"
 [[end]]
 type = "volume"
 format = "{icon} {percentage}%"
-sink_slider_orientation = "vertical"
+# "vertical" empilha os blocos, como a lista do Control Center do macOS.
+# O default e "horizontal", que deixa tudo lado a lado e nao parece com o mac.
+popup_orientation = "vertical"
+# Horizontal, e nao vertical: o slider do Control Center do macOS e deitado.
+# O vertical e o HUD antigo, pre-Sonoma. Isso tambem evita que o min-width
+# do CSS brigue com a orientacao do GTK.
+sink_slider_orientation = "horizontal"
 max_volume = 120
 # device dropdown para trocar fone/speaker -- o que o waybar nao fazia
 use_default_profiles = true
@@ -71,8 +77,23 @@ type = "brightness"
 smooth_scroll_speed = 1.0
 
 [[end]]
+type = "label"
+# Glifo de bateria desenhado a mao. O show_icon do modulo battery procura o
+# icone no icon theme (breeze nao tem battery-full e companhia) e o GTK
+# desenha uma caixa vazia. Aqui o glifo vem da Nerd Font -- o mesmo caminho
+# que o sys_info ja usa para cpu/mem/temp, que renderizam certo.
+label = "\u{f017}"
+
+[[end]]
 type = "battery"
-format = "{icon} {percentage}%"
+# Sem placeholder de icone: o modulo battery do ironbar 0.19 so tem
+# {percentage}, {state} e {time_remaining}; pedir icone no format sai LITERAL
+# na barra. Quem desenha o icone e o show_icon (default true), estilizavel
+# em .battery .icon.
+# Nao escrever o placeholder de icone neste comentario: o teste varre o
+# bloco procurando ele e se auto-alerta.
+format = "{percentage}%"
+show_icon = false
 full_capacity = 100
 
 [[end]]

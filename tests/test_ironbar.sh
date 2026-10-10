@@ -54,6 +54,29 @@ grep -qE '^position = "top"' "$CFG" \
   && ok "barra no topo da tela" \
   || bad "barra no topo da tela" 'position nao esta "top"'
 
+# --- orientacao do popup: e o que faz parecer macOS ---
+# popup_orientation default e "horizontal" (tudo lado a lado). "vertical"
+# empilha os blocos, como a lista do Control Center.
+grep -qE '^popup_orientation = "vertical"' "$CFG" \
+  && ok "popup empilha os blocos (estilo Control Center)" \
+  || bad "popup empilha os blocos (estilo Control Center)" 'popup_orientation nao esta "vertical"'
+
+# slider deitado: o do Control Center do macOS e horizontal. O vertical e o
+# HUD antigo, pre-Sonoma.
+grep -qE '^sink_slider_orientation = "horizontal"' "$CFG" \
+  && ok "slider do volume deitado (como o macOS)" \
+  || bad "slider do volume deitado (como o macOS)" 'sink_slider_orientation nao esta "horizontal"'
+
+# --- bateria: "{icon}" sai LITERAL na barra ---
+# O modulo battery do ironbar 0.19 so reconhece {percentage}, {state} e
+# {time_remaining}. O icone vem de show_icon, estilizavel em .battery .icon.
+# O bloco inteiro e extraido: com -A3 o teste quebrava sozinho assim que
+# entrou um comentario entre type = e format. E o volume usa {icon} de
+# verdade, entao a busca precisa ficar escopada na bateria.
+sed -n '/type = "battery"/,/^\[\[/p' "$CFG" | grep -q '{icon}' \
+  && bad "bateria sem placeholder {icon}" '"{icon}" no format da bateria sai literal' \
+  || ok "bateria sem placeholder {icon}"
+
 # --- workspaces clicaveis: o motivo da migracao ---
 grep -q 'type = "workspaces"' "$CFG" && ok "tem workspaces" || bad "tem workspaces"
 # all_monitors = false mostraria so os workspaces do monitor da barra, e o

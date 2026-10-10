@@ -1,17 +1,38 @@
 /*
- * ironbar/style.css — traduzido do waybar/style.css
+ * ironbar/style.css
  *
- * Seletores do popup conferidos na doc de cada modulo (nao de memoria):
- *   Volume:  .popup-volume .sink-box .source-box .apps-box .app-box
- *            .btn-mute .device-box .device-selector .slider
- *   Workspaces: .workspaces .item .item.focused .item.urgent
- *   Focused: .focused
+ * Base pedida: waybar/style.css. Popup: tokens de design da Apple (modo
+ * escuro), conferidos na referencia de design da Apple.
+ *
+ * Tokens macOS (dark):
+ *   superficie primaria  #1C1C1E      elevada  #2C2C2E
+ *   texto primario       #F5F5F7      secundario #98989D   terciario #636366
+ *   acento               #0A84FF      borda     1px rgba(255,255,255,0.10)
+ *   hover                rgba(255,255,255,0.06)
+ *   sombra               0 8px 32px rgba(0,0,0,0.4)
+ *   raio                 popover 14px  card 8px  botao 6px
+ *   grade de espacamento 8px
+ *
+ * Duas limitacoes que a doc nao avisa e custaram tempo:
+ *   1. GTK4 CSS nao tem backdrop-filter, entao o blur real do macOS
+ *      (saturate(180%) blur(20px)) nao existe. Compensa-se com superficie
+ *      opaca.
+ *   2. "background: rgba(..., 0.96)" NAO ficou opaco no popover -- o texto
+ *      de tras aparecia. Cor solida e o que funciona. Medido, nao achado.
+ *
+ * Seletores vindos da secao Styling de cada modulo do ironbar, nao de
+ * memoria. Os que usei errado antes: ".popup-bluetooth" (nao existe) e
+ * ".slider" solto (existe, mas precisa do encadeamento do box).
  */
 
-/* ---------- base ---------- */
+/* ====================== barra ====================== */
 
 * {
-    font-family: "SF Pro Display", Roboto, Helvetica, Arial, sans-serif;
+    /* Pilha do waybar, com as Nerd Fonts como fallback DEPOIS. Sem elas os
+     * glifos de uso privado (usados nos format strings) caem numa fonte
+     * qualquer e viram caracteres estranhos. */
+    font-family: "SF Pro Display", "JetBrainsMono Nerd Font", "Hack Nerd Font",
+        Roboto, Helvetica, Arial, sans-serif;
     font-size: 14px;
     font-weight: 400;
 }
@@ -29,7 +50,7 @@ window {
     transition: all 0.3s ease-in-out;
 }
 
-/* ---------- workspaces ---------- */
+/* ---- workspaces ---- */
 
 .workspaces .item {
     color: rgba(255, 255, 255, 0.8);
@@ -48,134 +69,195 @@ window {
 }
 
 .workspaces .item.urgent {
-    color: #ff5f56;
+    color: #ff453a;
 }
 
-/* ---------- janela ativa ---------- */
+/* ---- janela ativa ---- */
 
 .focused {
     opacity: 0.9;
     font-weight: 700;
 }
 
-/* ---------- bateria ---------- */
+/* ---- bateria ----
+ * O modulo battery desenha o proprio icone (show_icon, default true) e o
+ * expoe em .battery .icon. Sem a Nerd Font ele sai como caixa vazia. */
+.battery .icon {
+    font-family: "JetBrainsMono Nerd Font", "Hack Nerd Font", monospace;
+    font-size: 16px;
+    color: #ffffff;
+}
 
+.battery .charging .icon,
 .battery .charging {
-    color: #28c940;
+    color: #30d158;
+}
+
+.battery .critical:not(.charging) .icon,
+.battery .critical:not(.charging) {
+    color: #ff453a;
+}
+    color: #30d158;
 }
 
 .battery .critical:not(.charging) {
-    color: #ff5f56;
+    color: #ff453a;
 }
 
-/* ================= popup ================= */
+/* ---- tray ---- */
+
+.tray {
+    margin-right: 12px;
+}
+
+/* ====================== popup ====================== */
 
 /*
- * GTK4: o popover e a janela, "popover contents" e o miolo. O GTK3
- * rotulava o miolo de "#popup-<nome>", que nao existe mais.
+ * O popover e a superficie do popup inteiro -- confirmado empiricamente
+ * (diagnostico: "popover { background: #ff0000 }" pintou tudo). A barra
+ * e a janela, e o CSS "window" acima so vale para ela.
  */
 popover {
-    background: rgba(30, 30, 46, 0.95);
+    background: #1c1c1e; /* solido -- ver limitacao 2 no cabecalho */
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 14px;
-    border: 1px solid rgba(205, 214, 244, 0.12);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
 popover contents {
-    padding: 14px;
-    min-width: 300px;
+    padding: 10px;
     background: transparent;
 }
 
-/* Titulos de sink/source ("Fuxi-H3", "alsa_output...") */
+/* ---- titulos de sink/source ---- */
+
 .popup-volume .title,
 .sink-box .title,
 .source-box .title,
 .apps-box .title {
-    color: #cdd6f4;
-    font-weight: 700;
+    color: #98989d;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 2px 0;
 }
 
-/* O seletor de qual aparelho e o default */
-.device-box .device-selector {
-    color: #89b4fa;
-    padding: 2px 8px;
-    border-radius: 8px;
+/* ---- seletor de aparelho: pill do macOS ---- */
+
+.popup-volume .device-box .device-selector {
+    background: #2c2c2e;
+    color: #f5f5f7;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 6px;
+    padding: 6px 10px;
+    margin: 0 0 8px 0;
+    min-height: 0;
 }
 
-.device-box .device-selector:hover {
-    background: rgba(137, 180, 250, 0.15);
+.popup-volume .device-box .device-selector:hover {
+    background: #3a3a3c;
 }
 
-/* ---- sliders verticais, estilo macOS ---- */
+/* ---- sliders ----
+ * O slider do dispositivo e .popup-volume .device-box .slider; o de cada
+ * app e .popup-volume .apps-box .app-box .slider. Escrever "slider" solto
+ * nao pegava -- o padrao azul do GTK4 continuava ganhando. */
 
-.slider {
-    /* vertical: estreito e alto */
-    min-width: 18px;
-    min-height: 130px;
-}
-
-.slider.horizontal {
-    min-width: 130px;
+.popup-volume .device-box .slider,
+.popup-volume .apps-box .app-box .slider {
+    /* sem min-width/min-height: quem dimensiona e o GTK, conforme
+     * sink_slider_orientation. Fixar 130x18 aqui fazia o slider ficar deitado
+     * mesmo com "vertical" no config. */
     min-height: 18px;
 }
 
-/* Trilho: o trough do slider GTK4 */
-slider trough {
-    background: rgba(205, 214, 244, 0.15);
-    border: none;
-    border-radius: 7px;
-    min-width: 8px;
-    min-height: 8px;
-}
-
-slider highlight {
-    /* sem gradiente do GTK por cima */
+/* trilho: cinza claro bem sutil */
+.popup-volume .slider trough {
+    background: rgba(255, 255, 255, 0.14);
     background-image: none;
-    background: linear-gradient(to top, #89b4fa, #a6e3a1);
     border: none;
-    border-radius: 7px;
-    min-width: 8px;
-    min-height: 8px;
+    border-radius: 4px;
+    min-height: 6px;
 }
 
-slider slider {
-    background: #cdd6f4;
+/* parte preenchida: branco, como o volume do macOS */
+.popup-volume .slider highlight {
+    /* o GTK4 pinta um gradiente azul no highlight; zerar antes da cor */
+    background: #f5f5f7;
+    background-image: none;
     border: none;
-    border-radius: 7px;
+    border-radius: 4px;
+    min-height: 6px;
+}
+
+/* a "puxa": circulo branco pequeno, estilo macOS */
+.popup-volume .slider slider {
+    background: #ffffff;
+    border: none;
+    border-radius: 6px;
     min-width: 4px;
     min-height: 18px;
-    margin: -7px;
+    margin: -6px;
 }
 
-/* ---- botoes de mute ---- */
+/* ---- botao de mute ----
+ * Sem min-width/min-height 0 o botao estica na largura toda do box. */
 
 .popup-volume .btn-mute {
-    color: #6c7086;
-    border-radius: 8px;
-    padding: 4px;
+    color: #98989d;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    padding: 6px;
+    margin: 0;
+    min-width: 0;
+    min-height: 0;
+    font-size: 16px;
 }
 
 .popup-volume .btn-mute:hover {
-    background: rgba(205, 214, 244, 0.1);
+    background: rgba(255, 255, 255, 0.06);
+    color: #f5f5f7;
 }
 
 .popup-volume .btn-mute.muted {
-    color: #f38ba8;
+    color: #ff453a;
 }
 
-/* ---- apps individuais ---- */
+/* ---- linha por app: card elevado ---- */
 
-.apps-box .app-box {
-    border-radius: 10px;
-    padding: 2px 4px;
+.popup-volume .apps-box .app-box {
+    background: #2c2c2e;
+    border-radius: 8px;
+    padding: 8px;
+    margin: 0 0 6px 0;
 }
 
-.apps-box .app-box:hover {
-    background: rgba(205, 214, 244, 0.06);
+.popup-volume .apps-box .app-box:hover {
+    background: #3a3a3c;
 }
 
-/* ---------- tray ---------- */
+.popup-volume .apps-box .label {
+    color: #f5f5f7;
+    font-size: 13px;
+    font-weight: 600;
+}
 
-.tray {
-    margin-right: 12px;
+/* ---- popup de bluetooth ----
+ * Seletores conferidos na doc do modulo: .bluetooth .box .device
+ * .devices .footer-label. Nao existe ".popup-bluetooth". */
+
+.bluetooth .box,
+.bluetooth .device {
+    background: transparent;
+}
+
+.bluetooth .device:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 6px;
+}
+
+.bluetooth .footer-label {
+    color: #98989d;
+    font-size: 12px;
 }
