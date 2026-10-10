@@ -77,6 +77,14 @@ sed -n '/type = "battery"/,/^\[\[/p' "$CFG" | grep -q '{icon}' \
   && bad "bateria sem placeholder {icon}" '"{icon}" no format da bateria sai literal' \
   || ok "bateria sem placeholder {icon}"
 
+# --- sem seletor de aparelho duplicado ---
+# No macOS, "Output options" e "Input options" sao secoes separadas (Apple
+# Support): o microfone nao repete o seletor de saida. Com show_sources o
+# popup mostrava "Fuxi-H3" duas vezes.
+grep -qE '^show_sources = false' "$CFG" \
+  && ok "sem seletor de aparelho duplicado" \
+  || bad "sem seletor de aparelho duplicado" 'show_sources ainda true (seletor repete)'
+
 # --- relogio: strftime puro, sem chaves ---
 # O ironbar usa {} para placeholders e tentava resolver o formato inteiro
 # como nome, deixando "{ ... }" literal na barra.
