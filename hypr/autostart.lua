@@ -4,6 +4,10 @@
 ]]
 
 hl.on("hyprland.start", function()
+  -- WiFi: o rádio desligava sozinho e obrigava nm-aplet manual, que ainda
+  -- duplicava o ícone de rede da barra. A permissão enable-disable-wifi
+  -- já está liberada (nmcli general permissions).
+  hl.exec_cmd("nmcli radio wifi on")
   hl.exec_cmd("waybar")
   hl.exec_cmd("hyprpaper")
   hl.exec_cmd("mako")
