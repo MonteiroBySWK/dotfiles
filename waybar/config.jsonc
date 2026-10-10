@@ -5,14 +5,7 @@
   "position": "top",
   "output": "*",
   "modules-left": [
-    {
-      "hyprland/workspaces": {
-        "sort-by": "number",
-        "show-special": true,
-        "on-scroll-up": "hyprctl dispatch workspace e-1",
-        "on-scroll-down": "hyprctl dispatch workspace e+1"
-      }
-    }
+    "hyprland/workspaces"
   ],
   "modules-center": ["hyprland/window"],
   "modules-right": [
@@ -121,6 +114,15 @@
 // usuario ou de maquina -- que e o objetivo de replicar estes dotfiles.
 "on-click": "~/.config/waybar/scripts/wifi-menu.sh",
     "on-click-right": "pavucontrol"
+  },
+  "hyprland/workspaces": {
+    "sort-by": "number",
+    "show-special": true,
+    // Hyprland 0.55+ trocou os dispatchers legados ("workspace 2") por
+    // expressoes Lua. hyprctl dispatch envolve o argumento em hl.dispatch(),
+    // entao passamos o dispatcher, nao o nome dele.
+    "on-scroll-up": "hyprctl dispatch 'hl.dsp.focus({workspace=\"e-1\"})'",
+    "on-scroll-down": "hyprctl dispatch 'hl.dsp.focus({workspace=\"e+1\"})'"
   },
   "hyprland/window": {
     "format": "{title}",

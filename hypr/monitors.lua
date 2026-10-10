@@ -18,12 +18,15 @@ hl.monitor({
   scale    = 1,
 })
 
--- Catch-all. mode "preferred" = maior modo suportado pelo painel do
--- projetor. position "auto-right" coloca saídas desconhecidas à direita da
--- primeira; "auto" empilharia tudo no centro. Uma linha para trocar.
+-- Catch-all. mode "highrr" = maior refresh rate que a saida suporta.
+-- "preferred" seguia o modo marcado como preferido no EDID, que neste
+-- monitor e 1920x1080@60 -- ou seja, perdia os 120Hz que a configuracao
+-- antiga fixava. "highrr" mantem o maior refresh em qualquer saida nova.
+-- position "auto-left" coloca a saida desconhecida a esquerda da primeira,
+-- que e como o monitor de casa fica na mesa. Uma linha para trocar.
 hl.monitor({
   output   = "",
-  mode     = "preferred",
-  position = "auto-right",
+  mode     = "highrr",
+  position = "auto-left",
   scale    = 1,
 })

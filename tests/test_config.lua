@@ -114,7 +114,21 @@ if eDP then
     "mode=" .. tostring(eDP.mode))
 end
 check("regra nomeada para HDMI-A-1 removida", find_monitor("HDMI-A-1") == nil)
-check("existe catch-all (output vazio)", find_monitor("") ~= nil)
+local fallback = find_monitor("")
+check("existe catch-all (output vazio)", fallback ~= nil)
+-- O monitor de casa fica a ESQUERDA do notebook. "auto-right" colocava do
+-- lado oposto; este assert existe para o erro nao voltar sem que a
+-- mudanca de lado passe despercebida.
+if fallback then
+  check("catch-all posiciona a esquerda", fallback.position == "auto-left",
+    "position=" .. tostring(fallback.position))
+  -- "preferred" segue o modo preferido do EDID, que neste monitor e
+  -- 1920x1080@60: perdia os 120Hz que a config antiga fixava.
+  check("catch-all usa mode=highrr", fallback.mode == "highrr",
+    "mode=" .. tostring(fallback.mode))
+  check("catch-all tem escala 1", fallback.scale == 1,
+    "scale=" .. tostring(fallback.scale))
+end
 check("nenhum workspace preso a monitor", #pinned == 0,
   "pinned=" .. table.concat(pinned, ","))
 check("boot liga o wifi com nmcli",

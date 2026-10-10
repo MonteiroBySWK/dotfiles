@@ -16,42 +16,38 @@ function check(name, ok, detail) {
   }
 }
 
-// Um modulo em modules-left tem tres formas aceitas pela waybar:
-// string nua ("hyprland/workspaces"), objeto achatado
-// ({ "hyprland/workspaces": {...} }), ou o objeto embrulhado em array
-// ([{ "hyprland/workspaces": {...} }]). Normaliza todas em um objeto.
-// Um objeto que nao tem a chave procurada NAO e o bloco: seguir em frente.
-function blockOf(modules, name) {
-  for (const m of modules) {
-    if (typeof m === "string" && m === name) return {};
-    if (m && typeof m === "object" && !Array.isArray(m) && Object.hasOwn(m, name)) {
-      return m[name];
-    }
-  }
-  return undefined;
-}
+// modules-left e um array de NOMES de modulo (waybar.5.gz: "typeof: array").
+// A configuracao do modulo vive numa chave na raiz, com o nome dele --
+// como no exemplo "group/hardware" do proprio man page. A forma
+// [{ "hyprland/workspaces": {...} }] e JSON valido mas a waybar nao le as
+// opcoes de um objeto embrulhado em array dentro de modules-left: o modulo
+// aparece, mas sem nenhuma opcao aplicada. Este teste existe para nao
+// voltar a aquela forma.
+check("modules-left so com nomes, sem objeto embutido",
+  cfg["modules-left"].every((m) => typeof m === "string"),
+  "modules-left=" + JSON.stringify(cfg["modules-left"]));
 
-// String nua e um bloco sem opcoes: e um estado valido da waybar, nao um
-// sinal de que o modulo foi configurado. Este check existe para pegar o
-// caso em que o modulo sumiu do array por completo, e nao para exigir
-// opcoes -- quem exige opcoes sao os checks abaixo.
-const hasWorkspaces = cfg["modules-left"].some(
-  (m) => m === "hyprland/workspaces" ||
-    (m && typeof m === "object" && Object.hasOwn(m, "hyprland/workspaces"))
-);
-check("workspaces esta em modules-left", hasWorkspaces);
+check("workspaces esta em modules-left",
+  cfg["modules-left"].includes("hyprland/workspaces"));
 
-const ws = blockOf(cfg["modules-left"], "hyprland/workspaces");
+// A configuracao do modulo tem que estar na raiz.
+const ws = cfg["hyprland/workspaces"];
+check("hyprland/workspaces tem bloco na raiz", typeof ws === "object" && ws !== null);
 if (ws) {
   check("workspaces ordena por numero", ws["sort-by"] === "number",
     "sort-by=" + ws["sort-by"]);
-  check("workspaces tem scroll para cima",
+  check("workspaces mostra o special", ws["show-special"] === true);
+  // Hyprland 0.55+ trocou os dispatchers legados por expressoes Lua.
+  // "hyprctl dispatch workspace e-1" falha com erro de sintaxe Lua.
+  check("scroll para cima usa dispatcher lua",
     typeof ws["on-scroll-up"] === "string" &&
-    ws["on-scroll-up"].includes("workspace e-1"),
+    ws["on-scroll-up"].includes("hl.dsp.focus") &&
+    ws["on-scroll-up"].includes("e-1"),
     "on-scroll-up=" + ws["on-scroll-up"]);
-  check("workspaces tem scroll para baixo",
+  check("scroll para baixo usa dispatcher lua",
     typeof ws["on-scroll-down"] === "string" &&
-    ws["on-scroll-down"].includes("workspace e+1"),
+    ws["on-scroll-down"].includes("hl.dsp.focus") &&
+    ws["on-scroll-down"].includes("e+1"),
     "on-scroll-down=" + ws["on-scroll-down"]);
 }
 
