@@ -10,7 +10,9 @@
  * aparece, so que com o estilo padrao do GTK.
  */
 
-window {
+/* O nome do widget da janela e "osd" (set_widget_name no upstream), nao
+   "window". */
+window#osd {
     background: rgba(30, 30, 46, 0.92);
     border-radius: 12px;
     border: 1px solid rgba(205, 214, 244, 0.12);
@@ -33,24 +35,32 @@ image {
 }
 
 /*
- * A barra. O GTK aplica um brilho no trough por padrao, que num tema
- * escuro fica com cara de barra desbotada. Zerar a imagem e deixar so a
- * cor faz ela casar com o resto.
+ * A barra e um progressbar, NAO um levelbar. Confirmado no upstream
+ * (src/server/osd_window.rs, build_progress_widget) e em
+ * data/style/style.scss. Estilizar levelbar nao tem efeito nenhum: e um
+ * elemento que nao existe na arvore.
+ *
+ * O GTK desenha o preenchimento de progressbar com um gradiente proprio,
+ * que precisa ser zerado com background-image: none antes da cor -- senao a
+ * cor entra por baixo e o gradiente branco do GTK continua por cima.
  */
-levelbar {
-    min-width: 220px;
-    min-height: 14px;
-}
-
-levelbar trough {
-    background: rgba(205, 214, 244, 0.15);
-    border-radius: 7px;
+progressbar {
+    min-height: 10px;
+    border-radius: 999px;
+    background: transparent;
     border: none;
-    min-height: 14px;
 }
 
-levelbar block {
+progressbar trough {
+    min-height: 10px;
+    border-radius: 999px;
+    background: rgba(205, 214, 244, 0.18);
+    border: none;
+}
+
+progressbar progress {
+    min-height: 10px;
+    border-radius: 999px;
+    background-image: none;
     background: linear-gradient(to right, #89b4fa, #a6e3a1);
-    border-radius: 7px;
-    min-height: 14px;
 }
