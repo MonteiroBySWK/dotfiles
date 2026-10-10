@@ -82,7 +82,10 @@ type = "label"
 # icone no icon theme (breeze nao tem battery-full e companhia) e o GTK
 # desenha uma caixa vazia. Aqui o glifo vem da Nerd Font -- o mesmo caminho
 # que o sys_info ja usa para cpu/mem/temp, que renderizam certo.
-label = "\u{f017}"
+# U+F240 = fa-battery_full, conferido em nerd-fonts/glyphnames.json.
+# U+F017 NAO e bateria (sao um circulo, parecia relogio) -- e a faixa md-
+# precisa de 5 hex, que o TOML nao aceita.
+label = "\uF240"
 
 [[end]]
 type = "battery"
