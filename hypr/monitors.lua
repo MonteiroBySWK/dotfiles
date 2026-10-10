@@ -9,7 +9,8 @@
 ]]
 
 -- Painel do notebook. mode "preferred" deixa o Hyprland escolher, em vez de
--- fixar 1920x1080@60 — o painel só tem esse modo, e a sobrevive a outro laptop.
+-- fixar 1920x1080@60 — o painel só tem esse modo, e a escolha sobrevive a um
+-- notebook diferente.
 hl.monitor({
   output   = "eDP-1",
   mode     = "preferred",

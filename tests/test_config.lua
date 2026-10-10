@@ -106,9 +106,8 @@ for _, w in ipairs(captured.workspace_rule) do
   if w.monitor then table.insert(pinned, tostring(w.workspace) .. "->" .. w.monitor) end
 end
 
--- ---- Alvos das Tasks 2-4: todos devem FALHAR agora ----
--- Task 2 (monitor) e Task 4 (wifi) sao os que faltam; o de workspace
--- ja foi verificado.
+-- ---- Estado final: todos devem passar depois da Trilha A ----
+-- Quando uma task nova alterar hypr/, acrescente o assert dela aqui.
 local eDP = find_monitor("eDP-1")
 if eDP then
   check("eDP-1 usa mode=preferred", eDP.mode == "preferred",

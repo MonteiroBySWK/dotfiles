@@ -23,6 +23,18 @@ if ! node tests/test_waybar.mjs; then
   fail=1
 fi
 
+echo
+echo "== jsonc stripper =="
+if ! node tests/jsonc.mjs --selftest; then
+  fail=1
+fi
+
+echo
+echo "== wifi-menu parsing =="
+if ! bash tests/test_wifi_menu.sh; then
+  fail=1
+fi
+
 if [ "$fail" -ne 0 ]; then
   echo
   echo "FALHOU"

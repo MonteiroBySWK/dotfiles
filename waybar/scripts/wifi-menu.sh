@@ -17,25 +17,40 @@ rescan="--rescan yes"
 list=$(nmcli -t -f SSID,SIGNAL,SECURITY device wifi list $rescan 2>/dev/null) || exit 0
 [ -z "$list" ] && exit 0
 
+# SSID pode conter ":", e o nmcli -t escapa isso como "\:". Também precisa
+# desescapar, senão a comparação com o SSID da lista nunca casa.
 active=$(nmcli -t -f ACTIVE,SSID device wifi 2>/dev/null \
-  | awk -F: '$1 == "yes" { print $2; exit }')
+  | awk -F: '$1 == "yes" { print substr($0, index($0, ":") + 1); exit }' \
+  | sed 's/\\:/:/g')
 
-# Mantém a ordem do nmcli (por sinal) e marca a ativa com ">".
-# Redes ocultas têm SSID vazio e ficam de fora.
-menu=$(printf '%s\n' "$list" | awk -F: -v active="$active" '
-  NF >= 2 && $1 != "" {
-    mark = ($1 == active) ? "> " : "  "
-    printf "%s%s (%s%%)\n", mark, $1, $2
+# O separador de coluna também é ":", então um awk -F: simples parte o SSID
+# ao meio. Protege o escape antes de separar e reconstrói o SSID com tudo que
+# estiver antes dos dois últimos campos (SIGNAL e SECURITY).
+menu=$(printf '%s\n' "$list" | awk -v active="$active" '
+  {
+    line = $0
+    gsub(/\\:/, "\001", line)
+    n = split(line, f, ":")
+    ssid = f[1]
+    for (i = 2; i <= n - 2; i++) ssid = ssid ":" f[i]
+    signal = f[n - 1]
+    gsub(/\001/, ":", ssid)
+    # Redes ocultas têm SSID vazio e ficam de fora.
+    if (n >= 3 && ssid != "") {
+      mark = (ssid == active) ? "> " : "  "
+      printf "%s%s (%s%%)\n", mark, ssid, signal
+    }
   }')
 
 # Nenhuma rede visível (desligadas, sem permissão, ou em outro plano):
 # sai sem abrir wofi, em vez de deixar um menu vazio na tela.
 [ -z "$menu" ] && exit 0
 
-choice=$(printf '%s\n' "$menu" | wofi --show dmenu --prompt "WiFi" --hide-input)
+choice=$(printf '%s\n' "$menu" | wofi --show dmenu --prompt "WiFi")
 [ -z "${choice:-}" ] && exit 0
 
 # Desfaz a marcação e o "(NN%)" do final para recuperar o SSID exato.
+# Ancorado no fim, então um SSID que contém "(50%)" sobrevive inteiro.
 ssid=$(printf '%s' "$choice" | sed -E 's/^>[[:space:]]?//; s/^[[:space:]]+//; s/[[:space:]]+\([0-9]+%\)$//')
 [ -z "$ssid" ] && exit 0
 
@@ -47,3 +62,5 @@ if [ "$ssid" = "$active" ]; then
 else
   [ -n "$iface" ] && nmcli device wifi connect "$ssid" ifname "$iface" >/dev/null 2>&1
 fi
+
+exit 0

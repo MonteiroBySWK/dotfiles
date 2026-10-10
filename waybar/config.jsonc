@@ -116,7 +116,10 @@
     "format-linked": "󰈀   {ifname} (No IP)",
     "format-disconnected": "⚠   Disconnected",
     "tooltip-format-wifi": "{essid}  ({signaldBm}dBm) ",
-    "on-click": "~/.config/waybar/scripts/wifi-menu.sh",
+    // "~/" e absolute divergem do resto do arquivo de proposito: o waybar roda
+// o on-click via sh -c, que expande ~, e o caminho sobrevive a mudar de
+// usuario ou de maquina -- que e o objetivo de replicar estes dotfiles.
+"on-click": "~/.config/waybar/scripts/wifi-menu.sh",
     "on-click-right": "pavucontrol"
   },
   "hyprland/window": {

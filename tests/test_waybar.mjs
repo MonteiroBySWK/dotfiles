@@ -20,19 +20,28 @@ function check(name, ok, detail) {
 // string nua ("hyprland/workspaces"), objeto achatado
 // ({ "hyprland/workspaces": {...} }), ou o objeto embrulhado em array
 // ([{ "hyprland/workspaces": {...} }]). Normaliza todas em um objeto.
+// Um objeto que nao tem a chave procurada NAO e o bloco: seguir em frente.
 function blockOf(modules, name) {
   for (const m of modules) {
     if (typeof m === "string" && m === name) return {};
-    if (m && typeof m === "object" && !Array.isArray(m)) {
-      if (Object.hasOwn(m, name)) return m[name];
-      return m;
+    if (m && typeof m === "object" && !Array.isArray(m) && Object.hasOwn(m, name)) {
+      return m[name];
     }
   }
   return undefined;
 }
 
+// String nua e um bloco sem opcoes: e um estado valido da waybar, nao um
+// sinal de que o modulo foi configurado. Este check existe para pegar o
+// caso em que o modulo sumiu do array por completo, e nao para exigir
+// opcoes -- quem exige opcoes sao os checks abaixo.
+const hasWorkspaces = cfg["modules-left"].some(
+  (m) => m === "hyprland/workspaces" ||
+    (m && typeof m === "object" && Object.hasOwn(m, "hyprland/workspaces"))
+);
+check("workspaces esta em modules-left", hasWorkspaces);
+
 const ws = blockOf(cfg["modules-left"], "hyprland/workspaces");
-check("workspaces e um bloco, nao string nua", ws !== undefined);
 if (ws) {
   check("workspaces ordena por numero", ws["sort-by"] === "number",
     "sort-by=" + ws["sort-by"]);
