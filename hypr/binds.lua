@@ -16,7 +16,16 @@ hl.bind(v.mainMod .. " + SPACE", hl.dsp.exec_cmd(v.menu))
 hl.bind(v.mainMod .. " + P", hl.dsp.window.pseudo({ action = "toggle" })) -- dwindle
 hl.bind(v.mainMod .. " + F", hl.dsp.window.fullscreen({ action = "toggle" }))
 hl.bind(v.mainMod .. " + A", hl.dsp.exec_cmd([[grim -g "$(slurp)" - | swappy -f -]])) -- screenshot
-hl.bind(v.mainMod .. " + R", hl.dsp.exec_cmd("killall waybar || waybar"))
+-- Dois bugs nesta linha antes:
+-- 1) "killall waybar || waybar" -- se o waybar ESTAVA rodando, o killall
+--    tinha sucesso, o || nao executava nada, e a barra ficava morta. O || so
+--    subia a barra quando nao havia nada pra matar. Precisa de ";".
+-- 2) O dispatcher roda "sh -c" num grupo de processos que e limpo quando o
+--    keybind termina: sem setsid a barra sobe e morre poucos segundos depois.
+--    setsid -f sempre forka; sem -f o util-linux so forka se precisar, o que
+--    deu corrida em 1 de 5 execucoes.
+hl.bind(v.mainMod .. " + R",
+  hl.dsp.exec_cmd("killall waybar 2>/dev/null; setsid -f waybar"))
 hl.bind(v.mainMod .. " + T", hl.dsp.exec_cmd("swaylock"))
 
 -- Mover foco com mainMod + setas

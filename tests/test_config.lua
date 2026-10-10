@@ -44,11 +44,29 @@ local function spy(name)
   end
 end
 
+-- hl.dsp.exec_cmd("...") esconde a string dentro de uma tabela stub: sem
+-- este proxy o comando de um bind nunca chega em captured.exec_cmd.
+local dsp_proxy = setmetatable({}, {
+  __index = function(_, k)
+    if k == "exec_cmd" or k == "exec_raw" then
+      return function(cmd)
+        if type(cmd) == "string" then
+          table.insert(captured.exec_cmd, cmd)
+        end
+        return stub()
+      end
+    end
+    return stub()
+  end,
+})
+
 _G.hl = setmetatable({}, {
   __index = function(self, k)
     local v
     if WATCHED[k] then
       v = spy(k)
+    elseif k == "dsp" then
+      v = dsp_proxy
     else
       v = stub()
     end
@@ -135,6 +153,28 @@ check("boot liga o wifi com nmcli",
   any_captured("exec_cmd", "nmcli radio wifi on"))
 check("boot nao sobe nm-aplet",
   not any_captured("exec_cmd", "nm-aplet"))
+
+-- ---- SUPER + R: reinicio do waybar ----
+-- Dois bugs ja aconteceram nesta linha:
+--   "killall waybar || waybar" -- quando o waybar ESTAVA rodando, o killall
+--   tinha sucesso, o || nao rodava, e a barra ficava morta.
+--   sem setsid, o dispatcher mata o grupo de processos e a barra morre
+--   poucos segundos depois de subir.
+local restart_ok, restart_why = false, "nenhum comando de waybar encontrado"
+for _, c in ipairs(captured.exec_cmd) do
+  if type(c) == "string" and c:find("waybar", 1, true) then
+    local sem_setsid = not c:find("setsid", 1, true)
+    local usa_pipe = c:find("||", 1, true) ~= nil
+    if sem_setsid or usa_pipe then
+      restart_why = (sem_setsid and "sem setsid" or "") ..
+        (usa_pipe and "usa ||" or "")
+      restart_why = restart_why .. " => " .. c
+    else
+      restart_ok = true
+    end
+  end
+end
+check("reinicio do waybar usa ; e setsid", restart_ok, restart_why)
 
 if #failures > 0 then
   print("\n" .. #failures .. " falha(s)")
