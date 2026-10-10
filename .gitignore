@@ -194,6 +194,7 @@ Thumbs.db
 !autostart/
 !docs/
 !dconf/
+!tests/
 !opencode/
 !assets/
 !mimeapps.list
