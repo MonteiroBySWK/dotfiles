@@ -67,9 +67,23 @@ hl.bind(v.mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })
 hl.bind(v.mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
 -- Teclas multimídia do notebook (volume e brilho)
-hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd([[wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+ && notify-send -h string:x-canonical-private-synchronous:audio -h int:value:$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print $2*100}') "Volume" -t 1500]]), { locked = true, repeating = true })
-hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd([[wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && notify-send -h string:x-canonical-private-synchronous:audio -h int:value:$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print $2*100}') "Volume" -t 1500]]), { locked = true, repeating = true })
-hl.bind("XF86AudioMute", hl.dsp.exec_cmd([[wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && notify-send -h string:x-canonical-private-synchronous:audio "Áudio" "Mudo alterado" -t 1000]]), { locked = true, repeating = true })
+--
+-- Volume vai pelo swayosd-client, que desenha o popup de camada. Antes era
+-- wpctl + notify-send com hints de volume, e o mako renderizava aquilo num
+-- painel de notificacao alto e vazio com a barra colada na esquerda --
+-- o popup ficava ruins. O swayosd substitui o wpctl E o notify-send: ele
+-- mesmo ajusta o volume e mostra o resultado.
+--
+-- --max-volume 120: o wpctl antigo rodava com "-l 1", ou seja, teto em
+-- 100%. Com 120 dá para passar de 100% e ainda ter popupe de feedback.
+hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("swayosd-client --output-volume raise --max-volume 120"), { locked = true, repeating = true })
+hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("swayosd-client --output-volume lower --max-volume 120"), { locked = true, repeating = true })
+hl.bind("XF86AudioMute", hl.dsp.exec_cmd("swayosd-client --output-volume mute-toggle"), { locked = true, repeating = true })
+hl.bind("XF86AudioMicMute", hl.dsp.exec_cmd("swayosd-client --input-volume mute-toggle"), { locked = true, repeating = true })
+
+-- Brilho NAO foi para o swayosd: o --brightness dele usa brightnessctl,
+-- que so enxerga sysfs (o painel interno). O monitor de casa vai por DDC e
+-- continua no brightness.sh.
 hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("/home/monteiro/.config/hypr/scripts/brightness.sh up"),   { locked = true, repeating = true })
 hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("/home/monteiro/.config/hypr/scripts/brightness.sh down"), { locked = true, repeating = true })
 

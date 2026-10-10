@@ -1,0 +1,56 @@
+/*
+ * swayosd/style.css — tema do popup de volume
+ *
+ * Mesmo esquema do waybar/style.css: fundo escuro translucido, texto claro,
+ * cantos arredondados. A fonte e a mesma do resto do desktop.
+ *
+ * A estrutura vem do upstream (src/server/osd_window.rs): a janela chama o
+ * container de "container" e dentro ha uma imagem de icone e um levelbar.
+ * Se um seletor nao pegar, e porque a estrutura mudou -- o popup ainda
+ * aparece, so que com o estilo padrao do GTK.
+ */
+
+window {
+    background: rgba(30, 30, 46, 0.92);
+    border-radius: 12px;
+    border: 1px solid rgba(205, 214, 244, 0.12);
+}
+
+#container {
+    padding: 8px;
+}
+
+label {
+    font-family: "SF Pro Display", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #cdd6f4;
+}
+
+/* Icone do app (volume / brightness / caps lock) */
+image {
+    -gtk-icon-style: regular;
+}
+
+/*
+ * A barra. O GTK aplica um brilho no trough por padrao, que num tema
+ * escuro fica com cara de barra desbotada. Zerar a imagem e deixar so a
+ * cor faz ela casar com o resto.
+ */
+levelbar {
+    min-width: 220px;
+    min-height: 14px;
+}
+
+levelbar trough {
+    background: rgba(205, 214, 244, 0.15);
+    border-radius: 7px;
+    border: none;
+    min-height: 14px;
+}
+
+levelbar block {
+    background: linear-gradient(to right, #89b4fa, #a6e3a1);
+    border-radius: 7px;
+    min-height: 14px;
+}

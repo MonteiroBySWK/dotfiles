@@ -168,6 +168,27 @@ check("SUPER+C usa window.close com address",
 check("SUPER+C le a janela ativa antes de fechar",
   binds_src:find("get_active_window%(%)") ~= nil)
 
+-- ---- Volume: swayosd no lugar do notify-send ----
+-- O notify-send com hints de volume virava um painel alto e vazio do mako.
+check("volume usa swayosd-client",
+  binds_src:find("swayosd%-client%s+%-%-output%-volume%s+raise") ~= nil)
+-- Sem o "not-" no inicio da linha, para nao casar com o comentario que
+-- explica por que o notify-send saiu.
+local notify_lines = {}
+for line in binds_src:gmatch("[^\n]+") do
+  local code = line:gsub("%-%-.*$", "")
+  if code:find("notify%-send") then table.insert(notify_lines, code) end
+end
+check("volume nao usa mais notify-send", #notify_lines == 0,
+  table.concat(notify_lines, " | "))
+-- Brilho fica de fora do swayosd: o --brightness dele usa brightnessctl,
+-- que so enxerga sysfs, e o monitor de casa vai por DDC.
+check("brilho continua no brightness.sh",
+  binds_src:find("brightness%.sh%s+up") ~= nil
+  and binds_src:find("brightness%.sh%s+down") ~= nil)
+check("brilho nao foi para o swayosd",
+  not binds_src:find("swayosd%-client%s+%-%-brightness"))
+
 -- ---- SUPER + R: reinicio do waybar ----
 -- Dois bugs ja aconteceram nesta linha:
 --   "killall waybar || waybar" -- quando o waybar ESTAVA rodando, o killall

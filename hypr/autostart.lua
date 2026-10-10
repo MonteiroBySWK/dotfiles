@@ -8,6 +8,10 @@ hl.on("hyprland.start", function()
   -- duplicava o ícone de rede da barra. A permissão enable-disable-wifi
   -- já está liberada (nmcli general permissions).
   hl.exec_cmd("nmcli radio wifi on")
+  -- swayosd-server e o popup de volume: sem ele rodando, swayosd-client
+  -- nao tem para quem falar e as teclas de volume nao mostram nada.
+  -- A guarda evita erro se o pacote for removido depois.
+  hl.exec_cmd("command -v swayosd-server >/dev/null && swayosd-server")
   hl.exec_cmd("waybar")
   hl.exec_cmd("hyprpaper")
   hl.exec_cmd("mako")

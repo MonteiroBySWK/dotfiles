@@ -195,6 +195,7 @@ Thumbs.db
 !docs/
 !dconf/
 !tests/
+!swayosd/
 !opencode/
 !assets/
 !mimeapps.list
