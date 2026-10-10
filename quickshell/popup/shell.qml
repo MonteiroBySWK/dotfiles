@@ -37,6 +37,14 @@ ShellRoot {
 	property bool muted: false
 	property real brightness: 0
 
+	// Monitor externo por DDC/CI. Vem do brightness-ddc.sh, que ja
+	// escolhe o display certo (o primeiro "Display N" do detect, que
+	// ignora o painel do laptop porque ele sai como "Invalid display").
+	property bool ddcAvailable: false
+	property string ddcDisplay: "1"
+	property real ddcBrightness: 0
+	property real ddcMax: 50
+
 	// Enquanto o usuario arrasta, nao reescreve a cada pixel: guarda o
 	// ultimo valor enviado e so chama o processo no onReleased.
 	property bool dragging: false
@@ -75,6 +83,7 @@ ShellRoot {
 	function openBrightness() {
 		readBrightness.running = false;
 		readBrightness.running = true;
+		readDdc();
 		root.mode = 2;
 		hideTimer.restart();
 	}
@@ -93,6 +102,26 @@ ShellRoot {
 			root.volume = parseFloat(m[1]) * 100;
 		}
 		root.muted = text.indexOf("MUTED") !== -1;
+	}
+
+	function parseDdc(text) {
+		// "VCP 10 C 50 50" -- campos 4 (atual) e 5 (maximo).
+		const f = text.trim().split(/\s+/);
+		if (f.length >= 5) {
+			const cur = parseInt(f[3]);
+			const max = parseInt(f[4]);
+			if (!isNaN(cur) && !isNaN(max) && max > 0) {
+				root.ddcMax = max;
+				root.ddcBrightness = Math.round((cur / max) * 100);
+			}
+		}
+	}
+
+	function readDdc() {
+		readDdcProc.command = ["ddcutil", "--display", root.ddcDisplay,
+			"--sleep-multiplier", "0.05", "getvcp", "10", "--terse"];
+		readDdcProc.running = false;
+		readDdcProc.running = true;
 	}
 
 	function parseBrightness(text) {
@@ -156,11 +185,36 @@ ShellRoot {
 	}
 
 	Process {
+		id: readDdcProc
+		stdout: StdioCollector {
+			id: ddcOut
+			onStreamFinished: {
+				root.ddcAvailable = ddcOut.text.indexOf("VCP") !== -1;
+				if (root.ddcAvailable) root.parseDdc(ddcOut.text);
+			}
+		}
+	}
+
+	// sysfs (painel do notebook): instantaneo, aceita qualquer passo.
+	Process {
 		id: writeBrightness
 		function apply(v) {
 			const pct = Math.round(Math.min(100, Math.max(1, v)));
 			writeBrightness.command = ["brightnessctl", "set", pct + "%"];
 			writeBrightness.startDetached();
+		}
+	}
+
+	// DDC/CI (monitor externo): ~230ms por setvcp e o barramento I2C
+	// aguenta ~4 ops/s. Por isso o arrasto so escreve ao soltar, nunca a
+	// cada pixel -- que e o que onPressedChanged ja faz.
+	Process {
+		id: writeDdc
+		function apply(v) {
+			const raw = Math.round((v / 100) * root.ddcMax);
+			writeDdc.command = ["ddcutil", "--display", root.ddcDisplay,
+				"--sleep-multiplier", "0.05", "setvcp", "10", String(raw)];
+			writeDdc.startDetached();
 		}
 	}
 
@@ -224,7 +278,7 @@ ShellRoot {
 			width: 300
 			// Fixo por modo em vez de implicitHeight: com o valor vindo do
 			// layout, a caixa ficava so com a primeira linha visivel.
-			height: root.mode === 2 ? 58 : 96
+			height: root.mode === 2 ? (root.ddcAvailable ? 104 : 48) : 96
 			radius: 12
 			color: "#1e1e2e"
 			border.width: 1
@@ -291,21 +345,32 @@ ShellRoot {
 			}
 
 			// ---------------- brilho ----------------
+			// Uma barra por alvo, cada uma rotulada. O painel do notebook e
+			// sysfs (amdgpu_bl1, instantaneo); o de casa e DDC/CI, que aceita
+			// ~4 ops/s. Devices diferentes, ritmos diferentes.
 			ColumnLayout {
 				id: brightCol
 				visible: root.mode === 2
 				anchors.fill: parent
 				anchors.margins: 16
+				spacing: 14
 
 				RowLayout {
-					spacing: 12
+					spacing: 10
 					Layout.fillWidth: true
 
 					Text {
-						Layout.preferredWidth: 18
-						text: ""
+						Layout.preferredWidth: 20
+						text: "\uf0e0"
 						color: "#cdd6f4"
 						font.pixelSize: 15
+						font.family: "JetBrainsMono Nerd Font"
+					}
+
+					Text {
+						text: "notebook"
+						color: "#6c7086"
+						font.pixelSize: 10
 						font.family: "JetBrainsMono Nerd Font"
 					}
 
@@ -324,8 +389,54 @@ ShellRoot {
 					}
 
 					Text {
-						Layout.preferredWidth: 38
+						Layout.preferredWidth: 36
 						text: Math.round(root.brightness) + "%"
+						color: "#a6adc8"
+						font.pixelSize: 12
+						font.family: "JetBrainsMono Nerd Font"
+						horizontalAlignment: Text.AlignRight
+					}
+				}
+
+				// A barra do monitor externo so aparece se o DDC responder.
+				// Desligado, ela some em vez de mostrar 0%, que seria mentira.
+				RowLayout {
+					spacing: 10
+					Layout.fillWidth: true
+					visible: root.ddcAvailable
+
+					Text {
+						Layout.preferredWidth: 20
+						text: "\uf0e2"
+						color: "#cdd6f4"
+						font.pixelSize: 15
+						font.family: "JetBrainsMono Nerd Font"
+					}
+
+					Text {
+						text: "externo"
+						color: "#6c7086"
+						font.pixelSize: 10
+						font.family: "JetBrainsMono Nerd Font"
+					}
+
+					Slider {
+						id: ddcSlider
+						Layout.fillWidth: true
+						from: 0
+						to: 100
+						value: root.ddcBrightness
+
+						onPressedChanged: {
+							hideTimer.restart();
+							root.dragging = pressed;
+							if (!pressed) writeDdc.apply(ddcSlider.value);
+						}
+					}
+
+					Text {
+						Layout.preferredWidth: 36
+						text: Math.round(root.ddcBrightness) + "%"
 						color: "#a6adc8"
 						font.pixelSize: 12
 						font.family: "JetBrainsMono Nerd Font"
