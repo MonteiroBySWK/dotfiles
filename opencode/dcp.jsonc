@@ -9,7 +9,7 @@
   "compress": {
     "maxContextLimit": "85%",
     "minContextLimit": "45%",
-    "nudgeFrequency": 10,
+    "nudgeFrequency": 20,
     "showCompression": true,
     "protectTags": true,
     "protectUserMessages": true,

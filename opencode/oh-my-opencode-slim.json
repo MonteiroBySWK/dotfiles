@@ -2,6 +2,18 @@
    "$schema" : "https://unpkg.com/oh-my-opencode-slim@latest/oh-my-opencode-slim.schema.json",
    "disabled_agents" : [],
    "preset" : "opencode-go",
+   "agents" : {
+      "vision" : {
+         "model" : "opencode-go/gpt-5.6-luna",
+         "variant" : "low",
+         "skills" : [],
+         "mcps" : [
+            "playwright"
+         ],
+         "prompt" : "You are the vision lane. Your ONLY job: analyze images, screenshots, and browser pages and return concise structured observations. You do NOT explore or read codebases — if asked about code, say you only handle visual content. Workflow: (1) Screen capture via bash: Wayland full screen `grim /tmp/shot.png` or region `grim -g \"100,100,800x600\" /tmp/shot.png`; KDE `spectacle -b -n -o /tmp/shot.png`; X11 `import -window root /tmp/shot.png`. (2) Read the PNG and report: UI elements, layout, text (verbatim), colors, error messages, visible state. (3) Delete the temp PNG after analysis. For web pages: use the playwright MCP browser tools to navigate to the URL, take a screenshot (full page when tall), then analyze. For user-provided bug screenshots: extract the error message text verbatim, describe the affected screen/component and visible state; mark anything unclear as such instead of guessing.",
+         "orchestratorPrompt" : "Delegate to @vision when the user provides an image or screenshot file, asks to capture the screen (print/screenshot), needs a web page's visual state analyzed (bug reports, UI screenshots, renders), or passes a bug image to diagnose. Do NOT use it for codebase exploration (use @explorer), code review (use @oracle), or implementation (use @fixer). Note: @observer has no vision model — never route images to @observer; @vision is the only visual lane."
+      }
+   },
    "presets" : {
       "openai" : {
          "designer" : {
@@ -55,21 +67,21 @@
       "opencode-go" : {
          "designer" : {
             "mcps" : [],
-            "model" : "opencode-go/deepseek-v4-flash",
+            "model" : "opencode-go/mimo-v2.5",
             "skills" : [],
-            "variant" : "high"
+            "variant" : "medium"
          },
          "explorer" : {
             "mcps" : [],
-            "model" : "opencode-go/deepseek-v4-flash",
+            "model" : "opencode-go/mimo-v2.5",
             "skills" : [],
             "variant" : "low"
          },
          "fixer" : {
             "mcps" : [],
-            "model" : "opencode-go/deepseek-v4-flash",
+            "model" : "opencode-go/muse-spark-1.3-contributor",
             "skills" : [],
-            "variant" : "high"
+            "variant" : "xhigh"
          },
          "librarian" : {
             "mcps" : [
@@ -77,33 +89,28 @@
                "context7",
                "gh_grep"
             ],
-            "model" : "opencode-go/deepseek-v4-flash",
+            "model" : "opencode-go/muse-spark-1.3-contributor",
             "skills" : [],
             "variant" : "low"
          },
          "observer" : {
             "mcps" : [],
-            "model" : "opencode-go/deepseek-v4-flash",
+            "model" : "opencode-go/mimo-v2.5",
             "skills" : [],
             "variant" : "low"
          },
          "oracle" : {
             "mcps" : [],
-            "model" : "opencode-go/deepseek-v4-flash",
+            "model" : "opencode-go/muse-spark-1.3-contributor",
             "skills" : [
                "simplify"
             ],
-            "variant" : "high"
+            "variant" : "xhigh"
          },
          "orchestrator" : {
-            "mcps" : [
-               "*",
-               "!context7"
-            ],
-            "model" : "opencode-go/deepseek-v4-flash",
-            "skills" : [
-               "*"
-            ],
+            "mcps" : [],
+            "model" : "opencode-go/muse-spark-1.3-contributor",
+            "skills" : [],
             "variant" : "medium"
          }
       }

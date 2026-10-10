@@ -1,54 +1,54 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-07-14T11:59:33.956Z",
+  "updatedAt": "2026-10-10T17:10:52.257Z",
   "skills": {
     "simplify": {
       "status": "managed",
-      "packageVersion": "2.2.1",
-      "sourceHash": "3dbfe351c0cf70cdacc9cd576b50ac87c47c4b1b06ebc40ec33590b149d7f616",
-      "lastManagedHash": "3dbfe351c0cf70cdacc9cd576b50ac87c47c4b1b06ebc40ec33590b149d7f616",
-      "lastSeenHash": "3dbfe351c0cf70cdacc9cd576b50ac87c47c4b1b06ebc40ec33590b149d7f616",
-      "updatedAt": "2026-07-14T11:59:33.948Z"
+      "packageVersion": "3.0.0-beta.13",
+      "sourceHash": "bfb668bb808a8fac4b879555e4ac19050fd4c0e54b4a89f947670cfbb57b3a5b",
+      "lastManagedHash": "bfb668bb808a8fac4b879555e4ac19050fd4c0e54b4a89f947670cfbb57b3a5b",
+      "lastSeenHash": "bfb668bb808a8fac4b879555e4ac19050fd4c0e54b4a89f947670cfbb57b3a5b",
+      "updatedAt": "2026-10-10T17:10:52.251Z"
     },
     "codemap": {
       "status": "managed",
-      "packageVersion": "2.2.1",
+      "packageVersion": "3.0.0-beta.13",
       "sourceHash": "d1f6c86212b4550b68096021266ecdbb0d788ad59b4673bb5658ca4b49251a9b",
       "lastManagedHash": "d1f6c86212b4550b68096021266ecdbb0d788ad59b4673bb5658ca4b49251a9b",
       "lastSeenHash": "d1f6c86212b4550b68096021266ecdbb0d788ad59b4673bb5658ca4b49251a9b",
-      "updatedAt": "2026-07-14T11:59:33.949Z"
+      "updatedAt": "2026-10-10T17:10:52.253Z"
     },
     "clonedeps": {
       "status": "managed",
-      "packageVersion": "2.2.1",
+      "packageVersion": "3.0.0-beta.13",
       "sourceHash": "93745eb7b84ea9ae7368c09a632be4e74180d0ac6305241e92023d89c9a89a14",
       "lastManagedHash": "93745eb7b84ea9ae7368c09a632be4e74180d0ac6305241e92023d89c9a89a14",
       "lastSeenHash": "93745eb7b84ea9ae7368c09a632be4e74180d0ac6305241e92023d89c9a89a14",
-      "updatedAt": "2026-07-14T11:59:33.949Z"
+      "updatedAt": "2026-10-10T17:10:52.254Z"
     },
     "deepwork": {
       "status": "managed",
-      "packageVersion": "2.2.1",
-      "sourceHash": "65f18c17fd7499de343fcab9f4020596bc87db84611e7478cc79fff718c9f01d",
-      "lastManagedHash": "65f18c17fd7499de343fcab9f4020596bc87db84611e7478cc79fff718c9f01d",
-      "lastSeenHash": "65f18c17fd7499de343fcab9f4020596bc87db84611e7478cc79fff718c9f01d",
-      "updatedAt": "2026-07-14T11:59:33.950Z"
+      "packageVersion": "3.0.0-beta.13",
+      "sourceHash": "bd229b4ed87b8648066d8ae55e69878ee027a8335c2b9f7c98d6509b717c1fdf",
+      "lastManagedHash": "bd229b4ed87b8648066d8ae55e69878ee027a8335c2b9f7c98d6509b717c1fdf",
+      "lastSeenHash": "bd229b4ed87b8648066d8ae55e69878ee027a8335c2b9f7c98d6509b717c1fdf",
+      "updatedAt": "2026-10-10T17:10:52.255Z"
     },
     "reflect": {
       "status": "managed",
-      "packageVersion": "2.2.1",
-      "sourceHash": "3ee1c08d65a0145547ab54efe72b3277c5ae76c78396ba6f030ebaa2e776944a",
-      "lastManagedHash": "3ee1c08d65a0145547ab54efe72b3277c5ae76c78396ba6f030ebaa2e776944a",
-      "lastSeenHash": "3ee1c08d65a0145547ab54efe72b3277c5ae76c78396ba6f030ebaa2e776944a",
-      "updatedAt": "2026-07-14T11:59:33.953Z"
+      "packageVersion": "3.0.0-beta.13",
+      "sourceHash": "bd63bb74bbbc3592438af7d1ce49b4eba6c171ce937dd9ade8527e366df9520b",
+      "lastManagedHash": "bd63bb74bbbc3592438af7d1ce49b4eba6c171ce937dd9ade8527e366df9520b",
+      "lastSeenHash": "bd63bb74bbbc3592438af7d1ce49b4eba6c171ce937dd9ade8527e366df9520b",
+      "updatedAt": "2026-10-10T17:10:52.256Z"
     },
     "oh-my-opencode-slim": {
       "status": "managed",
-      "packageVersion": "2.2.1",
-      "sourceHash": "0625f93779ce32291cd90e2f78fbb8ccdfc355a2cd526ba1c77704dfc2058871",
-      "lastManagedHash": "0625f93779ce32291cd90e2f78fbb8ccdfc355a2cd526ba1c77704dfc2058871",
-      "lastSeenHash": "0625f93779ce32291cd90e2f78fbb8ccdfc355a2cd526ba1c77704dfc2058871",
-      "updatedAt": "2026-07-14T11:59:33.953Z"
+      "packageVersion": "3.0.0-beta.13",
+      "sourceHash": "af7bdd007125b3a913a53006588ea0d331130b5b78b6693c35c6a7c1798a5eb7",
+      "lastManagedHash": "af7bdd007125b3a913a53006588ea0d331130b5b78b6693c35c6a7c1798a5eb7",
+      "lastSeenHash": "af7bdd007125b3a913a53006588ea0d331130b5b78b6693c35c6a7c1798a5eb7",
+      "updatedAt": "2026-10-10T17:10:52.256Z"
     },
     "release-smoke-test": {
       "status": "managed",
@@ -60,19 +60,19 @@
     },
     "worktrees": {
       "status": "managed",
-      "packageVersion": "2.2.1",
-      "sourceHash": "bdf7212ba2c5f8512afd5159d0462e05ec670cea676c6932e0a0f3ebb68bb77b",
-      "lastManagedHash": "bdf7212ba2c5f8512afd5159d0462e05ec670cea676c6932e0a0f3ebb68bb77b",
-      "lastSeenHash": "bdf7212ba2c5f8512afd5159d0462e05ec670cea676c6932e0a0f3ebb68bb77b",
-      "updatedAt": "2026-07-14T11:59:33.956Z"
+      "packageVersion": "3.0.0-beta.13",
+      "sourceHash": "ca7d8b56244d318784c209382424a5298366d19440f6971a80166f6cf60376fd",
+      "lastManagedHash": "ca7d8b56244d318784c209382424a5298366d19440f6971a80166f6cf60376fd",
+      "lastSeenHash": "ca7d8b56244d318784c209382424a5298366d19440f6971a80166f6cf60376fd",
+      "updatedAt": "2026-10-10T17:10:52.257Z"
     },
     "verification-planning": {
       "status": "managed",
-      "packageVersion": "2.2.1",
-      "sourceHash": "f59c06476d484287418b595a6ff2fc809eeffb1ea020d253481084e0862066c3",
-      "lastManagedHash": "f59c06476d484287418b595a6ff2fc809eeffb1ea020d253481084e0862066c3",
-      "lastSeenHash": "f59c06476d484287418b595a6ff2fc809eeffb1ea020d253481084e0862066c3",
-      "updatedAt": "2026-07-14T11:59:33.952Z"
+      "packageVersion": "3.0.0-beta.13",
+      "sourceHash": "02573c215ad476fff58a94ef7fc244f90b8e5baa1e39c2bb2bc579099592a9bf",
+      "lastManagedHash": "02573c215ad476fff58a94ef7fc244f90b8e5baa1e39c2bb2bc579099592a9bf",
+      "lastSeenHash": "02573c215ad476fff58a94ef7fc244f90b8e5baa1e39c2bb2bc579099592a9bf",
+      "updatedAt": "2026-10-10T17:10:52.255Z"
     }
   }
 }

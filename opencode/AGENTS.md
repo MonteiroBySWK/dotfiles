@@ -31,15 +31,15 @@ Do not use for: refactoring, writing scripts from scratch, debugging business lo
 <!-- context7 -->
 
 <!-- memory -->
-The Memory MCP is active with zero config. Use these tools to persist knowledge:
+opencode-mem (plugin nativo, SEM MCP) é o sistema de memória: Turso/libSQL local + embeddings locais, auto-capture em idle (usa o modelo da sessão) e injeção apenas de memórias relevantes.
 
-Tools:
-- memory_create_entities - save entities (projects, people, services)
-- memory_create_relations - link entities with relationships
-- memory_add_observations - attach facts/decisions to entities
-- memory_search_nodes - find past context by semantic query
+Use a tool nativa `memory(...)`:
+- memory({ mode: "add", content: "..." }) — salvar decisões de projeto, padrões de bug, preferências descobertas no trabalho
+- memory({ mode: "search", query: "..." }) — retrieval semântico (scope `project` por padrão)
+- memory({ mode: "search", query: "...", scope: "all-projects" }) — cross-projeto
+- memory({ mode: "list", limit: 10 }) / memory({ mode: "profile" })
 
-On session start, relevant memories are injected automatically. Save important decisions manually.
+Regra: regras estáveis e sempre-vigentes → AGENTS.md; contexto que cresce do trabalho real → memory (auto-capture cobre). UI web em http://127.0.0.1:4747.
 <!-- memory -->
 
 <!-- compression -->
@@ -138,17 +138,27 @@ oh-my-opencode-slim (OMO-slim) is installed with the opencode-go preset activate
 - **librarian** — documentation research. Uses Context7 + WebSearch + GitHub grep.
 - **designer** — UI/UX implementation and visual polish.
 - **fixer** — implementation specialist. Well-scoped coding tasks.
-- **observer** — visual analysis (images, screenshots, diagrams).
+- **observer** — file/codebase analysis (SEM modelo de visão — nunca rotear imagens para ele).
+- **vision** — a ÚNICA lane visual (opencode-go/gpt-5.6-luna): screenshots da tela, prints de bug repassados, páginas via playwright MCP; permissões read+bash apenas, não lê codebase.
 
-**Agent model mapping (opencode-go preset):**
-- orchestrator/oracle/fixer/designer: `opencode/deepseek-v4-flash-free` (main model)
-- explorer/librarian/observer: `opencode/north-mini-code-free` (small model)
+**Agent model mapping (opencode-go preset, Spark-consolidado 2026-09-09):** tudo que pensa e executa em `muse-spark-1.3-contributor` — orchestrator medium (skills/mcps []), oracle xhigh, fixer xhigh, librarian low, reviewer medium, main default. Recon/visão/compaction no barato: explorer/observer `mimo-v2.5` low, designer `mimo-v2.5` medium, `vision` `gpt-5.6-luna` low, small_model `mimo-v2.5-low` (alias local). Motivo (uso real 09-09): M3 gastou $2.76 com resultado fraco; Flash $1.36 recorrente (reviewer+compaction); Spark $1.63 na maior cota ($60, 2.7%) com a melhor qualidade. Flash zerado; M3 fora. Contributor treina com dados + 100 RPM — não usar p/ código proprietário sensível.
 
 Use agents explicitly: `@oracle review this architecture` or `@explorer find the auth logic`.
 
 For heavy coding sessions requiring planning: use `/deepwork`.
 For workflow improvement analysis: use `/reflect`.
 <!-- oh-my-opencode-slim -->
+
+<!-- research-before-loop -->
+Quando uma investigação entra em loop (3+ tentativas sem progresso, erro que "não faz
+sentido" diante da evidência, ou sessão longa num problema aparentemente sem solução):
+PARE de tentar variações e PESQUISE com fim de aprendizado — docs oficiais (Context7/
+WebFetch), changelog do fornecedor e casos reais (WebSearch/GitHub). A causa raiz
+frequentemente é uma mudança externa (formato novo, default novo, depreciação) que
+nenhuma variação local alcança. Exemplo canônico (03/10/2026): STS negando assume-role
+com trust "correta" — era o subject imutável do GitHub OIDC (repos pós-15/07/2026),
+descoberto no changelog, não no código. Registre a lição onde ela vive (repo/atlas).
+<!-- research-before-loop -->
 
 ## graphify
 
@@ -157,6 +167,7 @@ This project has a knowledge graph at graphify-out/ with god nodes, community st
 When the user types `/graphify`, use the installed graphify skill or instructions before doing anything else.
 
 Rules:
+- If graphify-out/graph.json does not exist, run `graphify update .` (AST-only, no API cost) to generate it before answering codebase questions.
 - For codebase questions, first run `graphify query "<question>"` when graphify-out/graph.json exists. Use `graphify path "<A>" "<B>"` for relationships and `graphify explain "<concept>"` for focused concepts. These return a scoped subgraph, usually much smaller than GRAPH_REPORT.md or raw grep output.
 - Dirty graphify-out/ files are expected after hooks or incremental updates; dirty graph files are not a reason to skip graphify. Only skip graphify if the task is about stale or incorrect graph output, or the user explicitly says not to use it.
 - If graphify-out/wiki/index.md exists, use it for broad navigation instead of raw source browsing.

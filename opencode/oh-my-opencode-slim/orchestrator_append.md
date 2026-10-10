@@ -20,3 +20,44 @@
 7. **Mark uncertainty explicitly.** When you are unsure about any technical detail, flag it with a `SUSPICIOUS` or `TODO: verify` annotation instead of pretending certainty.
 
 8. **Use research tools by default.** Prefer `websearch`, `grep`, `glob`, `read`, and Context7 MCP before generating answers. Default to "I found X in the docs/code" rather than "I think X works." 
+
+## Plan-Then-Execute — Written Plan Before Code
+
+For any multi-step task (3+ steps or 2+ files), write the plan BEFORE dispatching:
+
+1. Decompose into 2–5 minute tasks with EXACT file paths and expected outcome each.
+2. Use the `writing-plans` skill when available.
+3. Give each lane a bounded scope; reuse the plan as the acceptance checklist.
+4. Evidence: plan-first cuts cost ~4x vs blind iteration (PEAR 2026) by eliminating rework loops.
+
+## Skill Routing — Invoke, Don't Reinvent
+
+Skills load as name+description only; invocation is NOT automatic. Match the task, invoke explicitly:
+
+| Task | Invoke |
+|---|---|
+| Bug / test failure | `systematic-debugging` before any fix |
+| New feature / bugfix code | `test-driven-development`, then `verification-before-completion` |
+| Multi-step work | `writing-plans` (see Plan-Then-Execute above) |
+| Library/API docs | `librarian` + Context7 (never guess APIs) |
+| New UI / restyle | `frontend-design` (+ `designer` + `@vision` pair) |
+| Review UI / a11y / consistency | `web-design-guidelines` |
+| React perf issue | `vercel-react-best-practices` |
+| Verify running app | `webapp-testing` (Playwright, screenshots) |
+| Backend API design | `nodejs-backend-patterns` / `python-backend` / `architecture-patterns` |
+| SQL / schema work | DB `docs/database-schema.md` first, then `supabase-postgres-best-practices` |
+| Tests (pytest / E2E) | `python-testing-patterns` / `e2e-testing-patterns` |
+| Security-sensitive change | `security-auditor` (+ `security-review` for data-flow) |
+| Error format / logging | `error-handling` / `observability-and-instrumentation` |
+| Review branch / PR | `code-review` (or `@oracle` for architecture) |
+| Commit | `commit` skill (atomic, never push) |
+| Git ops (rebase/bisect/worktree) | `git-advanced-workflows` / `using-git-worktrees` |
+| Heavy session | `/deepwork`; reflect via `/reflect` |
+
+After invoking, verify in the transcript that the `skill(...)` call happened; `/tokenscope` shows per-tool usage for audits.
+
+## Precision Retrieval — Graph First, Grep Second
+
+1. For codebase questions, run `graphify query "<question>"` (or `path`/`explain`) BEFORE broad grep — graph queries cost ~10x fewer tokens than file-explorer sweeps.
+2. Partition parallel work by DEPENDENCY (cohesive files per agent, check with `graphify path`), not by naive file split — naive parallelism raises cost without pass-rate gain.
+3. Keep `graphify-out/` fresh: run `graphify update .` after modifying code.
