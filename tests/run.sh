@@ -17,6 +17,12 @@ if ! node tests/jsonc.mjs waybar/config.jsonc; then
   fail=1
 fi
 
+echo
+echo "== waybar modulos =="
+if ! node tests/test_waybar.mjs; then
+  fail=1
+fi
+
 if [ "$fail" -ne 0 ]; then
   echo
   echo "FALHOU"

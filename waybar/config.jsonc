@@ -3,8 +3,16 @@
   "spacing": 5,
   "layer": "top",
   "position": "top",
+  "output": "*",
   "modules-left": [
-    "hyprland/workspaces"
+    {
+      "hyprland/workspaces": {
+        "sort-by": "number",
+        "show-special": true,
+        "on-scroll-up": "hyprctl dispatch workspace e-1",
+        "on-scroll-down": "hyprctl dispatch workspace e+1"
+      }
+    }
   ],
   "modules-center": ["hyprland/window"],
   "modules-right": [
@@ -108,19 +116,13 @@
     "format-linked": "󰈀   {ifname} (No IP)",
     "format-disconnected": "⚠   Disconnected",
     "tooltip-format-wifi": "{essid}  ({signaldBm}dBm) ",
-    "on-click": "kitty -e nmtui" 
+    "on-click": "~/.config/waybar/scripts/wifi-menu.sh",
+    "on-click-right": "pavucontrol"
   },
   "hyprland/window": {
-    "format": "{class}",
-    "max-length": 50,
-    "separate-outputs": true,
-    "rewrite": {
-        "kitty": "   Terminal",
-        "firefox": "󰈹   Firefox",
-        "dolphin": "   Arquivos",
-        "jetbrains-idea": "   IntelliJ",
-        "discord": "   Discord"
-    }
+    "format": "{title}",
+    "icon": true,
+    "icon-size": 16
   },
   "backlight": {
     "device": "intel_backlight", // ou "amdgpu_bl0", mas geralmente funciona sem essa linha
