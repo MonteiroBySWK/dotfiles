@@ -8,7 +8,18 @@ local v = require("vars")
 
 -- Apps
 hl.bind(v.mainMod .. " + Q", hl.dsp.exec_cmd(v.terminal))
-hl.bind(v.mainMod .. " + C", hl.dsp.window.kill())
+-- kill() MATAVA O PROCESSO, nao a janela. Firefox e um processo unico com
+-- varias janelas: fechar uma matava todas. Medido com 2 janelas do mesmo
+-- processo -- 2 -> 0 e o processo inteiro morreu.
+-- close({address=...}) fecha so a janela endereçada e o processo sobrevive,
+-- medido 2 -> 1. Precisa do address: close() sem argumento responde "ok" e
+-- nao fecha nada.
+hl.bind(v.mainMod .. " + C", function()
+  local w = hl.get_active_window()
+  if w then
+    hl.dispatch(hl.dsp.window.close({ address = w.address }))
+  end
+end)
 hl.bind(v.mainMod .. " + M", hl.dsp.exit())
 hl.bind(v.mainMod .. " + E", hl.dsp.exec_cmd(v.fileManager))
 hl.bind(v.mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))

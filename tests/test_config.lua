@@ -154,6 +154,20 @@ check("boot liga o wifi com nmcli",
 check("boot nao sobe nm-aplet",
   not any_captured("exec_cmd", "nm-aplet"))
 
+-- ---- SUPER + C: fechar janela ----
+-- O bind virou funcao, entao o spy so ve a string da tecla e nao alcanca
+-- o dispatcher de dentro. O assert e de fonte.
+local binds_f = io.open("hypr/binds.lua")
+local binds_src = (binds_f and binds_f:read("*a")) or ""
+if binds_f then binds_f:close() end
+check("SUPER+C nao usa window.kill",
+  not binds_src:find("window%.kill%(%s*%)"),
+  "encontrado window.kill no bind de fechar janela")
+check("SUPER+C usa window.close com address",
+  binds_src:find("window%.close%(%s*{%s*address") ~= nil)
+check("SUPER+C le a janela ativa antes de fechar",
+  binds_src:find("get_active_window%(%)") ~= nil)
+
 -- ---- SUPER + R: reinicio do waybar ----
 -- Dois bugs ja aconteceram nesta linha:
 --   "killall waybar || waybar" -- quando o waybar ESTAVA rodando, o killall
