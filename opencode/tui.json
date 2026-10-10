@@ -1,6 +1,0 @@
-{
-   "plugin" : [
-      "oh-my-opencode-slim",
-      "@devinoldenburg/opencode-subagent-statusline"
-   ]
-}

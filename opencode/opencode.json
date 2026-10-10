@@ -1,125 +1,158 @@
 {
-   "$schema" : "https://opencode.ai/config.json",
-   "agent" : {
-      "explore" : {
-         "disable" : true
-      },
-      "fixer" : {
-         "permission" : {
-            "bash" : "allow",
-            "read" : "allow",
-            "write" : "allow",
-            "edit" : "allow"
-         }
-      },
-      "designer" : {
-         "permission" : {
-            "bash" : "allow",
-            "edit" : "allow",
-            "read" : "allow",
-            "task" : {
-               "vision" : "allow"
-            },
-            "write" : "allow"
-         }
-      },
-      "general" : {
-         "disable" : true
-      },
-      "vision" : {
-         "permission" : {
-            "bash" : "allow",
-            "edit" : "deny",
-            "read" : "allow",
-            "write" : "deny"
-         }
-      },
-      "reviewer" : {
-         "description" : "Review code for accuracy, hallucinated APIs, type errors, and logic bugs before declaring work complete.",
-         "mode" : "subagent",
-"model" : "opencode-go/deepseek-v4-flash",
-         "permission" : {
-            "bash" : "allow",
-            "edit" : "deny",
-            "read" : "allow"
-         },
-         "prompt" : "You are a strict code reviewer. Your job: catch hallucinations and errors before code is finalized. Check: (1) Do all imported functions/modules actually exist in the project? (2) Are API signatures used correctly? (3) Are types consistent? (4) Does the logic handle edge cases? Run build/typecheck commands if available. Mark any unverifiable claim as SUSPICIOUS. Do not approve code you cannot verify."
+  "$schema": "https://opencode.ai/config.json",
+  "agent": {
+    "explore": {
+      "disable": true
+    },
+    "fixer": {
+      "permission": {
+        "bash": "allow",
+        "read": "allow",
+        "write": "allow",
+        "edit": "allow"
       }
-   },
-   "compaction" : {
-      "auto" : true,
-      "tail_turns" : 25
-   },
-
-   "command" : {
-      "review" : {
-         "template" : "Use o skill pr-review para revisar a PR $ARGUMENTS no repo atual (Fase A: analise estruturada, relatorio por severidade e checkpoint — pare no relatorio).",
-         "description" : "Revisa PR com o skill pr-review (Fase A)"
-      },
-      "comment" : {
-         "template" : "Use o skill pr-review para comment $ARGUMENTS no repo atual (Fase B, modo normal).",
-         "description" : "Aplica Fase B do pr-review (comentarios inline + issues)"
-      },
-      "audit" : {
-         "template" : "Use o skill issues-audit para audit $ARGUMENTS no repo atual.",
-         "description" : "Audita issues contra o padrao do projeto"
+    },
+    "designer": {
+      "permission": {
+        "bash": "allow",
+        "edit": "allow",
+        "read": "allow",
+        "task": {
+          "vision": "allow"
+        },
+        "write": "allow"
       }
-   },
-
-   "lsp" : true,
-   "mcp" : {
-      "context7" : {
-         "enabled" : true,
-         "headers" : {
-            "CONTEXT7_API_KEY" : "{env:CONTEXT7_API_KEY}"
-         },
-         "type" : "remote",
-         "url" : "https://mcp.context7.com/mcp"
-      },
-      "memory" : {
-         "command" : [
-            "npx",
-            "-y",
-            "@modelcontextprotocol/server-memory"
-         ],
-         "enabled" : false,
-         "type" : "local"
-      },
-      "playwright" : {
-         "args" : [
-            "--browser=chromium"
-         ],
-         "command" : [
-            "npx",
-            "@playwright/mcp@latest"
-         ],
-         "enabled" : true,
-         "type" : "local"
-      },
-      "token-optimizer" : {
-         "command" : [
-            "npx",
-            "@ooples/token-optimizer-mcp"
-         ],
-         "enabled" : false,
-         "type" : "local"
+    },
+    "general": {
+      "disable": true
+    },
+    "vision": {
+      "permission": {
+        "bash": "allow",
+        "edit": "deny",
+        "read": "allow",
+        "write": "deny"
       }
-   },
-   "model" : "opencode-go/deepseek-v4-flash",
-   "plugin" : [
-      "superpowers@git+https://github.com/obra/superpowers.git",
-      "openslimedit@latest",
-      "opencode-damage-control@latest",
-      "oh-my-opencode-slim",
-      "opencode-mem",
-      "@tarquinen/opencode-dcp",
-      "@tarquinen/opencode-smart-title",
-      ".opencode/plugins/graphify.js",
-       "plugins/rtk.ts"
-   ],
-   "small_model" : "opencode/north-mini-code-free",
-   "tool_output" : {
-      "max_bytes" : 8192,
-      "max_lines" : 300
-   }
+    },
+    "reviewer": {
+      "description": "Review code for accuracy, hallucinated APIs, type errors, and logic bugs before declaring work complete.",
+      "mode": "subagent",
+      "model": "opencode-go/muse-spark-1.3-contributor",
+      "variant": "medium",
+      "permission": {
+        "bash": "allow",
+        "edit": "deny",
+        "read": "allow"
+      },
+      "prompt": "You are a strict, ADVERSARIAL code reviewer. Your job: catch hallucinations and errors before code is finalized. Rules: (1) Do all imported functions/modules actually exist in the project? Cite file:line. (2) Are API signatures used correctly? (3) Are types consistent? (4) Does the logic handle edge cases? (5) DISAGREE EXPLICITLY when something looks wrong — never converge without evidence; false consensus is a failure mode. Run build/typecheck commands if available. Mark any unverifiable claim as SUSPICIOUS. Do not approve code you cannot verify."
+    }
+  },
+  "compaction": {
+    "auto": true,
+    "tail_turns": 25
+  },
+  "command": {
+    "review": {
+      "template": "Use o skill pr-review para revisar a PR $ARGUMENTS no repo atual (Fase A: analise estruturada, relatorio por severidade e checkpoint — pare no relatorio).",
+      "description": "Revisa PR com o skill pr-review (Fase A)"
+    },
+    "comment": {
+      "template": "Use o skill pr-review para comment $ARGUMENTS no repo atual (Fase B, modo normal).",
+      "description": "Aplica Fase B do pr-review (comentarios inline + issues)"
+    },
+    "audit": {
+      "template": "Use o skill issues-audit para audit $ARGUMENTS no repo atual.",
+      "description": "Audita issues contra o padrao do projeto"
+    }
+  },
+  "lsp": false,
+  "provider": {
+    "opencode-go": {
+      "models": {
+        "deepseek-v4-flash-low": {
+          "id": "deepseek-v4-flash",
+          "name": "DeepSeek V4 Flash (low effort)",
+          "options": {
+            "reasoningEffort": "low"
+          }
+        },
+        "mimo-v2.5-low": {
+          "id": "mimo-v2.5",
+          "name": "MiMo V2.5 (low effort)",
+          "options": {
+            "reasoningEffort": "low"
+          }
+        }
+      }
+    }
+  },
+  "mcp": {
+    "context7": {
+      "enabled": true,
+      "headers": {
+        "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}"
+      },
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp"
+    },
+    "memory": {
+      "command": [
+        "npx",
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ],
+      "enabled": false,
+      "type": "local"
+    },
+    "playwright": {
+      "args": [
+        "--browser=chromium"
+      ],
+      "command": [
+        "npx",
+        "@playwright/mcp@latest"
+      ],
+      "enabled": true,
+      "type": "local"
+    },
+    "token-optimizer": {
+      "command": [
+        "npx",
+        "@ooples/token-optimizer-mcp"
+      ],
+      "enabled": true,
+      "type": "local"
+    },
+    "aws-pricing": {
+      "type": "local",
+      "command": [
+        "uvx",
+        "awslabs.aws-pricing-mcp-server@latest"
+      ],
+      "environment": {
+        "FASTMCP_LOG_LEVEL": "ERROR",
+        "AWS_PROFILE": "thera-access",
+        "AWS_REGION": "us-east-1"
+      },
+      "enabled": true
+    }
+  },
+  "model": "opencode-go/muse-spark-1.3-contributor",
+  "plugins": [
+    "superpowers@git+https://github.com/obra/superpowers.git",
+    "openslimedit@latest",
+    "opencode-damage-control@latest",
+    "opencode-command-inject@latest",
+    "oh-my-opencode-slim@3.0.0-beta.13",
+    "opencode-mem@2.26.0",
+    "@tarquinen/opencode-dcp@3.2.0",
+    "@tarquinen/opencode-smart-title",
+    ".opencode/plugins/graphify.js",
+    "plugins/rtk.ts"
+  ],
+  "small_model": "opencode-go/mimo-v2.5-low",
+  "tool_output": {
+    "max_bytes": 8192,
+    "max_lines": 300
+  }
 }
