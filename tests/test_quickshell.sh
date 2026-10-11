@@ -548,3 +548,97 @@ grep -q 'screen: root.telaDoCursor' "$CFG" \
 grep -q 'hyprctl", "-j", "cursorpos' "$CFG" \
   && ok "le o cursor com hyprctl para achar a tela do toast" \
   || bad "le o cursor com hyprctl para achar a tela do toast" "sem hyprctl cursorpos"
+
+# --- bateria / perfil de energia ---
+# O painel precisa do battery.sh e do tlp-apply.sh; um sem o outro deixa
+# a tela morta (le sem escrever) ou quebra no clique (escreve sem ler).
+[ -x "$RAIZ/quickshell/popup/battery.sh" ] \
+  && ok "battery.sh existe e e executavel" \
+  || bad "battery.sh existe e e executavel" "ausente ou sem +x"
+
+[ -x "$RAIZ/quickshell/popup/tlp-apply.sh" ] \
+  && ok "tlp-apply.sh existe e e executavel" \
+  || bad "tlp-apply.sh existe e e executavel" "ausente ou sem +x"
+
+# O JSON do battery.sh tem que valer para o QML ler. Chave por chave:
+# um typo aqui vira painel vazio em producao, sem erro visivel.
+saida=$("$RAIZ/quickshell/popup/battery.sh" 2>/dev/null)
+for chave in carga status fonte perfil epp perfis; do
+  echo "$saida" | grep -q "\"$chave\"" \
+    && ok "battery.sh devolve a chave $chave" \
+    || bad "battery.sh devolve a chave $chave" "ausente no JSON"
+done
+
+# O perfil tem de bater com o que o TLP real aplicou. Medido nesta
+# maquina: performance=performance/AC, balanced=balanced/BAT,
+# power-saver=power-saver/SAV. Se o TLP mudar, o painel some -- que e
+# o comportamento honesto (nao mente check em linha nenhuma) em vez de
+# marcar a linha errada.
+perfil_rel=$("$RAIZ/quickshell/popup/battery.sh" 2>/dev/null \
+  | python3 -c 'import sys,json; print(json.load(sys.stdin)["perfil"])')
+tlp_rel=$(tlp-stat -s 2>/dev/null | awk -F'= ' '/TLP profile/ {print $2}' | tr -d ' ' | cut -d/ -f1)
+[ "$perfil_rel" = "$tlp_rel" ] \
+  && ok "battery.sh le o mesmo perfil que o TLP aplicou" \
+  || bad "battery.sh le o mesmo perfil que o TLP aplicou" "battery.sh=$perfil_rel tlp=$tlp_rel"
+
+# Nao pode escrever nada na leitura: battery.sh e so leitura. Um `sudo`
+# aqui transformaria a abertura do painel em algo que pede senha.
+# Ignora comentario: a 5a vez que o teste acusa a propria explicacao. O
+# cabecalho do battery.sh MENCIONA o sudo do tlp-apply.sh ao dizer que
+# ele nao escreve nada. O que interessa e o que o codigo faz.
+if grep -vE '^\s*#' "$RAIZ/quickshell/popup/battery.sh" \
+    | grep -qE 'sudo|tee|^[^#]*>\s*/sys'; then
+  bad "battery.sh so le, nao escreve" "encontrou escrita ou sudo na leitura"
+else
+  ok "battery.sh so le, nao escreve"
+fi
+
+# A troca de perfil tem de passar pelo NOPASSWD do TLP. O caminho
+# TLP_PROFILE=<x> sudo -n tlp start nao funciona: o sudo limpa o
+# ambiente e o perfil nunca muda. Se alguem "simplificar" para isso, o
+# painel volta a mentir (marca uma linha e o TLP fica em outro perfil).
+grep -q 'tlp "\$PERFIL"' "$RAIZ/quickshell/popup/tlp-apply.sh" \
+  && ok "aplica com 'tlp <perfil>', nao com TLP_PROFILE (sudo limpa env)" \
+  || bad "aplica com 'tlp <perfil>', nao com TLP_PROFILE (sudo limpa env)" "nao achou 'tlp \"\$PERFIL\"'"
+
+# O painel le de volta o que o TLP gravou, em vez de assumir que o
+# comando ter saido com 0 significa ter dado certo. O TLP renomeia o
+# perfil conforme a fonte (balanced vira balanced/BAT, power-saver vira
+# power-saver/SAV).
+grep -q 'aplicado' "$RAIZ/quickshell/popup/tlp-apply.sh" \
+  && ok "tlp-apply.sh relê o perfil aplicado, nao so o pedido" \
+  || bad "tlp-apply.sh relê o perfil aplicado, nao so o pedido" "sem campo aplicado"
+
+# Battery e um modo do popup, entao a janela do popup tem de abrir nele.
+grep -q 'function showBattery(x: int): void' "$CFG" \
+  && ok "showBattery exposto no IpcHandler" \
+  || bad "showBattery exposto no IpcHandler" "sem showBattery"
+
+grep -q 'root.mode === 6' "$CFG" \
+  && ok "painel de bateria aparece com mode 6" \
+  || bad "painel de bateria aparece com mode 6" "sem mode === 6"
+
+# O botao da barra (custom/tlp) abre o painel em vez de ciclar o perfil.
+# Ciclar com tres posicoes manda a pessoa para performance sem pedir, e
+# performance gasta bateria -- o oposto do que a pessoa tocou.
+grep -q 'open.sh battery' "$RAIZ/waybar/config.jsonc" \
+  && ok "botao de TLP abre o painel, nao cicla o perfil" \
+  || bad "botao de TLP abre o painel, nao cicla o perfil" "sem open.sh battery"
+
+if grep -q 'tlp.sh toggle' "$RAIZ/waybar/config.jsonc"; then
+  bad "on-click do custom/tlp nao usa mais toggle" "ainda ciclando"
+else
+  ok "on-click do custom/tlp nao usa mais toggle"
+fi
+
+# O caminho de aplicar trava durante o sudo (1s). Sem isso, dois cliques
+# sobem dois `sudo -n tlp` e o segundo briga com o primeiro.
+grep -q 'aplicandoPerfil' "$CFG" \
+  && ok "painel trava o clique enquanto o TLP aplica" \
+  || bad "painel trava o clique enquanto o TLP aplica" "sem trava durante o sudo"
+
+# Ler antes de abrir: abrir com a coluna vazia e preencher depois faz o
+# painel mudar de altura debaixo da mao da pessoa.
+grep -q 'root.readBattery();' "$CFG" \
+  && ok "le a bateria antes de abrir o painel (nao muda de tamanho depois)" \
+  || bad "le a bateria antes de abrir o painel (nao muda de tamanho depois)" "sem leitura antecipada"

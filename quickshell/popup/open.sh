@@ -6,7 +6,7 @@
 # hyprctl cursorpos devolve o cursor, e o compositor sabe onde ele esta
 # independentemente de qual elemento foi clicado.
 #
-# Uso: open.sh <volume|brightness|calendar|resources|notification>
+# Uso: open.sh <volume|brightness|calendar|resources|notification|battery|power>
 set -u
 
 case "${1:-volume}" in
@@ -15,6 +15,10 @@ case "${1:-volume}" in
 	calendar)   FN=showCalendar ;;
 	resources)  FN=showResources ;;
 	notification|notifications) FN=showNotifications ;;
+	# "battery" e "power" sao apelidos do mesmo painel: o botao na barra
+	# mostra a bateria (icone), mas o que se gerencia ali e o perfil de
+	# energia. Os dois nomes abrem a mesma coisa.
+	battery|power|profile) FN=showBattery ;;
 	*)          FN=showVolume ;;
 esac
 

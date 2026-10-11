@@ -106,6 +106,54 @@ ShellRoot {
 		}
 	}
 
+	// Le a bateria. Caminho absoluto: o cwd do quickshell nao e o
+	// ~/.config, e com caminho relativo o processo falhava em silencio --
+	// o painel abria sem nenhuma linha.
+	Process {
+		id: readBatteryProc
+		command: ["/home/monteiro/.config/quickshell/popup/battery.sh"]
+		running: false
+
+		stdout: StdioCollector {
+			id: batteryOut
+			onStreamFinished: {
+				try {
+					root.bateria = JSON.parse(batteryOut.text);
+				} catch (e) {
+					// JSON quebrado nao pode limpar o painel que ja
+					// esta na tela; o erro vai para o log e o painel
+					// segue com o que tinha.
+					console.warn("battery.sh devolveu JSON invalido:", e);
+				}
+			}
+		}
+	}
+
+	// Aplica o perfil escolhido. Separado da leitura: um `running` so,
+	// com o argumento trocado, daria condicao de corrida entre dois
+	// cliques seguidos -- o segundo comecaria antes do primeiro acabar.
+	Process {
+		id: applyPerfilProc
+		property string perfil: ""
+		command: ["/home/monteiro/.config/quickshell/popup/tlp-apply.sh", perfil]
+		running: false
+
+		stdout: StdioCollector {
+			id: applyOut
+			onStreamFinished: {
+				try {
+					const r = JSON.parse(applyOut.text);
+					if (!r.ok)
+						console.warn("TLP recusou:", r.erro);
+				} catch (e) {
+					console.warn("tlp-apply.sh devolveu JSON invalido:", e);
+				}
+				root.aplicandoPerfil = false;
+				root.readBattery();
+			}
+		}
+	}
+
 	Process {
 		id: readDevices
 		// Caminho absoluto: o cwd do quickshell nao e o ~/.config, e com
@@ -306,8 +354,37 @@ ShellRoot {
 				+ (micInUse ? 56 : 0) + 32);
 		if (mode === 2)
 			return ddcAvailable ? 104 : 48;
+		if (mode === 6)
+			return 96 + (bateria.perfis ? bateria.perfis.length : 3) * 52;
 		return 4;
 	}
+
+	// ------------------------------------------------------------------
+	// Bateria / perfil de energia
+	// ------------------------------------------------------------------
+	// O objeto inteiro do battery.sh: carga, fonte, perfil, epp e a lista
+	// de perfis. Tudo num so lugar porque o painel e pequeno e os dados
+	// chegam juntos.
+	property var bateria: ({})
+
+	function readBattery() {
+		readBatteryProc.running = false;
+		readBatteryProc.running = true;
+	}
+
+	// Clique numa linha de perfil: aplica no TLP e re-le. A re-leitura
+	// importa porque o TLP renomeia o perfil conforme a fonte (balanced
+	// vira balanced/BAT, power-saver vira power-saver/SAV), entao o
+	// check precisa vir do que ele gravou, nao do que pedimos.
+	function applyPerfil(id) {
+		applyPerfilProc.perfil = id;
+		applyPerfilProc.running = false;
+		applyPerfilProc.running = true;
+	}
+
+	// Faz o botao travar enquanto o TLP aplica: sao ~1 s de sudo e da para
+	// clicar duas vezes, e o segundo comando brigaria com o primeiro.
+	property bool aplicandoPerfil: false
 
 	property var res: ({})
 	property var temps: []
@@ -469,6 +546,10 @@ ShellRoot {
 			root.openNotifications(x);
 		}
 
+		function showBattery(x: int): void {
+			root.openBattery(x);
+		}
+
 		function hide(): void {
 			root.close();
 		}
@@ -511,6 +592,20 @@ ShellRoot {
 		readDdc();
 		root.mode = 2;
 		hideTimer.restart();
+	}
+
+	// Bateria e perfil de energia.
+	//
+	// Le antes de abrir, e nao depois: abrir com a coluna de perfis vazia e
+	// so preencher depois faz o painel mudar de altura debaixo da mao da
+	// pessoa. Lendo antes, ele ja abre do tamanho certo.
+	function openBattery(x) {
+		root.popX = (x === undefined || x <= 0) ? -1 : x;
+		root.readBattery();
+		root.mode = 6;
+		// Fica aberto: trocar perfil e uma acao deliberada, e fechar
+		// sozinho no meio do clique seria travar a mao da pessoa.
+		hideTimer.stop();
 	}
 
 	function close() {
@@ -1465,6 +1560,163 @@ ShellRoot {
 						font.pixelSize: 12
 						font.family: "JetBrainsMono Nerd Font"
 						horizontalAlignment: Text.AlignRight
+					}
+				}
+			}
+
+			// ------------------------------------------------------------------
+			// Bateria e perfil de energia
+			// ------------------------------------------------------------------
+			// Cada perfil e uma LINHA, e nao um slider de 0 a 100. Sao tres
+			// posicoes discretas, nao um continuo: um slider aqui seria
+			// bonito e mentiria, porque "70%" nao existe neste TLP.
+			//
+			// O cabecalho junta carga e fonte. Com o carregador e um raio;
+			// na bateria, uma bateria -- que e o unico jeito de diferenciar
+			// "100% e estou bem" de "100% e carregando".
+			ColumnLayout {
+				id: batCol
+				visible: root.mode === 6
+				anchors.fill: parent
+				anchors.margins: 16
+				spacing: 12
+
+				RowLayout {
+					spacing: 12
+					Layout.fillWidth: true
+
+					// nf-md-battery-charging / nf-md-battery. O glifo muda
+					// com a fonte, que e a informacao util.
+					Text {
+						Layout.preferredWidth: 22
+						text: root.bateria.fonte === "AC" ? "\uf1b6" : "\uf1b3"
+						color: root.bateria.fonte === "AC" ? "#34C759" : "#FF9F0A"
+						font.pixelSize: 18
+						font.family: "JetBrainsMono Nerd Font"
+					}
+
+					ColumnLayout {
+						spacing: 1
+						Layout.fillWidth: true
+
+						Text {
+							Layout.fillWidth: true
+							text: (root.bateria.carga !== undefined
+								? root.bateria.carga : 0) + "%"
+								+ (root.bateria.status === "Full" ? " · cheia"
+									: root.bateria.status === "Charging" ? " · carregando"
+									: root.bateria.status === "Discharging" ? " · na bateria"
+									: "")
+							color: "#F5F5F7"
+							font.pixelSize: 15
+							font.weight: Font.DemiBold
+							font.family: "JetBrainsMono Nerd Font"
+						}
+
+						// O epp e a letra que o TLP escreve no
+						// energy_performance_preference. Nome crivel para
+						// ninguem, mas e ele que mostra o que mudou de
+						// verdade ao trocar de perfil.
+						Text {
+							Layout.fillWidth: true
+							text: root.bateria.fonte === "AC" ? "no carregador" : "na bateria"
+								+ (root.bateria.epp ? " · epp " + root.bateria.epp : "")
+							color: "#636366"
+							font.pixelSize: 10
+							font.family: "JetBrainsMono Nerd Font"
+							elide: Text.ElideRight
+						}
+					}
+				}
+
+				// As tres linhas de perfil. Repetidor sobre o array que o
+				// battery.sh mandou -- a ordem e do TLP (performance,
+				// balanced, power-saver), nao alfabetica.
+				Repeater {
+					model: root.bateria.perfis || []
+
+					delegate: Rectangle {
+						id: perfilLinha
+						required property var modelData
+
+						readonly property bool ativo: modelData.id === root.bateria.perfil
+
+						Layout.fillWidth: true
+						Layout.preferredHeight: 46
+						radius: 9
+						// A linha ativa tem fundo; as outras, nao. Sem
+						// borda para ninguem: o preenchimento ja diz
+						// qual vale, e contorno seria ruido.
+						color: ativo ? "#2C2C2E" : "transparent"
+						border.width: ativo ? 1 : 0
+						border.color: "#48484A"
+
+						// Enquanto o TLP aplica (cerca de 1s de sudo), o
+						// painel esmaece e ignora clique: dois cliques
+						// rapidos subiriam dois `sudo -n tlp` e o segundo
+						// brigaria com o primeiro.
+						opacity: root.aplicandoPerfil ? 0.5 : 1
+
+						Behavior on opacity {
+							NumberAnimation {
+								duration: 140
+								easing.type: Easing.OutCubic
+							}
+						}
+
+						MouseArea {
+							anchors.fill: parent
+							cursorShape: Qt.PointingHandCursor
+							enabled: !root.aplicandoPerfil
+
+							onClicked: {
+								hideTimer.stop();
+								root.aplicandoPerfil = true;
+								root.applyPerfil(perfilLinha.modelData.id);
+							}
+						}
+
+						RowLayout {
+							anchors.fill: parent
+							anchors.leftMargin: 12
+							anchors.rightMargin: 12
+							spacing: 10
+
+							// O check so na linha ativa. Reservado
+							// (largura fixa) nas outras para o nome nao
+							// pular de coluna quando o perfil muda.
+							Text {
+								Layout.preferredWidth: 16
+								text: "\uf00c"
+								visible: perfilLinha.ativo
+								color: "#34C759"
+								font.pixelSize: 12
+								font.family: "JetBrainsMono Nerd Font"
+							}
+
+							ColumnLayout {
+								spacing: 0
+								Layout.fillWidth: true
+
+								Text {
+									Layout.fillWidth: true
+									text: perfilLinha.modelData.nome
+									color: perfilLinha.ativo ? "#F5F5F7" : "#98989D"
+									font.pixelSize: 13
+									font.weight: perfilLinha.ativo ? Font.DemiBold : Font.Normal
+									font.family: "JetBrainsMono Nerd Font"
+								}
+
+								Text {
+									Layout.fillWidth: true
+									text: perfilLinha.modelData.nota
+									color: "#636366"
+									font.pixelSize: 10
+									font.family: "JetBrainsMono Nerd Font"
+									elide: Text.ElideRight
+								}
+							}
+						}
 					}
 				}
 			}

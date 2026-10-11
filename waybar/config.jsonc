@@ -68,12 +68,17 @@
     "on-click": "~/.config/quickshell/popup/open.sh volume",
     "on-click-right": "pavucontrol",
   },
+  // Perfil de energia. O clique CICLAVA os perfis, e isso e pior do que
+  // parece: com tres posicoes e um ciclo, metade dos cliques vai para
+  // "performance" sem a pessoa pedir -- e "performance" gasta bateria.
+  // Agora o clique abre o painel, onde os tres perfis sao nomeados e a
+  // troca e explicita. O display continua mostrando onde voce esta.
   "custom/tlp": {
     "exec": "/home/monteiro/.config/waybar/scripts/tlp.sh status",
     "signal": 2,
     "return-type": "json",
     "format": "{}",
-    "on-click": "/home/monteiro/.config/waybar/scripts/tlp.sh toggle",
+    "on-click": "~/.config/quickshell/popup/open.sh battery",
     "tooltip": true
   },
   "custom/notifications": {
