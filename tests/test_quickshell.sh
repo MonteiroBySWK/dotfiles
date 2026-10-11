@@ -155,3 +155,32 @@ grep -q 'micInUse' "$CFG" \
 grep -q 'root.sinks.length' "$CFG" \
   && ok "altura da caixa cresce com a lista de aparelhos" \
   || bad "altura da caixa cresce com a lista de aparelhos" "altura fixa"
+
+# --- o numero acompanha o arraste ---
+# O texto lia modelData.volume, que so muda depois do onCommitted. Arrastar
+# seemed no-op porque o numero nao mexia. A propriedade "shown" resolve
+# lendo o slider enquanto o botao esta apertado.
+grep -q 'readonly property real shown' "$CFG" \
+  && ok "numero mostra o valor sob o dedo durante o arraste" \
+  || bad "numero mostra o valor sob o dedo durante o arraste" "propriedade shown ausente"
+
+grep -q 'sinkSlider.pressed ? sinkSlider.value' "$CFG" \
+  && ok "shown le o slider enquanto pressionado" \
+  || bad "shown le o slider enquanto pressionado" "shown nao depende de pressed"
+
+# O id precisa existir: sem ele o QML loga ReferenceError e o numero fica
+# sem atualizacao nenhuma durante o arraste.
+grep -q 'id: sinkSlider' "$CFG" \
+  && ok "sinkSlider tem id (sem ReferenceError)" \
+  || bad "sinkSlider tem id (sem ReferenceError)" "id ausente"
+
+# --- botao de mais ajustes ---
+# O link solto "controle completo do audio" saiu; o pavucontrol continua
+# acessivel por um botao de rodape.
+grep -q 'openPavu.apply()' "$CFG" \
+  && ok "botao de mais ajustes chama o pavucontrol" \
+  || bad "botao de mais ajustes chama o pavucontrol" "openPavu sem chamador"
+
+grep -q 'mais ajustes' "$CFG" \
+  && ok "botao de mais ajustes visivel" \
+  || bad "botao de mais ajustes visivel" "rotulo ausente"

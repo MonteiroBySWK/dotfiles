@@ -335,7 +335,8 @@ ShellRoot {
 			// altura fixa de 96px o painel cortava o segundo aparelho.
 			// O minimo de 48px e o piso do modo brilho sem DDC.
 			height: root.mode === 1
-				? Math.max(64, 28 + root.sinks.length * 58 + (root.micInUse ? 56 : 0))
+				? Math.max(64, 28 + root.sinks.length * 58
+					+ (root.micInUse ? 56 : 0) + 32)
 				: (root.mode === 2 ? (root.ddcAvailable ? 104 : 48) : 4)
 
 			DropShadow {
@@ -384,6 +385,11 @@ ShellRoot {
 						color: "#2C2C2E"
 						border.width: 1
 						border.color: modelData.default ? "#0A84FF" : "#3A3A3C"
+						// Enquanto o botao esta apertado, o numero mostra o valor
+						// sob o dedo. Sem isto so atualizava no onCommitted, e
+						// arrastar parecia nao mudar nada.
+						readonly property real shown: sinkSlider.pressed ? sinkSlider.value : modelData.volume
+						readonly property bool shownMuted: sinkSlider.pressed ? false : modelData.muted
 
 						ColumnLayout {
 							anchors.fill: parent
@@ -395,8 +401,8 @@ ShellRoot {
 								spacing: 8
 
 								Text {
-									text: modelData.muted ? "\uf026" : "\uf028"
-									color: modelData.muted ? "#FF453A" : "#98989D"
+									text: shownMuted ? "\uf026" : "\uf028"
+									color: shownMuted ? "#FF453A" : "#98989D"
 									font.pixelSize: 13
 									font.family: "JetBrainsMono Nerd Font"
 
@@ -418,14 +424,15 @@ ShellRoot {
 								}
 
 								Text {
-									text: modelData.muted ? "mudo" : modelData.volume + "%"
-									color: modelData.muted ? "#FF453A" : "#98989D"
+									text: shownMuted ? "mudo" : Math.round(shown) + "%"
+									color: shownMuted ? "#FF453A" : "#98989D"
 									font.pixelSize: 12
 									font.family: "JetBrainsMono Nerd Font"
 								}
 							}
 
 							MacSlider {
+								id: sinkSlider
 								Layout.fillWidth: true
 								from: 0
 								to: root.maxVolume
@@ -509,16 +516,49 @@ ShellRoot {
 							Text {
 								text: modelData.muted ? "\uf026" : "\uf130"
 								color: modelData.muted ? "#FF453A" : "#98989D"
-								font.pixelSize: 13
-								font.family: "JetBrainsMono Nerd Font"
+							font.pixelSize: 13
+							font.family: "JetBrainsMono Nerd Font"
 
-								MouseArea {
+							MouseArea {
 									anchors.fill: parent
 									cursorShape: Qt.PointingHandCursor
 									onClicked: writeDevice.setMute(modelData.name, modelData.kind === "source")
 								}
 							}
 						}
+					}
+				}
+
+				// ---------------- mais ajustes ----------------
+				// Dentro do ColumnLayout do volume, e nao como irmo: o volCol
+				// tem anchors.fill, entao um Rectangle irmao ficaria por cima
+				// da lista.
+				Rectangle {
+					id: moreBtn
+					Layout.alignment: Qt.AlignHCenter
+					Layout.topMargin: 6
+					implicitWidth: moreLabel.implicitWidth + 24
+					implicitHeight: 26
+					radius: 6
+					color: "transparent"
+
+					Text {
+						id: moreLabel
+						anchors.centerIn: parent
+						text: "mais ajustes"
+						color: "#98989D"
+						font.pixelSize: 12
+						font.family: "JetBrainsMono Nerd Font"
+					}
+
+					MouseArea {
+						anchors.fill: parent
+						hoverEnabled: true
+						cursorShape: Qt.PointingHandCursor
+						onEntered: moreBtn.color = "#2C2C2E"
+						onExited: moreBtn.color = "transparent"
+						onPressed: hideTimer.restart()
+						onClicked: openPavu.apply()
 					}
 				}
 			}
