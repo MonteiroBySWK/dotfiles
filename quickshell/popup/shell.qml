@@ -31,8 +31,13 @@ import Quickshell.Widgets
 ShellRoot {
 	id: root
 
-	// 0 = fechado, 1 = volume, 2 = brilho
+	// 0 = fechado, 1 = volume, 2 = brilho, 3 = calendario, 4 = recursos
 	property int mode: 0
+
+	// Onde abrir. Negativo = centrado na tela, que e o fallback quando o
+	// popup e aberto por tecla e nao por clique. Vem do cursor no momento
+	// do clique, via hyprctl cursorpos.
+	property real popX: -1
 
 	property real brightness: 0
 
@@ -177,7 +182,8 @@ ShellRoot {
 		}
 	}
 
-	function openResources() {
+	function openResources(x) {
+		root.popX = (x === undefined || x < 0) ? -1 : x;
 		root.mode = 4;
 		root.resTimerOn = true;
 		readResources.running = false;
@@ -225,20 +231,20 @@ ShellRoot {
 	IpcHandler {
 		target: "control"
 
-		function showVolume(): void {
-			root.openVolume();
+		function showVolume(x: int): void {
+			root.openVolume(x);
 		}
 
-		function showBrightness(): void {
-			root.openBrightness();
+		function showBrightness(x: int): void {
+			root.openBrightness(x);
 		}
 
-		function showCalendar(): void {
-			root.openCalendar();
+		function showCalendar(x: int): void {
+			root.openCalendar(x);
 		}
 
-		function showResources(): void {
-			root.openResources();
+		function showResources(x: int): void {
+			root.openResources(x);
 		}
 
 		function hide(): void {
@@ -249,13 +255,15 @@ ShellRoot {
 	// ------------------------------------------------------------------
 	// Acoes
 	// ------------------------------------------------------------------
-	function openVolume() {
+	function openVolume(x) {
+		root.popX = (x === undefined || x < 0) ? -1 : x;
 		root.refreshDevices();
 		root.mode = 1;
 		hideTimer.restart();
 	}
 
-	function openCalendar() {
+	function openCalendar(x) {
+		root.popX = (x === undefined || x < 0) ? -1 : x;
 		root.mode = 3;
 		// Ao abrir, volta para o mes de hoje: sair de novembro e voltar
 		// amanha e encontrar a grade em branco e confuso.
@@ -265,7 +273,8 @@ ShellRoot {
 		hideTimer.restart();
 	}
 
-	function openBrightness() {
+	function openBrightness(x) {
+		root.popX = (x === undefined || x < 0) ? -1 : x;
 		readBrightness.running = false;
 		readBrightness.running = true;
 		readDdc();
@@ -277,6 +286,7 @@ ShellRoot {
 		root.mode = 0;
 		root.dragging = false;
 		root.resTimerOn = false;
+		root.popX = -1;
 	}
 
 
@@ -417,6 +427,24 @@ ShellRoot {
 		color: "transparent"
 		implicitHeight: box.height + 2
 
+		// Em qual tela o popup vai aparecer. A posicao do cursor chega em
+		// coordenada global, e as telas podem ter x negativo -- o monitor
+		// a esquerda deste setup comeca em -1920. Sem converter, o popup
+		// iria para a borda da tela errada.
+		readonly property var telaAtual: {
+			for (const s of Quickshell.screens) {
+				if (root.popX >= s.x && root.popX < s.x + s.width)
+					return s;
+			}
+			return Quickshell.screens[0];
+		}
+
+		// Cursor na coordenada local da tela do popup, ja com o zero no
+		// meio da caixa para ela ficar centrada no clique.
+		readonly property real localX: root.popX < 0
+			? -1
+			: root.popX - telaAtual.x
+
 		// Clique fora da caixa fecha. Cobre a janela toda, que e full-width.
 		MouseArea {
 			anchors.fill: parent
@@ -432,7 +460,17 @@ ShellRoot {
 		// borda de 1px entra dentro do raio e a sombra nasce reta.
 		Item {
 			id: boxShadow
-			anchors.horizontalCenter: parent.horizontalCenter
+			// Segue o cursor quando o popup foi aberto por clique; com popX
+			// negativo cai no centro, que e o caso de quem abre por tecla.
+			//
+			// Sem usar anchors de proposito: ancorar e posicionar sao
+			// mecanismos que se brigam -- com "horizontalCenter: undefined"
+			// a ancora continuava ditando o x e o popup ia para a borda
+			// esquerda. Aqui o x e calculado direto.
+			x: root.popX < 0
+				? (parent.width - width) / 2
+				: Math.max(0, Math.min(parent.width - width,
+					panel.localX - width / 2))
 			// A altura do volume deixou de ser fixa: a lista de aparelhos
 			// tem uma linha por sink, mais o divisor e a linha do mic. Com
 			// altura fixa de 96px o painel cortava o segundo aparelho.

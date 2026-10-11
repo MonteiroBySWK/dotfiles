@@ -7,14 +7,15 @@
 # no popup de recursos.
 #
 # Por que roda em laco, e nao com "interval": cada leitura leva ~600ms --
-# o uso de CPU e por diferenca de /proc/stat, com 250ms de intervalo entre
-# as duas leituras. Com "interval" o waybar mata e reinicia o script a cada
-# ciclo, e o modulo fica em branco enquanto isso -- o icone piscava. Em laco
-# o script apenas imprime a proxima linha e o waybar troca o texto sem
-# interromper nada.
+# o uso de CPU e por diferenca de /proc/stat, com 250ms entre as duas
+# leituras. Com "interval" o waybar mata e reinicia o script a cada
+# ciclo, e o modulo fica em branco enquanto isso.
 #
 #   sysinfo.sh          laco continuo, uma linha JSON por ciclo (padrao)
 #   sysinfo.sh --once   uma leitura e sai (usado pelos testes)
+#
+# A histerese precisa de estado entre ciclos, e o estado vive no laco do
+# bash: o python recebe o nivel atual e devolve o novo.
 set -u
 
 INTERVALO="${SYSINFO_INTERVAL:-5}"
@@ -30,11 +31,11 @@ fi
 
 export ICON=$'\uf0e4'   # fa-tachometer
 
-emitir() {
-	# O JSON vai por variavel de ambiente, e nao por pipe: com
+medir() {
+	# O JSON das leituras vai por variavel de ambiente, e nao por pipe: com
 	# "$script" | python3 - <<'PY' o heredoc vence o pipe e o python le o
 	# proprio codigo em vez dos dados -- que e o que devolvia class=erro.
-	RES_JSON="$("$RECURSOS" 2>/dev/null)" python3 - <<'PY'
+	RES_JSON="$("$RECURSOS" 2>/dev/null)" NIVEL="$1" python3 - <<'PY'
 import json
 import os
 import sys
@@ -46,7 +47,7 @@ try:
 except Exception:
     # ensure_ascii=False: com o padrao, o glifo ia sair como a sequencia
     # \uf0e4 dentro do JSON em vez do caractere, e a barra mostrava isso.
-    print(json.dumps({"text": ICON, "class": "erro"}, ensure_ascii=False))
+    print("erro\t" + json.dumps({"text": ICON, "class": "erro"}, ensure_ascii=False))
     raise SystemExit
 
 cpu_info = d.get("cpu") or {}
@@ -60,13 +61,31 @@ gpu_temp = gpu.get("celsius")
 temps = [t.get("celsius", 0) for t in (d.get("temp") or [])]
 
 # A temperatura mais quente, e nao a media: um unico ponto quente ja e
-# problema, e media dilui isso.
+# problema, e media dilui isso. acpitz e k10temp reportam o mesmo valor
+# nesta maquina, mas conta duas vezes nao muda o maximo.
 temp_max = max(temps) if temps else 0
 
-# Mesmos cortes do StatBar.qml, para a barra e o popup concordarem.
-if cpu >= 90 or mem >= 90 or temp_max >= 85 or (gpu_pct or 0) >= 95:
+# Histerese: o nivel so cai quando o valor desce com folga. Sem isso o
+# icone alternava de cor a cada leitura -- o idle desta maquina fica em
+# 70-73 C e o corte era 75, entao qualquer variacao de 1 grau mudava o
+# estado. O usuario via isso como piscada.
+ENTRA_ATENCAO = (cpu >= 75, mem >= 85, temp_max >= 80, (gpu_pct or 0) >= 85)
+ENTRA_CRITICO = (cpu >= 90, mem >= 90, temp_max >= 88, (gpu_pct or 0) >= 95)
+SAI_ATENCAO = (cpu < 70, mem < 80, temp_max < 76, (gpu_pct or 0) < 80)
+SAI_CRITICO = (cpu < 85, mem < 85, temp_max < 84, (gpu_pct or 0) < 90)
+
+anterior = os.environ.get("NIVEL", "normal")
+
+# any() para entrar: basta UM recurso passar do corte. all() seria pedir
+# CPU, RAM, temperatura e GPU ruins ao mesmo tempo, o que praticamente
+# nunca acontece -- e o icone ficava cinza sempre.
+if any(ENTRA_CRITICO):
     nivel = "critico"
-elif cpu >= 75 or mem >= 85 or temp_max >= 75 or (gpu_pct or 0) >= 85:
+elif any(ENTRA_ATENCAO):
+    nivel = "atencao"
+elif anterior == "critico" and not all(SAI_CRITICO):
+    nivel = "critico"
+elif anterior == "atencao" and not all(SAI_ATENCAO):
     nivel = "atencao"
 else:
     nivel = "normal"
@@ -83,21 +102,24 @@ if temp_max:
     partes.append("Pico %.0f °C" % temp_max)
 
 # O tooltip do waybar separa linhas com \r, nao com \n.
-print(json.dumps({
+# A saida e "nivel<TAB>json": o laco do bash le o nivel para a histerese.
+print(nivel + "\t" + json.dumps({
     "text": ICON,
     "class": nivel,
     "tooltip": "\r".join(partes),
-}, ensure_ascii=False), flush=True)
+}, ensure_ascii=False))
 PY
 }
 
 if [ "${1:-}" = "--once" ]; then
-	emitir
+	medir "${NIVEL:-normal}" | cut -f2-
 	exit 0
 fi
 
-# Laco: uma linha por ciclo. while read do waybar consome linha a linha.
+NIVEL="normal"
 while true; do
-	emitir
+	linha="$(medir "$NIVEL")"
+	NIVEL="${linha%%	*}"
+	printf '%s\n' "${linha#*	}"
 	sleep "$INTERVALO"
 done

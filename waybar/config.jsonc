@@ -20,7 +20,7 @@
     "clock",
   ],
   "clock": {
-    "on-click": "qs -c popup ipc call control showCalendar",
+    "on-click": "~/.config/quickshell/popup/open.sh calendar",
     "timezone": "America/Sao_Paulo",
     "format": "{:%H:%M - %d/%m/%Y}",
     "tooltip-format": "<tt>{calendar}</tt>",
@@ -101,7 +101,7 @@
     "return-type": "json",
     // Sem "interval": o script ja e um laco que imprime uma linha por
     // ciclo. Com interval, cada reinicio deixava o icone piscando.
-    "on-click": "qs -c popup ipc call control showResources",
+    "on-click": "~/.config/quickshell/popup/open.sh resources",
     "tooltip": true
   },
  "network": {

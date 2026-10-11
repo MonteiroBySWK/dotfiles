@@ -319,3 +319,38 @@ fi
 # O relogio e o modulo de recursos abrem popups
 grep -q 'showCalendar' "$CFGW" && ok "relogio abre o calendario" || bad "relogio abre o calendario" "sem on-click"
 grep -q 'showResources' "$CFGW" && ok "sysinfo abre o painel de recursos" || bad "sysinfo abre o painel de recursos" "sem on-click"
+
+# --- posicao no clique ---
+# O waybar nao repassa onde foi clicado, so executa o comando. A posicao
+# vem do cursor (hyprctl cursorpos) e precisa ser convertida de coordenada
+# global para local da tela -- o monitor a esquerda deste setup comeca em
+# x negativo, e sem converter o popup iria para a borda errada.
+[ -x "$DIR/open.sh" ] \
+  && ok "open.sh existe e e executavel" \
+  || bad "open.sh existe e e executavel" "ausente ou sem bit de execucao"
+
+grep -q 'cursorpos' "$DIR/open.sh" \
+  && ok "open.sh le a posicao do cursor" \
+  || bad "open.sh le a posicao do cursor" "nao consulta o cursor"
+
+grep -q 'telaAtual' "$CFG" \
+  && ok "converte coordenada global para a tela do popup" \
+  || bad "converte coordenada global para a tela do popup" "sem telaAtual"
+
+grep -q 'popX' "$CFG" \
+  && ok "popup posicionado no cursor (popX)" \
+  || bad "popup posicionado no cursor (popX)" "sem popX"
+
+# Ancorar e posicionar se briga: com horizontalCenter: undefined a ancora
+# continuava ditando o x e o popup ia para a borda esquerda.
+if grep -q 'anchors.horizontalCenter:.*undefined' "$CFG"; then
+  bad "x calculado sem misturar ancora" "ancora e x competem pelo mesmo atributo"
+else
+  ok "x calculado sem misturar ancora"
+fi
+
+# A histerese e o que parou a alternancia de cor. Com so o corte, o idle
+# em 70-73 C cruzava o limite a cada leitura.
+grep -q 'NIVEL' "$DIR/../waybar/scripts/sysinfo.sh" \
+  && ok "sysinfo guarda o nivel entre ciclos (histerese)" \
+  || bad "sysinfo guarda o nivel entre ciclos (histerese)" "sem estado entre ciclos"
