@@ -92,3 +92,25 @@ window#waybar {
 #tray > .passive {
     -gtk-icon-effect: dim;
 }
+
+/* ---------------- modulo unico de recursos ----------------
+ * O script sysinfo.sh devolve a classe do nivel: normal, atencao ou
+ * critico. No repouso o icone fica cinza e o numero fica no tooltip e no
+ * popup -- assim a barra para de gastar espaco com tres numeros. */
+#custom-sysinfo {
+    color: #98989d;
+    min-width: 18px;
+    transition: color 0.3s ease-in-out;
+}
+
+#custom-sysinfo.atencao {
+    color: #ff9f0a;
+}
+
+#custom-sysinfo.critico {
+    color: #ff453a;
+}
+
+#custom-sysinfo.erro {
+    color: #636366;
+}

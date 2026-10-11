@@ -261,3 +261,61 @@ assert d.get("gpu"), "gpu vazia: filtro da DRM descartou tudo"
 else
   bad "GPU detectada pelo filtro da DRM" "gpu vazia"
 fi
+
+# --- modulo unico de recursos na barra ---
+SISTEMA="$(dirname "$0")/../waybar/scripts/sysinfo.sh"
+
+[ -x "$SISTEMA" ] \
+  && ok "sysinfo.sh existe e e executavel" \
+  || bad "sysinfo.sh existe e e executavel" "ausente ou sem bit de execucao"
+
+# --once: sem isso o teste ficaria preso no laco infinito.
+if "$SISTEMA" --once 2>/dev/null | python3 -c '
+import sys, json
+d = json.load(sys.stdin)
+assert d["text"], "icone vazio"
+assert d["class"] in ("normal", "atencao", "critico", "erro"), d["class"]
+assert "\r" in d["tooltip"], "o tooltip do waybar separa linhas com \\r, nao \\n"
+' 2>/dev/null; then
+  ok "sysinfo.sh --once devolve JSON valido"
+else
+  bad "sysinfo.sh --once devolve JSON valido" "JSON invalido ou campos fora do esperado"
+fi
+
+# O glifo precisa sair como caractere, e nao como \uf0e4 escapado: com o
+# padrao do json.dumps o texto do modulo virava a sequencia literal.
+if "$SISTEMA" --once 2>/dev/null | python3 -c '
+import sys, json
+d = json.load(sys.stdin)
+assert len(d["text"]) == 1 and ord(d["text"]) > 0x2000, "icone nao e um glifo"
+' 2>/dev/null; then
+  ok "icone sai como caractere (nao escapado)"
+else
+  bad "icone sai como caractere (nao escapado)" "texto nao e um glifo unico"
+fi
+
+CFGW="$(dirname "$0")/../waybar/config.jsonc"
+
+# return-type json: sem ele o waybar mostra o JSON cru na barra.
+grep -q '"return-type": "json"' "$CFGW" \
+  && ok "custom/sysinfo com return-type json" \
+  || bad "custom/sysinfo com return-type json" "sem return-type: a barra mostra o JSON cru"
+
+# "interval" reiniciava o script a cada ciclo; cada leitura leva ~600ms e o
+# modulo ficava em branco nesse meio tempo, o que aparecia como piscada.
+if awk '/"custom\/sysinfo"/,/}/' "$CFGW" | grep -q '"interval"'; then
+  bad "sysinfo sem interval (o script ja e um laco)" "interval reinicia o script e pisca"
+else
+  ok "sysinfo sem interval (o script ja e um laco)"
+fi
+
+# Os tres modulos separados foram substituidos por um icone so.
+if grep -qE '^\s*"(cpu|memory|temperature)",?$' "$CFGW"; then
+  bad "cpu, memory e temperature fora da lista de modulos" "ainda na lista"
+else
+  ok "cpu, memory e temperature fora da lista de modulos"
+fi
+
+# O relogio e o modulo de recursos abrem popups
+grep -q 'showCalendar' "$CFGW" && ok "relogio abre o calendario" || bad "relogio abre o calendario" "sem on-click"
+grep -q 'showResources' "$CFGW" && ok "sysinfo abre o painel de recursos" || bad "sysinfo abre o painel de recursos" "sem on-click"

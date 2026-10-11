@@ -15,13 +15,12 @@
     "backlight",
     "battery",
     "custom/tlp",
-    "temperature",
-    "cpu",
-    "memory",
+    "custom/sysinfo",
     "custom/nightlight",
     "clock",
   ],
   "clock": {
+    "on-click": "qs -c popup ipc call control showCalendar",
     "timezone": "America/Sao_Paulo",
     "format": "{:%H:%M - %d/%m/%Y}",
     "tooltip-format": "<tt>{calendar}</tt>",
@@ -91,17 +90,19 @@
     "on-click-right": "swaync-client -d -sw",
     "escape": true
   },
-  "cpu": {
-    "format": "  {usage}%",
-    "tooltip": false
-  },
-  "temperature": {
-    "critical-threshold": 80,
-    "format": "{icon} {temperatureC}°C",
-    "format-icons": ["", "", ""]
-  },
-  "memory": {
-    "format": " {}%"
+  // Um icone no lugar de cpu + memory + temperature. Cinza em repouso,
+  // amarelo quando algo passa do aceitavel, vermelho no critico -- o
+  // numero fica no tooltip e no popup, que abrem no clique.
+  // Mesmos cortes do StatBar.qml, para barra e popup concordarem.
+  "custom/sysinfo": {
+    "exec": "~/.config/waybar/scripts/sysinfo.sh",
+    // return-type json e obrigatorio: sem ele o waybar trata a linha como
+    // texto puro e a barra mostra o JSON cru.
+    "return-type": "json",
+    // Sem "interval": o script ja e um laco que imprime uma linha por
+    // ciclo. Com interval, cada reinicio deixava o icone piscando.
+    "on-click": "qs -c popup ipc call control showResources",
+    "tooltip": true
   },
  "network": {
     "format-wifi": "   {essid}",
