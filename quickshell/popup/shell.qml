@@ -177,6 +177,115 @@ ShellRoot {
 		"maio", "junho", "julho", "agosto", "setembro", "outubro",
 		"novembro", "dezembro"]
 
+	// Notificacoes.
+	//
+	// O quickshell tem servico de notificacoes NATIVO, mas nesta maquina o
+	// dono de org.freedesktop.Notifications e o mako -- que tambem faz o
+	// OSD de volume e brilho. Registrar o nativo daria conflito e o mako
+	// perderia o OSD. Entao aqui o quickshell e um CLIENTE do mako, lendo
+	// a lista pela interface fr.emersion.Mako.
+	// Altura do painel por modo. Fica em funcao porque ternario com seis
+	// niveis fica ilegivel, e parentese faltando so aparece quando o
+	// popup abre.
+	function alturaPainel() {
+		if (mode === 5) {
+			// Cada notificacao ocupa ~78px; o limite de 6 mantem o painel
+			// util em vez de esticar ate o rodape.
+			return Math.max(120, 44 + Math.min(notificacoes.length, 6) * 78);
+		}
+		if (mode === 3)
+			return 300;
+		if (mode === 4)
+			return 322;
+		if (mode === 1)
+			return Math.max(64, 28 + sinks.length * 58
+				+ (micInUse ? 56 : 0) + 32);
+		if (mode === 2)
+			return ddcAvailable ? 104 : 48;
+		return 4;
+	}
+
+	property var notificacoes: []
+	property bool notifTimerOn: false
+
+	function applyNotifications(text) {
+		try {
+			const d = JSON.parse(text);
+			root.notificacoes = d.notificacoes || [];
+		} catch (e) {
+			// JSON quebrado nao pode limpar a lista que ja esta na tela.
+			console.warn("list-notifications.sh devolveu JSON invalido:", e);
+		}
+	}
+
+	function refreshNotifications() {
+		readNotifications.running = false;
+		readNotifications.running = true;
+	}
+
+	Process {
+		id: readNotifications
+		command: ["/home/monteiro/.config/quickshell/popup/list-notifications.sh"]
+		stdout: StdioCollector {
+			onStreamFinished: root.applyNotifications(text)
+		}
+	}
+
+	Process {
+		id: notifAction
+		function invoke(id, actionId) {
+			notifAction.command = ["gdbus", "call", "--session",
+				"--dest", "org.freedesktop.Notifications",
+				"--object-path", "/fr/emersion/Mako",
+				"--method", "fr.emersion.Mako.InvokeAction",
+				str(id), actionId];
+			notifAction.running = false;
+			notifAction.running = true;
+		}
+	}
+
+	function openNotifications(x) {
+		// Sem esta linha o painel ignora a posicao do cursor e abre onde
+		// quer que a janela ja estivesse. As outras acoes do popup fazem
+		// isto; faltou aqui.
+		root.popX = (x === undefined || x <= 0) ? -1 : x;
+		root.mode = 5;
+		// Nao some sozinho: o usuario abriu para LER. O gesto no painel
+		// e o que fecha, ou o botao de fechar.
+		hideTimer.stop();
+		root.notifTimerOn = true;
+		root.refreshNotifications();
+	}
+
+	function fecharNotificacoes() {
+		root.notifTimerOn = false;
+		root.close();
+	}
+
+	Process {
+		id: notifDismiss
+		function limparTodas() {
+			for (const n of root.notificacoes) {
+				notifDismiss.command = ["gdbus", "call", "--session",
+					"--dest", "org.freedesktop.Notifications",
+					"--object-path", "/fr/emersion/Mako",
+					"--method", "fr.emersion.Mako.DismissNotifications",
+					'{"id": ' + n.id + '}'];
+				notifDismiss.running = false;
+				notifDismiss.running = true;
+			}
+			root.notificacoes = [];
+		}
+	}
+
+	Timer {
+		id: notifTimer
+		interval: 3000
+		repeat: true
+		running: root.notifTimerOn
+		onTriggered: root.refreshNotifications()
+	}
+
 	// Recursos, do list-resources.sh
 	property var res: ({})
 	property var temps: []
@@ -334,6 +443,10 @@ ShellRoot {
 			root.openResources(x);
 		}
 
+		function showNotifications(x: int): void {
+			root.openNotifications(x);
+		}
+
 		function hide(): void {
 			root.close();
 		}
@@ -382,6 +495,7 @@ ShellRoot {
 		root.mode = 0;
 		root.dragging = false;
 		root.resTimerOn = false;
+		root.notifTimerOn = false;
 		root.popX = -1;
 	}
 
@@ -559,14 +673,11 @@ ShellRoot {
 			// tem uma linha por sink, mais o divisor e a linha do mic. Com
 			// altura fixa de 96px o painel cortava o segundo aparelho.
 			// O minimo de 48px e o piso do modo brilho sem DDC.
-			width: root.mode === 3 ? 320 : 340
-			height: root.mode === 3
-				? 300
-				: (root.mode === 4 ? 322
-					: (root.mode === 1
-						? Math.max(64, 28 + root.sinks.length * 58
-							+ (root.micInUse ? 56 : 0) + 32)
-						: (root.mode === 2 ? (root.ddcAvailable ? 104 : 48) : 4)))
+		// A altura depende do conteudo. Ternario com seis niveis fica
+		// ilegivel e erro de parenteses nao aparece ate o popup abrir --
+		// por isso e uma funcao.
+		width: 340
+		height: root.alturaPainel()
 
 			DropShadow {
 				anchors.fill: box
@@ -809,6 +920,177 @@ ShellRoot {
 						onExited: moreBtn.color = "transparent"
 						onPressed: hideTimer.restart()
 						onClicked: openPavu.apply()
+					}
+				}
+			}
+
+			// ---------------- notificacoes ----------------
+			// Lista no spirit do Notification Center do macOS: cabecalho
+			// com o total e um botao de limpar, e um cartao por
+			// notificacao com as acoes quando o app as oferece.
+			ColumnLayout {
+				id: notifCol
+				visible: root.mode === 5
+				anchors.fill: parent
+				anchors.margins: 12
+				spacing: 8
+
+				RowLayout {
+					Layout.fillWidth: true
+
+					Text {
+						Layout.fillWidth: true
+						text: root.notificacoes.length === 0
+							? "notificacoes"
+							: "notificacoes (" + root.notificacoes.length + ")"
+						color: "#F5F5F7"
+						font.pixelSize: 13
+						font.weight: Font.DemiBold
+						font.family: "JetBrainsMono Nerd Font"
+					}
+
+					Text {
+						text: "limpar"
+						color: "#98989D"
+						font.pixelSize: 11
+						font.family: "JetBrainsMono Nerd Font"
+						visible: root.notificacoes.length > 0
+
+						MouseArea {
+							anchors.fill: parent
+							cursorShape: Qt.PointingHandCursor
+							onClicked: notifDismiss.limparTodas()
+						}
+					}
+
+					Text {
+						text: "x"
+						color: "#98989D"
+						font.pixelSize: 13
+						font.family: "JetBrainsMono Nerd Font"
+
+						MouseArea {
+							anchors.fill: parent
+							cursorShape: Qt.PointingHandCursor
+							onClicked: root.fecharNotificacoes()
+						}
+					}
+				}
+
+				// Vazio: um placeholder curto e honesto, em vez de um
+				// painel em branco sem explicacao.
+				Text {
+					Layout.fillWidth: true
+					visible: root.notificacoes.length === 0
+					text: "nenhuma notificacao"
+					color: "#636366"
+					font.pixelSize: 12
+					font.family: "JetBrainsMono Nerd Font"
+					horizontalAlignment: Text.AlignHCenter
+					Layout.topMargin: 20
+					Layout.bottomMargin: 20
+				}
+
+				ListView {
+					Layout.fillWidth: true
+					Layout.fillHeight: true
+					clip: true
+					spacing: 6
+					model: root.notificacoes
+					// Sem ScrollBar visivel: no macOS a lista rola sem barra
+					// e o cursor de scroll ja da o feedback.
+
+					delegate: Rectangle {
+						required property var modelData
+						required property int index
+						width: ListView.view.width
+						height: cartao.implicitHeight + 16
+						radius: 10
+						color: "#2C2C2E"
+
+						ColumnLayout {
+							id: cartao
+							anchors.fill: parent
+							anchors.margins: 8
+							spacing: 4
+
+							Text {
+								Layout.fillWidth: true
+								text: modelData.appName
+								color: "#636366"
+								font.pixelSize: 10
+								font.family: "JetBrainsMono Nerd Font"
+								elide: Text.ElideRight
+							}
+
+							Text {
+								Layout.fillWidth: true
+								text: modelData.resumo
+								color: "#F5F5F7"
+								font.pixelSize: 13
+								font.weight: Font.DemiBold
+								font.family: "JetBrainsMono Nerd Font"
+								wrapMode: Text.WordWrap
+								maximumLineCount: 2
+								elide: Text.ElideRight
+							}
+
+							Text {
+								Layout.fillWidth: true
+								visible: modelData.corpo !== ""
+								text: modelData.corpo
+								color: "#98989D"
+								font.pixelSize: 11
+								font.family: "JetBrainsMono Nerd Font"
+								wrapMode: Text.WordWrap
+								maximumLineCount: 3
+								elide: Text.ElideRight
+							}
+
+							// Acoes do app ("Mostrar", "Responder"...). Sem
+							// isso a notificacao e so leitura.
+							RowLayout {
+								Layout.fillWidth: true
+								visible: modelData.acoes.length > 0
+								spacing: 6
+								Layout.topMargin: 2
+
+								Repeater {
+									model: modelData.acoes
+
+									delegate: Rectangle {
+										// O modelData interno SOMBREIA o da
+										// notificacao. Por isso o id acao: sem ele
+										// nao ha como alcançar a notificacao de
+										// dentro do delegate, e a acao quebrava com
+										// "Cannot read property of undefined".
+										id: acao
+										required property var modelData
+										implicitWidth: acaoLabel.implicitWidth + 16
+										implicitHeight: 22
+										radius: 6
+										color: "#3A3A3C"
+
+										Text {
+											id: acaoLabel
+											anchors.centerIn: parent
+											text: acao.modelData.texto
+											color: "#F5F5F7"
+											font.pixelSize: 11
+											font.family: "JetBrainsMono Nerd Font"
+										}
+
+										MouseArea {
+											anchors.fill: parent
+											cursorShape: Qt.PointingHandCursor
+											onClicked: notifAction.invoke(
+												cartao.modelData.id,
+												acao.modelData.id)
+										}
+									}
+								}
+							}
+						}
 					}
 				}
 			}

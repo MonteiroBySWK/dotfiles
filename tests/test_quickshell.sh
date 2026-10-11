@@ -155,7 +155,7 @@ grep -q 'micInUse' "$CFG" \
 
 # --- altura da caixa acompanha a lista ---
 # Com altura fixa, o segundo aparelho da lista ficava cortado.
-grep -q 'root.sinks.length' "$CFG" \
+grep -q 'sinks.length' "$CFG" \
   && ok "altura da caixa cresce com a lista de aparelhos" \
   || bad "altura da caixa cresce com a lista de aparelhos" "altura fixa"
 
@@ -493,3 +493,48 @@ grep -q 'screen: root.telaAtual' "$CFG" \
 awk '/ShellRoot \{/,/^\tPanelWindow/' "$CFG" | grep -q 'readonly property var telaAtual' \
   && ok "telaAtual resolvida no escopo do root" \
   || bad "telaAtual resolvida no escopo do root" "telaAtual fora do root"
+
+# --- notificacoes ---
+# O mako e o dono de org.freedesktop.Notifications nesta maquina, e ele faz
+# o OSD de volume e brilho. Registrar o servico nativo do quickshell daria
+# conflito e o mako perderia o OSD -- entao o painel e um CLIENTE do mako.
+[ -x "$DIR/list-notifications.sh" ] \
+  && ok "list-notifications.sh existe e e executavel" \
+  || bad "list-notifications.sh existe e e executavel" "ausente"
+
+if "$DIR/list-notifications.sh" 2>/dev/null | python3 -c '
+import sys, json
+d = json.load(sys.stdin)
+assert "notificacoes" in d, "faltando a lista"
+' 2>/dev/null; then
+  ok "list-notifications.sh devolve JSON valido"
+else
+  bad "list-notifications.sh devolve JSON valido" "JSON invalido"
+fi
+
+# Usar o servico nativo brigaria com o mako no mesmo nome do DBus.
+if grep -q 'NotificationServer' "$CFG"; then
+  bad "nao registra servico de notificacoes proprio" "conflita com o mako, que faz o OSD"
+else
+  ok "nao registra servico de notificacoes proprio"
+fi
+
+grep -q 'fr.emersion.Mako' "$CFG" \
+  && ok "le a lista pela interface do mako" \
+  || bad "le a lista pela interface do mako" "sem fr.emersion.Mako"
+
+grep -q 'InvokeAction' "$CFG" \
+  && ok "acoes da notificacao sao invocaveis" \
+  || bad "acoes da notificacao sao invocaveis" "sem InvokeAction"
+
+# Toda acao do popup precisa usar popX. A de notificacoes esqueceu, e o
+# painel abria onde a janela ja estivesse em vez de onde foi clicado.
+awk '/function openNotifications/,/^\t}/' "$CFG" | grep -q 'popX' \
+  && ok "openNotifications respeita a posicao do clique" \
+  || bad "openNotifications respeita a posicao do clique" "ignora o argumento x"
+
+# Ternario de seis niveis para a altura jaClosing parentese quebrou o QML;
+# virou funcao.
+grep -q 'function alturaPainel' "$CFG" \
+  && ok "altura do painel calculada em funcao" \
+  || bad "altura do painel calculada em funcao" "ternario gigante no lugar"
