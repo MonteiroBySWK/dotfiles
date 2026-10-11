@@ -3,6 +3,9 @@
 set -u
 CFG="$(dirname "$0")/../quickshell/popup/shell.qml"
 DIR="$(dirname "$CFG")"
+# Raiz do repo: DIR e <raiz>/quickshell/popup, entao sobe dois niveis.
+# Com "../waybar" o caminho resolvia para quickshell/waybar, que nao existe.
+RAIZ="$(cd "$(dirname "$DIR")/.." && pwd)"
 fails=0
 
 ok()   { echo "ok   - $1"; }
@@ -317,8 +320,8 @@ else
 fi
 
 # O relogio e o modulo de recursos abrem popups
-grep -q 'showCalendar' "$CFGW" && ok "relogio abre o calendario" || bad "relogio abre o calendario" "sem on-click"
-grep -q 'showResources' "$CFGW" && ok "sysinfo abre o painel de recursos" || bad "sysinfo abre o painel de recursos" "sem on-click"
+grep -q 'open.sh calendar' "$CFGW" && ok "relogio abre o calendario" || bad "relogio abre o calendario" "sem on-click"
+grep -q 'open.sh resources' "$CFGW" && ok "sysinfo abre o painel de recursos" || bad "sysinfo abre o painel de recursos" "sem on-click"
 
 # --- posicao no clique ---
 # O waybar nao repassa onde foi clicado, so executa o comando. A posicao
@@ -351,7 +354,7 @@ fi
 
 # A histerese e o que parou a alternancia de cor. Com so o corte, o idle
 # em 70-73 C cruzava o limite a cada leitura.
-grep -q 'NIVEL' "$DIR/../waybar/scripts/sysinfo.sh" \
+grep -q 'NIVEL' "$RAIZ/waybar/scripts/sysinfo.sh" \
   && ok "sysinfo guarda o nivel entre ciclos (histerese)" \
   || bad "sysinfo guarda o nivel entre ciclos (histerese)" "sem estado entre ciclos"
 
@@ -359,17 +362,17 @@ grep -q 'NIVEL' "$DIR/../waybar/scripts/sysinfo.sh" \
 # A histerese segura a descida, mas a subida era instantanea: um pico
 # isolado de CPU (abrir um programa) virava alerta critico e voltava no
 # ciclo seguinte. Isso e o que o usuario via como piscada.
-grep -q 'SEGUIR=' "$DIR/../waybar/scripts/sysinfo.sh" \
+grep -q 'SEGUIR=' "$RAIZ/waybar/scripts/sysinfo.sh" \
   && ok "sysinfo exige leituras seguidas para escalar" \
   || bad "sysinfo exige leituras seguidas para escalar" "sem contagem de leituras"
 
-grep -q 'CONTA_CRIT' "$DIR/../waybar/scripts/sysinfo.sh" \
+grep -q 'CONTA_CRIT' "$RAIZ/waybar/scripts/sysinfo.sh" \
   && ok "sysinfo conta leituras acima do corte" \
   || bad "sysinfo conta leituras acima do corte" "sem contador"
 
 # A transicao de cor reiniciava a cada recriacao do rotulo pelo waybar,
 # fazendo o icone voltar a cor base a cada ciclo.
-if grep -q 'transition: color' "$DIR/../waybar/style.css"; then
+if grep -q 'transition: color' "$RAIZ/waybar/style.css"; then
   bad "sem transition no icone de recursos" "a transicao reinicia a cada rotulo recriado"
 else
   ok "sem transition no icone de recursos"
@@ -379,11 +382,33 @@ fi
 # A cada leitura (1s) o Repeater e recriado, entao o delegate nasce com
 # width 0. Com "Behavior on width" a barra animava de zero ate o valor --
 # "zera a barra e carrega novamente na animacao", a cada segundo.
-if grep -q 'Behavior on width' "$DIR/StatBar.qml"; then
-  bad "StatBar sem Behavior on width" "a barra anima do zero a cada leitura"
-else
-  ok "StatBar sem Behavior on width"
-fi
+# A barra PODE animar, desde que o delegate nao seja recriado a cada
+# leitura. Com array como model o Repeater recria o delegate e a barra nasce
+# em zero -- ai a animacao era o defeito. A ListModel e que garante o
+# delegate vivo.
+grep -q 'ListModel' "$CFG" \
+  && ok "linhas de recurso vem de ListModel" \
+  || bad "linhas de recurso vem de ListModel" "model como array recria os delegates"
+
+grep -q 'model: resModel' "$CFG" \
+  && ok "Repeater usa o ListModel" \
+  || bad "Repeater usa o ListModel" "model nao e o ListModel"
+
+grep -q 'resModel.setProperty' "$CFG" \
+  && ok "valores atualizados no lugar, sem recriar a linha" \
+  || bad "valores atualizados no lugar, sem recriar a linha" "sem setProperty"
+
+grep -q 'Behavior on width' "$DIR/StatBar.qml" \
+  && ok "StatBar anima a largura" \
+  || bad "StatBar anima a largura" "sem Behavior on width"
+
+grep -q 'Behavior on color' "$DIR/StatBar.qml" \
+  && ok "StatBar anima a cor do estado" \
+  || bad "StatBar anima a cor do estado" "sem Behavior on color"
+
+grep -q 'Behavior on color' "$CFG" \
+  && ok "chips de temperatura animam a cor" \
+  || bad "chips de temperatura animam a cor" "sem Behavior on color"
 
 # Sem argumento o IPC passa 0, que e um x legitimo (borda esquerda). Com
 # "x < 0" o 0 caia fora do caso de centralizar e o popup ia para a borda.
@@ -407,14 +432,14 @@ done
 
 # Nenhum chamador pode ficar sem argumento, e a ordem dos flags do qs
 # importa: "qs ipc -c popup" nao e "qs -c popup ipc".
-if grep -qE 'qs ipc -c popup' "$DIR/../waybar/config.jsonc"; then
+if grep -qE 'qs ipc -c popup' "$RAIZ/waybar/config.jsonc"; then
   bad "waybar chama os popups pelo wrapper" "qs ipc -c popup: flags na ordem errada"
 else
   ok "waybar chama os popups pelo wrapper"
 fi
 
-vol=$(grep -c 'open.sh volume' "$DIR/../waybar/config.jsonc")
-bri=$(grep -c 'open.sh brightness' "$DIR/../waybar/config.jsonc")
+vol=$(grep -c 'open.sh volume' "$RAIZ/waybar/config.jsonc")
+bri=$(grep -c 'open.sh brightness' "$RAIZ/waybar/config.jsonc")
 [ "$vol" -ge 1 ] && ok "volume pelo wrapper (passa a posicao)" || bad "volume pelo wrapper (passa a posicao)" "volume sem wrapper"
 [ "$bri" -ge 1 ] && ok "brilho pelo wrapper (passa a posicao)" || bad "brilho pelo wrapper (passa a posicao)" "brilho sem wrapper"
 

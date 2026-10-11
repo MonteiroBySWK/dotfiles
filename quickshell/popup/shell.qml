@@ -176,10 +176,79 @@ ShellRoot {
 			const d = JSON.parse(text);
 			root.res = d;
 			root.temps = d.temp || [];
+			syncResourceRows(d);
 		} catch (e) {
 			// JSON quebrado nao pode apagar o painel que ja esta na tela.
 			console.warn("list-resources.sh devolveu JSON invalido:", e);
 		}
+	}
+
+	// Which linhas existem e quais sao os valores delas.
+	function resourceRows(d) {
+		if (!d || !d.cpu)
+			return [];
+		const c = d.cpu;
+		const m = d.mem || {};
+		const g = d.gpu || {};
+		const linhas = [
+			{ rotulo: "CPU", detalhe: c.cores + " nucleos",
+				valor: c.percent, sufixo: "%" },
+			{ rotulo: "Memoria", detalhe: m.usedMb + " MB de " + m.totalMb + " MB",
+				valor: m.percent || 0, sufixo: "%" },
+		];
+		if (m.swapPercent !== undefined)
+			linhas.push({ rotulo: "Swap",
+				detalhe: m.swapUsedMb + " MB de " + m.swapTotalMb + " MB",
+				valor: m.swapPercent, sufixo: "%" });
+
+		// A barra da GPU mostra TEMPERATURA, nao uso. Uso de GPU ocioso e
+		// poucos por cento e nao diz nada de saude; a temperatura e o numero
+		// que importa. Com o uso na barra, um GPU a 77 C aparecia cinza,
+		// como se estivesse bem.
+		if (g.celsius !== undefined) {
+			linhas.push({ rotulo: g.name || "GPU",
+				detalhe: "uso " + (g.percent || 0) + "%",
+				valor: g.celsius, sufixo: "°C" });
+		} else if (g.percent !== undefined) {
+			linhas.push({ rotulo: g.name || "GPU", detalhe: "",
+				valor: g.percent, sufixo: "%" });
+		}
+		return linhas;
+	}
+
+	// Repopula so quando o CONJUNTO de linhas muda. No caso comum -- CPU,
+	// memoria, swap e GPU sempre presentes -- so os valores sao escritos, e
+	// os delegates vivem. E o que permite a barra animar em vez de nascer
+	// do zero a cada leitura.
+	function syncResourceRows(d) {
+		const linhas = resourceRows(d);
+		let mesmoEsqueleto = resModel.count === linhas.length;
+		if (mesmoEsqueleto) {
+			for (let i = 0; i < linhas.length; i++) {
+				if (resModel.get(i).rotulo !== linhas[i].rotulo) {
+					mesmoEsqueleto = false;
+					break;
+				}
+			}
+		}
+		if (!mesmoEsqueleto) {
+			resModel.clear();
+			for (const l of linhas)
+				resModel.append(l);
+			return;
+		}
+		for (let i = 0; i < linhas.length; i++) {
+			resModel.setProperty(i, "detalhe", linhas[i].detalhe);
+			resModel.setProperty(i, "valor", linhas[i].valor);
+			resModel.setProperty(i, "sufixo", linhas[i].sufixo);
+		}
+	}
+
+	// As linhas do painel de recursos. Ver syncResourceRows: o modelo e um
+	// ListModel, nao um array, porque o Repeater recria o delegate a cada
+	// objeto novo e a barra nascia em zero.
+	ListModel {
+		id: resModel
 	}
 
 	function openResources(x) {
@@ -873,41 +942,20 @@ ShellRoot {
 				spacing: 10
 
 				Repeater {
-					model: {
-						if (!root.res || !root.res.cpu)
-							return [];
-						const c = root.res.cpu;
-						const m = root.res.mem || {};
-						const g = root.res.gpu || {};
-						const linhas = [
-							{ rotulo: "CPU", detalhe: c.cores + " nucleos",
-								valor: c.percent, sufixo: "%" },
-							{ rotulo: "Memoria", detalhe: m.usedMb + " MB de " + m.totalMb + " MB",
-								valor: m.percent || 0, sufixo: "%" },
-						];
-						if (m.swapPercent !== undefined)
-							linhas.push({ rotulo: "Swap",
-								detalhe: m.swapUsedMb + " MB de " + m.swapTotalMb + " MB",
-								valor: m.swapPercent, sufixo: "%" });
-						// A barra da GPU mostra TEMPERATURA, nao uso. Uso de GPU
-						// ocioso e few percentuais e nao diz nada de saude; a
-						// temperatura e o numero que importa. Com o uso na
-						// barra, um GPU a 77 °C aparecia cinza, como se
-						// estivesse bem.
-						if (g.celsius !== undefined) {
-							linhas.push({ rotulo: g.name || "GPU",
-								detalhe: "uso " + (g.percent || 0) + "%",
-								valor: g.celsius, sufixo: "°C" });
-						} else if (g.percent !== undefined) {
-							linhas.push({ rotulo: g.name || "GPU",
-								detalhe: "",
-								valor: g.percent, sufixo: "%" });
-						}
-						return linhas;
-					}
+				// ListModel e nao um array no model: o Repeater recria o
+					// delegate sempre que o model e um objeto novo, e um
+					// delegate recriado nasce com a barra em zero -- era o
+					// "zera e carrega" que aparecia a cada segundo. Com
+					// ListModel so as linhas que entram ou saem mexem no
+					// delegate; os valores sao atualizados no lugar, a barra
+					// mantem o estado e pode animar.
+					model: resModel
 
 					delegate: Item {
-						required property var modelData
+						required property string rotulo
+						required property string detalhe
+						required property real valor
+						required property string sufixo
 						Layout.fillWidth: true
 						Layout.preferredHeight: 44
 
@@ -920,7 +968,7 @@ ShellRoot {
 
 								Text {
 									Layout.fillWidth: true
-									text: modelData.rotulo
+									text: rotulo
 									color: "#F5F5F7"
 									font.pixelSize: 13
 									font.weight: Font.DemiBold
@@ -928,14 +976,17 @@ ShellRoot {
 								}
 
 								Text {
-									text: modelData.detalhe
+									text: detalhe
 									color: "#636366"
 									font.pixelSize: 11
 									font.family: "JetBrainsMono Nerd Font"
 								}
 
 								Text {
-									text: Math.round(modelData.valor) + modelData.sufixo
+									// O numero tambem anima, junto com a barra: mudar
+									// os dois no mesmo tempo le o olho como uma
+									// transicao so.
+									text: Math.round(valor) + sufixo
 									color: "#98989D"
 									font.pixelSize: 12
 									font.family: "JetBrainsMono Nerd Font"
@@ -945,7 +996,7 @@ ShellRoot {
 							StatBar {
 								Layout.fillWidth: true
 								Layout.preferredHeight: 8
-								percent: modelData.valor
+								percent: valor
 							}
 						}
 					}
@@ -992,6 +1043,14 @@ ShellRoot {
 								color: modelData.celsius >= 80 ? "#FF453A" : "#98989D"
 								font.pixelSize: 11
 								font.family: "JetBrainsMono Nerd Font"
+
+								// Transiciona junto com a barra: cruzar os 80 C
+								// vira uma troca de cor, e nao um piscar.
+								Behavior on color {
+									ColorAnimation {
+										duration: 380
+									}
+								}
 							}
 						}
 					}

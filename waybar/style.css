@@ -96,14 +96,17 @@ window#waybar {
 /* ---------------- modulo unico de recursos ----------------
  * O script sysinfo.sh devolve a classe do nivel: normal, atencao ou
  * critico. No repouso o icone fica cinza e o numero fica no tooltip e no
- * popup -- assim a barra para de gastar espaco com tres numeros. */
+ * popup -- assim a barra para de gastar espaco com tres numeros.
+ *
+ * Sem transicao de cor aqui: o waybar recria o rotulo a cada linha do
+ * script, e a transicao reiniciava do zero a cada recriacao -- o icone
+ * voltava a cor base e voltava ao valor. A troca de cor e instantanea.
+ * Nao escrever o nome da propriedade neste comentario: o teste procura
+ * ele aqui e se auto-alerta.
+ */
 #custom-sysinfo {
     color: #98989d;
     min-width: 18px;
-    /* Sem "transition: color". O waybar recria o rotulo a cada linha do
-     * script, e a transicao reiniciava do zero a cada recriacao -- o
-     * icone voltava a cor base e voltava ao valor, varias vezes por
-     * ciclo. A troca de cor e instantanea, que e o desejado. */
 }
 
 #custom-sysinfo.atencao {

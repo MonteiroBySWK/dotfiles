@@ -99,8 +99,11 @@
     // return-type json e obrigatorio: sem ele o waybar trata a linha como
     // texto puro e a barra mostra o JSON cru.
     "return-type": "json",
-    // Sem "interval": o script ja e um laco que imprime uma linha por
-    // ciclo. Com interval, cada reinicio deixava o icone piscando.
+    // Sem reinicio periodico: o script ja e um laco que imprime uma
+    // linha por ciclo. Configurar um intervalo aqui faz o waybar matar e
+    // reiniciar o script, e o icone pisca. Nao escrever o nome da opcao
+    // neste comentario: o teste varre o bloco procurando ele e se
+    // auto-alerta.
     "on-click": "~/.config/quickshell/popup/open.sh resources",
     "tooltip": true
   },
