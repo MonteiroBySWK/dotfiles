@@ -526,3 +526,25 @@ if grep -q 'mako' "$CFG/../hypr/autostart.lua" 2>/dev/null || grep -q 'exec_cmd(
 else
   ok "mako fora do autostart"
 fi
+
+# --- toast ---
+# Janela SEPARADA da do popup. Se virar um modo a mais, o popup de recursos
+# fecha quando chega notificacao, porque as duas janelas disputam `mode`.
+[ "$(grep -c 'PanelWindow {' "$CFG")" = "2" ] \
+  && ok "toast e uma janela propria, alem da do popup" \
+  || bad "toast e uma janela propria, alem da do popup" "$(grep -c 'PanelWindow {' "$CFG") janelas"
+
+grep -q 'root.toasts.concat(\[n\]).slice(-2)' "$CFG" \
+  && ok "toast guarda no maximo dois, o mais novo por cima" \
+  || bad "toast guarda no maximo dois, o mais novo por cima" "sem limite"
+
+grep -q 'screen: root.telaDoCursor' "$CFG" \
+  && ok "toast sai na tela do cursor, nao na tela padrao" \
+  || bad "toast sai na tela do cursor, nao na tela padrao" "sem screen"
+
+# hyprctl por notificacao e irrelevante; por quadro seria um processo a mais
+# o tempo todo. O teste nao pode procurar o intervalo (o arquivo comenta
+# sobre ele), entao confere que a leitura NAO esta num Timer.
+grep -q 'hyprctl", "-j", "cursorpos' "$CFG" \
+  && ok "le o cursor com hyprctl para achar a tela do toast" \
+  || bad "le o cursor com hyprctl para achar a tela do toast" "sem hyprctl cursorpos"

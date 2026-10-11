@@ -55,6 +55,13 @@ ShellRoot {
 	// Cursor na coordenada local da tela do popup.
 	readonly property real localX: popX < 0 ? -1 : popX - telaAtual.x
 
+	// Tela do CURSOR, nao da tela do popup. O toast nao tem clique: ele
+	// aparece sozinho quando a notificacao chega, entao nao ha popX para
+	// deduzir a tela. Sem isto ele sai sempre na tela padrao, que pode nao
+	// ser a que a pessoa esta olhando.
+	property var telaDoCursor: Quickshell.screens.length > 0
+		? Quickshell.screens[0] : null
+
 	property real brightness: 0
 
 	// Lista de aparelhos, do list-devices.sh. Cada sink/source tem volume e
@@ -69,6 +76,36 @@ ShellRoot {
 	// ------------------------------------------------------------------
 	// Leitura dos aparelhos
 	// ------------------------------------------------------------------
+	// Roda UMA vez por notificacao, nao em laco. Um hyprctl por
+	// notificacao e irrelevante; um hyprctl por quadro seria um processo a
+	// mais o tempo todo.
+	Process {
+		id: cursorProc
+		command: ["hyprctl", "-j", "cursorpos"]
+		running: false
+
+		stdout: StdioCollector {
+			id: cursorOut
+			onStreamFinished: {
+				try {
+					const c = JSON.parse(cursorOut.text);
+					const x = c.x !== undefined ? c.x : 0;
+					const y = c.y !== undefined ? c.y : 0;
+					for (const s of Quickshell.screens) {
+						if (x >= s.x && x < s.x + s.width
+								&& y >= s.y && y < s.y + s.height) {
+							root.telaDoCursor = s;
+							return;
+						}
+					}
+				} catch (e) {
+					// hyprctl fora do ar: fica na tela padrao, que e
+					// o mesmo comportamento de antes.
+				}
+			}
+		}
+	}
+
 	Process {
 		id: readDevices
 		// Caminho absoluto: o cwd do quickshell nao e o ~/.config, e com
@@ -194,6 +231,26 @@ ShellRoot {
 	property var notificacoes: []
 	property int notifLimite: 30
 
+	// Toast: a janela que ANUNCIA a notificacao assim que ela chega.
+	//
+	// Com o mako fora, sem isto a notificacao so aparecia se a pessoa
+	// abrisse o painel e olhasse -- existia mas nao se anunciava. E o que
+	// o mako fazia, agora sem daemon externo.
+	property var toasts: []
+
+	Timer {
+		id: toastTimer
+		// 4,2s e o que o mako usava. Curto o bastante para nao
+		// acumular, longo o bastante para ler o titulo.
+		interval: 4200
+		onTriggered: {
+			// Sai a mais antiga. A janela se fecha sozinha quando a
+			// lista esvazia, entao nao ha cronometro por item.
+			if (root.toasts.length > 0)
+				root.toasts = root.toasts.slice(1);
+		}
+	}
+
 	NotificationServer {
 		id: notifServer
 		actionsSupported: true
@@ -205,7 +262,12 @@ ShellRoot {
 			root.notificacoes = [n].concat(root.notificacoes);
 			if (root.notificacoes.length > root.notifLimite)
 				root.notificacoes = root.notificacoes.slice(0, root.notifLimite);
-			hideTimer.restart();
+			// Anuncia. No maximo dois: o terceiro empurra o
+			// primeiro, que ja cumpriu os 4,2s dele.
+			root.toasts = root.toasts.concat([n]).slice(-2);
+			cursorProc.running = false;
+			cursorProc.running = true;
+			toastTimer.restart();
 		}
 	}
 
@@ -1406,6 +1468,124 @@ ShellRoot {
 					}
 				}
 			}
+			}
+		}
+	}
+
+	// ------------------------------------------------------------------
+	// Toast
+	// ------------------------------------------------------------------
+	// Janela SEPARADA da do popup, e nao um modo a mais. Motivo concreto:
+	// as duas precisam estar abertas ao mesmo tempo -- o popup de recursos
+	// nao pode fechar porque chegou uma notificacao -- e a janela do popup
+	// tem um unico `mode` com `height: root.alturaPainel()` e `screen`.
+	// Embutir aqui mexeria nos dois.
+	PanelWindow {
+		id: toastWindow
+		visible: root.toasts.length > 0
+		screen: root.telaDoCursor
+		exclusionMode: ExclusionMode.Ignore
+		aboveWindows: true
+		// Sem `screen` a janela vai para a tela padrao. A notificacao
+		// pode ter vindo de qualquer um, entao centralizar na tela onde
+		// o mouse esta e o comportamento menos surpresa.
+
+		anchors {
+			top: true
+			left: true
+			right: true
+		}
+
+		margins {
+			top: 44
+		}
+
+		color: "transparent"
+		implicitHeight: toastsCol.implicitHeight + 8
+
+		Column {
+			id: toastsCol
+			anchors.horizontalCenter: parent.horizontalCenter
+			spacing: 8
+			width: 340
+
+			Repeater {
+				model: root.toasts
+
+				delegate: Item {
+					required property var modelData
+					required property int index
+
+					width: 340
+					// Cartao com fundo solido atras. O DropShadow do
+					// painel recortaria: aqui a janela e so do
+					// tamanho dos cards, sem folga.
+					height: toastCol.implicitHeight + 2
+
+					Rectangle {
+						z: -1
+						anchors.fill: parent
+						radius: 12
+						color: "#1C1C1E"
+						border.width: 1
+						border.color: "#3A3A3C"
+					}
+
+					Column {
+						id: toastCol
+						anchors.left: parent.left
+						anchors.right: parent.right
+						anchors.top: parent.top
+						anchors.margins: 1
+						spacing: 2
+
+						// App: pequeno e cinza, como no macOS. Some
+						// quando vazio -- nem toda notificacao tem.
+						Text {
+							width: parent.width
+							text: modelData.appName
+							visible: text !== ""
+							color: "#636366"
+							font.pixelSize: 10
+							font.family: "JetBrainsMono Nerd Font"
+							elide: Text.ElideRight
+						}
+
+						Text {
+							width: parent.width
+							text: modelData.summary
+							color: "#F5F5F7"
+							font.pixelSize: 13
+							font.weight: Font.DemiBold
+							font.family: "JetBrainsMono Nerd Font"
+							elide: Text.ElideRight
+						}
+
+						Text {
+							width: parent.width
+							text: modelData.body
+							visible: text !== ""
+							color: "#98989D"
+							font.pixelSize: 11
+							font.family: "JetBrainsMono Nerd Font"
+							maximumLineCount: 2
+							elide: Text.ElideRight
+						}
+					}
+
+					// Clique em qualquer lugar do card abre a lista
+					// inteira e joga o toast fora -- e o que o
+					// Notification Center faz.
+					MouseArea {
+						anchors.fill: parent
+						cursorShape: Qt.PointingHandCursor
+						onClicked: {
+							root.toasts = [];
+							toastTimer.stop();
+							root.openNotifications();
+						}
+					}
+				}
 			}
 		}
 	}
