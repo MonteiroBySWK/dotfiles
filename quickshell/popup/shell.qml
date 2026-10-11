@@ -322,7 +322,7 @@ ShellRoot {
 						font.family: "JetBrainsMono Nerd Font"
 					}
 
-					Slider {
+					MacSlider {
 						id: volSlider
 						Layout.fillWidth: true
 						from: 0
@@ -332,35 +332,9 @@ ShellRoot {
 						onPressedChanged: {
 							hideTimer.restart();
 							root.dragging = pressed;
-							if (!pressed) writeVolume.apply(volSlider.value);
 						}
-
-						// O slider do Basic vinha com uma bola branca enorme,
-						// nada a ver com o macOS: la o trilho e fino e a
-						// peca e um circulo pequeno.
-						background: Rectangle {
-							x: volSlider.leftPadding
-							y: volSlider.topPadding + volSlider.availableHeight / 2 - height / 2
-							width: volSlider.availableWidth
-							height: 4
-							radius: 2
-							color: "#3A3A3C"
-
-							Rectangle {
-								width: volSlider.visualPosition * parent.width
-								height: parent.height
-								radius: 2
-								color: "#F5F5F7"
-							}
-						}
-
-						handle: Rectangle {
-							x: volSlider.leftPadding + volSlider.visualPosition * (volSlider.availableWidth - width)
-							y: volSlider.topPadding + volSlider.availableHeight / 2 - height / 2
-							width: 14
-							height: 14
-							radius: 7
-							color: volSlider.pressed ? "#E8E8ED" : "#FFFFFF"
+						onCommitted: function (v) {
+							writeVolume.apply(v);
 						}
 					}
 
@@ -420,7 +394,7 @@ ShellRoot {
 						font.family: "JetBrainsMono Nerd Font"
 					}
 
-					Slider {
+					MacSlider {
 						id: brightSlider
 						Layout.fillWidth: true
 						from: 0
@@ -430,7 +404,9 @@ ShellRoot {
 						onPressedChanged: {
 							hideTimer.restart();
 							root.dragging = pressed;
-							if (!pressed) writeBrightness.apply(brightSlider.value);
+						}
+						onCommitted: function (v) {
+							writeBrightness.apply(v);
 						}
 					}
 
@@ -466,7 +442,7 @@ ShellRoot {
 						font.family: "JetBrainsMono Nerd Font"
 					}
 
-					Slider {
+					MacSlider {
 						id: ddcSlider
 						Layout.fillWidth: true
 						from: 0
@@ -476,7 +452,9 @@ ShellRoot {
 						onPressedChanged: {
 							hideTimer.restart();
 							root.dragging = pressed;
-							if (!pressed) writeDdc.apply(ddcSlider.value);
+						}
+						onCommitted: function (v) {
+							writeDdc.apply(v);
 						}
 					}
 

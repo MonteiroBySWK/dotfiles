@@ -57,3 +57,18 @@ grep -q 'ddcAvailable' "$CFG" \
   || bad "brilho do monitor externo (DDC) condicional" "ddcAvailable ausente"
 
 [ "$fails" -eq 0 ] || exit 1
+# --- os tres sliders usam o componente ---
+# A primeira versao escrevia o visual do slider inline em cada Slider. Ao
+# ajustar so o de volume, os dois de brilho ficaram com a bola branca
+# gigante do Basic -- a UI divergiu sem ninguem tocar no codigo. Este teste
+# existe para pegar esse tipo de drift: qualquer Slider cru no shell.qml
+# reintroduz o estilo padrao.
+cru=$(grep -cE '^[[:space:]]*Slider[[:space:]]*\{' "$CFG")
+if [ "$cru" -eq 0 ]; then
+  ok "nenhum Slider cru (todos via MacSlider)"
+else
+  bad "nenhum Slider cru (todos via MacSlider)" "$cru Slider(s) com visual inline"
+fi
+
+[ ! -f "$(dirname "$CFG")/MacSlider.qml" ] && bad "MacSlider.qml existe" "arquivo ausente"
+[ -f "$(dirname "$CFG")/MacSlider.qml" ] && ok "MacSlider.qml existe"
