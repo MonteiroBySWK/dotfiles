@@ -478,3 +478,18 @@ if [ -n "$vol_json" ]; then
     bad "volume do popup bate com o pactl" "popup=[$vol_json] pactl=[$verdade]"
   fi
 fi
+
+# --- o popup precisa IR para a tela do clique ---
+# Sem "screen", a janela fica presa no monitor onde nasceu e o localX (que
+# ja e a posicao do cursor DENTRO da tela certa) era aplicado na tela
+# errada -- o popup aparecia no meio do monitor errado.
+grep -q 'screen: root.telaAtual' "$CFG" \
+  && ok "PanelWindow segue a tela do clique" \
+  || bad "PanelWindow segue a tela do clique" "sem screen: a janela fica presa numa tela"
+
+# telaAtual tem de estar no root: declarado dentro do PanelWindow, ele nao
+# existe no escopo do root e o QML loga "Unable to assign [undefined] to
+# QuickshellScreenInfo".
+awk '/ShellRoot \{/,/^\tPanelWindow/' "$CFG" | grep -q 'readonly property var telaAtual' \
+  && ok "telaAtual resolvida no escopo do root" \
+  || bad "telaAtual resolvida no escopo do root" "telaAtual fora do root"

@@ -39,6 +39,21 @@ ShellRoot {
 	// do clique, via hyprctl cursorpos.
 	property real popX: -1
 
+	// Em qual tela o popup vai aparecer. A posicao do cursor chega em
+	// coordenada global, e as telas podem ter x negativo -- o monitor a
+	// esquerda deste setup comeca em -1920. Sem converter, o popup iria
+	// para a borda da tela errada.
+	readonly property var telaAtual: {
+		for (const s of Quickshell.screens) {
+			if (popX >= s.x && popX < s.x + s.width)
+				return s;
+		}
+		return Quickshell.screens[0];
+	}
+
+	// Cursor na coordenada local da tela do popup.
+	readonly property real localX: popX < 0 ? -1 : popX - telaAtual.x
+
 	property real brightness: 0
 
 	// Lista de aparelhos, do list-devices.sh. Cada sink/source tem volume e
@@ -486,6 +501,12 @@ ShellRoot {
 	PanelWindow {
 		id: panel
 
+		// A janela precisa IR para a tela onde foi clicado. Sem isso ela
+		// fica presa no monitor do notebook, e o localX -- que é a
+		// posição do cursor dentro da tela certa -- era aplicado na tela
+		// errada, resultado no meio.
+		screen: root.telaAtual
+
 		visible: root.mode !== 0
 		// Ignore = nao reserva espaco na area exclusiva; e um popup, nao uma barra.
 		exclusionMode: ExclusionMode.Ignore
@@ -507,24 +528,6 @@ ShellRoot {
 
 		color: "transparent"
 		implicitHeight: box.height + 2
-
-		// Em qual tela o popup vai aparecer. A posicao do cursor chega em
-		// coordenada global, e as telas podem ter x negativo -- o monitor
-		// a esquerda deste setup comeca em -1920. Sem converter, o popup
-		// iria para a borda da tela errada.
-		readonly property var telaAtual: {
-			for (const s of Quickshell.screens) {
-				if (root.popX >= s.x && root.popX < s.x + s.width)
-					return s;
-			}
-			return Quickshell.screens[0];
-		}
-
-		// Cursor na coordenada local da tela do popup, ja com o zero no
-		// meio da caixa para ela ficar centrada no clique.
-		readonly property real localX: root.popX < 0
-			? -1
-			: root.popX - telaAtual.x
 
 		// Clique fora da caixa fecha. Cobre a janela toda, que e full-width.
 		MouseArea {
@@ -551,7 +554,7 @@ ShellRoot {
 			x: root.popX < 0
 				? (parent.width - width) / 2
 				: Math.max(0, Math.min(parent.width - width,
-					panel.localX - width / 2))
+					root.localX - width / 2))
 			// A altura do volume deixou de ser fixa: a lista de aparelhos
 			// tem uma linha por sink, mais o divisor e a linha do mic. Com
 			// altura fixa de 96px o painel cortava o segundo aparelho.
