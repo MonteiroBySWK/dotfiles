@@ -213,38 +213,57 @@ ShellRoot {
 	// ------------------------------------------------------------------
 	// Escrita por aparelho
 	// ------------------------------------------------------------------
-	// pactl, e nao wpctl. O wpctl aceita NUMERO de objeto, nao nome:
+	// wpctl, por ID, e nao mais pactl por nome.
+	//
+	// Antes era pactl porque o wpctl exige numero e a lista trazia nome:
 	//   wpctl set-volume bluez_output.01_92_25_21_0D_0D.1 55%
 	//   -> Error: 'bluez_output...' is not a valid number
-	// O pactl aceita o nome direto, o que e o que a lista traz.
+	// Agora o list-devices.sh traz o id do PipeWire junto, entao o
+	// impasse acabou. E o bonus do wpctl e o subcomando ser o mesmo para
+	// sink e source: o pactl separa set-sink-volume de set-source-volume,
+	// e o wpctl nao tem essa distincao -- um parametro a menos para errar.
 	//
-	// O subcomando muda com o tipo (set-sink-volume / set-source-volume),
-	// por isso o "kind" vem do script.
+	// Atencao: o id do wpctl NAO e o indice do pactl. O mesmo aparelho
+	// aparece como 62 no `pactl list sinks` e 45 no `wpctl status`. Sao
+	// duas contagens diferentes; misturar as duas devolve
+	// "not a valid number".
 	Process {
 		id: writeDevice
 
-		function setVolume(name, v, isSource) {
-			writeDevice.command = ["pactl",
-				isSource ? "set-source-volume" : "set-sink-volume",
-				name, Math.round(v) + "%"];
+		function setVolume(id, v) {
+			// Sem id nao ha para onde escrever: o mapa nome->id do
+			// script falhou para este aparelho. Melhor nao fazer nada
+			// do que mandar "null" para o wpctl.
+			if (id === undefined || id === null)
+				return;
+			writeDevice.command = ["wpctl", "set-volume",
+				String(id), Math.round(v) + "%"];
 			writeDevice.running = false;
 			writeDevice.running = true;
 		}
 
-		// toggle em vez de 0/1: o pactl aceita "toggle" e assim nao preciso
+		// toggle em vez de 0/1: ambos aceitam "toggle", e assim nao preciso
 		// saber o estado atual no QML, que pode estar velho.
-		function setMute(name, isSource) {
-			writeDevice.command = ["pactl",
-				isSource ? "set-source-mute" : "set-sink-mute",
-				name, "toggle"];
+		function setMute(id) {
+			// Sem id nao ha para onde escrever: o mapa nome->id do
+			// script falhou para este aparelho. Melhor nao fazer nada
+			// do que mandar "null" para o wpctl.
+			if (id === undefined || id === null)
+				return;
+			writeDevice.command = ["wpctl", "set-mute",
+				String(id), "toggle"];
 			writeDevice.running = false;
 			writeDevice.running = true;
 		}
 
-		function setDefault(name, isSource) {
-			writeDevice.command = ["pactl",
-				isSource ? "set-default-source" : "set-default-sink",
-				name];
+		function setDefault(id) {
+			// Sem id nao ha para onde escrever: o mapa nome->id do
+			// script falhou para este aparelho. Melhor nao fazer nada
+			// do que mandar "null" para o wpctl.
+			if (id === undefined || id === null)
+				return;
+			writeDevice.command = ["wpctl", "set-default",
+				String(id)];
 			writeDevice.running = false;
 			writeDevice.running = true;
 		}
@@ -1038,7 +1057,7 @@ ShellRoot {
 							if (agora - lastSent < minIntervalMs)
 								return;
 							lastSent = agora;
-							writeDevice.setVolume(modelData.name, v, modelData.kind === "source");
+							writeDevice.setVolume(modelData.id, v);
 						}
 
 						ColumnLayout {
@@ -1059,7 +1078,7 @@ ShellRoot {
 									MouseArea {
 										anchors.fill: parent
 										cursorShape: Qt.PointingHandCursor
-										onClicked: writeDevice.setMute(modelData.name, modelData.kind === "source")
+										onClicked: writeDevice.setMute(modelData.id)
 									}
 								}
 
@@ -1099,7 +1118,7 @@ ShellRoot {
 									// Ultimo valor, sem passar pelo limite de taxa: se
 									// caiu fora da janela, ele nunca foi enviado.
 									lastSent = 0;
-									writeDevice.setVolume(modelData.name, v, modelData.kind === "source");
+									writeDevice.setVolume(modelData.id, v);
 								}
 							}
 						}
@@ -1178,7 +1197,7 @@ ShellRoot {
 							MouseArea {
 									anchors.fill: parent
 									cursorShape: Qt.PointingHandCursor
-									onClicked: writeDevice.setMute(modelData.name, modelData.kind === "source")
+									onClicked: writeDevice.setMute(modelData.id)
 								}
 							}
 						}

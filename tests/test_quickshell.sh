@@ -129,15 +129,31 @@ else
   ok "sources .monitor filtrados"
 fi
 
-# --- pactl, e nao wpctl, para escrever por nome ---
-# O wpctl quer NUMERO de objeto. Com nome ele falha:
-#   Error: 'bluez_output.01_92_25_21_0D_0D.1' is not a valid number
-# e o clique no nome do aparelho nao fazia nada, silenciosamente.
-if grep -q 'command: \["wpctl", "set-' "$CFG"; then
-  bad "escrita por aparelho usa pactl" "wpctl com nome de aparelho nao funciona"
-else
-  ok "escrita por aparelho usa pactl"
-fi
+# --- wpctl por id, e nao mais pactl por nome ---
+  # O wpctl quer NUMERO de objeto. Com nome ele falha, e o clique no nome
+  # do aparelho nao fazia nada, silenciosamente. Agora o list-devices.sh
+  # traz o id do PipeWire junto, entao o impasse acabou -- e o wpctl usa o
+  # MESMO subcomando para sink e source, um parametro a menos para errar.
+  # O `\[` no grep nao e enfeite: em BRE o `[` abre classe de caracteres,
+  # entao o colchete literal precisa do escape. Sem ele o grep morre com
+  # "sem correspondente" e o teste falha dizendo que nao achou.
+  grep -q '\["wpctl", "set-volume"' "$CFG" \
+    && ok "volume escrito por wpctl com o id" \
+    || bad "volume escrito por wpctl com o id" "sem wpctl set-volume"
+  grep -q '\["wpctl", "set-mute"' "$CFG" \
+    && ok "mudo escrito por wpctl com o id" \
+    || bad "mudo escrito por wpctl com o id" "sem wpctl set-mute"
+  grep -q '\["wpctl", "set-default"' "$CFG" \
+    && ok "default escrito por wpctl com o id" \
+    || bad "default escrito por wpctl com o id" "sem wpctl set-default"
+  # Nada de set-sink/set-source separado: o wpctl nao tem essa distincao.
+  # Ignora comentario: o texto que explica a troca CITA os subcomandos
+  # antigos, e o grep puro acusaria a propria explicacao.
+  if grep -vE '^\s*//' "$CFG" | grep -qE 'set-(sink|source)-(volume|mute)'; then
+    bad "sem subcomando separado por tipo" "ainda com set-sink/set-source"
+  else
+    ok "sem subcomando separado por tipo"
+  fi
 
 # --- caminho absoluto no Process ---
 # Com caminho relativo o quickshell nao achava o binario:
@@ -449,14 +465,22 @@ grep -q 'valor: g.celsius' "$CFG" \
   && ok "barra da GPU mostra temperatura, nao uso" \
   || bad "barra da GPU mostra temperatura, nao uso" "barra usa porcentagem de uso"
 
-# --- volume por canal, e nao so "mono" ---
-# O pactl nao tem formato unico: sink analogico pode vir em volume.mono e
-# um bluetooth vem por canal (front-left/front-right). Ler so "mono"
-# devolvia nada e o popup mostrava 0% COM O SOM TOCANDO -- silencioso,
-# porque o audio continuava normal.
-grep -q 'volume_percent' "$DIR/list-devices.sh" \
-  && ok "list-devices le volume por canal, nao so mono" \
-  || bad "list-devices le volume por canal, nao so mono" "sem fallback de canal"
+# --- volume por wpctl, e nao mais por canal do pactl ---
+  # O JSON do pactl nao tem formato so: analogico vem em volume.mono,
+  # bluetooth vem por canal (front-left/front-right), e volume.value volta
+  # null nos dois. Ler so "mono" dava 0% com o som tocando. Agora o volume
+  # vem do `wpctl get-volume <id>`, que e UM numero ("Volume: 0.55").
+  if grep -q 'volume_percent' "$DIR/list-devices.sh"; then
+    bad "list-devices le volume do wpctl" "ainda com fallback de canal"
+  else
+    ok "list-devices le volume do wpctl"
+  fi
+  grep -q 'def volume_wpctl' "$DIR/list-devices.sh" \
+    && ok "volume_wpctl existe no list-devices" \
+    || bad "volume_wpctl existe no list-devices" "sem a funcao"
+  grep -q 'def ids_pipewire' "$DIR/list-devices.sh" \
+    && ok "ids_pipewire mapeia nome para id" \
+    || bad "ids_pipewire mapeia nome para id" "sem o mapa"
 
 # A leitura tem de bater com o pactl, que e a fonte da verdade.
 vol_json=$("$DIR/list-devices.sh" 2>/dev/null | python3 -c '
@@ -774,3 +798,15 @@ if grep -q 'swaync' "$RAIZ/waybar/config.jsonc"; then
 else
   ok "bloco orfao do swaync removido"
 fi
+
+  # Sem id nao ha para onde escrever: o mapa nome->id pode falhar para um
+  # aparelho numa corrida. Melhor nao fazer nada do que mandar a string
+  # "null" para o wpctl.
+  for fn in setVolume setMute setDefault; do
+    grep -q "function $fn(id" "$CFG" \
+      && ok "$fn recebe o id, nao o nome" \
+      || bad "$fn recebe o id, nao o nome" "ainda com (name, ...)"
+  done
+  grep -q 'if (id === undefined || id === null)' "$CFG" \
+    && ok "escrita recusa id nulo em vez de mandar null ao wpctl" \
+    || bad "escrita recusa id nulo em vez de mandar null ao wpctl" "sem guarda"

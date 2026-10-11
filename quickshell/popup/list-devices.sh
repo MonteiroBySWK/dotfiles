@@ -10,12 +10,26 @@
 #
 # Cada item: {"name","label","volume","muted","default","running"}
 #
-# Campos learned na saida real do pactl desta maquina, nao na documentacao:
-#   - o volume vem em volume.mono.value_percent, como string "40%" -- e nao
-#     em volume.value, que nesta versao do pactl volta null
-#   - nao existe is_default no JSON; o default sai de `pactl get-default-sink`
-#     comparado com o nome
-#   - description traz o nome amigavel ("Fuxi-H3"), name traz o tecnico
+# VOLUME: lido do wpctl, nao do pactl.
+#
+# O JSON do pactl nao tem um formato so. Medido nesta maquina: um sink
+# analogico vem em volume.mono, um bluetooth vem por canal
+# (front-left/front-right), e volume.value volta null nos dois. Ler so
+# "mono" dava 0% com o som tocando -- foi o bug que ja wolveste aqui.
+#
+# O wpctl responde com UM numero: "Volume: 0.55". Sem nome de canal, sem
+# dB, sem percentil em string, sem duas chaves possiveis. E o mapeamento
+# nome -> id vem de `wpctl list audio sinks`, uma chamada so.
+#
+# O id tambem resolve a escrita. Antes o popup usava pactl para escrever
+# porque o wpctl exige numero e a lista trazia nome. Agora a lista traz o
+# id, entao leitura e escrita usam a mesma ferramenta.
+#
+# Fields lidos do pactl, e por que la ainda:
+#   - description / node.nick: o nome que a pessoa reconhece. O wpctl
+#     mostraria "alsa_output.pci-0000_05_00.6.analog-stereo".
+#   - mute: e um bool simples, sem a estrutura quebrada do volume.
+#   - state: para saber se o microfone esta em uso.
 set -u
 
 exec python3 - <<'PY'
@@ -36,27 +50,45 @@ def default_of(kind):
     return d.splitlines()[0].strip() if d else ""
 
 
-def volume_percent(vol):
-    """Percentual de um canal, para sink ou source.
+def ids_pipewire(kind):
+    """Mapeia nome do no -> id numerico.
 
-    O pactl NAO tem um formato unico: um sink analogico pode vir em
-    volume.mono, e um bluetooth vem por canal (front-left / front-right).
-    Ler so "mono" devolvia nada e o popup mostrava 0% com o som tocando --
-    foi o que aconteceu quando trocou o fone.
+    A saida de `wpctl list audio sinks` sao linhas separadas por TAB:
+        45< TAB >alsa_output.pci-...< TAB >audio/sink< TAB >*
+
+    O "id" do pactl (o indice de `pactl list sinks`) NAO e este numero:
+    o mesmo aparelho aparece como 62 no pactl e 45 no wpctl. Sao duas
+    contagens diferentes, e misturar as duas devolve
+    "not a valid number".
     """
-    if not isinstance(vol, dict) or not vol:
+    out = {}
+    raw = run("wpctl", "list", "audio", kind + "s")
+    for linha in raw.splitlines():
+        partes = linha.split("\t")
+        if len(partes) < 3:
+            continue
+        try:
+            ident = int(partes[0])
+        except ValueError:
+            continue
+        out[partes[1]] = ident
+    return out
+
+
+def volume_wpctl(ident):
+    """Percentual a partir do id. Um numero, sem nome de canal.
+
+    O wpctl devolve "Volume: 0.55", onde 1.0 e 100%. Acima de 1.0 e o
+    ganho extra que o PipeWire aceita, e o painel tambem mostra ate 120.
+    """
+    if ident is None:
         return 0
-    canais = vol.get("mono")
-    if canais is None:
-        # Sem mono: pega o maior canal, que e o mais representativo quando
-        # os lados divergem.
-        canais = next((v for v in vol.values()
-                       if isinstance(v, dict) and v.get("value_percent")), None)
-    if not isinstance(canais, dict):
+    raw = run("wpctl", "get-volume", str(ident))
+    if not raw:
         return 0
-    bruto = canais.get("value_percent") or "0%"
+    bruto = raw.split(":")[-1].strip()
     try:
-        return int(str(bruto).strip().rstrip("%"))
+        return int(round(float(bruto) * 100))
     except ValueError:
         return 0
 
@@ -74,6 +106,9 @@ def items(kind):
         return []
 
     dflt = default_of(kind)
+    # O indice do pactl e o id do wpctl sao contagens diferentes. Sem este
+    # mapa, o popup escreveria 62 num lugar que so conhece o 45.
+    ids = ids_pipewire(kind)
     out = []
     for s in data:
         name = s.get("name") or ""
@@ -98,10 +133,14 @@ def items(kind):
         if not label or label == "(null)":
             label = name
 
-        volume = volume_percent(s.get("volume"))
+        ident = ids.get(name)
+        volume = volume_wpctl(ident)
 
         out.append({
             "name": name,
+            # O id do PipeWire. E o que o wpctl aceita nas escritas, e o
+            # que dispensa passar nome (que o wpctl nao aceita).
+            "id": ident,
             # description e o nome que a pessoa reconhece; o name e o tecnico.
             "label": label,
             # Necessario porque pactl tem um subcomando por tipo: o popup
