@@ -35,6 +35,12 @@ if ! bash tests/test_wifi_menu.sh; then
   fail=1
 fi
 
+echo
+echo "== quickshell popup =="
+if ! bash tests/test_quickshell.sh; then
+  fail=1
+fi
+
 if [ "$fail" -ne 0 ]; then
   echo
   echo "FALHOU"

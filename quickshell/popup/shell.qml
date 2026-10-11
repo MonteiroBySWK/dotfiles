@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick.Controls.Basic
+import Qt5Compat.GraphicalEffects
 import Quickshell
 import Quickshell.Io
 import Quickshell.Widgets
@@ -272,17 +273,34 @@ ShellRoot {
 		// A caixa. E FILHA do painel, e os layouts sao filhos da caixa --
 		// antes eles eram irmaos e ocupavam os 1920px da janela, com o
 		// conteudo caindo fora dos 300px da caixa.
-		Rectangle {
-			id: box
+		// Sombra e borda de luz separadas da caixa: o DropShadow desenha
+		// atras, e a caixa fica transparente nesse trecho. Sem separar, a
+		// borda de 1px entra dentro do raio e a sombra nasce reta.
+		Item {
+			id: boxShadow
 			anchors.horizontalCenter: parent.horizontalCenter
 			width: 300
-			// Fixo por modo em vez de implicitHeight: com o valor vindo do
-			// layout, a caixa ficava so com a primeira linha visivel.
 			height: root.mode === 2 ? (root.ddcAvailable ? 104 : 48) : 96
-			radius: 12
-			color: "#1e1e2e"
+
+			DropShadow {
+				anchors.fill: box
+				source: box
+				radius: 32
+				horizontalOffset: 0
+				verticalOffset: 8
+				color: "#B3000000"
+			}
+
+		Rectangle {
+			id: box
+			anchors.fill: parent
+			radius: 14
+			// Tokens do macOS modo escuro. Antes era a paleta Catppuccin,
+			// que nao e a do macOS. Nao escrever os codigos antigos aqui:
+			// o teste varre o arquivo procurando eles e se auto-alerta.
+			color: "#1C1C1E"
 			border.width: 1
-			border.color: "#313244"
+			border.color: "#3A3A3C"
 
 			// ---------------- volume ----------------
 			ColumnLayout {
@@ -299,7 +317,7 @@ ShellRoot {
 					Text {
 						Layout.preferredWidth: 18
 						text: root.muted ? "" : ""
-						color: root.muted ? "#f38ba8" : "#cdd6f4"
+						color: root.muted ? "#FF453A" : "#F5F5F7"
 						font.pixelSize: 15
 						font.family: "JetBrainsMono Nerd Font"
 					}
@@ -316,12 +334,40 @@ ShellRoot {
 							root.dragging = pressed;
 							if (!pressed) writeVolume.apply(volSlider.value);
 						}
+
+						// O slider do Basic vinha com uma bola branca enorme,
+						// nada a ver com o macOS: la o trilho e fino e a
+						// peca e um circulo pequeno.
+						background: Rectangle {
+							x: volSlider.leftPadding
+							y: volSlider.topPadding + volSlider.availableHeight / 2 - height / 2
+							width: volSlider.availableWidth
+							height: 4
+							radius: 2
+							color: "#3A3A3C"
+
+							Rectangle {
+								width: volSlider.visualPosition * parent.width
+								height: parent.height
+								radius: 2
+								color: "#F5F5F7"
+							}
+						}
+
+						handle: Rectangle {
+							x: volSlider.leftPadding + volSlider.visualPosition * (volSlider.availableWidth - width)
+							y: volSlider.topPadding + volSlider.availableHeight / 2 - height / 2
+							width: 14
+							height: 14
+							radius: 7
+							color: volSlider.pressed ? "#E8E8ED" : "#FFFFFF"
+						}
 					}
 
 					Text {
 						Layout.preferredWidth: 38
 						text: Math.round(root.volume) + "%"
-						color: "#a6adc8"
+						color: "#98989D"
 						font.pixelSize: 12
 						font.family: "JetBrainsMono Nerd Font"
 						horizontalAlignment: Text.AlignRight
@@ -331,7 +377,7 @@ ShellRoot {
 				Text {
 					Layout.fillWidth: true
 					text: "controle completo do audio"
-					color: "#6c7086"
+					color: "#636366"
 					font.pixelSize: 11
 					font.family: "JetBrainsMono Nerd Font"
 					horizontalAlignment: Text.AlignHCenter
@@ -362,14 +408,14 @@ ShellRoot {
 					Text {
 						Layout.preferredWidth: 20
 						text: "\uf0e0"
-						color: "#cdd6f4"
+						color: "#F5F5F7"
 						font.pixelSize: 15
 						font.family: "JetBrainsMono Nerd Font"
 					}
 
 					Text {
 						text: "notebook"
-						color: "#6c7086"
+						color: "#636366"
 						font.pixelSize: 10
 						font.family: "JetBrainsMono Nerd Font"
 					}
@@ -391,7 +437,7 @@ ShellRoot {
 					Text {
 						Layout.preferredWidth: 36
 						text: Math.round(root.brightness) + "%"
-						color: "#a6adc8"
+						color: "#98989D"
 						font.pixelSize: 12
 						font.family: "JetBrainsMono Nerd Font"
 						horizontalAlignment: Text.AlignRight
@@ -408,14 +454,14 @@ ShellRoot {
 					Text {
 						Layout.preferredWidth: 20
 						text: "\uf0e2"
-						color: "#cdd6f4"
+						color: "#F5F5F7"
 						font.pixelSize: 15
 						font.family: "JetBrainsMono Nerd Font"
 					}
 
 					Text {
 						text: "externo"
-						color: "#6c7086"
+						color: "#636366"
 						font.pixelSize: 10
 						font.family: "JetBrainsMono Nerd Font"
 					}
@@ -437,12 +483,13 @@ ShellRoot {
 					Text {
 						Layout.preferredWidth: 36
 						text: Math.round(root.ddcBrightness) + "%"
-						color: "#a6adc8"
+						color: "#98989D"
 						font.pixelSize: 12
 						font.family: "JetBrainsMono Nerd Font"
 						horizontalAlignment: Text.AlignRight
 					}
 				}
+			}
 			}
 		}
 	}
