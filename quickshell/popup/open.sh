@@ -6,7 +6,7 @@
 # hyprctl cursorpos devolve o cursor, e o compositor sabe onde ele esta
 # independentemente de qual elemento foi clicado.
 #
-# Uso: open.sh <volume|brightness|calendar|resources>
+# Uso: open.sh <volume|brightness|calendar|resources|notification>
 set -u
 
 case "${1:-volume}" in
@@ -14,6 +14,7 @@ case "${1:-volume}" in
 	brightness) FN=showBrightness ;;
 	calendar)   FN=showCalendar ;;
 	resources)  FN=showResources ;;
+	notification|notifications) FN=showNotifications ;;
 	*)          FN=showVolume ;;
 esac
 
