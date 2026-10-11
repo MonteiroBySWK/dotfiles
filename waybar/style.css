@@ -21,12 +21,19 @@ window#waybar {
 #tray,
 #backlight,
 #custom-nightlight,
+#custom-bt,
+#custom-notif,
 #custom-tlp {
     background: transparent;
     color: #ffffff;
     margin: 0 6px;
     padding: 0 4px;
     transition: all 0.3s ease-in-out;
+}
+
+/* Sem aparelho ligado o icone apaga, como o nightlight apagado. */
+#custom-bt.bt-off {
+    color: rgba(255, 255, 255, 0.4);
 }
 
 #custom-tlp.switching {

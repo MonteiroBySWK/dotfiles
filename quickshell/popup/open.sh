@@ -15,6 +15,7 @@ case "${1:-volume}" in
 	calendar)   FN=showCalendar ;;
 	resources)  FN=showResources ;;
 	notification|notifications) FN=showNotifications ;;
+	bluetooth)          FN=showBluetooth ;;
 	# "battery" e "power" sao apelidos do mesmo painel: o botao na barra
 	# mostra a bateria (icone), mas o que se gerencia ali e o perfil de
 	# energia. Os dois nomes abrem a mesma coisa.

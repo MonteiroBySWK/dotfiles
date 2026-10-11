@@ -642,3 +642,135 @@ grep -q 'aplicandoPerfil' "$CFG" \
 grep -q 'root.readBattery();' "$CFG" \
   && ok "le a bateria antes de abrir o painel (nao muda de tamanho depois)" \
   || bad "le a bateria antes de abrir o painel (nao muda de tamanho depois)" "sem leitura antecipada"
+
+# --- bluetooth ---
+# Tudo por D-Bus, via Quickshell.Bluetooth. A unica saida para fora e a
+# busca, porque `discovering` do adaptador e somente leitura.
+grep -q 'import Quickshell.Bluetooth' "$CFG" \
+  && ok "bluetooth pelo modulo nativo" \
+  || bad "bluetooth pelo modulo nativo" "sem o import do modulo"
+
+for metodo in connect disconnect; do
+  grep -q "d\.$metodo()" "$CFG" \
+    && ok "aciona o aparelho com $metodo()" \
+    || bad "aciona o aparelho com $metodo()" "metodo nao chamado"
+done
+
+# Escrever `discovering` nao funciona: e somente leitura, o valor volta
+# como estava. Medido. Por isso a busca e um script.
+if grep -vE '^\s*//' "$CFG" | grep -qE '\.discovering\s*='; then
+  bad "nao escreve no discovering (e somente leitura)" "atribuicao encontrada"
+else
+  ok "nao escreve no discovering (e somente leitura)"
+fi
+
+grep -q 'ad.enabled = !ad.enabled' "$CFG" \
+  && ok "liga e desliga pelo enabled do adaptador" \
+  || bad "liga e desliga pelo enabled do adaptador" "sem escrita no enabled"
+
+# O adaptador chega atras: o BlueZ so responde depois de inicializar, e
+# ja veio depois de 1,2 s numa execucao e de mais de 4 s noutra. Sem o
+# estado de "pronto", o painel mostraria lista vazia, que parece falha.
+grep -q 'btPronto' "$CFG" \
+  && ok "trata o adaptador que ainda nao chegou" \
+  || bad "trata o adaptador que ainda nao chegou" "sem estado de prontidao"
+
+grep -q 'if (mode === 7)' "$CFG" \
+  && ok "altura do painel de bluetooth" \
+  || bad "altura do painel de bluetooth" "sem o modo 7 em alturaPainel"
+
+# ListModel, e nao o array do modulo: o Repeater recria o delegate a cada
+# objeto novo e conectar um aparelho piscaria a linha inteira. Mesma
+# razao dos recursos.
+grep -q 'id: btModel' "$CFG" \
+  && ok "linhas do bluetooth em ListModel" \
+  || bad "linhas do bluetooth em ListModel" "sem ListModel"
+
+grep -q 'id: btTimer' "$CFG" \
+  && ok "re-le a lista enquanto o painel esta aberto" \
+  || bad "re-le a lista enquanto o painel esta aberto" "sem timer"
+
+# -1 e o que o modulo devolve quando o aparelho nao reporta bateria.
+# Mostrar 0% seria mentira.
+grep -q 'd.batteryAvailable ? Math.round(d.battery) : -1' "$CFG" \
+  && ok "bateria do aparelho so aparece quando o aparelho reporta" \
+  || bad "bateria do aparelho so aparece quando o aparelho reporta" "sem o -1"
+
+# --- MacSwitch ---
+SW="$DIR/MacSwitch.qml"
+[ -f "$SW" ] \
+  && ok "MacSwitch existe" \
+  || bad "MacSwitch existe" "arquivo ausente"
+
+if [ -f "$SW" ]; then
+  grep -q 'MacSwitch {' "$CFG" \
+    && ok "o painel usa o MacSwitch" \
+    || bad "o painel usa o MacSwitch" "sem instancia"
+  # A chave mostra o estado, nao guarda: quem decide o clique e o painel.
+  # Se ela guardasse um copies, os dois divergiriam depois do primeiro
+  # clique em que o BlueZ recusasse a escrita.
+  grep -q 'property bool ligado' "$SW" \
+    && ok "MacSwitch expoe o estado, sem copia" \
+    || bad "MacSwitch expoe o estado, sem copia" "sem propriedade ligado"
+  grep -q 'signal toggled' "$SW" \
+    && ok "MacSwitch sinaliza em vez de aplicar" \
+    || bad "MacSwitch sinaliza em vez de aplicar" "sem sinal toggled"
+  if qmllint "$SW" >/dev/null 2>&1; then
+    ok "MacSwitch passa no qmllint"
+  else
+    bad "MacSwitch passa no qmllint" "$(qmllint "$SW" 2>&1 | head -1)"
+  fi
+fi
+
+# --- bt-scan.sh ---
+SCAN="$DIR/bt-scan.sh"
+[ -x "$SCAN" ] \
+  && ok "bt-scan.sh existe e e executavel" \
+  || bad "bt-scan.sh existe e e executavel" "ausente ou sem +x"
+
+bash -n "$SCAN" 2>/dev/null \
+  && ok "bt-scan.sh com sintaxe valida" \
+  || bad "bt-scan.sh com sintaxe valida" "bash -n reprovou"
+
+# Com o radio desligado o BlueZ responde org.bluez.Error.NotReady, e a
+# busca nao acontece. O script sai com 1 em vez de fingir que funcionou.
+grep -q 'Powered: yes' "$SCAN" \
+  && ok "bt-scan.sh recusa buscar com o radio desligado" \
+  || bad "bt-scan.sh recusa buscar com o radio desligado" "sem guarda"
+
+# --- gatilho na barra ---
+BTS="$RAIZ/waybar/scripts/bt.sh"
+[ -x "$BTS" ] \
+  && ok "bt.sh existe e e executavel" \
+  || bad "bt.sh existe e e executavel" "ausente ou sem +x"
+
+bash -n "$BTS" 2>/dev/null \
+  && ok "bt.sh com sintaxe valida" \
+  || bad "bt.sh com sintaxe valida" "bash -n reprovou"
+
+# .on e .off sem prefixo ja existem em #custom-nightlight no style.css.
+# Nome solto funciona ate o dia em que alguem escreve uma regra solta e os
+# dois modulos mudam de cor juntos.
+grep -qE '"class":"bt-(on|off)"' "$BTS" \
+  && ok "classes do bt.sh sao prefixadas" \
+  || bad "classes do bt.sh sao prefixadas" "classe sem prefixo"
+
+grep -q 'open.sh bluetooth' "$RAIZ/waybar/config.jsonc" \
+  && ok "o icone da barra abre o painel de bluetooth" \
+  || bad "o icone da barra abre o painel de bluetooth" "sem on-click"
+
+grep -q 'bluetooth) *FN=showBluetooth' "$DIR/open.sh" \
+  && ok "open.sh sabe abrir o painel de bluetooth" \
+  || bad "open.sh sabe abrir o painel de bluetooth" "sem o mapeamento"
+
+grep -q 'function showBluetooth' "$CFG" \
+  && ok "showBluetooth no IpcHandler" \
+  || bad "showBluetooth no IpcHandler" "sem a funcao no ipc"
+
+# O bloco do swaync ficou orfao: exec-if aponta para um binario que nao
+# existe, e o custom/notif o substituiu. Config morta que mente.
+if grep -q 'swaync' "$RAIZ/waybar/config.jsonc"; then
+  bad "bloco orfao do swaync removido" "ainda na config"
+else
+  ok "bloco orfao do swaync removido"
+fi

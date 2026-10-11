@@ -7,6 +7,7 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Services.Notifications
 import Quickshell.Widgets
+import Quickshell.Bluetooth
 
 /*
  * quickshell/popup/shell.qml — popup de controle arrastável
@@ -109,6 +110,31 @@ ShellRoot {
 	// Le a bateria. Caminho absoluto: o cwd do quickshell nao e o
 	// ~/.config, e com caminho relativo o processo falhava em silencio --
 	// o painel abria sem nenhuma linha.
+	// A busca e um comando bloqueante: bluetoothctl fica rodando ate o
+	// tempo acabar. O script so dispara e sai; os aparelhos novos chegam
+	// pelo modulo, que le o BlueZ direto.
+	Process {
+		id: scanProc
+		command: ["/home/monteiro/.config/quickshell/popup/bt-scan.sh", "12"]
+		running: false
+		onExited: {
+			root.btEscaneando = false;
+			// A busca pode ter trazido alguem novo; rele a lista.
+			root.syncBt();
+		}
+	}
+
+	// Enquanto o painel esta aberto, re-le a lista de tempos em tempos.
+	// Conectar e desconectar sao assincronos: o estado so muda quando o
+	// BlueZ responde, as vezes segundos depois do clique.
+	Timer {
+		id: btTimer
+		interval: 1500
+		repeat: true
+		running: false
+		onTriggered: root.syncBt()
+	}
+
 	Process {
 		id: readBatteryProc
 		command: ["/home/monteiro/.config/quickshell/popup/battery.sh"]
@@ -356,6 +382,11 @@ ShellRoot {
 			return ddcAvailable ? 104 : 48;
 		if (mode === 6)
 			return 96 + (bateria.perfis ? bateria.perfis.length : 3) * 52;
+		// Bluetooth: cabecalho + chave + linha de busca + dispositivos.
+		// Teto de 6 linhas visiveis, para o painel nao esticar ate a
+		// altura da tela se a pessoa estiver perto de muita gente.
+		if (mode === 7)
+			return 136 + Math.min(btModel.count, 6) * 52;
 		return 4;
 	}
 
@@ -546,6 +577,10 @@ ShellRoot {
 			root.openNotifications(x);
 		}
 
+		function showBluetooth(x: int): void {
+			root.abrirBluetooth(x);
+		}
+
 		function showBattery(x: int): void {
 			root.openBattery(x);
 		}
@@ -594,6 +629,149 @@ ShellRoot {
 		hideTimer.restart();
 	}
 
+	// ------------------------------------------------------------------
+	// Bluetooth
+	// ------------------------------------------------------------------
+	// Tudo por D-Bus, via Quickshell.Bluetooth: sem script para listar,
+	// parear, conectar ou desconectar. O unico script e a busca, porque o
+	// `discovering` do adaptador e somente leitura -- medir, gravar nele
+	// devolve o valor antigo. Ver o comentario do bt-scan.sh.
+
+	// O adaptador chega atras: o BlueZ so responde depois de inicializar, e
+	// medido aqui ele ja veio depois de 1,2 s, em outras execucoes passou
+	// de 4 s. Enquanto for nulo o painel mostra "ligando" em vez de lista
+	// vazia, que pareceria falha.
+	property bool btLigado: false
+	property bool btPronto: false
+	property bool btEscaneando: false
+	property int btAguardando: 0
+	property string btAviso: ""
+
+	// As linhas do painel. Um ListModel, e nao o array do modulo, pelo
+	// mesmo motivo dos recursos: o Repeater recria o delegate a cada
+	// objeto novo, e conectar um aparelho piscaria a linha inteira.
+	ListModel {
+		id: btModel
+	}
+
+	// Estados do BluetoothDeviceState do quickshell. Confirmados na fonte
+	// (src/bluetooth/device.hpp): 0 desconectado, 1 conectado,
+	// 2 desconectando, 3 conectando.
+	readonly property var _btEstados: ["desconectado", "conectado",
+		"desconectando", "conectando"]
+
+	function rotuloDispositivo(d) {
+		// o `name` vem vazio em muita coisa nao pareada; o `deviceName`
+		// tambem. Sem nome nenhum, o endereco e melhor que nada.
+		return d.name || d.deviceName || d.address;
+	}
+
+	// Conectados primeiro, depois pareados, depois o resto; por nome dentro
+	// de cada grupo. E a ordem em que a pessoa procura o aparelho dela.
+	function linhasBt() {
+		const ad = Bluetooth.defaultAdapter;
+		if (!ad || !ad.enabled)
+			return [];
+		const lista = Bluetooth.devices.values.map(d => {
+			return {
+				addr: d.address,
+				nome: rotuloDispositivo(d),
+				estado: d.state,
+				pareado: d.paired,
+				bat: d.batteryAvailable ? Math.round(d.battery) : -1
+			};
+		});
+		const peso = l => l.estado === 1 ? 0 : (l.pareado ? 1 : 2);
+		lista.sort((a, b) => peso(a) - peso(b) || a.nome.localeCompare(b.nome));
+		return lista;
+	}
+
+	// Repopula so quando o CONJUNTO muda. No caso comum so os estados
+	// mudam, e os delegates ficam vivos -- e o que permite a linha
+	// esmaecer em vez de piscar.
+	function syncBt() {
+		const ad = Bluetooth.defaultAdapter;
+		root.btPronto = !!ad;
+		if (!ad) {
+			if (btModel.count > 0)
+				btModel.clear();
+			return;
+		}
+		root.btLigado = ad.enabled;
+		root.btEscaneando = ad.discovering;
+
+		const linhas = linhasBt();
+		let mesmoEsqueleto = btModel.count === linhas.length;
+		if (mesmoEsqueleto) {
+			for (let i = 0; i < linhas.length; i++) {
+				if (btModel.get(i).addr !== linhas[i].addr) {
+					mesmoEsqueleto = false;
+					break;
+				}
+			}
+		}
+		if (!mesmoEsqueleto) {
+			btModel.clear();
+			for (const l of linhas)
+				btModel.append(l);
+			return;
+		}
+		for (let i = 0; i < linhas.length; i++) {
+			btModel.setProperty(i, "estado", linhas[i].estado);
+			btModel.setProperty(i, "bat", linhas[i].bat);
+		}
+	}
+
+	function alternarRadio() {
+		const ad = Bluetooth.defaultAdapter;
+		if (!ad)
+			return;
+		// Escrever `enabled` e o caminho real: e o que o rfkill e o
+		// bluetoothctl usam. Ja testado -- true vira false e volta.
+		ad.enabled = !ad.enabled;
+		root.btAviso = "";
+		// Duas leituras: a primeira pega o valor gravado, a segunda o
+		// estado que o BlueZ realmente aplicou.
+		syncBt();
+		Qt.callLater(syncBt);
+	}
+
+	function acionarDispositivo(addr) {
+		const ad = Bluetooth.defaultAdapter;
+		if (!ad || !ad.enabled)
+			return;
+		const d = Bluetooth.devices.values.find(x => x.address === addr);
+		if (!d)
+			return;
+		if (d.connected)
+			d.disconnect();
+		else
+			d.connect();
+		// Conectar leva segundos; a leitura na hora seguinte ainda mostra
+		// o estado velho. O Timer do painel re-le ate chegar.
+		syncBt();
+	}
+
+	function buscarDispositivos() {
+		const ad = Bluetooth.defaultAdapter;
+		if (!ad || !ad.enabled || root.btEscaneando)
+			return;
+		root.btAviso = "";
+		root.btEscaneando = true;
+		scanProc.running = false;
+		scanProc.running = true;
+	}
+
+	function abrirBluetooth(x) {
+		root.popX = (x === undefined || x <= 0) ? -1 : x;
+		syncBt();
+		root.mode = 7;
+		// Nao some sozinho: parear leva tempo, e a pessoa precisa do
+		// codigo de confirmacao na tela enquanto isso.
+		hideTimer.stop();
+		btTimer.running = true;
+	}
+
 	// Bateria e perfil de energia.
 	//
 	// Le antes de abrir, e nao depois: abrir com a coluna de perfis vazia e
@@ -612,6 +790,7 @@ ShellRoot {
 		root.mode = 0;
 		root.dragging = false;
 		root.resTimerOn = false;
+		btTimer.running = false;
 		root.popX = -1;
 	}
 
@@ -1716,6 +1895,227 @@ ShellRoot {
 									elide: Text.ElideRight
 								}
 							}
+						}
+					}
+				}
+			}
+
+			// ------------------------------------------------------------
+			// Bluetooth
+			// ------------------------------------------------------------
+			Column {
+				id: btCol
+				visible: root.mode === 7
+				anchors.fill: parent
+				anchors.margins: 16
+				spacing: 10
+
+				// Titulo + chave do radio.
+				Item {
+					width: parent.width
+					height: 30
+
+					Text {
+						anchors.left: parent.left
+						anchors.verticalCenter: parent.verticalCenter
+						text: "Bluetooth"
+						color: "#F5F5F7"
+						font.pixelSize: 13
+						font.weight: Font.DemiBold
+						font.family: "JetBrainsMono Nerd Font"
+					}
+
+					// Nf-md-bluetooth. Enquanto o adaptador nao chegou,
+					// o painel diz "ligando" em vez de mostrar lista
+					// vazia -- que pareceria falha.
+					Text {
+						anchors.left: parent.left
+						anchors.leftMargin: 118
+						anchors.verticalCenter: parent.verticalCenter
+						text: root.btPronto ? "\uf293"
+							: "\uf1b6"
+						color: root.btPronto && root.btLigado
+							? "#0A84FF" : "#636366"
+						font.pixelSize: 13
+						font.family: "JetBrainsMono Nerd Font"
+					}
+
+					Text {
+						anchors.right: chave.left
+						anchors.rightMargin: 10
+						anchors.verticalCenter: parent.verticalCenter
+						text: !root.btPronto ? "ligando"
+							: (root.btLigado ? "ligado" : "desligado")
+						color: "#98989D"
+						font.pixelSize: 10
+						font.family: "JetBrainsMono Nerd Font"
+					}
+
+					MacSwitch {
+						id: chave
+						anchors.right: parent.right
+						anchors.verticalCenter: parent.verticalCenter
+						ligado: root.btLigado && root.btPronto
+						enabled: root.btPronto
+						onToggled: root.alternarRadio()
+					}
+				}
+
+				// Busca. Sumi quando o radio esta desligado: o BlueZ
+				// recusa com NotReady, e um botao que so da erro nao
+				// ajuda ninguem.
+				Rectangle {
+					id: buscaLinha
+					width: parent.width
+					height: root.btLigado ? 38 : 0
+					visible: height > 0
+					radius: 9
+					color: buscaMa.pressed ? "#2C2C2E" : "transparent"
+					border.width: 1
+					border.color: "#2A2A2C"
+
+					Behavior on height {
+						NumberAnimation { duration: 140; easing.type: Easing.OutCubic }
+					}
+
+					Text {
+						anchors.left: parent.left
+						anchors.leftMargin: 12
+						anchors.verticalCenter: parent.verticalCenter
+						text: root.btEscaneando
+							? "buscando..."
+							: "buscar dispositivos"
+						color: root.btEscaneando ? "#636366" : "#0A84FF"
+						font.pixelSize: 11
+						font.family: "JetBrainsMono Nerd Font"
+					}
+
+					MouseArea {
+						id: buscaMa
+						anchors.fill: parent
+						enabled: root.btLigado && !root.btEscaneando
+						cursorShape: Qt.PointingHandCursor
+						onClicked: root.buscarDispositivos()
+					}
+				}
+
+				// Sem radio: mensagem, e nao lista vazia.
+				Text {
+					width: parent.width
+					visible: root.btPronto && !root.btLigado
+					text: "Bluetooth desligado"
+					color: "#636366"
+					font.pixelSize: 11
+					font.family: "JetBrainsMono Nerd Font"
+				}
+
+				Text {
+					width: parent.width
+					visible: root.btPronto && root.btLigado
+							&& btModel.count === 0
+					text: root.btEscaneando
+						? "procurando aparelhos..."
+						: "nenhum aparelho pareado"
+					color: "#636366"
+					font.pixelSize: 11
+					font.family: "JetBrainsMono Nerd Font"
+				}
+
+				// Dispositivos. ListView com teto de 6 linhas e rolagem:
+				// a altura do painel ja foi calculada com esse teto.
+				ListView {
+					width: parent.width
+					height: Math.min(btModel.count, 6) * 52
+					visible: height > 0
+					model: btModel
+					clip: true
+					boundsBehavior: Flickable.StopAtBounds
+
+					delegate: Rectangle {
+						id: disp
+
+						required property string addr
+						required property string nome
+						required property int estado
+						required property int bat
+
+						readonly property bool ativo: estado === 1
+						readonly property bool mexendo: estado === 2 || estado === 3
+
+						width: btCol.width
+						height: 50
+						radius: 9
+						color: linhaMa.pressed ? "#2C2C2E" : "transparent"
+						border.width: 1
+						border.color: ativo ? "#1E3A5F" : "#2A2A2C"
+
+						// Esmaece enquanto o BlueZ trabalha. Sem Behavior o
+						// clique parece nao ter pegado.
+						Behavior on opacity { NumberAnimation { duration: 140 } }
+						opacity: mexendo ? 0.45 : 1
+
+						Text {
+							anchors.left: parent.left
+							anchors.leftMargin: 12
+							anchors.verticalCenter: parent.verticalCenter
+							text: "\uf293"
+							color: parent.ativo ? "#0A84FF" : "#636366"
+							font.pixelSize: 13
+							font.family: "JetBrainsMono Nerd Font"
+						}
+
+						Column {
+							anchors.left: parent.left
+							anchors.leftMargin: 36
+							anchors.right: dirTexto.left
+							anchors.rightMargin: 10
+							anchors.verticalCenter: parent.verticalCenter
+							spacing: 2
+
+							Text {
+								width: parent.width
+								text: disp.nome
+								color: "#F5F5F7"
+								font.pixelSize: 12
+								font.family: "JetBrainsMono Nerd Font"
+								elide: Text.ElideRight
+							}
+
+							Text {
+								width: parent.width
+								// O estado vem do enum do quickshell: 1 ligado,
+								// 2 desligando, 3 conectando.
+								text: disp.ativo ? "conectado"
+									: (disp.mexendo
+										? root._btEstados[disp.estado]
+										: "toque para conectar")
+								color: disp.ativo ? "#34C759" : "#636366"
+								font.pixelSize: 10
+								font.family: "JetBrainsMono Nerd Font"
+								elide: Text.ElideRight
+							}
+						}
+
+						Text {
+							id: dirTexto
+							anchors.right: parent.right
+							anchors.rightMargin: 12
+							anchors.verticalCenter: parent.verticalCenter
+							// -1 e o que o modulo devolve quando o aparelho
+							// nao reporta bateria. Mostrar 0% seria mentira.
+							visible: disp.bat >= 0
+							text: disp.bat + "%"
+							color: "#636366"
+							font.pixelSize: 11
+							font.family: "JetBrainsMono Nerd Font"
+						}
+
+						MouseArea {
+							id: linhaMa
+							anchors.fill: parent
+							enabled: root.btLigado && !parent.mexendo
+							cursorShape: Qt.PointingHandCursor
+							onClicked: root.acionarDispositivo(disp.addr)
 						}
 					}
 				}

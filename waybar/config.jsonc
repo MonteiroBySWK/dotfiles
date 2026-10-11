@@ -15,6 +15,7 @@
     "backlight",
     "battery",
     "custom/tlp",
+    "custom/bt",
     "custom/notif",
     "custom/sysinfo",
     "custom/nightlight",
@@ -81,21 +82,18 @@
     "on-click": "~/.config/quickshell/popup/open.sh battery",
     "tooltip": true
   },
-  "custom/notifications": {
-    "tooltip": false,
-    "format": "{icon}",
-    "format-icons": {
-        "notification": "<span color='red'><sup></sup></span>",
-        "none": "",
-        "dnd": ""
-    },
+
+  // Bluetooth. Antes nao havia nada de bluetooth na barra, so um icone
+  // que eu nao sabia de onde vinha. Este mostra quantos aparelhos estao
+  // conectados e abre o painel do quickshell.
+  "custom/bt": {
+    "exec": "~/.config/waybar/scripts/bt.sh",
+    "interval": 5,
     "return-type": "json",
-    "exec-if": "which swaync-client",
-    "exec": "swaync-client -swb",
-    "on-click": "swaync-client -t -sw",
-    "on-click-right": "swaync-client -d -sw",
-    "escape": true
+    "on-click": "~/.config/quickshell/popup/open.sh bluetooth",
+    "tooltip": false
   },
+
   // Contador de notificacoes nao lidas.
   //
   // O historico mora no processo do quickshell, entao este script nao le
