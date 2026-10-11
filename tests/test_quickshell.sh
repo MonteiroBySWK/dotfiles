@@ -354,3 +354,23 @@ fi
 grep -q 'NIVEL' "$DIR/../waybar/scripts/sysinfo.sh" \
   && ok "sysinfo guarda o nivel entre ciclos (histerese)" \
   || bad "sysinfo guarda o nivel entre ciclos (histerese)" "sem estado entre ciclos"
+
+# --- subir de nivel exige leituras seguidas ---
+# A histerese segura a descida, mas a subida era instantanea: um pico
+# isolado de CPU (abrir um programa) virava alerta critico e voltava no
+# ciclo seguinte. Isso e o que o usuario via como piscada.
+grep -q 'SEGUIR=' "$DIR/../waybar/scripts/sysinfo.sh" \
+  && ok "sysinfo exige leituras seguidas para escalar" \
+  || bad "sysinfo exige leituras seguidas para escalar" "sem contagem de leituras"
+
+grep -q 'CONTA_CRIT' "$DIR/../waybar/scripts/sysinfo.sh" \
+  && ok "sysinfo conta leituras acima do corte" \
+  || bad "sysinfo conta leituras acima do corte" "sem contador"
+
+# A transicao de cor reiniciava a cada recriacao do rotulo pelo waybar,
+# fazendo o icone voltar a cor base a cada ciclo.
+if grep -q 'transition: color' "$DIR/../waybar/style.css"; then
+  bad "sem transition no icone de recursos" "a transicao reinicia a cada rotulo recriado"
+else
+  ok "sem transition no icone de recursos"
+fi

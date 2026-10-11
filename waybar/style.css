@@ -100,7 +100,10 @@ window#waybar {
 #custom-sysinfo {
     color: #98989d;
     min-width: 18px;
-    transition: color 0.3s ease-in-out;
+    /* Sem "transition: color". O waybar recria o rotulo a cada linha do
+     * script, e a transicao reiniciava do zero a cada recriacao -- o
+     * icone voltava a cor base e voltava ao valor, varias vezes por
+     * ciclo. A troca de cor e instantanea, que e o desejado. */
 }
 
 #custom-sysinfo.atencao {
