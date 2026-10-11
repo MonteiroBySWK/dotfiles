@@ -169,11 +169,18 @@ ShellRoot {
 	// ------------------------------------------------------------------
 	Process {
 		id: writeVolume
-		// startDetached: o processo nao e rastreado e nao morre junto com
-		// o quickshell -- que e o que queremos para o wpctl.
+		// Rastreado, e nao startDetached: sem onExited nao ha como reler o
+		// valor depois de escrever, e o numero ficava congelado no que veio
+		// da leitura inicial -- o slider mexia mas o "%" nao acompanhava.
 		function apply(v) {
+			root.volume = v;
 			writeVolume.command = ["wpctl", "set-volume", "@DEFAULT_AUDIO_SINK@", Math.round(v) + "%"];
-			writeVolume.startDetached();
+			writeVolume.running = false;
+			writeVolume.running = true;
+		}
+		onExited: {
+			readVolume.running = false;
+			readVolume.running = true;
 		}
 	}
 
@@ -201,8 +208,14 @@ ShellRoot {
 		id: writeBrightness
 		function apply(v) {
 			const pct = Math.round(Math.min(100, Math.max(1, v)));
+			root.brightness = pct;
 			writeBrightness.command = ["brightnessctl", "set", pct + "%"];
-			writeBrightness.startDetached();
+			writeBrightness.running = false;
+			writeBrightness.running = true;
+		}
+		onExited: {
+			readBrightness.running = false;
+			readBrightness.running = true;
 		}
 	}
 
@@ -213,10 +226,13 @@ ShellRoot {
 		id: writeDdc
 		function apply(v) {
 			const raw = Math.round((v / 100) * root.ddcMax);
+			root.ddcBrightness = Math.round(v);
 			writeDdc.command = ["ddcutil", "--display", root.ddcDisplay,
 				"--sleep-multiplier", "0.05", "setvcp", "10", String(raw)];
-			writeDdc.startDetached();
+			writeDdc.running = false;
+			writeDdc.running = true;
 		}
+		onExited: root.readDdc();
 	}
 
 	Process {

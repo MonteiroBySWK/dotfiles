@@ -72,3 +72,14 @@ fi
 
 [ ! -f "$(dirname "$CFG")/MacSlider.qml" ] && bad "MacSlider.qml existe" "arquivo ausente"
 [ -f "$(dirname "$CFG")/MacSlider.qml" ] && ok "MacSlider.qml existe"
+
+# --- o numero do "%" tem de acompanhar o slider ---
+# Os tres processos de escrita usavam startDetached(), que nao e rastreado
+# e por isso nao tem onExited. Sem reler depois de escrever, root.volume
+# ficava congelado no valor da leitura inicial: o slider mexia e o "%" nao.
+# O sintoma e silencioso -- so se nota arrastando.
+if grep -q 'startDetached' "$CFG"; then
+  bad "processos de escrita sao rastreados (releitura no onExited)" "startDetached ainda presente"
+else
+  ok "processos de escrita sao rastreados (releitura no onExited)"
+fi
