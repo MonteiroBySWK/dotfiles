@@ -15,6 +15,7 @@
     "backlight",
     "battery",
     "custom/tlp",
+    "custom/notif",
     "custom/sysinfo",
     "custom/nightlight",
     "clock",
@@ -90,6 +91,18 @@
     "on-click-right": "swaync-client -d -sw",
     "escape": true
   },
+  // Contador de notificacoes nao lidas.
+  //
+  // O historico mora no processo do quickshell, entao este script nao le
+  // nada: ele so informa se ha alguma. Um numero exato exigiria IPC de
+  // volta do quickshell, que ainda nao existe.
+  "custom/notif": {
+    "exec": "~/.config/waybar/scripts/notif-count.sh",
+    "return-type": "json",
+    "on-click": "~/.config/quickshell/popup/open.sh notification",
+    "tooltip": true
+  },
+
   // Um icone no lugar de cpu + memory + temperature. Cinza em repouso,
   // amarelo quando algo passa do aceitavel, vermelho no critico -- o
   // numero fica no tooltip e no popup, que abrem no clique.
