@@ -115,14 +115,6 @@
       "enabled": true,
       "type": "local"
     },
-    "token-optimizer": {
-      "command": [
-        "npx",
-        "@ooples/token-optimizer-mcp"
-      ],
-      "enabled": true,
-      "type": "local"
-    },
     "aws-pricing": {
       "type": "local",
       "command": [
@@ -148,7 +140,8 @@
     "@tarquinen/opencode-dcp@3.2.0",
     "@tarquinen/opencode-smart-title",
     ".opencode/plugins/graphify.js",
-    "plugins/rtk.ts"
+    "plugins/rtk.ts",
+    "file:///home/monteiro/dev/codes/thera/olimpo/.opencode/plugins/olimpo.js"
   ],
   "small_model": "opencode-go/mimo-v2.5-low",
   "tool_output": {
