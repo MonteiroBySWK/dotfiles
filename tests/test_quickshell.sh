@@ -184,3 +184,34 @@ grep -q 'openPavu.apply()' "$CFG" \
 grep -q 'mais ajustes' "$CFG" \
   && ok "botao de mais ajustes visivel" \
   || bad "botao de mais ajustes visivel" "rotulo ausente"
+
+# --- calendario ---
+grep -q 'function showCalendar' "$CFG" \
+  && ok "IPC showCalendar existe" \
+  || bad "IPC showCalendar existe" "handler ausente"
+
+# A grade tem que ser GridLayout com 7 colunas. Em ColumnLayout cada dia
+# virava uma linha -- o calendario saia como uma coluna de 1 a 31.
+grep -q 'columns: 7' "$CFG" \
+  && ok "grade do calendario em 7 colunas" \
+  || bad "grade do calendario em 7 colunas" "sem GridLayout de 7 colunas"
+
+# Em Repeater com required property, o index tambem precisa ser declarado,
+# senao o QML loga ReferenceError e o fimDeSemana fica indefinido.
+grep -q 'required property int index' "$CFG" \
+  && ok "index declarado no delegate (sem ReferenceError)" \
+  || bad "index declarado no delegate (sem ReferenceError)" "index nao declarado"
+
+# O locale do sistema e C: Qt.formatDate devolveria "October de 2026".
+grep -q 'root.meses\[root.calMonth\]' "$CFG" \
+  && ok "nome do mes em portugues (locale C nao traduz)" \
+  || bad "nome do mes em portugues (locale C nao traduz)" "usa Qt.formatDate"
+
+# --- escrita ao vivo durante o arraste ---
+grep -q 'signal dragged' "$DIR/MacSlider.qml" \
+  && ok "MacSlider emite dragged durante o arraste" \
+  || bad "MacSlider emite dragged durante o arraste" "sem signal dragged"
+
+grep -q 'onDragged' "$CFG" \
+  && ok "popup escreve durante o arraste, nao so ao soltar" \
+  || bad "popup escreve durante o arraste, nao so ao soltar" "onDragged nao tratado"

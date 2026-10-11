@@ -21,6 +21,20 @@ Slider {
 	/* Emitida so no onReleased. */
 	signal committed(real v)
 
+	/* Emitida durante o arraste, ja com o valor novo. Quem chama e que
+	 * decide se vale a pena escrever -- no DDC nao vale (o barramento I2C
+	 * aceita ~4 ops/s), no pactl vale.
+	 *
+	 * O nome nao pode ser "moved": colide com o signal homonimo das
+	 * animacoes do QML, e o proprio Qt avisa
+	 * (qt.qml.invalidOverride: Duplicate signal name). */
+	signal dragged(real v)
+
+	onValueChanged: {
+		if (pressed)
+			dragged(control.value);
+	}
+
 	onPressedChanged: {
 		if (!pressed)
 			committed(control.value);

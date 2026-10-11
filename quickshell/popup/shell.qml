@@ -120,6 +120,43 @@ ShellRoot {
 		onExited: root.refreshDevices();
 	}
 
+	// Calendario: mes visivel, e o dia de hoje separado. "Hoje" tem de ser
+	// fixo no instante em que o popup abre -- se fosse uma funcao lida a
+	// cada reavaliacao, virar o mes mudaria o dia de referencia junto.
+	property int calYear: 0
+	property int calMonth: 0
+
+	function calToday() {
+		const d = new Date();
+		return [d.getDate(), d.getMonth(), d.getFullYear()];
+	}
+
+	// Grade do mes: null nos lugares vazios do comeco e do fim, para o dia
+	// 1 cair na coluna certa sem posicao manual.
+	function calGrid() {
+		const primeiro = new Date(calYear, calMonth, 1);
+		// getDay() comeca no domingo; a grade comeca na segunda, como no
+		// macOS e no calendario do GNOME.
+		const vazios = (primeiro.getDay() + 6) % 7;
+		const dias = new Date(calYear, calMonth + 1, 0).getDate();
+		const celulas = [];
+		for (let i = 0; i < vazios; i++)
+			celulas.push(null);
+		for (let d = 1; d <= dias; d++)
+			celulas.push(d);
+		while (celulas.length % 7 !== 0)
+			celulas.push(null);
+		return celulas;
+	}
+
+	readonly property var calCells: calGrid()
+
+	// Qt.formatDate segue o locale do sistema, que nesta maquina e C e
+	// devolve "October de 2026". A lista e escrita a mao.
+	readonly property var meses: ["janeiro", "fevereiro", "marco", "abril",
+		"maio", "junho", "julho", "agosto", "setembro", "outubro",
+		"novembro", "dezembro"]
+
 	// Monitor externo por DDC/CI. Vem do brightness-ddc.sh, que ja
 	// escolhe o display certo (o primeiro "Display N" do detect, que
 	// ignora o painel do laptop porque ele sai como "Invalid display").
@@ -148,6 +185,10 @@ ShellRoot {
 			root.openBrightness();
 		}
 
+		function showCalendar(): void {
+			root.openCalendar();
+		}
+
 		function hide(): void {
 			root.close();
 		}
@@ -159,6 +200,16 @@ ShellRoot {
 	function openVolume() {
 		root.refreshDevices();
 		root.mode = 1;
+		hideTimer.restart();
+	}
+
+	function openCalendar() {
+		root.mode = 3;
+		// Ao abrir, volta para o mes de hoje: sair de novembro e voltar
+		// amanha e encontrar a grade em branco e confuso.
+		const agora = new Date();
+		root.calYear = agora.getFullYear();
+		root.calMonth = agora.getMonth();
 		hideTimer.restart();
 	}
 
@@ -329,15 +380,17 @@ ShellRoot {
 		Item {
 			id: boxShadow
 			anchors.horizontalCenter: parent.horizontalCenter
-			width: 340
 			// A altura do volume deixou de ser fixa: a lista de aparelhos
 			// tem uma linha por sink, mais o divisor e a linha do mic. Com
 			// altura fixa de 96px o painel cortava o segundo aparelho.
 			// O minimo de 48px e o piso do modo brilho sem DDC.
-			height: root.mode === 1
-				? Math.max(64, 28 + root.sinks.length * 58
-					+ (root.micInUse ? 56 : 0) + 32)
-				: (root.mode === 2 ? (root.ddcAvailable ? 104 : 48) : 4)
+			width: root.mode === 3 ? 320 : 340
+			height: root.mode === 3
+				? 300
+				: (root.mode === 1
+					? Math.max(64, 28 + root.sinks.length * 58
+						+ (root.micInUse ? 56 : 0) + 32)
+					: (root.mode === 2 ? (root.ddcAvailable ? 104 : 48) : 4))
 
 			DropShadow {
 				anchors.fill: box
@@ -391,6 +444,21 @@ ShellRoot {
 						readonly property real shown: sinkSlider.pressed ? sinkSlider.value : modelData.volume
 						readonly property bool shownMuted: sinkSlider.pressed ? false : modelData.muted
 
+						// Escrita durante o arraste, com limite de taxa. Sem o
+						// limite, cada pixel do arraste abriria um processo
+						// pactl. ~20 por segundo e imperceptivel e nao
+						// entope o pipewire.
+						property real lastSent: 0
+						property int minIntervalMs: 50
+
+						function sendLive(v) {
+							const agora = Date.now();
+							if (agora - lastSent < minIntervalMs)
+								return;
+							lastSent = agora;
+							writeDevice.setVolume(modelData.name, v, modelData.kind === "source");
+						}
+
 						ColumnLayout {
 							anchors.fill: parent
 							anchors.margins: 10
@@ -442,7 +510,13 @@ ShellRoot {
 									hideTimer.restart();
 									root.dragging = pressed;
 								}
+								onDragged: function (v) {
+									sendLive(v);
+								}
 								onCommitted: function (v) {
+									// Ultimo valor, sem passar pelo limite de taxa: se
+									// caiu fora da janela, ele nunca foi enviado.
+									lastSent = 0;
 									writeDevice.setVolume(modelData.name, v, modelData.kind === "source");
 								}
 							}
@@ -559,6 +633,126 @@ ShellRoot {
 						onExited: moreBtn.color = "transparent"
 						onPressed: hideTimer.restart()
 						onClicked: openPavu.apply()
+					}
+				}
+			}
+
+			// ---------------- calendario ----------------
+			// Cabecalho com navegacao, dias da semana, grade. Tokens do
+			// macOS: hoje e um circulo azul cheios, o resto e texto.
+			ColumnLayout {
+				id: calCol
+				visible: root.mode === 3
+				anchors.fill: parent
+				anchors.margins: 14
+				spacing: 8
+
+				RowLayout {
+					Layout.fillWidth: true
+
+					Text {
+						Layout.fillWidth: true
+						// Mes por extenso: "outubro de 2026".
+						text: root.meses[root.calMonth] + " de " + root.calYear
+						color: "#F5F5F7"
+						font.pixelSize: 14
+						font.family: "JetBrainsMono Nerd Font"
+					}
+
+					Text {
+						text: "\u2039"
+						color: "#98989D"
+						font.pixelSize: 17
+						font.family: "JetBrainsMono Nerd Font"
+						MouseArea {
+							anchors.fill: parent
+							cursorShape: Qt.PointingHandCursor
+							onClicked: root.calMonth--
+							onPressed: hideTimer.restart()
+						}
+					}
+
+					Text {
+						text: "\u203a"
+						color: "#98989D"
+						font.pixelSize: 17
+						font.family: "JetBrainsMono Nerd Font"
+						MouseArea {
+							anchors.fill: parent
+							cursorShape: Qt.PointingHandCursor
+							onClicked: root.calMonth++
+							onPressed: hideTimer.restart()
+						}
+					}
+				}
+
+				// Cabecalho dos dias da semana. A grade comeca na segunda.
+				RowLayout {
+					Layout.fillWidth: true
+					Repeater {
+						model: ["seg", "ter", "qua", "qui", "sex", "sab", "dom"]
+						delegate: Text {
+							required property string modelData
+							Layout.fillWidth: true
+							horizontalAlignment: Text.AlignHCenter
+							text: modelData
+							color: "#636366"
+							font.pixelSize: 10
+							font.family: "JetBrainsMono Nerd Font"
+						}
+					}
+				}
+
+				GridLayout {
+					columns: 7
+					columnSpacing: 0
+					rowSpacing: 2
+					Layout.fillWidth: true
+
+					Repeater {
+					model: root.calCells
+					delegate: Item {
+						id: calCell
+						required property var modelData
+						// Num Repeater com required property, o index tambem
+						// precisa ser declarado -- sem isso o QML loga
+						// "index is not defined" e o fimDeSemana fica
+						// indefinido.
+						required property int index
+						Layout.fillWidth: true
+						Layout.preferredHeight: 30
+
+						readonly property var hoje: root.calToday()
+						readonly property bool isHoje: modelData !== null
+							&& modelData === hoje[0]
+							&& root.calMonth === hoje[1]
+							&& root.calYear === hoje[2]
+						readonly property bool fimDeSemana: (index % 7) >= 5
+
+						Text {
+							anchors.centerIn: parent
+							width: 26
+							height: 26
+							horizontalAlignment: Text.AlignHCenter
+							verticalAlignment: Text.AlignVCenter
+							text: calCell.modelData === null ? "" : calCell.modelData
+							// Hoje: circulo azul cheio. No macOS o dia de
+							// hoje e o unico elemento com cor de destaque.
+							color: calCell.isHoje ? "#FFFFFF" : (calCell.fimDeSemana ? "#98989D" : "#F5F5F7")
+							font.pixelSize: 12
+							font.family: "JetBrainsMono Nerd Font"
+							font.weight: calCell.isHoje ? Font.DemiBold : Font.Normal
+
+							Rectangle {
+								anchors.centerIn: parent
+								width: 26
+								height: 26
+								radius: 13
+								visible: calCell.isHoje
+								color: "#0A84FF"
+							}
+						}
+					}
 					}
 				}
 			}
