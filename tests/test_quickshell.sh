@@ -448,3 +448,33 @@ bri=$(grep -c 'open.sh brightness' "$RAIZ/waybar/config.jsonc")
 grep -q 'valor: g.celsius' "$CFG" \
   && ok "barra da GPU mostra temperatura, nao uso" \
   || bad "barra da GPU mostra temperatura, nao uso" "barra usa porcentagem de uso"
+
+# --- volume por canal, e nao so "mono" ---
+# O pactl nao tem formato unico: sink analogico pode vir em volume.mono e
+# um bluetooth vem por canal (front-left/front-right). Ler so "mono"
+# devolvia nada e o popup mostrava 0% COM O SOM TOCANDO -- silencioso,
+# porque o audio continuava normal.
+grep -q 'volume_percent' "$DIR/list-devices.sh" \
+  && ok "list-devices le volume por canal, nao so mono" \
+  || bad "list-devices le volume por canal, nao so mono" "sem fallback de canal"
+
+# A leitura tem de bater com o pactl, que e a fonte da verdade.
+vol_json=$("$DIR/list-devices.sh" 2>/dev/null | python3 -c '
+import sys, json
+print(" ".join(str(s["volume"]) for s in json.load(sys.stdin)["sinks"]))' 2>/dev/null)
+if [ -n "$vol_json" ]; then
+  verdade=""
+  for s in $(pactl list sinks short 2>/dev/null | awk '{print $2}'); do
+    p=$(pactl get-sink-volume "$s" 2>/dev/null | grep -oE '[0-9]+%' | head -1 | tr -d '%')
+    verdade="$verdade $p"
+  done
+  bate=1
+  for v in $verdade; do
+    echo "$vol_json" | grep -qw "$v" || bate=0
+  done
+  if [ "$bate" = "1" ] && ! echo "$vol_json" | grep -qw "0"; then
+    ok "volume do popup bate com o pactl (nao e 0 com som tocando)"
+  else
+    bad "volume do popup bate com o pactl" "popup=[$vol_json] pactl=[$verdade]"
+  fi
+fi

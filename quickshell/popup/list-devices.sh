@@ -36,6 +36,31 @@ def default_of(kind):
     return d.splitlines()[0].strip() if d else ""
 
 
+def volume_percent(vol):
+    """Percentual de um canal, para sink ou source.
+
+    O pactl NAO tem um formato unico: um sink analogico pode vir em
+    volume.mono, e um bluetooth vem por canal (front-left / front-right).
+    Ler so "mono" devolvia nada e o popup mostrava 0% com o som tocando --
+    foi o que aconteceu quando trocou o fone.
+    """
+    if not isinstance(vol, dict) or not vol:
+        return 0
+    canais = vol.get("mono")
+    if canais is None:
+        # Sem mono: pega o maior canal, que e o mais representativo quando
+        # os lados divergem.
+        canais = next((v for v in vol.values()
+                       if isinstance(v, dict) and v.get("value_percent")), None)
+    if not isinstance(canais, dict):
+        return 0
+    bruto = canais.get("value_percent") or "0%"
+    try:
+        return int(str(bruto).strip().rstrip("%"))
+    except ValueError:
+        return 0
+
+
 def items(kind):
     # Atencao: a listagem e plural ("list sinks"/"list sources") mas o
     # default e singular ("get-default-sink"). Errar isso devolve [] sem
@@ -73,11 +98,7 @@ def items(kind):
         if not label or label == "(null)":
             label = name
 
-        vol = ((s.get("volume") or {}).get("mono") or {}).get("value_percent") or "0%"
-        try:
-            volume = int(str(vol).strip().rstrip("%"))
-        except ValueError:
-            volume = 0
+        volume = volume_percent(s.get("volume"))
 
         out.append({
             "name": name,
