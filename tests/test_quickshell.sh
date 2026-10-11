@@ -215,3 +215,49 @@ grep -q 'signal dragged' "$DIR/MacSlider.qml" \
 grep -q 'onDragged' "$CFG" \
   && ok "popup escreve durante o arraste, nao so ao soltar" \
   || bad "popup escreve durante o arraste, nao so ao soltar" "onDragged nao tratado"
+
+# --- recursos ---
+grep -q 'function showResources' "$CFG" \
+  && ok "IPC showResources existe" \
+  || bad "IPC showResources existe" "handler ausente"
+
+[ -x "$DIR/list-resources.sh" ] \
+  && ok "list-resources.sh existe e e executavel" \
+  || bad "list-resources.sh existe e e executavel" "ausente ou sem bit de execucao"
+
+saida=$("$DIR/list-resources.sh" 2>/dev/null)
+if printf '%s' "$saida" | python3 -c '
+import json,sys
+d=json.load(sys.stdin)
+assert "percent" in d.get("cpu",{}), "cpu sem percent"
+assert d["cpu"]["cores"] > 0, "cpu sem numero de nucleos"
+assert "percent" in d.get("mem",{}), "mem sem percent"
+assert isinstance(d.get("temp"), list)
+for t in d["temp"]:
+    assert "label" in t and "celsius" in t
+' 2>/dev/null; then
+  ok "list-resources.sh devolve JSON com os campos esperados"
+else
+  bad "list-resources.sh devolve JSON com os campos esperados" "JSON invalido ou incompleto"
+fi
+
+# Polling so com o painel aberto: ler recursos a cada segundo com o popup
+# fechado seria um processo jogado fora.
+grep -q 'resTimerOn' "$CFG" \
+  && ok "polling de recursos so com o painel aberto" \
+  || bad "polling de recursos so com o painel aberto" "sem resTimerOn"
+
+[ -f "$DIR/StatBar.qml" ] \
+  && ok "StatBar.qml existe" \
+  || bad "StatBar.qml existe" "ausente"
+
+# O filtro da DRM era invertido e descartava a GPU inteira.
+if printf '%s' "$saida" | python3 -c '
+import json,sys
+d=json.load(sys.stdin)
+assert d.get("gpu"), "gpu vazia: filtro da DRM descartou tudo"
+' 2>/dev/null; then
+  ok "GPU detectada pelo filtro da DRM"
+else
+  bad "GPU detectada pelo filtro da DRM" "gpu vazia"
+fi

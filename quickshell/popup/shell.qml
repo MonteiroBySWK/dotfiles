@@ -157,6 +157,54 @@ ShellRoot {
 		"maio", "junho", "julho", "agosto", "setembro", "outubro",
 		"novembro", "dezembro"]
 
+	// Recursos, do list-resources.sh
+	property var res: ({})
+	property var temps: []
+
+	// Enquanto o painel de recursos esta aberto ele se atualiza sozinho;
+	// fechado, nao ha polling -- ler recursos a cada segundo para nada
+	// seria desperdicio de processo.
+	property bool resTimerOn: false
+
+	function applyResources(text) {
+		try {
+			const d = JSON.parse(text);
+			root.res = d;
+			root.temps = d.temp || [];
+		} catch (e) {
+			// JSON quebrado nao pode apagar o painel que ja esta na tela.
+			console.warn("list-resources.sh devolveu JSON invalido:", e);
+		}
+	}
+
+	function openResources() {
+		root.mode = 4;
+		root.resTimerOn = true;
+		readResources.running = false;
+		readResources.running = true;
+		hideTimer.restart();
+	}
+
+	Process {
+		id: readResources
+		command: ["/home/monteiro/.config/quickshell/popup/list-resources.sh"]
+		stdout: StdioCollector {
+			onStreamFinished: root.applyResources(text)
+		}
+	}
+
+	Timer {
+		id: resTimer
+		interval: 1000
+		repeat: true
+		running: root.resTimerOn
+		triggeredOnStart: true
+		onTriggered: {
+			readResources.running = false;
+			readResources.running = true;
+		}
+	}
+
 	// Monitor externo por DDC/CI. Vem do brightness-ddc.sh, que ja
 	// escolhe o display certo (o primeiro "Display N" do detect, que
 	// ignora o painel do laptop porque ele sai como "Invalid display").
@@ -187,6 +235,10 @@ ShellRoot {
 
 		function showCalendar(): void {
 			root.openCalendar();
+		}
+
+		function showResources(): void {
+			root.openResources();
 		}
 
 		function hide(): void {
@@ -224,6 +276,7 @@ ShellRoot {
 	function close() {
 		root.mode = 0;
 		root.dragging = false;
+		root.resTimerOn = false;
 	}
 
 
@@ -387,10 +440,11 @@ ShellRoot {
 			width: root.mode === 3 ? 320 : 340
 			height: root.mode === 3
 				? 300
-				: (root.mode === 1
-					? Math.max(64, 28 + root.sinks.length * 58
-						+ (root.micInUse ? 56 : 0) + 32)
-					: (root.mode === 2 ? (root.ddcAvailable ? 104 : 48) : 4))
+				: (root.mode === 4 ? 322
+					: (root.mode === 1
+						? Math.max(64, 28 + root.sinks.length * 58
+							+ (root.micInUse ? 56 : 0) + 32)
+						: (root.mode === 2 ? (root.ddcAvailable ? 104 : 48) : 4)))
 
 			DropShadow {
 				anchors.fill: box
@@ -753,6 +807,130 @@ ShellRoot {
 							}
 						}
 					}
+					}
+				}
+			}
+
+			// ---------------- recursos ----------------
+			// No spirit do Activity Monitor: rotulo, valor e barra por
+			// recurso, com a cor mudando por faixa. So faz polling enquanto
+			// o painel esta aberto.
+			ColumnLayout {
+				id: resCol
+				visible: root.mode === 4
+				anchors.fill: parent
+				anchors.margins: 14
+				spacing: 10
+
+				Repeater {
+					model: {
+						if (!root.res || !root.res.cpu)
+							return [];
+						const c = root.res.cpu;
+						const m = root.res.mem || {};
+						const g = root.res.gpu || {};
+						const linhas = [
+							{ rotulo: "CPU", detalhe: c.cores + " nucleos",
+								valor: c.percent, sufixo: "%" },
+							{ rotulo: "Memoria", detalhe: m.usedMb + " MB de " + m.totalMb + " MB",
+								valor: m.percent || 0, sufixo: "%" },
+						];
+						if (m.swapPercent !== undefined)
+							linhas.push({ rotulo: "Swap",
+								detalhe: m.swapUsedMb + " MB de " + m.swapTotalMb + " MB",
+								valor: m.swapPercent, sufixo: "%" });
+						if (g.percent !== undefined || g.celsius !== undefined)
+							linhas.push({ rotulo: g.name || "GPU",
+								detalhe: g.celsius !== undefined ? g.celsius + " °C" : "",
+								valor: g.percent || 0, sufixo: "%" });
+						return linhas;
+					}
+
+					delegate: Item {
+						required property var modelData
+						Layout.fillWidth: true
+						Layout.preferredHeight: 44
+
+						ColumnLayout {
+							anchors.fill: parent
+							spacing: 5
+
+							RowLayout {
+								Layout.fillWidth: true
+
+								Text {
+									Layout.fillWidth: true
+									text: modelData.rotulo
+									color: "#F5F5F7"
+									font.pixelSize: 13
+									font.weight: Font.DemiBold
+									font.family: "JetBrainsMono Nerd Font"
+								}
+
+								Text {
+									text: modelData.detalhe
+									color: "#636366"
+									font.pixelSize: 11
+									font.family: "JetBrainsMono Nerd Font"
+								}
+
+								Text {
+									text: Math.round(modelData.valor) + modelData.sufixo
+									color: "#98989D"
+									font.pixelSize: 12
+									font.family: "JetBrainsMono Nerd Font"
+								}
+							}
+
+							StatBar {
+								Layout.fillWidth: true
+								Layout.preferredHeight: 8
+								percent: modelData.valor
+							}
+						}
+					}
+				}
+
+				// Divisor antes dos sensores.
+				Rectangle {
+					Layout.fillWidth: true
+					Layout.preferredHeight: 1
+					color: "#3A3A3C"
+				}
+
+				Text {
+					Layout.fillWidth: true
+					text: "temperaturas"
+					color: "#636366"
+					font.pixelSize: 10
+					font.family: "JetBrainsMono Nerd Font"
+				}
+
+				Flow {
+					Layout.fillWidth: true
+					spacing: 6
+
+					Repeater {
+						model: root.temps
+
+						delegate: Rectangle {
+							required property var modelData
+							implicitWidth: tempText.implicitWidth + 14
+							implicitHeight: 22
+							radius: 6
+							color: "#2C2C2E"
+
+							Text {
+								id: tempText
+								anchors.centerIn: parent
+								// Acima de 80 o texto fica vermelho: e o ponto em
+								// que o CPU comeca a reduzir frequencia.
+								text: modelData.label + " " + Math.round(modelData.celsius) + "°"
+								color: modelData.celsius >= 80 ? "#FF453A" : "#98989D"
+								font.pixelSize: 11
+								font.family: "JetBrainsMono Nerd Font"
+							}
+						}
 					}
 				}
 			}
