@@ -5,6 +5,7 @@ import QtQuick.Controls.Basic
 import Qt5Compat.GraphicalEffects
 import Quickshell
 import Quickshell.Io
+import Quickshell.Services.Notifications
 import Quickshell.Widgets
 
 /*
@@ -177,22 +178,63 @@ ShellRoot {
 		"maio", "junho", "julho", "agosto", "setembro", "outubro",
 		"novembro", "dezembro"]
 
-	// Notificacoes.
+	// Notificacoes: servico NATIVO do quickshell. Ele se registra em
+	// org.freedesktop.Notifications e sinaliza cada notificacao recebida.
 	//
-	// O quickshell tem servico de notificacoes NATIVO, mas nesta maquina o
-	// dono de org.freedesktop.Notifications e o mako -- que tambem faz o
-	// OSD de volume e brilho. Registrar o nativo daria conflito e o mako
-	// perderia o OSD. Entao aqui o quickshell e um CLIENTE do mako, lendo
-	// a lista pela interface fr.emersion.Mako.
-	// Altura do painel por modo. Fica em funcao porque ternario com seis
-	// niveis fica ilegivel, e parentese faltando so aparece quando o
-	// popup abre.
-	function alturaPainel() {
-		if (mode === 5) {
-			// Cada notificacao ocupa ~78px; o limite de 6 mantem o painel
-			// util em vez de esticar ate o rodape.
-			return Math.max(120, 44 + Math.min(notificacoes.length, 6) * 78);
+	// O mako saiu do autostart: ocupava o mesmo nome no DBus e nao deixava
+	// o quickshell registrar. As teclas de volume nao dependiam dele --
+	// elas vao pelo swayosd-client.
+	//
+	// A lista e NOSSA, alimentada pelo sinal, e nao o trackedNotifications
+	// do servico. Medido no quickshell 0.3.2: o sinal dispara e a
+	// notificacao chega, mas trackedNotifications fica vazio -- tanto sem
+	// keepOnReload quanto com ele. A fonte so devolve o modelo quando o
+	// servico fica "live", o que nao acontece aqui. Depender dele daria um
+	// painel permanentemente vazio.
+	property var notificacoes: []
+	property int notifLimite: 30
+
+	NotificationServer {
+		id: notifServer
+		actionsSupported: true
+		bodyHyperlinksSupported: true
+		inlineReplySupported: true
+
+		onNotification: (n) => {
+			// Mais nova primeiro, como o Notification Center do macOS.
+			root.notificacoes = [n].concat(root.notificacoes);
+			if (root.notificacoes.length > root.notifLimite)
+				root.notificacoes = root.notificacoes.slice(0, root.notifLimite);
+			hideTimer.restart();
 		}
+	}
+
+	function openNotifications(x) {
+		// Sem esta linha o painel ignora a posicao do cursor e abre onde a
+		// janela ja estivesse. As outras acoes do popup fazem isto.
+		root.popX = (x === undefined || x <= 0) ? -1 : x;
+		root.mode = 5;
+		// Nao some sozinho: o usuario abriu para LER.
+		hideTimer.stop();
+	}
+
+	function fecharNotificacoes() {
+		root.close();
+	}
+
+	function limparNotificacoes() {
+		for (const n of root.notificacoes)
+			n.dismiss();
+		root.notificacoes = [];
+	}
+
+	// Recursos, do list-resources.sh
+	// Altura do painel por modo. Fica em funcao porque ternario com seis
+	// niveis fica ilegivel, e parentese faltando so aparece quando o popup
+	// abre.
+	function alturaPainel() {
+		if (mode === 5)
+			return Math.max(120, 44 + Math.min(notificacoes.length, 6) * 78);
 		if (mode === 3)
 			return 300;
 		if (mode === 4)
@@ -205,88 +247,6 @@ ShellRoot {
 		return 4;
 	}
 
-	property var notificacoes: []
-	property bool notifTimerOn: false
-
-	function applyNotifications(text) {
-		try {
-			const d = JSON.parse(text);
-			root.notificacoes = d.notificacoes || [];
-		} catch (e) {
-			// JSON quebrado nao pode limpar a lista que ja esta na tela.
-			console.warn("list-notifications.sh devolveu JSON invalido:", e);
-		}
-	}
-
-	function refreshNotifications() {
-		readNotifications.running = false;
-		readNotifications.running = true;
-	}
-
-	Process {
-		id: readNotifications
-		command: ["/home/monteiro/.config/quickshell/popup/list-notifications.sh"]
-		stdout: StdioCollector {
-			onStreamFinished: root.applyNotifications(text)
-		}
-	}
-
-	Process {
-		id: notifAction
-		function invoke(id, actionId) {
-			notifAction.command = ["gdbus", "call", "--session",
-				"--dest", "org.freedesktop.Notifications",
-				"--object-path", "/fr/emersion/Mako",
-				"--method", "fr.emersion.Mako.InvokeAction",
-				str(id), actionId];
-			notifAction.running = false;
-			notifAction.running = true;
-		}
-	}
-
-	function openNotifications(x) {
-		// Sem esta linha o painel ignora a posicao do cursor e abre onde
-		// quer que a janela ja estivesse. As outras acoes do popup fazem
-		// isto; faltou aqui.
-		root.popX = (x === undefined || x <= 0) ? -1 : x;
-		root.mode = 5;
-		// Nao some sozinho: o usuario abriu para LER. O gesto no painel
-		// e o que fecha, ou o botao de fechar.
-		hideTimer.stop();
-		root.notifTimerOn = true;
-		root.refreshNotifications();
-	}
-
-	function fecharNotificacoes() {
-		root.notifTimerOn = false;
-		root.close();
-	}
-
-	Process {
-		id: notifDismiss
-		function limparTodas() {
-			for (const n of root.notificacoes) {
-				notifDismiss.command = ["gdbus", "call", "--session",
-					"--dest", "org.freedesktop.Notifications",
-					"--object-path", "/fr/emersion/Mako",
-					"--method", "fr.emersion.Mako.DismissNotifications",
-					'{"id": ' + n.id + '}'];
-				notifDismiss.running = false;
-				notifDismiss.running = true;
-			}
-			root.notificacoes = [];
-		}
-	}
-
-	Timer {
-		id: notifTimer
-		interval: 3000
-		repeat: true
-		running: root.notifTimerOn
-		onTriggered: root.refreshNotifications()
-	}
-
-	// Recursos, do list-resources.sh
 	property var res: ({})
 	property var temps: []
 
@@ -495,7 +455,6 @@ ShellRoot {
 		root.mode = 0;
 		root.dragging = false;
 		root.resTimerOn = false;
-		root.notifTimerOn = false;
 		root.popX = -1;
 	}
 
@@ -959,7 +918,7 @@ ShellRoot {
 						MouseArea {
 							anchors.fill: parent
 							cursorShape: Qt.PointingHandCursor
-							onClicked: notifDismiss.limparTodas()
+							onClicked: root.limparNotificacoes()
 						}
 					}
 
@@ -1025,7 +984,7 @@ ShellRoot {
 
 							Text {
 								Layout.fillWidth: true
-								text: modelData.resumo
+								text: modelData.summary
 								color: "#F5F5F7"
 								font.pixelSize: 13
 								font.weight: Font.DemiBold
@@ -1037,8 +996,8 @@ ShellRoot {
 
 							Text {
 								Layout.fillWidth: true
-								visible: modelData.corpo !== ""
-								text: modelData.corpo
+								visible: modelData.body !== ""
+								text: modelData.body
 								color: "#98989D"
 								font.pixelSize: 11
 								font.family: "JetBrainsMono Nerd Font"
@@ -1051,12 +1010,12 @@ ShellRoot {
 							// isso a notificacao e so leitura.
 							RowLayout {
 								Layout.fillWidth: true
-								visible: modelData.acoes.length > 0
+								visible: modelData.actions.length > 0
 								spacing: 6
 								Layout.topMargin: 2
 
 								Repeater {
-									model: modelData.acoes
+									model: modelData.actions
 
 									delegate: Rectangle {
 										// O modelData interno SOMBREIA o da
@@ -1074,7 +1033,7 @@ ShellRoot {
 										Text {
 											id: acaoLabel
 											anchors.centerIn: parent
-											text: acao.modelData.texto
+											text: acao.modelData.text
 											color: "#F5F5F7"
 											font.pixelSize: 11
 											font.family: "JetBrainsMono Nerd Font"
@@ -1083,9 +1042,10 @@ ShellRoot {
 										MouseArea {
 											anchors.fill: parent
 											cursorShape: Qt.PointingHandCursor
-											onClicked: notifAction.invoke(
-												cartao.modelData.id,
-												acao.modelData.id)
+											// O objeto da acao tem invoke(): e o
+											// proprio servico que dispara, sem
+											// gdbus e sem id numerico.
+											onClicked: acao.modelData.invoke()
 										}
 									}
 								}

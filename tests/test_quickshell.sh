@@ -494,47 +494,35 @@ awk '/ShellRoot \{/,/^\tPanelWindow/' "$CFG" | grep -q 'readonly property var te
   && ok "telaAtual resolvida no escopo do root" \
   || bad "telaAtual resolvida no escopo do root" "telaAtual fora do root"
 
-# --- notificacoes ---
-# O mako e o dono de org.freedesktop.Notifications nesta maquina, e ele faz
-# o OSD de volume e brilho. Registrar o servico nativo do quickshell daria
-# conflito e o mako perderia o OSD -- entao o painel e um CLIENTE do mako.
-[ -x "$DIR/list-notifications.sh" ] \
-  && ok "list-notifications.sh existe e e executavel" \
-  || bad "list-notifications.sh existe e e executavel" "ausente"
 
-if "$DIR/list-notifications.sh" 2>/dev/null | python3 -c '
-import sys, json
-d = json.load(sys.stdin)
-assert "notificacoes" in d, "faltando a lista"
-' 2>/dev/null; then
-  ok "list-notifications.sh devolve JSON valido"
+# --- notificacoes: servico nativo ---
+# O mako ocupava org.freedesktop.Notifications e nao deixava o quickshell
+# registrar. Ele saiu do autostart E foi mascarado no systemd de usuario,
+# porque tem fr.emersion.mako.service de ativacao D-Bus: sem o mask, o
+# dbus o ressuscitava quando o nome ficava livre.
+grep -q 'NotificationServer' "$CFG" \
+  && ok "usa o servico de notificacoes nativo" \
+  || bad "usa o servico de notificacoes nativo" "sem NotificationServer"
+
+# Em 0.3.2 o sinal chega mas trackedNotifications fica vazio, com ou sem
+# keepOnReload. A lista tem de ser nossa, alimentada pelo sinal.
+grep -q 'onNotification' "$CFG" \
+  && ok "historico montado pelo sinal, nao por trackedNotifications" \
+  || bad "historico montado pelo sinal, nao por trackedNotifications"
+
+# O comentario que explica POR QUE nao usar trackedNotifications cita o
+# nome; o teste precisa ver uso real, nao mencao em comentario. E a
+# quarta vez que isso acontece com este arquivo.
+grep -vE '^\s*//' "$CFG" | grep -q 'trackedNotifications' \
+  && bad "nao depende de trackedNotifications" "vazio nesta versao do quickshell" \
+  || ok "nao depende de trackedNotifications"
+
+grep -q 'modelData.invoke()' "$CFG" \
+  && ok "acao da notificacao usa o invoke() do objeto" \
+  || bad "acao da notificacao usa o invoke() do objeto" "ainda chamando gdbus"
+
+if grep -q 'mako' "$CFG/../hypr/autostart.lua" 2>/dev/null || grep -q 'exec_cmd("mako")' "$RAIZ/hypr/autostart.lua"; then
+  bad "mako fora do autostart" "mako ainda e iniciado"
 else
-  bad "list-notifications.sh devolve JSON valido" "JSON invalido"
+  ok "mako fora do autostart"
 fi
-
-# Usar o servico nativo brigaria com o mako no mesmo nome do DBus.
-if grep -q 'NotificationServer' "$CFG"; then
-  bad "nao registra servico de notificacoes proprio" "conflita com o mako, que faz o OSD"
-else
-  ok "nao registra servico de notificacoes proprio"
-fi
-
-grep -q 'fr.emersion.Mako' "$CFG" \
-  && ok "le a lista pela interface do mako" \
-  || bad "le a lista pela interface do mako" "sem fr.emersion.Mako"
-
-grep -q 'InvokeAction' "$CFG" \
-  && ok "acoes da notificacao sao invocaveis" \
-  || bad "acoes da notificacao sao invocaveis" "sem InvokeAction"
-
-# Toda acao do popup precisa usar popX. A de notificacoes esqueceu, e o
-# painel abria onde a janela ja estivesse em vez de onde foi clicado.
-awk '/function openNotifications/,/^\t}/' "$CFG" | grep -q 'popX' \
-  && ok "openNotifications respeita a posicao do clique" \
-  || bad "openNotifications respeita a posicao do clique" "ignora o argumento x"
-
-# Ternario de seis niveis para a altura jaClosing parentese quebrou o QML;
-# virou funcao.
-grep -q 'function alturaPainel' "$CFG" \
-  && ok "altura do painel calculada em funcao" \
-  || bad "altura do painel calculada em funcao" "ternario gigante no lugar"

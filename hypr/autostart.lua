@@ -18,7 +18,11 @@ hl.on("hyprland.start", function()
   hl.exec_cmd("command -v qs >/dev/null && setsid -f qs -c popup")
   hl.exec_cmd("waybar")
   hl.exec_cmd("hyprpaper")
-  hl.exec_cmd("mako")
+  -- O mako saiu: o painel de notificacoes usa o servico NATIVO do
+  -- quickshell, que se registra em org.freedesktop.Notifications. O mako
+  -- ocupava esse mesmo nome e nao deixava o quickshell registrar.
+  -- As teclas de volume NAO dependiam do mako: elas vao pelo
+  -- swayosd-client, que continua no autostart acima.
   hl.exec_cmd("xdg-desktop-portal-hyprland")
   hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
   hl.exec_cmd([[gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"]])
