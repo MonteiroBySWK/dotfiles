@@ -374,3 +374,21 @@ if grep -q 'transition: color' "$DIR/../waybar/style.css"; then
 else
   ok "sem transition no icone de recursos"
 fi
+
+# --- a barra do popup nao pode "zera e carregar" ---
+# A cada leitura (1s) o Repeater e recriado, entao o delegate nasce com
+# width 0. Com "Behavior on width" a barra animava de zero ate o valor --
+# "zera a barra e carrega novamente na animacao", a cada segundo.
+if grep -q 'Behavior on width' "$DIR/StatBar.qml"; then
+  bad "StatBar sem Behavior on width" "a barra anima do zero a cada leitura"
+else
+  ok "StatBar sem Behavior on width"
+fi
+
+# Sem argumento o IPC passa 0, que e um x legitimo (borda esquerda). Com
+# "x < 0" o 0 caia fora do caso de centralizar e o popup ia para a borda.
+if grep -q 'x <= 0' "$CFG"; then
+  ok "popX trata 0 como ausente (centraliza)"
+else
+  bad "popX trata 0 como ausente (centraliza)" "0 cai fora e o popup vai para a borda"
+fi

@@ -33,12 +33,11 @@ Item {
 			height: parent.height
 			radius: height / 2
 			color: control.barColor
-			Behavior on width {
-				NumberAnimation {
-					duration: 220
-					easing.type: Easing.OutCubic
-				}
-			}
+			// Sem "Behavior on width". A cada leitura (1s) o Repeater e
+			// recriado, entao o delegate nasce com width 0 e a animacao o
+			// levava de zero ate o valor -- a barra "zera e carrega" a cada
+			// segundo, exatamente o que foi relatado. Sem a animacao o
+			// delegate ja aparece no valor.
 		}
 	}
 }

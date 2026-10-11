@@ -183,7 +183,10 @@ ShellRoot {
 	}
 
 	function openResources(x) {
-		root.popX = (x === undefined || x < 0) ? -1 : x;
+		// x <= 0 em vez de x < 0: sem argumento o IPC passa 0, que e um
+		// valor legitimo (borda esquerda da tela). Com "x < 0" o 0 caia
+		// fora e o popup ia para a borda em vez de centralizar.
+		root.popX = (x === undefined || x <= 0) ? -1 : x;
 		root.mode = 4;
 		root.resTimerOn = true;
 		readResources.running = false;
@@ -256,14 +259,20 @@ ShellRoot {
 	// Acoes
 	// ------------------------------------------------------------------
 	function openVolume(x) {
-		root.popX = (x === undefined || x < 0) ? -1 : x;
+		// x <= 0 em vez de x < 0: sem argumento o IPC passa 0, que e um
+		// valor legitimo (borda esquerda da tela). Com "x < 0" o 0 caia
+		// fora e o popup ia para a borda em vez de centralizar.
+		root.popX = (x === undefined || x <= 0) ? -1 : x;
 		root.refreshDevices();
 		root.mode = 1;
 		hideTimer.restart();
 	}
 
 	function openCalendar(x) {
-		root.popX = (x === undefined || x < 0) ? -1 : x;
+		// x <= 0 em vez de x < 0: sem argumento o IPC passa 0, que e um
+		// valor legitimo (borda esquerda da tela). Com "x < 0" o 0 caia
+		// fora e o popup ia para a borda em vez de centralizar.
+		root.popX = (x === undefined || x <= 0) ? -1 : x;
 		root.mode = 3;
 		// Ao abrir, volta para o mes de hoje: sair de novembro e voltar
 		// amanha e encontrar a grade em branco e confuso.
@@ -274,7 +283,10 @@ ShellRoot {
 	}
 
 	function openBrightness(x) {
-		root.popX = (x === undefined || x < 0) ? -1 : x;
+		// x <= 0 em vez de x < 0: sem argumento o IPC passa 0, que e um
+		// valor legitimo (borda esquerda da tela). Com "x < 0" o 0 caia
+		// fora e o popup ia para a borda em vez de centralizar.
+		root.popX = (x === undefined || x <= 0) ? -1 : x;
 		readBrightness.running = false;
 		readBrightness.running = true;
 		readDdc();
