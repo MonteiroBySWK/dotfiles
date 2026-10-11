@@ -64,7 +64,7 @@
         "  "
       ],
     },
-    "on-click": "qs ipc -c popup call control showVolume",
+    "on-click": "~/.config/quickshell/popup/open.sh volume",
     "on-click-right": "pavucontrol",
   },
   "custom/tlp": {
@@ -138,7 +138,7 @@
     "format-icons": ["", "", "", "", "", "", "", "", ""],
     "on-scroll-up": "/home/monteiro/.config/hypr/scripts/brightness.sh up 1 quiet",
     "on-scroll-down": "/home/monteiro/.config/hypr/scripts/brightness.sh down 1 quiet",
-    "on-click": "qs ipc -c popup call control showBrightness"
+    "on-click": "~/.config/quickshell/popup/open.sh brightness"
   },
   "custom/nightlight": {
     "exec": "/home/monteiro/.config/waybar/scripts/nightlight.sh status",

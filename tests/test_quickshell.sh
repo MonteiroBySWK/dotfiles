@@ -392,3 +392,34 @@ if grep -q 'x <= 0' "$CFG"; then
 else
   bad "popX trata 0 como ausente (centraliza)" "0 cai fora e o popup vai para a borda"
 fi
+
+# --- os handlers do IPC precisam aceitar argumento ---
+# Viraram "x: int" quando o popup passou a abrir onde foi clicado. QML
+# nao aceita anotacao de tipo em parametro default ("Type annotations on
+# default parameters are not supported") e o IpcHandler so registra
+# funcoes com parametro tipado -- sem o tipo ele some com "Function not
+# found". Entao todo chamador precisa passar a posicao.
+for f in showVolume showBrightness showCalendar showResources; do
+  grep -q "function $f(x: int): void" "$CFG" \
+    && ok "IPC $f com x: int" \
+    || bad "IPC $f com x: int" "assinatura sem parametro tipado: nao registra"
+done
+
+# Nenhum chamador pode ficar sem argumento, e a ordem dos flags do qs
+# importa: "qs ipc -c popup" nao e "qs -c popup ipc".
+if grep -qE 'qs ipc -c popup' "$DIR/../waybar/config.jsonc"; then
+  bad "waybar chama os popups pelo wrapper" "qs ipc -c popup: flags na ordem errada"
+else
+  ok "waybar chama os popups pelo wrapper"
+fi
+
+vol=$(grep -c 'open.sh volume' "$DIR/../waybar/config.jsonc")
+bri=$(grep -c 'open.sh brightness' "$DIR/../waybar/config.jsonc")
+[ "$vol" -ge 1 ] && ok "volume pelo wrapper (passa a posicao)" || bad "volume pelo wrapper (passa a posicao)" "volume sem wrapper"
+[ "$bri" -ge 1 ] && ok "brilho pelo wrapper (passa a posicao)" || bad "brilho pelo wrapper (passa a posicao)" "brilho sem wrapper"
+
+# A barra da GPU e temperatura, nao uso: uso ocioso e poucos por cento e
+# nao diz nada de saude, enquanto a temperatura e o numero que importa.
+grep -q 'valor: g.celsius' "$CFG" \
+  && ok "barra da GPU mostra temperatura, nao uso" \
+  || bad "barra da GPU mostra temperatura, nao uso" "barra usa porcentagem de uso"
