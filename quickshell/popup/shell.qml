@@ -34,9 +34,91 @@ ShellRoot {
 	// 0 = fechado, 1 = volume, 2 = brilho
 	property int mode: 0
 
-	property real volume: 0
-	property bool muted: false
 	property real brightness: 0
+
+	// Lista de aparelhos, do list-devices.sh. Cada sink/source tem volume e
+	// mute proprios -- e por isso que o popup do ironbar mostrava um slider
+	// por app. Aqui a lista vem inteira e o padrao e marcado.
+	property var sinks: []
+	property var sources: []
+	// O macOS so mostra o microfone com o ponto laranja quando ele esta em
+	// uso; em repouso ele some. Mesma regra aqui.
+	property bool micInUse: false
+
+	// ------------------------------------------------------------------
+	// Leitura dos aparelhos
+	// ------------------------------------------------------------------
+	Process {
+		id: readDevices
+		// Caminho absoluto: o cwd do quickshell nao e o ~/.config, e com
+		// caminho relativo o processo falhava em silencio -- o popup abria
+		// vazio, sem nenhuma linha.
+		command: ["/home/monteiro/.config/quickshell/popup/list-devices.sh"]
+		running: true
+
+		stdout: StdioCollector {
+			id: devicesOut
+			onStreamFinished: {
+				try {
+					const d = JSON.parse(devicesOut.text);
+					root.sinks = d.sinks || [];
+					root.sources = d.sources || [];
+					root.micInUse = !!d.micInUse;
+				} catch (e) {
+					// Deixa a lista como esta: um JSON quebrado nao deve
+					// apagar o que ja estava na tela.
+					console.warn("list-devices.sh devolveu JSON invalido:", e);
+				}
+			}
+		}
+	}
+
+	function refreshDevices() {
+		readDevices.running = false;
+		readDevices.running = true;
+	}
+
+	// ------------------------------------------------------------------
+	// Escrita por aparelho
+	// ------------------------------------------------------------------
+	// pactl, e nao wpctl. O wpctl aceita NUMERO de objeto, nao nome:
+	//   wpctl set-volume bluez_output.01_92_25_21_0D_0D.1 55%
+	//   -> Error: 'bluez_output...' is not a valid number
+	// O pactl aceita o nome direto, o que e o que a lista traz.
+	//
+	// O subcomando muda com o tipo (set-sink-volume / set-source-volume),
+	// por isso o "kind" vem do script.
+	Process {
+		id: writeDevice
+
+		function setVolume(name, v, isSource) {
+			writeDevice.command = ["pactl",
+				isSource ? "set-source-volume" : "set-sink-volume",
+				name, Math.round(v) + "%"];
+			writeDevice.running = false;
+			writeDevice.running = true;
+		}
+
+		// toggle em vez de 0/1: o pactl aceita "toggle" e assim nao preciso
+		// saber o estado atual no QML, que pode estar velho.
+		function setMute(name, isSource) {
+			writeDevice.command = ["pactl",
+				isSource ? "set-source-mute" : "set-sink-mute",
+				name, "toggle"];
+			writeDevice.running = false;
+			writeDevice.running = true;
+		}
+
+		function setDefault(name, isSource) {
+			writeDevice.command = ["pactl",
+				isSource ? "set-default-source" : "set-default-sink",
+				name];
+			writeDevice.running = false;
+			writeDevice.running = true;
+		}
+
+		onExited: root.refreshDevices();
+	}
 
 	// Monitor externo por DDC/CI. Vem do brightness-ddc.sh, que ja
 	// escolhe o display certo (o primeiro "Display N" do detect, que
@@ -75,8 +157,7 @@ ShellRoot {
 	// Acoes
 	// ------------------------------------------------------------------
 	function openVolume() {
-		readVolume.running = false;
-		readVolume.running = true;
+		root.refreshDevices();
 		root.mode = 1;
 		hideTimer.restart();
 	}
@@ -94,16 +175,6 @@ ShellRoot {
 		root.dragging = false;
 	}
 
-	function parseVolume(text) {
-		// wpctl devolve FRACAO: "Volume: 0.74" ou "Volume: 1.19 [MUTED]".
-		// O slider e o texto trabalham em pontos (0..maxVolume), entao
-		// multiplicar por 100 aqui. Sem isso, 0.74 aparecia como "1%".
-		const m = /([0-9]*\.?[0-9]+)/.exec(text);
-		if (m) {
-			root.volume = parseFloat(m[1]) * 100;
-		}
-		root.muted = text.indexOf("MUTED") !== -1;
-	}
 
 	function parseDdc(text) {
 		// "VCP 10 C 50 50" -- campos 4 (atual) e 5 (maximo).
@@ -143,17 +214,6 @@ ShellRoot {
 
 	property real brightnessMax: 65535
 
-	// ------------------------------------------------------------------
-	// Leitura
-	// ------------------------------------------------------------------
-	Process {
-		id: readVolume
-		command: ["wpctl", "get-volume", "@DEFAULT_AUDIO_SINK@"]
-		stdout: StdioCollector {
-			id: volOut
-			onStreamFinished: root.parseVolume(volOut.text)
-		}
-	}
 
 	Process {
 		id: readBrightness
@@ -164,33 +224,7 @@ ShellRoot {
 		}
 	}
 
-	// ------------------------------------------------------------------
-	// Escrita
-	// ------------------------------------------------------------------
-	Process {
-		id: writeVolume
-		// Rastreado, e nao startDetached: sem onExited nao ha como reler o
-		// valor depois de escrever, e o numero ficava congelado no que veio
-		// da leitura inicial -- o slider mexia mas o "%" nao acompanhava.
-		function apply(v) {
-			root.volume = v;
-			writeVolume.command = ["wpctl", "set-volume", "@DEFAULT_AUDIO_SINK@", Math.round(v) + "%"];
-			writeVolume.running = false;
-			writeVolume.running = true;
-		}
-		onExited: {
-			readVolume.running = false;
-			readVolume.running = true;
-		}
-	}
 
-	Process {
-		id: writeMute
-		function apply() {
-			writeMute.command = ["wpctl", "set-mute", "@DEFAULT_AUDIO_SINK@", "toggle"];
-			writeMute.startDetached();
-		}
-	}
 
 	Process {
 		id: readDdcProc
@@ -295,8 +329,14 @@ ShellRoot {
 		Item {
 			id: boxShadow
 			anchors.horizontalCenter: parent.horizontalCenter
-			width: 300
-			height: root.mode === 2 ? (root.ddcAvailable ? 104 : 48) : 96
+			width: 340
+			// A altura do volume deixou de ser fixa: a lista de aparelhos
+			// tem uma linha por sink, mais o divisor e a linha do mic. Com
+			// altura fixa de 96px o painel cortava o segundo aparelho.
+			// O minimo de 48px e o piso do modo brilho sem DDC.
+			height: root.mode === 1
+				? Math.max(64, 28 + root.sinks.length * 58 + (root.micInUse ? 56 : 0))
+				: (root.mode === 2 ? (root.ddcAvailable ? 104 : 48) : 4)
 
 			DropShadow {
 				anchors.fill: box
@@ -319,63 +359,166 @@ ShellRoot {
 			border.color: "#3A3A3C"
 
 			// ---------------- volume ----------------
+			// ---------------- volume ----------------
+			// Lista de aparelhos, no padrao do Control Center do macOS: cada
+			// sink e uma linha com nome e slider proprios, e clicar no nome
+			// torna ele o default. Antes era um slider unico do @DEFAULT_,
+			// que escondia os outros aparelhos atras do pavucontrol.
 			ColumnLayout {
 				id: volCol
 				visible: root.mode === 1
 				anchors.fill: parent
-				anchors.margins: 16
-				spacing: 12
+				anchors.margins: 14
+				spacing: 4
 
-				RowLayout {
-					spacing: 12
-					Layout.fillWidth: true
+				Repeater {
+					model: root.sinks
 
-					Text {
-						Layout.preferredWidth: 18
-						text: root.muted ? "" : ""
-						color: root.muted ? "#FF453A" : "#F5F5F7"
-						font.pixelSize: 15
-						font.family: "JetBrainsMono Nerd Font"
-					}
-
-					MacSlider {
-						id: volSlider
+					delegate: Rectangle {
+						required property var modelData
 						Layout.fillWidth: true
-						from: 0
-						to: root.maxVolume
-						value: root.volume
+						Layout.preferredHeight: 58
+						radius: 10
+						// Card um nivel acima da superficie, como os tiles do
+						// Control Center. Borda azul marca o default.
+						color: "#2C2C2E"
+						border.width: 1
+						border.color: modelData.default ? "#0A84FF" : "#3A3A3C"
 
-						onPressedChanged: {
-							hideTimer.restart();
-							root.dragging = pressed;
-						}
-						onCommitted: function (v) {
-							writeVolume.apply(v);
-						}
-					}
+						ColumnLayout {
+							anchors.fill: parent
+							anchors.margins: 10
+							spacing: 6
 
-					Text {
-						Layout.preferredWidth: 38
-						text: Math.round(root.volume) + "%"
-						color: "#98989D"
-						font.pixelSize: 12
-						font.family: "JetBrainsMono Nerd Font"
-						horizontalAlignment: Text.AlignRight
+							RowLayout {
+								Layout.fillWidth: true
+								spacing: 8
+
+								Text {
+									text: modelData.muted ? "\uf026" : "\uf028"
+									color: modelData.muted ? "#FF453A" : "#98989D"
+									font.pixelSize: 13
+									font.family: "JetBrainsMono Nerd Font"
+
+									MouseArea {
+										anchors.fill: parent
+										cursorShape: Qt.PointingHandCursor
+										onClicked: writeDevice.setMute(modelData.name, modelData.kind === "source")
+									}
+								}
+
+								Text {
+									Layout.fillWidth: true
+									text: modelData.label
+									color: "#F5F5F7"
+									font.pixelSize: 13
+									font.family: "JetBrainsMono Nerd Font"
+									font.weight: modelData.default ? Font.DemiBold : Font.Normal
+									elide: Text.ElideRight
+								}
+
+								Text {
+									text: modelData.muted ? "mudo" : modelData.volume + "%"
+									color: modelData.muted ? "#FF453A" : "#98989D"
+									font.pixelSize: 12
+									font.family: "JetBrainsMono Nerd Font"
+								}
+							}
+
+							MacSlider {
+								Layout.fillWidth: true
+								from: 0
+								to: root.maxVolume
+								value: modelData.volume
+
+								onPressedChanged: {
+									hideTimer.restart();
+									root.dragging = pressed;
+								}
+								onCommitted: function (v) {
+									writeDevice.setVolume(modelData.name, v, modelData.kind === "source");
+								}
+							}
+						}
 					}
 				}
 
-				Text {
+				// Divisor antes do microfone.
+				Rectangle {
 					Layout.fillWidth: true
-					text: "controle completo do audio"
-					color: "#636366"
-					font.pixelSize: 11
-					font.family: "JetBrainsMono Nerd Font"
-					horizontalAlignment: Text.AlignHCenter
+					Layout.preferredHeight: 1
+					Layout.topMargin: 6
+					Layout.bottomMargin: 6
+					visible: root.micInUse
+					color: "#3A3A3C"
+				}
 
-					MouseArea {
-						anchors.fill: parent
-						cursorShape: Qt.PointingHandCursor
-						onClicked: openPavu.apply()
+				// Microfone: so aparece em uso, como o indicador laranja do
+				// macOS. Em repouso a linha some em vez de ocupar espaco.
+				Repeater {
+					// Um por source era ruido: a maquina tem ALC256 Analog e Fuxi-H3, e o que
+					// interessa e o microfone em uso. Com o Repeater inteiro a
+					// altura da caixa (que so reservava uma linha) cortava o
+					// segundo.
+					model: {
+						if (!root.micInUse)
+							return [];
+						const act = root.sources.find(s => s.running)
+							|| root.sources.find(s => s.default);
+						return act ? [act] : [];
+					}
+
+					delegate: Rectangle {
+						required property var modelData
+						Layout.fillWidth: true
+						Layout.preferredHeight: 44
+						radius: 10
+						color: "#2C2C2E"
+						border.width: 1
+						border.color: "#3A3A3C"
+
+						RowLayout {
+							anchors.fill: parent
+							anchors.margins: 10
+							spacing: 8
+
+							Text {
+								Layout.preferredWidth: 18
+								text: "\uf130"
+								color: "#FF9F0A"
+								font.pixelSize: 13
+								font.family: "JetBrainsMono Nerd Font"
+							}
+
+							Text {
+								Layout.fillWidth: true
+								text: modelData.label
+								color: "#F5F5F7"
+								font.pixelSize: 13
+								font.family: "JetBrainsMono Nerd Font"
+								elide: Text.ElideRight
+							}
+
+							Text {
+								text: modelData.volume + "%"
+								color: "#98989D"
+								font.pixelSize: 12
+								font.family: "JetBrainsMono Nerd Font"
+							}
+
+							Text {
+								text: modelData.muted ? "\uf026" : "\uf130"
+								color: modelData.muted ? "#FF453A" : "#98989D"
+								font.pixelSize: 13
+								font.family: "JetBrainsMono Nerd Font"
+
+								MouseArea {
+									anchors.fill: parent
+									cursorShape: Qt.PointingHandCursor
+									onClicked: writeDevice.setMute(modelData.name, modelData.kind === "source")
+								}
+							}
+						}
 					}
 				}
 			}

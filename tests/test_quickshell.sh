@@ -2,6 +2,7 @@
 # Testa quickshell/popup/shell.qml: sintaxe real + os tokens do macOS.
 set -u
 CFG="$(dirname "$0")/../quickshell/popup/shell.qml"
+DIR="$(dirname "$CFG")"
 fails=0
 
 ok()   { echo "ok   - $1"; }
@@ -78,8 +79,79 @@ fi
 # e por isso nao tem onExited. Sem reler depois de escrever, root.volume
 # ficava congelado no valor da leitura inicial: o slider mexia e o "%" nao.
 # O sintoma e silencioso -- so se nota arrastando.
-if grep -q 'startDetached' "$CFG"; then
-  bad "processos de escrita sao rastreados (releitura no onExited)" "startDetached ainda presente"
+# O startDetached e erro SO nos processos que escrevem valor: sem onExited
+# nao ha releitura e o "%" congela. No openPavu ele esta correto -- o
+# pavucontrol e um app grafico, nao um comando que devolva estado -- entao a
+# busca ignora aquele bloco.
+if grep -B4 'startDetached' "$CFG" | grep -q 'openPavu'; then
+  ok "openPavu segue detached (app grafico, nao devolve estado)"
+else
+  bad "openPavu segue detached (app grafico, nao devolve estado)" "estado incerto"
+fi
+
+if grep -A6 'id: write' "$CFG" | grep -q 'startDetached'; then
+  bad "processos de escrita sao rastreados (releitura no onExited)" "startDetached em processo de escrita"
 else
   ok "processos de escrita sao rastreados (releitura no onExited)"
 fi
+
+# --- lista de aparelhos ---
+# O script entrega os sinks e sources; sem ele o popup abre vazio e sem
+# aviso nenhum, que foi como o bug do caminho relativo apareceu.
+if [ -x "$DIR/list-devices.sh" ]; then
+  ok "list-devices.sh existe e e executavel"
+else
+  bad "list-devices.sh existe e e executavel" "ausente ou sem bit de execucao"
+fi
+
+saida=$("$DIR/list-devices.sh" 2>/dev/null)
+if printf '%s' "$saida" | python3 -c '
+import json,sys
+d=json.load(sys.stdin)
+assert "sinks" in d and "sources" in d and "micInUse" in d
+for s in d["sinks"]+d["sources"]:
+    for k in ("name","label","volume","muted","default","running","kind"):
+        assert k in s, "faltando %s" % k
+' 2>/dev/null; then
+  ok "list-devices.sh devolve JSON com os campos esperados"
+else
+  bad "list-devices.sh devolve JSON com os campos esperados" "JSON invalido ou incompleto"
+fi
+
+# .monitor nao e microfone que a pessoa escolhe; se vazar, a linha do mic
+# mostra um dispositivo que nao existe.
+if printf '%s' "$saida" | grep -q '\.monitor'; then
+  bad "sources .monitor filtrados" "um monitor de entrada vazou para a lista"
+else
+  ok "sources .monitor filtrados"
+fi
+
+# --- pactl, e nao wpctl, para escrever por nome ---
+# O wpctl quer NUMERO de objeto. Com nome ele falha:
+#   Error: 'bluez_output.01_92_25_21_0D_0D.1' is not a valid number
+# e o clique no nome do aparelho nao fazia nada, silenciosamente.
+if grep -q 'command: \["wpctl", "set-' "$CFG"; then
+  bad "escrita por aparelho usa pactl" "wpctl com nome de aparelho nao funciona"
+else
+  ok "escrita por aparelho usa pactl"
+fi
+
+# --- caminho absoluto no Process ---
+# Com caminho relativo o quickshell nao achava o binario:
+#   WARN Process failed to start, likely because the binary could not be found
+if grep -qE 'command: \["quickshell/' "$CFG"; then
+  bad "Process usa caminho absoluto" "caminho relativo falha: cwd do quickshell nao e ~/.config"
+else
+  ok "Process usa caminho absoluto"
+fi
+
+# --- linha do mic condicional ---
+grep -q 'micInUse' "$CFG" \
+  && ok "linha do microfone so aparece em uso" \
+  || bad "linha do microfone so aparece em uso" "micInUse ausente"
+
+# --- altura da caixa acompanha a lista ---
+# Com altura fixa, o segundo aparelho da lista ficava cortado.
+grep -q 'root.sinks.length' "$CFG" \
+  && ok "altura da caixa cresce com a lista de aparelhos" \
+  || bad "altura da caixa cresce com a lista de aparelhos" "altura fixa"
