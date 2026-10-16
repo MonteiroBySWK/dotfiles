@@ -61,3 +61,16 @@ After invoking, verify in the transcript that the `skill(...)` call happened; `/
 1. For codebase questions, run `graphify query "<question>"` (or `path`/`explain`) BEFORE broad grep — graph queries cost ~10x fewer tokens than file-explorer sweeps.
 2. Partition parallel work by DEPENDENCY (cohesive files per agent, check with `graphify path`), not by naive file split — naive parallelism raises cost without pass-rate gain.
 3. Keep `graphify-out/` fresh: run `graphify update .` after modifying code.
+
+## Roteamento em português simples + Quota-Aware (plano Go)
+
+Entenda pedido em PT-BR natural, sem código tipo `model=`:
+- "vai rápido / rapidinho / sem caprichar" → esforço baixo: recon mimo, build spark medium-baixo, sem oracle.
+- "normal / padrão" → defaults abaixo.
+- "capricha / com calma / esforço máximo / revisa com rigor" → oracle spark xhigh + reviewer, só aí.
+- "usa deepseek" → DeepSeek V4.1 Flash `high` (nunca `max`), prefira fora do peak (01–04/06–10 UTC dias úteis custa 2x). Só quando Spark travar.
+- "barato / economiza cota" → tudo spark low + mimo, nada de Luna/Kimi/Qwen/Grok.
+- Nunca invente variant. Spark tem low/medium/xhigh; mimo NÃO tem variant — usa o model `mimo-v2.5-low`.
+- Padrão (cota mais barata primeiro): recon `@explorer/@observer` → mimo; docs `@librarian` → spark low; build `@fixer` → spark medium; estratégia `@oracle` → spark xhigh SÓ em arquitetura/debug duro; `@designer` → mimo; `@vision` → gpt-5.6-luna (cirúrgico). Gestão `@pm`, PR `@pr-reader`, issues `@issue-reader` → spark low, read-only.
+- NÃO delega trivial (<20 linhas, 1 arquivo, pergunta factual): executa direto. Paraleliza só com dono de arquivo separado (1 lane = 1 diretório); cadeia sequencial fica serial.
+- Privacidade: Spark Contributor treina com prompts (Meta). Código proprietário sensível → DeepSeek/Mimo (0-day).
