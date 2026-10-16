@@ -37,14 +37,46 @@
     "reviewer": {
       "description": "Review code for accuracy, hallucinated APIs, type errors, and logic bugs before declaring work complete.",
       "mode": "subagent",
-      "model": "opencode-go/muse-spark-1.3-contributor",
-      "variant": "medium",
+      "model": "opencode-go/muse-spark-1.3-contributor#low",
       "permission": {
         "bash": "allow",
         "edit": "deny",
         "read": "allow"
       },
-      "prompt": "You are a strict, ADVERSARIAL code reviewer. Your job: catch hallucinations and errors before code is finalized. Rules: (1) Do all imported functions/modules actually exist in the project? Cite file:line. (2) Are API signatures used correctly? (3) Are types consistent? (4) Does the logic handle edge cases? (5) DISAGREE EXPLICITLY when something looks wrong — never converge without evidence; false consensus is a failure mode. Run build/typecheck commands if available. Mark any unverifiable claim as SUSPICIOUS. Do not approve code you cannot verify."
+      "prompt": "You are a strict, ADVERSARIAL code reviewer. Your job: catch hallucinations and errors before code is finalized. Rules: (1) Do all imported functions/modules actually exist in the project? Cite file:line. (2) Are API signatures used correctly? (3) Are types consistent? (4) Does the logic handle edge cases? (5) DISAGREE EXPLICITLY when something looks wrong \u2014 never converge without evidence; false consensus is a failure mode. Run build/typecheck commands if available. Mark any unverifiable claim as SUSPICIOUS. Do not approve code you cannot verify."
+    },
+    "pm": {
+      "description": "Project-management lane: plan multi-step work, own checklists, prevent file overlap. Use for 3+ steps or 2+ files.",
+      "mode": "all",
+      "model": "opencode-go/muse-spark-1.3-contributor#low",
+      "permission": {
+        "bash": "deny",
+        "edit": "deny",
+        "read": "allow"
+      },
+      "prompt": "You plan only. Decompose into 2-5min tasks with exact file paths, owners per lane, acceptance checklist. No edits."
+    },
+    "pr-reader": {
+      "description": "PR reading lane: fetch PR diff via gh, report by severity. Use for review/comment commands.",
+      "mode": "all",
+      "model": "opencode-go/muse-spark-1.3-contributor#low",
+      "permission": {
+        "bash": "allow",
+        "edit": "deny",
+        "read": "allow"
+      },
+      "prompt": "Read-only PR analysis. Use gh pr view/diff, report blockers first with file:line. No inline comments unless asked."
+    },
+    "issue-reader": {
+      "description": "Issues/projects lane: audit backlog health, conventions, hierarchy. Use for audit command.",
+      "mode": "all",
+      "model": "opencode-go/muse-spark-1.3-contributor#low",
+      "permission": {
+        "bash": "allow",
+        "edit": "deny",
+        "read": "allow"
+      },
+      "prompt": "Read-only issues audit. Use gh issue/project commands, report by category. Fix only on explicit confirmation."
     }
   },
   "compaction": {
@@ -53,7 +85,7 @@
   },
   "command": {
     "review": {
-      "template": "Use o skill pr-review para revisar a PR $ARGUMENTS no repo atual (Fase A: analise estruturada, relatorio por severidade e checkpoint — pare no relatorio).",
+      "template": "Use o skill pr-review para revisar a PR $ARGUMENTS no repo atual (Fase A: analise estruturada, relatorio por severidade e checkpoint \u2014 pare no relatorio).",
       "description": "Revisa PR com o skill pr-review (Fase A)"
     },
     "comment": {
@@ -106,10 +138,12 @@
     },
     "playwright": {
       "args": [
-        "--browser=chromium"
+        "--browser",
+        "chromium"
       ],
       "command": [
         "npx",
+        "-y",
         "@playwright/mcp@latest"
       ],
       "enabled": true,
@@ -126,6 +160,14 @@
         "AWS_PROFILE": "thera-access",
         "AWS_REGION": "us-east-1"
       },
+      "enabled": true
+    },
+    "cade-simu": {
+      "type": "local",
+      "command": [
+        "/home/monteiro/dev/codes/personal/cade-automation/tools/.venv-mcp/bin/python",
+        "/home/monteiro/dev/codes/personal/cade-automation/tools/cade_mcp.py"
+      ],
       "enabled": true
     }
   },
