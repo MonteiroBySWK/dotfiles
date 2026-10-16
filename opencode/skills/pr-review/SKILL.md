@@ -283,6 +283,29 @@ Confirmar título/parent/fields via a query da Task 5 (Step 1) + `parent { numbe
 `gh api repos/$REPO/issues/N --jq '.assignees[].login'`. Se algo divergir do checklist,
 corrigir com as mutações acima antes de seguir.
 
+## Lotes e rate-limit (lições 16/10/2026 — PR thera-org/arbitrium#1112)
+
+- Teto prático: **≤32 mutações por request**. 186 aliases numa chamada → HTTP 504;
+  54–64 aliases de `updateProjectV2ItemFieldValue` → HTTP 502.
+- `updateIssue`/`addSubIssue` toleram lote pequeno (15 ok). Fields de project são os
+  sensíveis: dividir em lotes ≤32.
+- **Intervalo ~90s entre lotes de mutação de project.** 15s não basta (502 persiste);
+  após 90s o mesmo lote passa com 0 erros. Secondary rate limit, não erro de query.
+- **504 pode ter aplicado parcial.** Mutations executam em série na ordem dos aliases:
+  antes de repetir, verificar o estado (ex: rename aplicado, close pendente). Repetir é
+  seguro: rename/close/field são idempotentes; `addSubIssue` repetido retorna erro
+  literal `duplicate sub-issues / only have one parent` — tratar como "já aplicado" e
+  seguir, não como falha.
+- Erro `Expected NAME ... at [1, N]` no fim da query = chaves desbalanceadas (contar
+  `{`/`}` na ordem dos campos; montado via script, conferir o tail). Não é rate-limit.
+- Não usar `gh api graphql --paginate` com `after:` (reescrita quebra a query). Paginar
+  manualmente: cursor literal entre aspas duplas + `--jq` no `endCursor`.
+- Resposta do `gh` pode vir com cauda `gh: ...` após o JSON (sem newline entre páginas
+  concatenadas com `>>`). Parsear com `raw_decode` (primeiro objeto) e sempre terminar
+  o arquivo com newline antes de concatenar.
+- Auditoria grande: 1 lookup com ~120 aliases (IDs + item IDs) passa numa chamada;
+  guardar em `/tmp/opencode/<pr>/` e reutilizar nos lotes.
+
 ## Regras de falha e encerramento
 
 - Sem auth `gh` (`gh auth status` falhando) ou sem permissão em repo/project: PARAR e
