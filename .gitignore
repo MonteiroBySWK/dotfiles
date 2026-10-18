@@ -131,6 +131,9 @@ temp/
 
 # Configs com dados de projetos internos (não commitar; schema em projects.example.json)
 opencode/skills/pr-review/projects.json
+# Credencial local do opencode (nunca commitar)
+opencode/service.json
+opencode/*.bak*
 **/.gpg/
 **/.password-store/
 .env
