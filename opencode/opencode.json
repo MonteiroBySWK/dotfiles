@@ -169,18 +169,25 @@
         "/home/monteiro/dev/codes/personal/cade-automation/tools/cade_mcp.py"
       ],
       "enabled": true
+    },
+    "grafana": {
+      "type": "local",
+      "command": [
+        "uvx",
+        "mcp-grafana@latest"
+      ],
+      "environment": {
+        "GRAFANA_URL": "https://monitoring.therash.com.br",
+        "GRAFANA_SERVICE_ACCOUNT_TOKEN": "{env:GRAFANA_SERVICE_ACCOUNT_TOKEN}"
+      },
+      "enabled": true
     }
   },
   "model": "opencode-go/muse-spark-1.3-contributor",
   "plugins": [
     "superpowers@git+https://github.com/obra/superpowers.git",
-    "openslimedit@latest",
-    "opencode-damage-control@latest",
-    "opencode-command-inject@latest",
     "oh-my-opencode-slim@3.0.0-beta.13",
-    "opencode-mem@2.26.0",
     "@tarquinen/opencode-dcp@3.2.0",
-    "@tarquinen/opencode-smart-title",
     ".opencode/plugins/graphify.js",
     "plugins/rtk.ts",
     "file:///home/monteiro/dev/codes/thera/olimpo/.opencode/plugins/olimpo.js"
