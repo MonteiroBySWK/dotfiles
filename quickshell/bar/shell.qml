@@ -625,7 +625,8 @@ ShellRoot {
 						text: root.activeTitle
 						color: root.fg
 						font.family: root.textFont
-						font.pixelSize: 15
+						font.pixelSize: 17
+						font.weight: Font.Medium
 						elide: Text.ElideRight
 					}
 				}
