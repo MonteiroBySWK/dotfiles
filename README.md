@@ -8,11 +8,18 @@ Este repositório mostra o visual e as configurações do meu ambiente (sem expo
 
 ## Componentes mostrados
 - Hyprland (compositor)
-- Waybar (status bar)
+- Quickshell (barra, popups e notificações)
 - Wofi (launcher)
 - nvim (config visual e tema)
 - Kitty (terminal)
 - Fastfetch (informações do sistema)
+
+### Barra
+
+A barra atual roda em Quickshell (`qs -c bar`), com os painéis de volume,
+brilho, calendário, recursos, notificações, bateria e bluetooth no mesmo
+processo. A Waybar fica no repositório como fallback, mas não sobe no login.
+`Super+R` mata/levanta a barra do Quickshell.
 
 —
 
