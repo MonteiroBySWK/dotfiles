@@ -1,15 +1,16 @@
 #!/usr/bin/env bash
-# Alterna a barra visivel entre quickshell e waybar (comparacao / rollback).
+# Liga/desliga a waybar para comparar com a barra do quickshell.
 #
-# A barra do quickshell so e escondida: o processo continua rodando e
-# segurando as notificacoes e os popups. A waybar e morta/iniciada de
-# verdade, porque ela nao tem um "hide" via IPC.
+# O quickshell NUNCA e escondido nem morto aqui: ele segura as notificacoes
+# e os popups, e a comparacao lado a lado precisa das duas barras visiveis.
+# Se um dia quiser esconder a barra do quickshell, use:
+#   qs -c bar ipc call bar hide
 set -u
 
 if pgrep -x waybar >/dev/null 2>&1; then
 	pkill -x waybar
-	qs -c bar ipc call bar show >/dev/null 2>&1
 else
-	qs -c bar ipc call bar hide >/dev/null 2>&1
-	setsid -f waybar
+	# Garante a barra do quickshell visivel (pode ter sido escondida antes).
+	qs -c bar ipc call bar showBar >/dev/null 2>&1
+	setsid -f waybar >/dev/null 2>&1
 fi

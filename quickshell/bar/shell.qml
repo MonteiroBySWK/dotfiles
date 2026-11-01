@@ -30,15 +30,15 @@ ShellRoot {
 	IpcHandler {
 		target: "bar"
 
-		function show(): void {
+		function showBar(): void {
 			root.barVisible = true;
 		}
 
-		function hide(): void {
+		function hideBar(): void {
 			root.barVisible = false;
 		}
 
-		function toggle(): void {
+		function toggleBar(): void {
 			root.barVisible = !root.barVisible;
 		}
 	}
@@ -490,7 +490,7 @@ ShellRoot {
 		if (c.indexOf("konsole") >= 0
 				&& Quickshell.hasThemeIcon("utilities-terminal"))
 			return "utilities-terminal";
-		return "application-x-executable";
+		return "";
 	}
 
 	function refreshActiveClass() {

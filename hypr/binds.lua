@@ -27,10 +27,10 @@ hl.bind(v.mainMod .. " + SPACE", hl.dsp.exec_cmd(v.menu))
 hl.bind(v.mainMod .. " + P", hl.dsp.window.pseudo({ action = "toggle" })) -- dwindle
 hl.bind(v.mainMod .. " + F", hl.dsp.window.fullscreen({ action = "toggle" }))
 hl.bind(v.mainMod .. " + A", hl.dsp.exec_cmd([[grim -g "$(slurp)" - | swappy -f -]])) -- screenshot
--- Super+R alterna a barra visivel: waybar <-> quickshell.
--- O processo do quickshell NAO morre: esconder a barra mantem o servidor
--- de notificacoes e os popups vivos. A waybar e morta/iniciada de verdade.
--- O script cuida do setsid; nao chamar waybar direto daqui.
+-- Super+R liga/desliga a waybar para comparar com o quickshell.
+-- O quickshell e o dono das notificacoes/popups e NAO e escondido aqui:
+-- as duas barras ficam visiveis (empilhadas) enquanto a waybar estiver
+-- ligada. Para esconder a do quickshell: qs -c bar ipc call bar hide.
 hl.bind(v.mainMod .. " + R",
   hl.dsp.exec_cmd("~/.config/quickshell/bar/toggle.sh"))
 hl.bind(v.mainMod .. " + T", hl.dsp.exec_cmd("swaylock"))
