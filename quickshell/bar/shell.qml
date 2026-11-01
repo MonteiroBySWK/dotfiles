@@ -100,6 +100,20 @@ ShellRoot {
 	readonly property bool muted: root.sink && root.sink.audio
 		? root.sink.audio.muted : false
 
+	readonly property var _volIcons: ["\uf026", "\uf027", "\uf028"]
+
+	function volumeIcon() {
+		if (root.muted)
+			return "\uf026";
+		const nome = root.sink && root.sink.name ? root.sink.name : "";
+		// bluez_output (A2DP) e fone/headset; o waybar mostra o mesmo
+		// icone de headphone nesse caso.
+		if (nome.indexOf("bluez") >= 0)
+			return "\uf025";
+		return root.volumePct < 34 ? "\uf027"
+			: (root.volumePct < 67 ? "\uf028" : "\uf028");
+	}
+
 	function bumpVolume(delta) {
 		if (!root.sink || !root.sink.audio)
 			return;
@@ -189,9 +203,12 @@ ShellRoot {
 	readonly property int batPct: root.bat
 		? Math.round(root.bat.percentage * 100) : -1
 
+	// So `Charging` (e PendingCharge) pinta de verde. FullyCharged e o
+	// estado de bateria cheia plugada -- a waybar tambem nao aplica a
+	// classe .charging nesse caso.
 	readonly property bool charging: root.bat
 		&& (root.bat.state === UPowerDeviceState.Charging
-			|| root.bat.state === UPowerDeviceState.FullyCharged)
+			|| root.bat.state === UPowerDeviceState.PendingCharge)
 
 	function bateriaIcone(pct) {
 		if (pct < 0)
@@ -244,6 +261,18 @@ ShellRoot {
 			if (!brightProc.running)
 				brightProc.running = true;
 		}
+	}
+
+	// Mesma escala de glifos do modulo backlight da waybar.
+	readonly property var _brightIcons: ["\ue38d", "\ue3d3", "\ue3d1",
+		"\ue3cf", "\ue3ce", "\ue3cd", "\ue3ca", "\ue3c8", "\ue39b"]
+
+	function brightIcon() {
+		if (root.brightPct < 0)
+			return "\ue3ce";
+		const i = Math.max(0, Math.min(8,
+			Math.round(root.brightPct / 100 * 8)));
+		return root._brightIcons[i];
 	}
 
 	function bumpBrightness(up) {
@@ -406,8 +435,37 @@ ShellRoot {
 	readonly property var activeTop: Hyprland.activeToplevel
 	readonly property string activeTitle: root.activeTop
 		&& root.activeTop.title ? root.activeTop.title : ""
-	readonly property string activeAppId: root.activeTop
-		&& root.activeTop.appId ? root.activeTop.appId : ""
+
+	// O HyprlandToplevel do quickshell nao traz appId nesta versao (vem
+	// vazio), entao a classe vem do hyprctl a cada troca de foco. E uma
+	// consulta por foco, nao polling.
+	property string activeClass: ""
+
+	Process {
+		id: activeWinProc
+		command: ["hyprctl", "-j", "activewindow"]
+		running: false
+
+		stdout: StdioCollector {
+			onStreamFinished: {
+				try {
+					const d = JSON.parse(text);
+					root.activeClass = d.class || "";
+				} catch (e) {
+					root.activeClass = "";
+				}
+			}
+		}
+	}
+
+	function refreshActiveClass() {
+		if (activeWinProc.running)
+			return;
+		activeWinProc.running = true;
+	}
+
+	Component.onCompleted: root.refreshActiveClass()
+	onActiveTopChanged: root.refreshActiveClass()
 
 	// ------------------------------------------------------------------
 	// Elementos reutilizaveis
@@ -511,12 +569,11 @@ ShellRoot {
 
 					Image {
 						id: titleIcon
-						visible: root.activeAppId !== ""
+						visible: root.activeClass !== ""
 						width: 16
 						height: 16
-						source: root.activeAppId !== ""
-							? Quickshell.iconPath(root.activeAppId,
-								"application-x-executable") : ""
+						source: root.activeClass !== ""
+							? Quickshell.iconPath(root.activeClass) : ""
 						sourceSize.width: 16
 						sourceSize.height: 16
 						fillMode: Image.PreserveAspectFit
@@ -622,10 +679,7 @@ ShellRoot {
 						root.bumpVolume(wheel.angleDelta.y > 0 ? 0.02 : -0.02);
 					}
 					IconText {
-						text: root.muted ? "\uf026"
-							: (root.volumePct < 34 ? "\uf027"
-								: (root.volumePct < 67 ? "\uf028"
-									: "\uf028"))
+						text: root.volumeIcon()
 					}
 					BarText {
 						text: root.muted ? "mudo" : root.volumePct + "%"
@@ -638,7 +692,7 @@ ShellRoot {
 					onWheeled: (wheel) => {
 						root.bumpBrightness(wheel.angleDelta.y > 0);
 					}
-					IconText { text: "\uf185" }
+					IconText { text: root.brightIcon() }
 					BarText {
 						visible: root.brightPct >= 0
 						text: root.brightPct + "%"
