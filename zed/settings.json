@@ -1,0 +1,187 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+  // ==== Aparência ====
+  "git_panel": {
+    "tree_view": true
+  },
+  "markdown_preview": {
+    "max_width": 1280.0
+  },
+  "cli_default_open_behavior": "existing_window",
+  "theme": {
+    "mode": "dark",
+    "light": "One Light",
+    "dark": "Ayu Dark"
+  },
+  "ui_font_family": "JetBrainsMono Nerd Font Propo",
+  "ui_font_size": 17.0,
+  "buffer_font_family": "JetBrainsMonoNL Nerd Font Propo",
+  "buffer_font_size": 15.0,
+  "buffer_font_weight": 400.0,
+  "buffer_line_height": "comfortable",
+  "icon_theme": "Zed (Default)",
+  "markdown_preview_font_size": 16.0,
+
+  // ==== Edição ====
+  "base_keymap": "VSCode",
+  "autosave": {
+    "after_delay": {
+      "milliseconds": 1000
+    }
+  },
+  "tab_size": 4,
+  "reduce_motion": "off",
+  "text_rendering_mode": "platform_default",
+
+  // ==== UI ====
+  "toolbar": {
+    "breadcrumbs": true,
+    "code_actions": false
+  },
+  "title_bar": {
+    "show_branch_status_icon": true,
+    "show_onboarding_banner": false
+  },
+  "tabs": {
+    "file_icons": true,
+    "git_status": true,
+    "show_close_button": "hover",
+    "show_diagnostics": "all"
+  },
+  "active_pane_modifiers": {
+    "border_size": 2.0
+  },
+  "project_panel": {
+    "hide_gitignore": false,
+    "dock": "left",
+    "file_icons": true
+  },
+  "minimap": {
+    "thumb_border": "none",
+    "current_line_highlight": "none",
+    "display_in": "active_editor",
+    "thumb": "hover",
+    "show": "never"
+  },
+  "colorize_brackets": true,
+  "indent_guides": {
+    "enabled": true,
+    "line_width": 1,
+    "active_line_width": 2,
+    "coloring": "indent_aware",
+    "background_coloring": "disabled"
+  },
+  "inlay_hints": {
+    "enabled": true,
+    "show_type_hints": true,
+    "show_parameter_hints": true
+  },
+  "agent": {
+    "button": false,
+    "sidebar_side": "right",
+    "dock": "right",
+    "default_width": 800,
+    "limit_content_width": false,
+    "favorite_models": [],
+    "model_parameters": []
+  },
+
+  // ==== Telemetria / servidores ====
+  "telemetry": {
+    "diagnostics": true,
+    "metrics": false,
+    "anthropic_retention": false
+  },
+  "agent_servers": {
+    "claude-acp": {
+      "type": "registry"
+    },
+    "OpenCode": {
+      "type": "custom",
+      "command": "opencode",
+      "args": ["acp"]
+    }
+  },
+
+  // ==== Config por linguagem ====
+  // São só regras estáticas — nada é "carregado" até você abrir
+  // um arquivo daquela linguagem, então pode listar todas sem peso.
+  "languages": {
+    "Go": {
+      "tab_size": 4,
+      "hard_tabs": true,
+      "format_on_save": "on",
+      "formatter": "language_server"
+    },
+    "Rust": {
+      "tab_size": 4,
+      "format_on_save": "on",
+      "formatter": "language_server"
+    },
+    "Python": {
+      "tab_size": 4,
+      "preferred_line_length": 88,
+      "format_on_save": "on",
+      "formatter": "language_server"
+    },
+    "TypeScript": {
+      "tab_size": 2,
+      "format_on_save": "on",
+      "formatter": "language_server"
+    },
+    "TSX": {
+      "tab_size": 2,
+      "format_on_save": "on",
+      "formatter": "language_server"
+    },
+    "JavaScript": {
+      "tab_size": 2,
+      "format_on_save": "on",
+      "formatter": "language_server"
+    },
+    "JSX": {
+      "tab_size": 2,
+      "format_on_save": "on",
+      "formatter": "language_server"
+    },
+    "Java": {
+      "tab_size": 4,
+      "format_on_save": "on",
+      "formatter": "language_server"
+    },
+    "Dart": {
+      "tab_size": 2,
+      "format_on_save": "on",
+      "formatter": "language_server"
+    },
+    "HCL": {
+      "tab_size": 2,
+      "format_on_save": "on",
+      "formatter": "language_server"
+    },
+    "JSON": {
+      "tab_size": 2
+    },
+    "YAML": {
+      "tab_size": 2
+    },
+    "Markdown": {
+      "soft_wrap": "editor_width",
+      "tab_size": 4,
+      "preferred_line_length": 80,
+      "show_wrap_guides": false,
+      "relative_line_numbers": "disabled",
+      "buffer_line_height": "comfortable",
+      "inlay_hints": {
+        "enabled": true
+      }
+    }
+  }
+}

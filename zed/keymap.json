@@ -1,0 +1,9 @@
+// Zed keymap
+[
+  {
+    "bindings": {
+      // Seletor de perfis de settings (o padrão do Zed é ctrl-alt-super-p)
+      "ctrl-k ctrl-p": "settings_profile_selector::Toggle"
+    }
+  }
+]
