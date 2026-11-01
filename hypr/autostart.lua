@@ -15,7 +15,7 @@ hl.on("hyprland.start", function()
   -- quickshell com a barra e os popups no MESMO processo (PopupShell).
   -- O `popup` continua no disco como fallback; a waybar fica desativada
   -- abaixo e o config waybar/ permanece no repo para rollback.
-  hl.exec_cmd("command -v qs >/dev/null && setsid -f qs -c bar")
+  hl.exec_cmd("command -v qs >/dev/null && setsid -f env QT_QUICK_BACKEND=software qs -c bar")
   -- hl.exec_cmd("waybar")
   hl.exec_cmd("hyprpaper")
   -- O mako saiu: o painel de notificacoes usa o servico NATIVO do

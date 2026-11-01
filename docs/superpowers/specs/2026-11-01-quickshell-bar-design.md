@@ -73,8 +73,12 @@ A waybar continua intacta e ativa até a troca final no autostart.
   mesmo processo da barra. `open.sh` detecta o config que tem o alvo
   `control`; o config `popup` fica como fallback.
 - Memória medida: barra sozinha 220 MB RSS / 171 MB PSS; popup separado
-  130 / 90; stack separado ~350 / 261; stack fundido **245 MB RSS /
-  208 MB PSS** (~105 MB RSS a menos). Quickshell vazio: 180 MB RSS /
-  111 MB PSS — o grosso é o runtime Qt.
+  130 / 90; stack separado ~350 / 261.
+- Fusão: 245 MB RSS / 208 MB PSS (~105 MB RSS a menos).
+- Backend software (`QT_QUICK_BACKEND=software`): **116 MB RSS / 97 MB
+  PSS**, 7 threads, CPU idle ~0%. Sem os buffers do driver GPU no
+  processo. Popups/toasts continuam corretos; animações são rasterizadas.
+- Stack antigo (waybar + popup) era ~198 MB RSS / 134 MB PSS; o novo
+  stack fundido em software usa ~82 MB RSS a menos que o antigo.
 - Pendente: tooltips, scroll nos workspaces, pulso do TLP, troca do
   autostart e commit dos dotfiles.
