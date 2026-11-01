@@ -1,3 +1,4 @@
+//@ pragma IconTheme breeze
 import QtQuick
 import QtQuick.Layouts
 import Quickshell
@@ -22,6 +23,26 @@ ShellRoot {
 	id: root
 
 	readonly property int barHeight: 24
+	// Super+R alterna para a waybar escondendo a barra; o processo
+	// continua vivo para notificacoes/popups.
+	property bool barVisible: true
+
+	IpcHandler {
+		target: "bar"
+
+		function show(): void {
+			root.barVisible = true;
+		}
+
+		function hide(): void {
+			root.barVisible = false;
+		}
+
+		function toggle(): void {
+			root.barVisible = !root.barVisible;
+		}
+	}
+
 	readonly property int barMargin: 12
 	readonly property string iconFont: "JetBrainsMono Nerd Font"
 	readonly property string textFont: "Noto Sans"
@@ -458,6 +479,20 @@ ShellRoot {
 		}
 	}
 
+	// classe -> nome de icone do tema. `org.kde.konsole`, por exemplo,
+	// nao existe no breeze; utilities-terminal existe.
+	function appIconName() {
+		const c = root.activeClass;
+		if (!c)
+			return "";
+		if (Quickshell.hasThemeIcon(c))
+			return c;
+		if (c.indexOf("konsole") >= 0
+				&& Quickshell.hasThemeIcon("utilities-terminal"))
+			return "utilities-terminal";
+		return "application-x-executable";
+	}
+
 	function refreshActiveClass() {
 		if (activeWinProc.running)
 			return;
@@ -482,7 +517,7 @@ ShellRoot {
 	component IconText: Text {
 		color: root.fg
 		font.family: root.iconFont
-		font.pixelSize: 16
+		font.pixelSize: 15
 		verticalAlignment: Text.AlignVCenter
 	}
 
@@ -497,6 +532,7 @@ ShellRoot {
 			required property var modelData
 
 			screen: modelData
+			visible: root.barVisible
 			anchors {
 				top: true
 				left: true
@@ -507,9 +543,13 @@ ShellRoot {
 			// Auto reserva a zona exclusiva a partir da altura implicita
 			exclusionMode: ExclusionMode.Auto
 
-			// Sem fundo: o menu bar fica 100% transparente e mostra o
-			// papel de parede. A janela do layer-shell reserva a faixa,
-			// entao nenhum app fica atras do texto.
+			// Cinza translucido de 30%, o mesmo rgba(0,0,0,0.3) da
+			// waybar: mantem o papel de parede visivel e segura o
+			// contraste do texto.
+			Rectangle {
+				anchors.fill: parent
+				color: "#4D000000"
+			}
 
 			// ---------------- esquerda: workspaces ----------------
 			Row {
@@ -540,7 +580,7 @@ ShellRoot {
 							text: modelData.name || modelData.id
 							color: modelData.active ? root.fg : root.dim
 							font.family: root.textFont
-							font.pixelSize: 13
+							font.pixelSize: 14
 						}
 
 						MouseArea {
@@ -573,7 +613,7 @@ ShellRoot {
 						width: 16
 						height: 16
 						source: root.activeClass !== ""
-							? Quickshell.iconPath(root.activeClass) : ""
+							? Quickshell.iconPath(root.appIconName()) : ""
 						sourceSize.width: 16
 						sourceSize.height: 16
 						fillMode: Image.PreserveAspectFit
@@ -585,7 +625,7 @@ ShellRoot {
 						text: root.activeTitle
 						color: root.fg
 						font.family: root.textFont
-						font.pixelSize: 14
+						font.pixelSize: 15
 						elide: Text.ElideRight
 					}
 				}
