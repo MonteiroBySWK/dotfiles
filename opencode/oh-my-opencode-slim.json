@@ -4,7 +4,7 @@
    "preset" : "opencode-go",
    "agents" : {
       "pm" : {
-         "model" : "opencode-go/muse-spark-1.3-contributor",
+         "model" : "opencode-go/deepseek-v4.1-flash",
          "variant" : "low",
          "skills" : [],
          "mcps" : [],
@@ -12,7 +12,7 @@
          "orchestratorPrompt" : "Delegate to @pm when the task has 3+ steps or 2+ files, needs a roadmap/status, or parallel lanes risk file overlap. Use @pm output as the dispatch plan. Do NOT use @pm for single-file trivial fixes."
       },
       "pr-reader" : {
-         "model" : "opencode-go/muse-spark-1.3-contributor",
+         "model" : "opencode-go/deepseek-v4.1-flash",
          "variant" : "low",
          "skills" : ["pr-review"],
          "mcps" : [],
@@ -20,7 +20,7 @@
          "orchestratorPrompt" : "Delegate to @pr-reader when the user asks to review/read/comment a PR (review, comment commands). Default to report-only phase unless user says comment/apply."
       },
       "issue-reader" : {
-         "model" : "opencode-go/muse-spark-1.3-contributor",
+         "model" : "opencode-go/deepseek-v4.1-flash",
          "variant" : "low",
          "skills" : ["issues-audit"],
          "mcps" : [],
@@ -91,17 +91,17 @@
       "opencode-go" : {
          "designer" : {
             "mcps" : [],
-            "model" : "opencode-go/mimo-v2.5",
+            "model" : "opencode-go/mimo-v2.6-flash",
             "skills" : []
          },
          "explorer" : {
             "mcps" : [],
-            "model" : "opencode-go/mimo-v2.5-low",
+            "model" : "opencode-go/mimo-v2.6-flash",
             "skills" : []
          },
          "fixer" : {
             "mcps" : [],
-            "model" : "opencode-go/muse-spark-1.3-contributor",
+            "model" : "opencode-go/deepseek-v4.1-flash",
             "skills" : [],
             "variant" : "medium"
          },
@@ -111,18 +111,18 @@
                "context7",
                "gh_grep"
             ],
-            "model" : "opencode-go/muse-spark-1.3-contributor",
+            "model" : "opencode-go/deepseek-v4.1-flash",
             "skills" : [],
             "variant" : "low"
          },
          "observer" : {
             "mcps" : [],
-            "model" : "opencode-go/mimo-v2.5-low",
+            "model" : "opencode-go/mimo-v2.6-flash",
             "skills" : []
          },
          "oracle" : {
             "mcps" : [],
-            "model" : "opencode-go/muse-spark-1.3-contributor",
+            "model" : "opencode-go/deepseek-v4.1-flash",
             "skills" : [
                "simplify"
             ],
@@ -130,7 +130,7 @@
          },
          "orchestrator" : {
             "mcps" : [],
-            "model" : "opencode-go/muse-spark-1.3-contributor",
+            "model" : "opencode-go/deepseek-v4.1-flash",
             "skills" : [],
             "variant" : "medium"
          }

@@ -2,7 +2,7 @@
   // opencode-mem — memória com retrieval semântico (embeddings locais, sem API paga)
   "autoCaptureEnabled": true,
   "opencodeProvider": "opencode-go",
-  "opencodeModel": "opencode-go/mimo-v2.5",
+  "opencodeModel": "opencode-go/mimo-v2.6-flash",
   "embeddingModel": "Xenova/nomic-embed-text-v1",
   "memory": {
     "defaultScope": "project"
