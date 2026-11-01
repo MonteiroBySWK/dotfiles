@@ -23,9 +23,13 @@ case "${1:-volume}" in
 	*)          FN=showVolume ;;
 esac
 
-X=-1
+# -99999 e a sentinela de "sem posicao" (o QML centra). -1 nao serve:
+# no monitor a esquerda da origem o cursor tem x NEGATIVO, e o QML confundia
+# um x=-684 real com "sem argumento" -- por isso os popups abriam centrados
+# no monitor externo.
+X=-99999
 # hyprctl -j cursorpos e o caminho novo; o legado ("x, y") continua valido
-# como reserva. Se os dois falharem, X fica -1 e o popup abre centrado.
+# como reserva. Se os dois falharem, X fica -99999 e o popup abre centrado.
 if pos=$(hyprctl -j cursorpos 2>/dev/null | python3 -c '
 import sys, json
 try:
@@ -37,4 +41,11 @@ elif pos=$(hyprctl cursorpos 2>/dev/null | grep -oE '^-?[0-9]+' | head -1); then
 	X="$pos"
 fi
 
-exec qs -c popup ipc call control "$FN" "$X"
+# Depois da fusao, o handler `control` mora no processo da barra.
+# Prefere o config que realmente tem o alvo; cai no popup como fallback.
+CFG=popup
+if qs -c bar ipc show 2>/dev/null | grep -q "target control"; then
+	CFG=bar
+fi
+
+exec qs -c "$CFG" ipc call control "$FN" "$X"

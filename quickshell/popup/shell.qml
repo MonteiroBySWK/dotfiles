@@ -2,7 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick.Controls.Basic
-import Qt5Compat.GraphicalEffects
+import QtQuick.Effects
 import Quickshell
 import Quickshell.Io
 import Quickshell.Services.Notifications
@@ -54,7 +54,7 @@ ShellRoot {
 	}
 
 	// Cursor na coordenada local da tela do popup.
-	readonly property real localX: popX < 0 ? -1 : popX - telaAtual.x
+	readonly property real localX: popX === -1 ? -1 : popX - telaAtual.x
 
 	// Tela do CURSOR, nao da tela do popup. O toast nao tem clique: ele
 	// aparece sozinho quando a notificacao chega, entao nao ha popX para
@@ -70,6 +70,53 @@ ShellRoot {
 	// por app. Aqui a lista vem inteira e o padrao e marcado.
 	property var sinks: []
 	property var sources: []
+	// Modelos estáveis para a view (mesmo motivo de resModel/btModel:
+	// array novo a cada leitura recriava delegate em plena incubação e
+	// derrubava o QmlModels no Qt 6.12). O array continua como cache de
+	// dados; a view lê o ListModel, sincronizado por syncDevices().
+	ListModel {
+		id: sinksModel
+	}
+	ListModel {
+		id: micModel
+	}
+
+	function syncDevices() {
+		// Sinks: esqueleto por nome; valores atualizados no lugar.
+		let mesmo = sinksModel.count === root.sinks.length;
+		if (mesmo) {
+			for (let i = 0; i < root.sinks.length; i++) {
+				if (sinksModel.get(i).entry.name !== root.sinks[i].name) {
+					mesmo = false;
+					break;
+				}
+			}
+		}
+		if (!mesmo) {
+			sinksModel.clear();
+			for (const s of root.sinks)
+				sinksModel.append({ entry: s });
+		} else {
+			for (let i = 0; i < root.sinks.length; i++)
+				sinksModel.setProperty(i, "entry", root.sinks[i]);
+		}
+		// Mic: 0 ou 1 linha (running, senao default).
+		let alvo = null;
+		if (root.micInUse) {
+			alvo = root.sources.find(s => s.running)
+				|| root.sources.find(s => s.default) || null;
+		}
+		const tem = micModel.count > 0 ? micModel.get(0).entry : null;
+		const mesmoMic = (tem === null && alvo === null)
+			|| (tem !== null && alvo !== null && tem.name === alvo.name);
+		if (!mesmoMic) {
+			micModel.clear();
+			if (alvo)
+				micModel.append({ entry: alvo });
+		} else if (alvo) {
+			micModel.setProperty(0, "entry", alvo);
+		}
+	}
 	// O macOS so mostra o microfone com o ponto laranja quando ele esta em
 	// uso; em repouso ele some. Mesma regra aqui.
 	property bool micInUse: false
@@ -196,6 +243,7 @@ ShellRoot {
 					root.sinks = d.sinks || [];
 					root.sources = d.sources || [];
 					root.micInUse = !!d.micInUse;
+					root.syncDevices();
 				} catch (e) {
 					// Deixa a lista como esta: um JSON quebrado nao deve
 					// apagar o que ja estava na tela.
@@ -206,7 +254,10 @@ ShellRoot {
 	}
 
 	function refreshDevices() {
-		readDevices.running = false;
+		// Single-flight: se ainda esta rodando, nao mata no meio (gerava
+		// stdout truncado e JSON invalido). O resultado chega e atualiza.
+		if (readDevices.running)
+			return;
 		readDevices.running = true;
 	}
 
@@ -331,6 +382,61 @@ ShellRoot {
 	// o mako fazia, agora sem daemon externo.
 	property var toasts: []
 
+	// Modelos estaveis para as views (mesmo motivo de resModel: trocar o
+	// array inteiro a cada notificacao recriava delegates em plena
+	// incubacao e derrubava o QmlModels no Qt 6.12).
+	//
+	// ATENCAO: ListModel so guarda dados simples. Notification e QObject,
+	// e um QObject dentro de ListModel vira null (era a causa do toast
+	// desenhado torto: "Cannot read property 'appName' of null"). A linha
+	// guarda so campos puros + o id; o objeto vivo fica em notifByNid,
+	// usado por dismiss() e invoke().
+	ListModel {
+		id: notifModel
+	}
+	ListModel {
+		id: toastModel
+	}
+	property var notifByNid: ({})
+
+	function textosAcoes(n) {
+		const acts = n.actions || [];
+		const out = [];
+		for (let i = 0; i < acts.length; i++)
+			out.push(acts[i].text);
+		return out;
+	}
+
+	function linhaNotif(n) {
+		const acts = textosAcoes(n);
+		return {
+			nid: n.id,
+			appName: n.appName,
+			summary: n.summary,
+			body: n.body,
+			actionTextsJson: JSON.stringify(acts)
+		};
+	}
+
+	function linhaToast(n) {
+		return { appName: n.appName, summary: n.summary, body: n.body };
+	}
+
+	function reconstruirToasts() {
+		toastModel.clear();
+		for (const n of root.toasts)
+			toastModel.append(linhaToast(n));
+	}
+
+	function invokeAction(nid, idx) {
+		const n = root.notifByNid[nid];
+		if (!n)
+			return;
+		const acts = n.actions || [];
+		if (idx >= 0 && idx < acts.length)
+			acts[idx].invoke();
+	}
+
 	Timer {
 		id: toastTimer
 		// 4,2s e o que o mako usava. Curto o bastante para nao
@@ -339,8 +445,10 @@ ShellRoot {
 		onTriggered: {
 			// Sai a mais antiga. A janela se fecha sozinha quando a
 			// lista esvazia, entao nao ha cronometro por item.
-			if (root.toasts.length > 0)
+			if (root.toasts.length > 0) {
 				root.toasts = root.toasts.slice(1);
+				root.reconstruirToasts();
+			}
 		}
 	}
 
@@ -353,11 +461,22 @@ ShellRoot {
 		onNotification: (n) => {
 			// Mais nova primeiro, como o Notification Center do macOS.
 			root.notificacoes = [n].concat(root.notificacoes);
-			if (root.notificacoes.length > root.notifLimite)
+			root.notifByNid[n.id] = n;
+			if (root.notificacoes.length > root.notifLimite) {
+				const fora = root.notificacoes.slice(root.notifLimite);
 				root.notificacoes = root.notificacoes.slice(0, root.notifLimite);
+				for (const f of fora)
+					delete root.notifByNid[f.id];
+			}
+			// Insere no topo em vez de recriar o modelo: os delegates
+			// que ja estao na tela continuam vivos.
+			notifModel.insert(0, linhaNotif(n));
+			while (notifModel.count > root.notifLimite)
+				notifModel.remove(notifModel.count - 1);
 			// Anuncia. No maximo dois: o terceiro empurra o
 			// primeiro, que ja cumpriu os 4,2s dele.
 			root.toasts = root.toasts.concat([n]).slice(-2);
+			root.reconstruirToasts();
 			cursorProc.running = false;
 			cursorProc.running = true;
 			toastTimer.restart();
@@ -367,7 +486,7 @@ ShellRoot {
 	function openNotifications(x) {
 		// Sem esta linha o painel ignora a posicao do cursor e abre onde a
 		// janela ja estivesse. As outras acoes do popup fazem isto.
-		root.popX = (x === undefined || x <= 0) ? -1 : x;
+		root.popX = (x === undefined || x === -99999) ? -1 : x;
 		root.mode = 5;
 		// Nao some sozinho: o usuario abriu para LER.
 		hideTimer.stop();
@@ -378,9 +497,18 @@ ShellRoot {
 	}
 
 	function limparNotificacoes() {
-		for (const n of root.notificacoes)
-			n.dismiss();
+		for (const n of root.notificacoes) {
+			// Notificacao que ja expirou vira objeto invalido e
+			// dismiss() lanca TypeError. Limpar o resto e o que
+			// importa; a quebrada ja nao existe.
+			try {
+				n.dismiss();
+			} catch (e) {
+			}
+		}
 		root.notificacoes = [];
+		root.notifByNid = ({});
+		notifModel.clear();
 	}
 
 	// Recursos, do list-resources.sh
@@ -388,8 +516,14 @@ ShellRoot {
 	// niveis fica ilegivel, e parentese faltando so aparece quando o popup
 	// abre.
 	function alturaPainel() {
-		if (mode === 5)
-			return Math.max(120, 44 + Math.min(notificacoes.length, 6) * 78);
+		if (mode === 5) {
+			// Altura REAL dos cartoes: com a linha de acoes o cartao tem
+			// ~99px, e a estimativa fixa de 78 cortava os botoes no clip
+			// do ListView. Teto de ~6 cartoes para o painel nao esticar
+			// ate o fim da tela; o resto rola.
+			const conteudo = notifList ? notifList.contentHeight : 0;
+			return Math.max(120, 44 + Math.min(conteudo, 6 * 110) + 8);
+		}
 		if (mode === 3)
 			return 300;
 		if (mode === 4)
@@ -438,6 +572,30 @@ ShellRoot {
 
 	property var res: ({})
 	property var temps: []
+	ListModel {
+		id: tempsModel
+	}
+
+	function syncTemps(arr) {
+		const linhas = arr || [];
+		let mesmo = tempsModel.count === linhas.length;
+		if (mesmo) {
+			for (let i = 0; i < linhas.length; i++) {
+				if (tempsModel.get(i).entry.label !== linhas[i].label) {
+					mesmo = false;
+					break;
+				}
+			}
+		}
+		if (!mesmo) {
+			tempsModel.clear();
+			for (const t of linhas)
+				tempsModel.append({ entry: t });
+			return;
+		}
+		for (let i = 0; i < linhas.length; i++)
+			tempsModel.setProperty(i, "entry", linhas[i]);
+	}
 
 	// Enquanto o painel de recursos esta aberto ele se atualiza sozinho;
 	// fechado, nao ha polling -- ler recursos a cada segundo para nada
@@ -450,6 +608,7 @@ ShellRoot {
 			root.res = d;
 			root.temps = d.temp || [];
 			syncResourceRows(d);
+			syncTemps(root.temps);
 		} catch (e) {
 			// JSON quebrado nao pode apagar o painel que ja esta na tela.
 			console.warn("list-resources.sh devolveu JSON invalido:", e);
@@ -525,20 +684,22 @@ ShellRoot {
 	}
 
 	function openResources(x) {
-		// x <= 0 em vez de x < 0: sem argumento o IPC passa 0, que e um
-		// valor legitimo (borda esquerda da tela). Com "x < 0" o 0 caia
-		// fora e o popup ia para a borda em vez de centralizar.
-		root.popX = (x === undefined || x <= 0) ? -1 : x;
+		// -99999 e a sentinela de "sem posicao" (open.sh manda isso so
+		// quando o hyprctl falha). Usar x <= 0 aqui quebrava o monitor a
+		// esquerda da origem: la o cursor tem x negativo de verdade.
+		root.popX = (x === undefined || x === -99999) ? -1 : x;
 		root.mode = 4;
 		root.resTimerOn = true;
-		readResources.running = false;
-		readResources.running = true;
+		// Nao dispara manual aqui: o resTimer tem triggeredOnStart e ja
+		// faz a primeira leitura. Disparo duplo gerava overlap e JSON
+		// truncado.
 		hideTimer.restart();
 	}
 
 	Process {
 		id: readResources
 		command: ["/home/monteiro/.config/quickshell/popup/list-resources.sh"]
+		running: false
 		stdout: StdioCollector {
 			onStreamFinished: root.applyResources(text)
 		}
@@ -551,7 +712,11 @@ ShellRoot {
 		running: root.resTimerOn
 		triggeredOnStart: true
 		onTriggered: {
-			readResources.running = false;
+			// Single-flight: se a leitura anterior ainda nao voltou
+			// (maquina carregada), espera o proximo tick em vez de matar
+			// no meio e parsear metade do JSON.
+			if (readResources.running)
+				return;
 			readResources.running = true;
 		}
 	}
@@ -613,20 +778,20 @@ ShellRoot {
 	// Acoes
 	// ------------------------------------------------------------------
 	function openVolume(x) {
-		// x <= 0 em vez de x < 0: sem argumento o IPC passa 0, que e um
-		// valor legitimo (borda esquerda da tela). Com "x < 0" o 0 caia
-		// fora e o popup ia para a borda em vez de centralizar.
-		root.popX = (x === undefined || x <= 0) ? -1 : x;
+		// -99999 e a sentinela de "sem posicao" (open.sh manda isso so
+		// quando o hyprctl falha). Usar x <= 0 aqui quebrava o monitor a
+		// esquerda da origem: la o cursor tem x negativo de verdade.
+		root.popX = (x === undefined || x === -99999) ? -1 : x;
 		root.refreshDevices();
 		root.mode = 1;
 		hideTimer.restart();
 	}
 
 	function openCalendar(x) {
-		// x <= 0 em vez de x < 0: sem argumento o IPC passa 0, que e um
-		// valor legitimo (borda esquerda da tela). Com "x < 0" o 0 caia
-		// fora e o popup ia para a borda em vez de centralizar.
-		root.popX = (x === undefined || x <= 0) ? -1 : x;
+		// -99999 e a sentinela de "sem posicao" (open.sh manda isso so
+		// quando o hyprctl falha). Usar x <= 0 aqui quebrava o monitor a
+		// esquerda da origem: la o cursor tem x negativo de verdade.
+		root.popX = (x === undefined || x === -99999) ? -1 : x;
 		root.mode = 3;
 		// Ao abrir, volta para o mes de hoje: sair de novembro e voltar
 		// amanha e encontrar a grade em branco e confuso.
@@ -637,10 +802,10 @@ ShellRoot {
 	}
 
 	function openBrightness(x) {
-		// x <= 0 em vez de x < 0: sem argumento o IPC passa 0, que e um
-		// valor legitimo (borda esquerda da tela). Com "x < 0" o 0 caia
-		// fora e o popup ia para a borda em vez de centralizar.
-		root.popX = (x === undefined || x <= 0) ? -1 : x;
+		// -99999 e a sentinela de "sem posicao" (open.sh manda isso so
+		// quando o hyprctl falha). Usar x <= 0 aqui quebrava o monitor a
+		// esquerda da origem: la o cursor tem x negativo de verdade.
+		root.popX = (x === undefined || x === -99999) ? -1 : x;
 		readBrightness.running = false;
 		readBrightness.running = true;
 		readDdc();
@@ -782,7 +947,7 @@ ShellRoot {
 	}
 
 	function abrirBluetooth(x) {
-		root.popX = (x === undefined || x <= 0) ? -1 : x;
+		root.popX = (x === undefined || x === -99999) ? -1 : x;
 		syncBt();
 		root.mode = 7;
 		// Nao some sozinho: parear leva tempo, e a pessoa precisa do
@@ -797,7 +962,7 @@ ShellRoot {
 	// so preencher depois faz o painel mudar de altura debaixo da mao da
 	// pessoa. Lendo antes, ele ja abre do tamanho certo.
 	function openBattery(x) {
-		root.popX = (x === undefined || x <= 0) ? -1 : x;
+		root.popX = (x === undefined || x === -99999) ? -1 : x;
 		root.readBattery();
 		root.mode = 6;
 		// Fica aberto: trocar perfil e uma acao deliberada, e fechar
@@ -950,12 +1115,14 @@ ShellRoot {
 		}
 
 		// "topMargin" nao existe: a propriedade e "margins", com um grupo.
+		// 34 - 32 de folga da sombra: a caixa visivel continua a 34px do
+		// topo, e os 32px acima dela existem so para a sombra respirar.
 		margins {
-			top: 34
+			top: 0
 		}
 
 		color: "transparent"
-		implicitHeight: box.height + 2
+		implicitHeight: boxShadow.height + 2
 
 		// Clique fora da caixa fecha. Cobre a janela toda, que e full-width.
 		MouseArea {
@@ -967,11 +1134,18 @@ ShellRoot {
 		// A caixa. E FILHA do painel, e os layouts sao filhos da caixa --
 		// antes eles eram irmaos e ocupavam os 1920px da janela, com o
 		// conteudo caindo fora dos 300px da caixa.
-		// Sombra e borda de luz separadas da caixa: o DropShadow desenha
-		// atras, e a caixa fica transparente nesse trecho. Sem separar, a
-		// borda de 1px entra dentro do raio e a sombra nasce reta.
+		// A caixa vive dentro de um item com folga (sombra): o
+		// RectangularShadow desenha atras dela e precisa de espaco na
+		// janela para o blur nao ser cortado.
 		Item {
 			id: boxShadow
+			// Folga em volta da caixa para a sombra: a janela tem a
+			// altura exata da caixa, e um blur que ultrapasse o item
+			// seria cortado reto -- era o "feixe" que aparecia.
+			readonly property int sombra: 34
+			readonly property int boxWidth: 340
+			width: boxWidth + sombra * 2
+			height: root.alturaPainel() + sombra * 2
 			// Segue o cursor quando o popup foi aberto por clique; com popX
 			// negativo cai no centro, que e o caso de quem abre por tecla.
 			//
@@ -979,33 +1153,31 @@ ShellRoot {
 			// mecanismos que se brigam -- com "horizontalCenter: undefined"
 			// a ancora continuava ditando o x e o popup ia para a borda
 			// esquerda. Aqui o x e calculado direto.
-			x: root.popX < 0
+			// O +sombra desconta a folga para a CAIXA ficar centrada no
+			// cursor, e nao o item com a sombra.
+			x: root.popX === -1
 				? (parent.width - width) / 2
 				: Math.max(0, Math.min(parent.width - width,
-					root.localX - width / 2))
-			// A altura do volume deixou de ser fixa: a lista de aparelhos
-			// tem uma linha por sink, mais o divisor e a linha do mic. Com
-			// altura fixa de 96px o painel cortava o segundo aparelho.
-			// O minimo de 48px e o piso do modo brilho sem DDC.
-		// A altura depende do conteudo. Ternario com seis niveis fica
-		// ilegivel e erro de parenteses nao aparece ate o popup abrir --
-		// por isso e uma funcao.
-		width: 340
-		height: root.alturaPainel()
+					root.localX - sombra - boxWidth / 2))
 
-			DropShadow {
+			// Sombra de retangulo arredondado: segue o radius da caixa e
+			// desenha FORA do item (com folga na janela), ao contrario do
+			// DropShadow antigo, que era recortado no proprio tamanho.
+			RectangularShadow {
 				anchors.fill: box
-				source: box
-				radius: 32
-				horizontalOffset: 0
-				verticalOffset: 8
-				color: "#B3000000"
+				radius: box.radius
+				blur: 26
+				offset: Qt.vector2d(0, 8)
+				color: "#99000000"
 			}
 
-		Rectangle {
-			id: box
-			anchors.fill: parent
-			radius: 14
+			Rectangle {
+				id: box
+				x: boxShadow.sombra
+				y: boxShadow.sombra
+				width: boxShadow.boxWidth
+				height: root.alturaPainel()
+				radius: 14
 			// Tokens do macOS modo escuro. Antes era a paleta Catppuccin,
 			// que nao e a do macOS. Nao escrever os codigos antigos aqui:
 			// o teste varre o arquivo procurando eles e se auto-alerta.
@@ -1027,10 +1199,10 @@ ShellRoot {
 				spacing: 4
 
 				Repeater {
-					model: root.sinks
+					model: sinksModel
 
 					delegate: Rectangle {
-						required property var modelData
+						required property var entry
 						Layout.fillWidth: true
 						Layout.preferredHeight: 58
 						radius: 10
@@ -1038,12 +1210,12 @@ ShellRoot {
 						// Control Center. Borda azul marca o default.
 						color: "#2C2C2E"
 						border.width: 1
-						border.color: modelData.default ? "#0A84FF" : "#3A3A3C"
+						border.color: entry.default ? "#0A84FF" : "#3A3A3C"
 						// Enquanto o botao esta apertado, o numero mostra o valor
 						// sob o dedo. Sem isto so atualizava no onCommitted, e
 						// arrastar parecia nao mudar nada.
-						readonly property real shown: sinkSlider.pressed ? sinkSlider.value : modelData.volume
-						readonly property bool shownMuted: sinkSlider.pressed ? false : modelData.muted
+						readonly property real shown: sinkSlider.pressed ? sinkSlider.value : entry.volume
+						readonly property bool shownMuted: sinkSlider.pressed ? false : entry.muted
 
 						// Escrita durante o arraste, com limite de taxa. Sem o
 						// limite, cada pixel do arraste abriria um processo
@@ -1057,7 +1229,7 @@ ShellRoot {
 							if (agora - lastSent < minIntervalMs)
 								return;
 							lastSent = agora;
-							writeDevice.setVolume(modelData.id, v);
+							writeDevice.setVolume(entry.id, v);
 						}
 
 						ColumnLayout {
@@ -1078,17 +1250,17 @@ ShellRoot {
 									MouseArea {
 										anchors.fill: parent
 										cursorShape: Qt.PointingHandCursor
-										onClicked: writeDevice.setMute(modelData.id)
+										onClicked: writeDevice.setMute(entry.id)
 									}
 								}
 
 								Text {
 									Layout.fillWidth: true
-									text: modelData.label
+									text: entry.label
 									color: "#F5F5F7"
 									font.pixelSize: 13
 									font.family: "JetBrainsMono Nerd Font"
-									font.weight: modelData.default ? Font.DemiBold : Font.Normal
+									font.weight: entry.default ? Font.DemiBold : Font.Normal
 									elide: Text.ElideRight
 								}
 
@@ -1105,7 +1277,7 @@ ShellRoot {
 								Layout.fillWidth: true
 								from: 0
 								to: root.maxVolume
-								value: modelData.volume
+								value: entry.volume
 
 								onPressedChanged: {
 									hideTimer.restart();
@@ -1118,7 +1290,7 @@ ShellRoot {
 									// Ultimo valor, sem passar pelo limite de taxa: se
 									// caiu fora da janela, ele nunca foi enviado.
 									lastSent = 0;
-									writeDevice.setVolume(modelData.id, v);
+									writeDevice.setVolume(entry.id, v);
 								}
 							}
 						}
@@ -1139,19 +1311,13 @@ ShellRoot {
 				// macOS. Em repouso a linha some em vez de ocupar espaco.
 				Repeater {
 					// Um por source era ruido: a maquina tem ALC256 Analog e Fuxi-H3, e o que
-					// interessa e o microfone em uso. Com o Repeater inteiro a
-					// altura da caixa (que so reservava uma linha) cortava o
-					// segundo.
-					model: {
-						if (!root.micInUse)
-							return [];
-						const act = root.sources.find(s => s.running)
-							|| root.sources.find(s => s.default);
-						return act ? [act] : [];
-					}
+					// interessa e o microfone em uso. Modelo estavel via
+					// micModel (syncDevices), e nao array inline novo a
+					// cada avaliacao -- mesmo motivo do sinksModel.
+					model: micModel
 
 					delegate: Rectangle {
-						required property var modelData
+						required property var entry
 						Layout.fillWidth: true
 						Layout.preferredHeight: 44
 						radius: 10
@@ -1174,7 +1340,7 @@ ShellRoot {
 
 							Text {
 								Layout.fillWidth: true
-								text: modelData.label
+								text: entry.label
 								color: "#F5F5F7"
 								font.pixelSize: 13
 								font.family: "JetBrainsMono Nerd Font"
@@ -1182,22 +1348,22 @@ ShellRoot {
 							}
 
 							Text {
-								text: modelData.volume + "%"
+								text: entry.volume + "%"
 								color: "#98989D"
 								font.pixelSize: 12
 								font.family: "JetBrainsMono Nerd Font"
 							}
 
 							Text {
-								text: modelData.muted ? "\uf026" : "\uf130"
-								color: modelData.muted ? "#FF453A" : "#98989D"
+								text: entry.muted ? "\uf026" : "\uf130"
+								color: entry.muted ? "#FF453A" : "#98989D"
 							font.pixelSize: 13
 							font.family: "JetBrainsMono Nerd Font"
 
 							MouseArea {
 									anchors.fill: parent
 									cursorShape: Qt.PointingHandCursor
-									onClicked: writeDevice.setMute(modelData.id)
+									onClicked: writeDevice.setMute(entry.id)
 								}
 							}
 						}
@@ -1306,16 +1472,32 @@ ShellRoot {
 				}
 
 				ListView {
+					id: notifList
 					Layout.fillWidth: true
 					Layout.fillHeight: true
 					clip: true
 					spacing: 6
-					model: root.notificacoes
+					model: notifModel
 					// Sem ScrollBar visivel: no macOS a lista rola sem barra
 					// e o cursor de scroll ja da o feedback.
 
 					delegate: Rectangle {
-						required property var modelData
+						id: cartaoNotif
+						required property var nid
+						required property string appName
+						required property string summary
+						required property string body
+						required property string actionTextsJson
+						// ListModel nao devolve array JS (vira um objeto
+						// com count), entao a lista viaja como JSON e e
+						// convertida aqui.
+						readonly property var actionList: {
+							try {
+								return JSON.parse(actionTextsJson || "[]");
+							} catch (e) {
+								return [];
+							}
+						}
 						required property int index
 						width: ListView.view.width
 						height: cartao.implicitHeight + 16
@@ -1324,13 +1506,19 @@ ShellRoot {
 
 						ColumnLayout {
 							id: cartao
-							anchors.fill: parent
+							// So topo e lados: com anchors.fill a altura do
+							// delegate (cartao.implicitHeight + 16) virava
+							// loop de binding e o fim do cartao era cortado
+							// -- a linha de acoes aparecia pela metade.
+							anchors.left: parent.left
+							anchors.right: parent.right
+							anchors.top: parent.top
 							anchors.margins: 8
 							spacing: 4
 
 							Text {
 								Layout.fillWidth: true
-								text: modelData.appName
+								text: cartaoNotif.appName
 								color: "#636366"
 								font.pixelSize: 10
 								font.family: "JetBrainsMono Nerd Font"
@@ -1339,7 +1527,7 @@ ShellRoot {
 
 							Text {
 								Layout.fillWidth: true
-								text: modelData.summary
+								text: cartaoNotif.summary
 								color: "#F5F5F7"
 								font.pixelSize: 13
 								font.weight: Font.DemiBold
@@ -1351,8 +1539,8 @@ ShellRoot {
 
 							Text {
 								Layout.fillWidth: true
-								visible: modelData.body !== ""
-								text: modelData.body
+								visible: cartaoNotif.body !== ""
+								text: cartaoNotif.body
 								color: "#98989D"
 								font.pixelSize: 11
 								font.family: "JetBrainsMono Nerd Font"
@@ -1362,24 +1550,23 @@ ShellRoot {
 							}
 
 							// Acoes do app ("Mostrar", "Responder"...). Sem
-							// isso a notificacao e so leitura.
+							// isso a notificacao e so leitura. O modelo e a
+							// lista de TEXTOS (dado puro); o invoke() vai
+							// pelo mapa notifByNid, que tem o objeto vivo.
 							RowLayout {
+								id: acoesRow
 								Layout.fillWidth: true
-								visible: modelData.actions.length > 0
+								visible: cartaoNotif.actionList.length > 0
 								spacing: 6
 								Layout.topMargin: 2
 
 								Repeater {
-									model: modelData.actions
+									model: cartaoNotif.actionList
 
 									delegate: Rectangle {
-										// O modelData interno SOMBREIA o da
-										// notificacao. Por isso o id acao: sem ele
-										// nao ha como alcançar a notificacao de
-										// dentro do delegate, e a acao quebrava com
-										// "Cannot read property of undefined".
 										id: acao
-										required property var modelData
+										required property string modelData
+										required property int index
 										implicitWidth: acaoLabel.implicitWidth + 16
 										implicitHeight: 22
 										radius: 6
@@ -1388,7 +1575,7 @@ ShellRoot {
 										Text {
 											id: acaoLabel
 											anchors.centerIn: parent
-											text: acao.modelData.text
+											text: acao.modelData
 											color: "#F5F5F7"
 											font.pixelSize: 11
 											font.family: "JetBrainsMono Nerd Font"
@@ -1397,10 +1584,8 @@ ShellRoot {
 										MouseArea {
 											anchors.fill: parent
 											cursorShape: Qt.PointingHandCursor
-											// O objeto da acao tem invoke(): e o
-											// proprio servico que dispara, sem
-											// gdbus e sem id numerico.
-											onClicked: acao.modelData.invoke()
+											onClicked: root.invokeAction(
+												cartaoNotif.nid, acao.index)
 										}
 									}
 								}
@@ -1522,6 +1707,10 @@ ShellRoot {
 								height: 26
 								radius: 13
 								visible: calCell.isHoje
+								// z:-1 desenha o circulo ATRAS do numero. Como
+								// filho do Text, sem isto ele pintava por cima
+								// e escondia o dia.
+								z: -1
 								color: "#0A84FF"
 							}
 						}
@@ -1625,10 +1814,10 @@ ShellRoot {
 					spacing: 6
 
 					Repeater {
-						model: root.temps
+						model: tempsModel
 
 						delegate: Rectangle {
-							required property var modelData
+							required property var entry
 							implicitWidth: tempText.implicitWidth + 14
 							implicitHeight: 22
 							radius: 6
@@ -1639,8 +1828,8 @@ ShellRoot {
 								anchors.centerIn: parent
 								// Acima de 80 o texto fica vermelho: e o ponto em
 								// que o CPU comeca a reduzir frequencia.
-								text: modelData.label + " " + Math.round(modelData.celsius) + "°"
-								color: modelData.celsius >= 80 ? "#FF453A" : "#98989D"
+								text: entry.label + " " + Math.round(entry.celsius) + "°"
+								color: entry.celsius >= 80 ? "#FF453A" : "#98989D"
 								font.pixelSize: 11
 								font.family: "JetBrainsMono Nerd Font"
 
@@ -2181,10 +2370,14 @@ ShellRoot {
 			width: 340
 
 			Repeater {
-				model: root.toasts
+				model: toastModel
 
 				delegate: Item {
-					required property var modelData
+					required property string appName
+					required property string summary
+					required property string body
+					// id do cartao, para o clique saber qual saiu
+					id: toastItem
 					required property int index
 
 					width: 340
@@ -2214,7 +2407,7 @@ ShellRoot {
 						// quando vazio -- nem toda notificacao tem.
 						Text {
 							width: parent.width
-							text: modelData.appName
+							text: toastItem.appName
 							visible: text !== ""
 							color: "#636366"
 							font.pixelSize: 10
@@ -2224,7 +2417,7 @@ ShellRoot {
 
 						Text {
 							width: parent.width
-							text: modelData.summary
+							text: toastItem.summary
 							color: "#F5F5F7"
 							font.pixelSize: 13
 							font.weight: Font.DemiBold
@@ -2234,7 +2427,7 @@ ShellRoot {
 
 						Text {
 							width: parent.width
-							text: modelData.body
+							text: toastItem.body
 							visible: text !== ""
 							color: "#98989D"
 							font.pixelSize: 11
@@ -2252,6 +2445,7 @@ ShellRoot {
 						cursorShape: Qt.PointingHandCursor
 						onClicked: {
 							root.toasts = [];
+							root.reconstruirToasts();
 							toastTimer.stop();
 							root.openNotifications();
 						}
