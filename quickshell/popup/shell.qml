@@ -423,8 +423,21 @@ ShellRoot {
 	}
 
 	function reconstruirToasts() {
+		// Notificacao expirada vira objeto morto: as propriedades ficam
+		// undefined e sobra um card vazio na tela. Filtra antes de
+		// montar o modelo.
+		const vivas = [];
+		for (const n of root.toasts) {
+			try {
+				if (n && n.summary !== undefined)
+					vivas.push(n);
+			} catch (e) {
+			}
+		}
+		if (vivas.length !== root.toasts.length)
+			root.toasts = vivas;
 		toastModel.clear();
-		for (const n of root.toasts)
+		for (const n of vivas)
 			toastModel.append(linhaToast(n));
 	}
 
@@ -442,13 +455,16 @@ ShellRoot {
 		// 4,2s e o que o mako usava. Curto o bastante para nao
 		// acumular, longo o bastante para ler o titulo.
 		interval: 4200
+		// repeat: com dois toasts, um unico disparo removia so o
+		// primeiro e parava -- o segundo ficava vazio para sempre.
+		repeat: true
 		onTriggered: {
-			// Sai a mais antiga. A janela se fecha sozinha quando a
-			// lista esvazia, entao nao ha cronometro por item.
 			if (root.toasts.length > 0) {
 				root.toasts = root.toasts.slice(1);
 				root.reconstruirToasts();
 			}
+			if (root.toasts.length === 0)
+				toastTimer.stop();
 		}
 	}
 
@@ -509,6 +525,9 @@ ShellRoot {
 		root.notificacoes = [];
 		root.notifByNid = ({});
 		notifModel.clear();
+		root.toasts = [];
+		root.reconstruirToasts();
+		toastTimer.stop();
 	}
 
 	// Recursos, do list-resources.sh
@@ -771,6 +790,10 @@ ShellRoot {
 
 		function hide(): void {
 			root.close();
+		}
+
+		function clearNotifications(): void {
+			root.limparNotificacoes();
 		}
 	}
 
@@ -1185,6 +1208,13 @@ ShellRoot {
 			border.width: 1
 			border.color: "#3A3A3C"
 
+			// Clique dentro da caixa nao pode cair no MouseArea de
+			// "clique fora" (que fecha o painel).
+			MouseArea {
+				anchors.fill: parent
+				acceptedButtons: Qt.AllButtons
+			}
+
 			// ---------------- volume ----------------
 			// ---------------- volume ----------------
 			// Lista de aparelhos, no padrao do Control Center do macOS: cada
@@ -1429,28 +1459,58 @@ ShellRoot {
 						font.family: "JetBrainsMono Nerd Font"
 					}
 
-					Text {
-						text: "limpar"
-						color: "#98989D"
-						font.pixelSize: 11
-						font.family: "JetBrainsMono Nerd Font"
+					Item {
+						id: limparBtn
+						Layout.preferredWidth: limparLabel.implicitWidth + 14
+						Layout.preferredHeight: 20
 						visible: root.notificacoes.length > 0
 
-						MouseArea {
+						Rectangle {
 							anchors.fill: parent
+							radius: 4
+							color: limparMa.containsMouse
+								? "#26FFFFFF" : "transparent"
+						}
+						Text {
+							id: limparLabel
+							anchors.centerIn: parent
+							text: "limpar"
+							color: "#98989D"
+							font.pixelSize: 11
+							font.family: "JetBrainsMono Nerd Font"
+						}
+						MouseArea {
+							id: limparMa
+							anchors.fill: parent
+							hoverEnabled: true
 							cursorShape: Qt.PointingHandCursor
 							onClicked: root.limparNotificacoes()
 						}
 					}
 
-					Text {
-						text: "x"
-						color: "#98989D"
-						font.pixelSize: 13
-						font.family: "JetBrainsMono Nerd Font"
+					Item {
+						id: fecharBtn
+						Layout.preferredWidth: fecharLabel.implicitWidth + 14
+						Layout.preferredHeight: 20
 
-						MouseArea {
+						Rectangle {
 							anchors.fill: parent
+							radius: 4
+							color: fecharMa.containsMouse
+								? "#26FFFFFF" : "transparent"
+						}
+						Text {
+							id: fecharLabel
+							anchors.centerIn: parent
+							text: "x"
+							color: "#98989D"
+							font.pixelSize: 13
+							font.family: "JetBrainsMono Nerd Font"
+						}
+						MouseArea {
+							id: fecharMa
+							anchors.fill: parent
+							hoverEnabled: true
 							cursorShape: Qt.PointingHandCursor
 							onClicked: root.fecharNotificacoes()
 						}
