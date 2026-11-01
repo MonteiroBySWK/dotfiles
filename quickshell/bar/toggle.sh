@@ -1,16 +1,14 @@
 #!/usr/bin/env bash
-# Liga/desliga a waybar para comparar com a barra do quickshell.
+# Liga/desliga o QUICKSHELL (barra + popups + notificacoes).
+# A waybar nao e tocada: ela fica como estiver, para comparar as duas.
 #
-# O quickshell NUNCA e escondido nem morto aqui: ele segura as notificacoes
-# e os popups, e a comparacao lado a lado precisa das duas barras visiveis.
-# Se um dia quiser esconder a barra do quickshell, use:
-#   qs -c bar ipc call bar hide
+# Ao matar o processo, o servidor de notificacoes cai junto (o quickshell
+# e o dono de org.freedesktop.Notifications). Ao levantar de novo, ele
+# reassume. O backend software e o mesmo do autostart.
 set -u
 
-if pgrep -x waybar >/dev/null 2>&1; then
-	pkill -x waybar
+if pgrep -f '^qs -c bar$' >/dev/null 2>&1; then
+	pkill -f '^qs -c bar$'
 else
-	# Garante a barra do quickshell visivel (pode ter sido escondida antes).
-	qs -c bar ipc call bar showBar >/dev/null 2>&1
-	setsid -f waybar >/dev/null 2>&1
+	setsid -f env QT_QUICK_BACKEND=software qs -c bar >/dev/null 2>&1
 fi
