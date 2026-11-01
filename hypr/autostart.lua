@@ -12,11 +12,11 @@ hl.on("hyprland.start", function()
   -- nao tem para quem falar e as teclas de volume nao mostram nada.
   -- A guarda evita erro se o pacote for removido depois.
   hl.exec_cmd("command -v swayosd-server >/dev/null && swayosd-server")
-  -- quickshell com o popup arrastavel de volume e brilho, acionado pelo
-  -- clique nos icones da barra. Duas configs separadas sao configs
-  -- diferentes; aqui so a nossa.
-  hl.exec_cmd("command -v qs >/dev/null && setsid -f qs -c popup")
-  hl.exec_cmd("waybar")
+  -- quickshell com a barra e os popups no MESMO processo (PopupShell).
+  -- O `popup` continua no disco como fallback; a waybar fica desativada
+  -- abaixo e o config waybar/ permanece no repo para rollback.
+  hl.exec_cmd("command -v qs >/dev/null && setsid -f qs -c bar")
+  -- hl.exec_cmd("waybar")
   hl.exec_cmd("hyprpaper")
   -- O mako saiu: o painel de notificacoes usa o servico NATIVO do
   -- quickshell, que se registra em org.freedesktop.Notifications. O mako
