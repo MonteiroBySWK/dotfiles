@@ -185,8 +185,12 @@ fornece orchestrator, fixer, designer, explorer, librarian, observer e oracle;
 os lanes pm, pr-reader, issue-reader, vision e reviewer vêm do `opencode.json`.
 
 <!-- heavy -->
-Build, teste e container pesado rodam no homelab, não no notebook:
-- `hl run -- <comando>` sincroniza o projeto atual e executa num container lá.
-- Containers longos: `docker --context homelab compose up -d` (bind mount usa caminho do servidor).
-- Banco/serviços: `pg-tunnel` ou tailnet.
-Rodar build/teste pesado local só se o projeto não tiver ambiente no homelab.
+Serviços de longa duração (containers, bancos, LocalStack, automação) rodam no
+homelab, sempre — é o que libera RAM do notebook.
+
+Build/teste depende do contexto:
+- Se você vai continuar usando o notebook, ou quer a tampa fechada, offload:
+  `hl run -- <comando>` sincroniza o projeto e roda num container lá.
+- Se o notebook está livre e você quer velocidade, rode local: ele é ~5x mais
+  rápido em multi-thread e ~6x em I/O.
+Nunca suba serviço longo local só para "testar rápido".
