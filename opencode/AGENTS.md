@@ -183,3 +183,10 @@ O merge é por nome do agente. Não repita a mesma propriedade nos dois arquivos
 permissão só no primeiro, modelo/prompt só no segundo. O preset `opencode-go`
 fornece orchestrator, fixer, designer, explorer, librarian, observer e oracle;
 os lanes pm, pr-reader, issue-reader, vision e reviewer vêm do `opencode.json`.
+
+<!-- heavy -->
+Build, teste e container pesado rodam no homelab, não no notebook:
+- `hl run -- <comando>` sincroniza o projeto atual e executa num container lá.
+- Containers longos: `docker --context homelab compose up -d` (bind mount usa caminho do servidor).
+- Banco/serviços: `pg-tunnel` ou tailnet.
+Rodar build/teste pesado local só se o projeto não tiver ambiente no homelab.
