@@ -652,16 +652,12 @@ ShellRoot {
 				detalhe: m.swapUsedMb + " MB de " + m.swapTotalMb + " MB",
 				valor: m.swapPercent, sufixo: "%" });
 
-		// A barra da GPU mostra TEMPERATURA, nao uso. Uso de GPU ocioso e
-		// poucos por cento e nao diz nada de saude; a temperatura e o numero
-		// que importa. Com o uso na barra, um GPU a 77 C aparecia cinza,
-		// como se estivesse bem.
-		if (g.celsius !== undefined) {
+		// A barra da GPU mostra USO, como as demais. Temperatura tem
+		// espaco proprio nos chips de sensor; aqui ela so acompanha como
+		// detalhe, para nao sumir da linha.
+		if (g.percent !== undefined) {
 			linhas.push({ rotulo: g.name || "GPU",
-				detalhe: "uso " + (g.percent || 0) + "%",
-				valor: g.celsius, sufixo: "°C" });
-		} else if (g.percent !== undefined) {
-			linhas.push({ rotulo: g.name || "GPU", detalhe: "",
+				detalhe: g.celsius !== undefined ? g.celsius + " °C" : "",
 				valor: g.percent, sufixo: "%" });
 		}
 		return linhas;
@@ -1860,9 +1856,8 @@ ShellRoot {
 
 				Text {
 					Layout.fillWidth: true
-					// Cabecalho dos chips de sensor. A unidade da barra da
-					// GPU ja aparece na propria linha ("69 °C"), entao nao
-					// precisa de aviso aqui.
+					// Chips de sensor. A barra da GPU agora mostra uso (%),
+					// entao a temperatura dela aparece aqui como as demais.
 					text: "temperaturas"
 					color: "#636366"
 					font.pixelSize: 10
